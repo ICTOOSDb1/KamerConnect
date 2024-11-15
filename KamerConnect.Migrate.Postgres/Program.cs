@@ -8,7 +8,11 @@ class Program
 {
     static int Main()
     {
-        Env.Load(Path.Combine(Directory.GetCurrentDirectory(), "..", ".env"));
+        var rootEnvPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
+        var binEnvPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../..", ".env");
+
+        if (File.Exists(rootEnvPath)) { Env.Load(rootEnvPath); } 
+        else if (File.Exists(binEnvPath)) { Env.Load(binEnvPath); }
 
         var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
         var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
