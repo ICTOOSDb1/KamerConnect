@@ -16,13 +16,46 @@
 
         <!-- Left side: Form -->
         <StackLayout Grid.Column="0" Padding="250, 0" Spacing="10">
-            <Label Text="Welcome" 
-                   FontSize="24" 
-                   HorizontalOptions="Center" 
-                   VerticalOptions="Start" />
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
+                <Label Text="Kamer" 
+                       FontSize="32" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Start"
+                       TextColor="Black"/>
+                <Label Text="Connect" 
+                       FontSize="32"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Start"
+                       TextColor="Black"
+                       />
+            </HorizontalStackLayout>
+           <VerticalStackLayout Margin="0,0,0,21">
+                <Label Text="Welkom terug"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Start"
+                       TextColor="Black"/>
+                <Label Text="Voer je gegevens in om in te loggen"
+                       FontSize="14"
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Start"
+                       TextColor="Black"/>
+           </VerticalStackLayout>
             <Entry Placeholder="Enter your name" />
             <Entry Placeholder="Enter your email" Keyboard="Email" />
             <Button Text="Submit" />
+            <HorizontalStackLayout>
+                <Label Text="Nog geen account?"
+                       TextColor="Black"></Label>
+                <Label Text="Maak"
+                        TextColor="Black"
+                        FontSize="16"/>
+                <Label Text="er een aan"
+                       TextColor="Black"></Label>
+            </HorizontalStackLayout>
+           
         </StackLayout>
 
         <!-- Right side: Image -->
