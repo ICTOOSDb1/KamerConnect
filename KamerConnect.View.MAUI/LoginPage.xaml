@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:reusableItems="clr-namespace:KamerConnect.View.MAUI.reusableItems"
              x:Class="KamerConnect.View.MAUI.LoginPage">
  
     <Grid>
@@ -12,7 +13,7 @@
 
         <!-- Background Colors -->
         <BoxView Grid.Column="0" BackgroundColor="White" />
-        <BoxView Grid.Column="1" BackgroundColor="Red" />
+        <BoxView Grid.Column="1" BackgroundColor="{StaticResource Primary}" />
 
         <!-- Left side: Form -->
         <StackLayout Grid.Column="0" Padding="250, 0" Spacing="10">
@@ -43,9 +44,16 @@
                        VerticalOptions="Start"
                        TextColor="Black"/>
            </VerticalStackLayout>
-            <Entry Placeholder="Enter your name" />
-            <Entry Placeholder="Enter your email" Keyboard="Email" />
-            <Button Text="Submit" />
+            
+            <reusableItems:Entry LabelText="Email"
+                                 Placeholder="Enter your email"
+                                 Text="{Binding Email}" />
+            <reusableItems:Entry LabelText="Wachtwoord"
+                                 Placeholder="Enter your password"
+                                 Text="{Binding Password}" />
+            
+            <Button Text="Submit" Style="{StaticResource PrimaryButton}" />
+            
             <HorizontalStackLayout>
                 <Label Text="Nog geen account?"
                        TextColor="Black"></Label>
@@ -57,10 +65,9 @@
             </HorizontalStackLayout>
            
         </StackLayout>
-
-        <!-- Right side: Image -->
+        
         <Image Grid.Column="1" 
-               Source="your_image.png" 
+               Source="Resources/Images/login_image.svg"
                Aspect="AspectFill" 
                VerticalOptions="FillAndExpand" 
                HorizontalOptions="FillAndExpand" />
