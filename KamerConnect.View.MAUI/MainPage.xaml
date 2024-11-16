@@ -5,37 +5,72 @@
              x:Class="KamerConnect.View.MAUI.MainPage"
              BackgroundColor="{StaticResource BackgroundColor}">
     
-    <reusableItems:FormCard Style="{StaticResource ContainerFrameStyle}">
-            <StackLayout>
-                <RadioButton Content="Option" GroupName="Options" IsChecked="True" />
-                <RadioButton Content="Option1" GroupName="Options" />
-                <RadioButton Content="Option2" GroupName="Options" />
+    <Grid RowDefinitions="*"
+          ColumnDefinitions="2*,3*"
+          VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand">
 
+        <!-- Left Section -->
+        <Grid BackgroundColor="{StaticResource BackgroundColor}" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- KamerConnect Label -->
+            <Label Text="KamerConnect"
+                   Style="{StaticResource TitleTextStyle}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   Margin="20,20,0,10" />
+
+            <!-- Form Section -->
+            <VerticalStackLayout Grid.Row="1"
+                                 VerticalOptions="CenterAndExpand"
+                                 HorizontalOptions="CenterAndExpand"
+                                 Spacing="20">
+                <Label Text="Welkom terug"
+                       Style="{StaticResource SubtitleTextStyle}" />
+                <Label Text="Voer je gegevens in om in te loggen"
+                       Style="{StaticResource DescriptionTextStyle}" />
+
+                <!-- Custom Email Entry -->
+                <reusableItems:Entry LabelText="Email adres"
+                             Placeholder="Voer je emailadres in"
+                             Text="{Binding Email}" />
+
+                <!-- Custom Password Entry -->
                 <reusableItems:Entry LabelText="Wachtwoord"
-                                     Placeholder="Enter your password"
-                                     Text="{Binding Password}" />
+                             Placeholder="Voer je wachtwoord in"
+                             Text="{Binding Password}" />
 
-                <reusableItems:CustomCheckbox LabelText="Accept Terms and Conditions"
-                                              IsChecked="{Binding IsTermsAccepted}" />
+                <!-- Login Button -->
+                <Button Text="Inloggen"
+                        Style="{StaticResource PrimaryButton}" />
 
-                <reusableItems:TextEditor LabelText="Description"
-                                          Placeholder="Enter a detailed description"
-                                          Text="{Binding Description}" />
-                
-                <Grid HorizontalOptions="FillAndExpand" Margin="0,20,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" /> 
-                    </Grid.ColumnDefinitions>
+                <!-- Create Account Text -->
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Nog geen account? " />
+                    <Label Text="Maak er een aan"
+                           Style="{StaticResource LinkTextStyle}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateToRegisterCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
 
-                  
-                    <Button Grid.Column="0" HorizontalOptions="Start" Text="Terug" Style="{StaticResource SecondaryButton}" />
+            </VerticalStackLayout>
+        </Grid>
 
-                   
-                    <Button Grid.Column="1" HorizontalOptions="End" Text="Doorgaan" Style="{StaticResource PrimaryButton}" />
-                </Grid>
-
-            </StackLayout>
-        </reusableItems:FormCard>
+        <!-- Right Section -->
+        <Grid BackgroundColor="{StaticResource Primary}" Grid.Column="1">
+            <VerticalStackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                <Image Source="illustration.png"
+                       Aspect="AspectFit"
+                       WidthRequest="300"
+                       HeightRequest="300" />
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
         
 </ContentPage>
