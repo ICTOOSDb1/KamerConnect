@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.LoginPage">
  
     <Grid>
@@ -12,18 +13,20 @@
 
         <!-- Background Colors -->
         <BoxView Grid.Column="0" BackgroundColor="White" />
-        <BoxView Grid.Column="1" BackgroundColor="Red" />
+        <BoxView Grid.Column="1" BackgroundColor="{StaticResource Primary}" />
 
         <!-- Left side: Form -->
         <StackLayout Grid.Column="0" Padding="250, 0" Spacing="10">
             <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
                 <Label Text="Kamer" 
                        FontSize="32" 
+                       FontFamily="InterLight"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
                 <Label Text="Connect" 
                        FontSize="32"
+                       FontFamily="InterMedium"
                        FontAttributes="Bold"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
@@ -33,37 +36,41 @@
            <VerticalStackLayout Margin="0,0,0,21">
                 <Label Text="Welkom terug"
                        FontSize="24"
+                       FontFamily="InterBold"
                        FontAttributes="Bold"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
                 <Label Text="Voer je gegevens in om in te loggen"
                        FontSize="14"
+                       FontFamily="InterLight"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
            </VerticalStackLayout>
-            <Entry Placeholder="Enter your name" />
-            <Entry Placeholder="Enter your email" Keyboard="Email" />
-            <Button Text="Submit" />
-            <HorizontalStackLayout>
+            <Components:Entry LabelText="Email adres" InputType="Email"/>
+            <Components:Entry LabelText="wachtwoord" InputType="Password"/>
+            <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" />
+            <HorizontalStackLayout HorizontalOptions="Center">
                 <Label Text="Nog geen account?"
-                       TextColor="Black"></Label>
-                <Label Text="Maak"
-                        TextColor="Black"
-                        FontSize="16"/>
-                <Label Text="er een aan"
-                       TextColor="Black"></Label>
+                       TextColor="Black"
+                       FontFamily="InterLight"></Label>
+                <Label Text=" Maak"
+                        TextColor="{StaticResource Primary}"
+                        FontFamily="InterLight"/>
+                <Label Text=" er een aan"
+                       TextColor="Black"
+                       FontFamily="InterLight"></Label>
             </HorizontalStackLayout>
            
         </StackLayout>
 
         <!-- Right side: Image -->
         <Image Grid.Column="1" 
-               Source="your_image.png" 
-               Aspect="AspectFill" 
-               VerticalOptions="FillAndExpand" 
-               HorizontalOptions="FillAndExpand" />
+               Source="login_image.png" 
+               Aspect="Center" 
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" />
     </Grid>
     
 
