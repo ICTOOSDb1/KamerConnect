@@ -1,7 +1,7 @@
 using System.Collections;
 using KamerConnect.Models;
 
-namespace KamerConnect.Repository;
+namespace KamerConnect.Repositories;
 
 public interface IPersonRepository
 {

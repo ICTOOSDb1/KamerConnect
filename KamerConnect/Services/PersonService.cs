@@ -1,5 +1,5 @@
 using KamerConnect.Models;
-using KamerConnect.Repository;
+using KamerConnect.Repositories;
 
 namespace KamerConnect.Services;
 
