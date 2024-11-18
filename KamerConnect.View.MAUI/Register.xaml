@@ -38,7 +38,7 @@
                        FontAttributes="Bold" />
 
                 <!-- Name Fields -->
-                <Grid ColumnDefinitions="*,*,*"
+                <Grid ColumnDefinitions="*,20,*"
                       ColumnSpacing="10">
                     <reusableItems:Entry LabelText="Voornaam*" Placeholder="Voer je voornaam in" Grid.Column="0" />
                     <reusableItems:Entry LabelText="Tussenvoegsel" Placeholder="Optioneel" Grid.Column="1" />
