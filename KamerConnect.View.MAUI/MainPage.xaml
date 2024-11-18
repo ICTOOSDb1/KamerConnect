@@ -1,25 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:reusableItems="clr-namespace:KamerConnect.View.MAUI.reusableItems"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.MainPage"
              BackgroundColor="{StaticResource BackgroundColor}">
     
-    <reusableItems:FormCard Style="{StaticResource ContainerFrameStyle}">
+    <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
             <StackLayout>
                 <RadioButton Content="Option" GroupName="Options" IsChecked="True" />
                 <RadioButton Content="Option1" GroupName="Options" />
                 <RadioButton Content="Option2" GroupName="Options" />
+                
+                <Components:Entry InputType="Email"/>
 
-                <reusableItems:Entry LabelText="Wachtwoord"
-                                     Placeholder="Enter your password"
-                                     Text="{Binding Password}" />
-
-                <reusableItems:CustomCheckbox LabelText="Accept Terms and Conditions"
+                <Components:Entry InputType="Password"/>
+                
+                <Components:Entry InputType="DateOfBirth"/>
+                
+                <Components:Entry InputType="PhoneNumber"/>
+                
+                <Components:Entry  Placeholder = "Voer uw e voornaam in"
+                                   Keyboard="Telephone"
+                                   LabelText = "voornaam"/>
+                
+                <Components:CustomCheckbox LabelText="Accept Terms and Conditions"
                                               IsChecked="{Binding IsTermsAccepted}" />
 
-                <reusableItems:TextEditor LabelText="Description"
+                <Components:TextEditor LabelText="Description"
                                           Placeholder="Enter a detailed description"
+                                       
                                           Text="{Binding Description}" />
                 
                 <Grid HorizontalOptions="FillAndExpand" Margin="0,20,0,0">
@@ -36,6 +45,6 @@
                 </Grid>
 
             </StackLayout>
-        </reusableItems:FormCard>
+        </Components:FormCard>
         
 </ContentPage>
