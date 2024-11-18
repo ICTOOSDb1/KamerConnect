@@ -8,12 +8,7 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly string ConnectionString;
-
-    public PersonRepository()
-    {
-        ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamers-connect";;
-    }
+    private readonly string ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamer-connect";
 
     public List<Person> GetAll()
     {
@@ -31,9 +26,7 @@ public class PersonRepository : IPersonRepository
                 {
                     while (reader.Read())
                     {
-                        Person person = ReadToPerson(reader);
-                        
-                        persons.Add(person);
+                        persons.Add(ReadToPerson(reader));
                     }
                 }
             }
@@ -73,22 +66,35 @@ public class PersonRepository : IPersonRepository
         (
             reader.GetString(1),
             reader.GetString(2),
-            reader.GetString(3),
+            reader.IsDBNull(3) ? null : reader.GetString(3),
             reader.GetString(4),
             reader.GetString(5),
             reader.GetDateTime(6),
-            (Gender)Enum.Parse(typeof(Gender), reader.GetString(7)),
-            (Role)Enum.Parse(typeof(Role), reader.GetString(8)),
+            ValidateEnum<Gender>(reader.GetString(7)), 
+            ValidateEnum<Role>(reader.GetString(8)), 
             reader.GetString(9),
-            reader.GetString(0)
+            reader.GetGuid(0).ToString()
         );
 
+
+        if (reader.IsDBNull(11)) return person; //If personality is not present with user
+        
         person.Personality = new Personality(
-            reader.GetString(13),
-            reader.GetString(14),
-            reader.GetString(15)
+            reader.IsDBNull(13) ? null : reader.GetString(13),
+            reader.IsDBNull(14) ? null : reader.GetString(14),
+            reader.IsDBNull(15) ? null : reader.GetString(15)
         );
 
         return person;
+    }
+    
+    private static T ValidateEnum<T>(string value) where T : struct
+    {
+        if (Enum.TryParse(value, out T result) && Enum.IsDefined(typeof(T), result))
+        {
+            return result;
+        }
+    
+        throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
     }
 }

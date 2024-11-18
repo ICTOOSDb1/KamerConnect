@@ -2,11 +2,11 @@ namespace KamerConnect.Models;
 
 public class Personality
 {
-    public string School { get; set; }
-    public string Study { get; set; }
-    public string Description { get; set; }
+    public string? School { get; set; }
+    public string? Study { get; set; }
+    public string? Description { get; set; }
     
-    public Personality(string school, string study, string description)
+    public Personality(string? school, string? study, string? description)
     {
         School = school;
         Study = study;
