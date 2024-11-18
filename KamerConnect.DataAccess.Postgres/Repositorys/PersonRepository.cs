@@ -8,7 +8,7 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    public string ConnectionString { get; set; }
+    private readonly string ConnectionString;
 
     public PersonRepository()
     {
@@ -80,10 +80,13 @@ public class PersonRepository : IPersonRepository
             (Gender)Enum.Parse(typeof(Gender), reader.GetString(7)),
             (Role)Enum.Parse(typeof(Role), reader.GetString(8)),
             reader.GetString(9),
-            reader.GetString(11),
-            reader.GetString(12),
-            reader.GetString(13),
             reader.GetString(0)
+        );
+
+        person.Personality = new Personality(
+            reader.GetString(13),
+            reader.GetString(14),
+            reader.GetString(15)
         );
 
         return person;

@@ -1,6 +1,6 @@
-CREATE TYPE user_role AS ENUM ('seeking', 'offering');
-CREATE TYPE gender AS ENUM ('male', 'female', 'other');
-CREATE TYPE house_type AS ENUM ('apartment', 'house', 'studio');
+CREATE TYPE user_role AS ENUM ('Seeking', 'Offering');
+CREATE TYPE gender AS ENUM ('Male', 'Female', 'Other');
+CREATE TYPE house_type AS ENUM ('Apartment', 'House', 'Studio');
 CREATE TYPE social_type AS ENUM ('LinkedIn', 'X', 'Instagram', 'Facebook');
 
 CREATE TABLE IF NOT EXISTS house (

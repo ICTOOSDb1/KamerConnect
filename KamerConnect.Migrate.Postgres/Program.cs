@@ -58,7 +58,7 @@ class Program
         var personDataAccess = new PersonRepository();
         var personService = new PersonService(personDataAccess);
         
-        Person person = personService.GetPerson("0620889b-c177-4ca1-aa1d-2700129bad27");
+        Person person = personService.GetPerson("f525276a-1d32-40fc-aef5-9757ba3bcb23");
         Console.WriteLine(person.ToString());
         return 0;
     }

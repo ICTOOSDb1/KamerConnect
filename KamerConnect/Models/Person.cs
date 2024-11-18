@@ -14,14 +14,11 @@ public class Person
     public Role Role { get; set; }
     public string? ProfilePicturePath { get; set; }
     
-    //Personality
-    public string School { get; set; }
-    public string Study { get; set; }
-    public string Description { get; set; }
+    public Personality? Personality { get; set; }
+    
     
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
-        DateTime birthDate, Gender gender, Role role, string? profilePicturePath, string school,
-        string study, string description, string id = "")
+        DateTime birthDate, Gender gender, Role role, string? profilePicturePath, string id = "")
     {
         Id = id;
         Email = email;
@@ -33,9 +30,6 @@ public class Person
         Gender = gender;
         Role = role;
         ProfilePicturePath = profilePicturePath;
-        School = school;
-        Study = study;
-        Description = description;
     }
     
     public override string ToString()
@@ -50,9 +44,7 @@ public class Person
         Gender: {Gender}
         Role: {Role}
         Profile Picture Path: {ProfilePicturePath ?? "N/A"}
-        School: {School}
-        Study: {Study}
-        Description: {Description}";
+        {Personality}";
     }
 
     
@@ -60,14 +52,14 @@ public class Person
 
 public enum Role
 {
-    seeking, 
-    offering
+    Seeking, 
+    Offering
 }
 public enum Gender
 {
-    male, 
-    female,
-    other
+    Male, 
+    Female,
+    Other
 }
 
 public enum HouseType
