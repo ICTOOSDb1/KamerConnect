@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:reusableItems="clr-namespace:KamerConnect.View.MAUI.reusableItems"
              x:Class="KamerConnect.View.MAUI.UpdateAccount"
              Title="UpdateAccount">
     <Grid>
@@ -25,27 +26,27 @@
         <Label Grid.Row="1" Grid.Column="0"
                BackgroundColor="#F9FBFD"
                ></Label>
-        
-        <StackLayout Grid.Row="1" Grid.Column="0" Padding="10" VerticalOptions="CenterAndExpand" >
+        <reusableItems:FormCard Style="{StaticResource ContainerFrameStyle}">
+            <StackLayout Grid.Row="1" Grid.Column="0" Padding="10" VerticalOptions="CenterAndExpand" >
             <Button Text="Account gegevens"
                     x:Name="AccountDetailsButton"
                     Clicked="AccountDetails"
-                    TextColor="Black"
+                    Style="{StaticResource PrimaryButton}"
                     HorizontalOptions="FillAndExpand" />
             <Button Text="Woningvoorkeuren"
                     Clicked="HomePreferences"
-                    TextColor="Black"
+                    Style="{StaticResource PrimaryButton}"
                     HorizontalOptions="FillAndExpand" />
             <Button Text="Interesses"
                     Clicked="Interests"
-                    TextColor="Black"
+                    Style="{StaticResource PrimaryButton}"
                     HorizontalOptions="FillAndExpand" />
-            <Button Text="Overigen"
+                <Button Text="Overigen"
                     Clicked="Other"
-                    TextColor="Black"
+                    Style="{StaticResource PrimaryButton}"
                     HorizontalOptions="FillAndExpand" />
-        </StackLayout>
-
+            </StackLayout>
+        </reusableItems:FormCard>
         <ContentView x:Name="FormsContainer"
              Grid.Row="1" Grid.Column="1"
              BackgroundColor="#F9FBFD"

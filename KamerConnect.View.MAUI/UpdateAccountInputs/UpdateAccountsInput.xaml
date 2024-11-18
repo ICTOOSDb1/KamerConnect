@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:reusableItems="clr-namespace:KamerConnect.View.MAUI.reusableItems"
              x:Class="KamerConnect.View.MAUI.UpdateAccountInputs.UpdateAccountsInput">
-    <VerticalStackLayout Padding="10">
+	
+
+	<reusableItems:FormCard Style="{StaticResource ContainerFrameStyle}">
+
+		<VerticalStackLayout Padding="10">
 
         <Border WidthRequest="100"
         HeightRequest="100"
@@ -18,58 +23,40 @@
            HeightRequest="98" />
         </Border>
 
+			<reusableItems:Entry LabelText="Voornaam"
+					 Placeholder="Voornaam"
+					 Text="{Binding Password}" />
 
-        <Label Text="Voornaam:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="firstname"
-           Placeholder="Voornaam"
-           TextColor="Black"
-           WidthRequest="200"
-           HeightRequest="40" />
+			<reusableItems:Entry LabelText="Tussenvoegsel"
+		 Placeholder="Tussenvoegsel"
+		 Text="{Binding Password}" />
 
-        <Label Text="Achternaam:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="lastname"
-           Placeholder="Achternaam"
-           TextColor="Black"
-           WidthRequest="200"
-           HeightRequest="40" />
+			<reusableItems:Entry LabelText="Achternaam"
+		 Placeholder="Achternaam"
+		 Text="{Binding Password}" />
 
-        <Label Text="Email:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="email"
-           Placeholder="Email"
-           TextColor="Black"
-           Keyboard="Email"
-           WidthRequest="200"
-           HeightRequest="40" />
+			<reusableItems:Entry LabelText="Email"
+		 Placeholder="Email"
+		 Text="{Binding Password}" />
 
-        <Label Text="Telefoonnummer:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="phonenumber"
-           Placeholder="Telefoonnummer"
-           TextColor="Black"
-           Keyboard="Telephone"
-           WidthRequest="200"
-           HeightRequest="40" />
-
-        <Label Text="Adres:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="address"
-           Placeholder="Adres"
-           TextColor="Black"
-           WidthRequest="200"
-           HeightRequest="40" />
+			<reusableItems:Entry LabelText="Telefoonnummer"
+		 Placeholder="Telefoonnummer"
+		 Text="{Binding Password}" />
 
 
-        <Label Text="Huisnummer:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="housenumber"
-           Placeholder="Huisnummer"
-           TextColor="Black"
-           Keyboard="Numeric"
-           WidthRequest="200"
-           HeightRequest="40" />
+			<reusableItems:Entry LabelText="Adres"
+		 Placeholder="Adres"
+		 Text="{Binding Password}" />
 
-        <Button Text="Update Account"
-                    Clicked="Button_Clicked"
-                    TextColor="Black"
-                    HorizontalOptions="Center" />
+
+			<reusableItems:Entry LabelText="Huisnummer"
+		 Placeholder="Huisnummer"
+		 Text="{Binding Password}" />
+
+			<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked"/>
 
     </VerticalStackLayout>
+		
+		        </reusableItems:FormCard>
 
 </ContentView>
