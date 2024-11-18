@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:KamerConnect.View.MAUI.reusableItems"
+             x:Class="KamerConnect.View.MAUI.reusableItems.TextEditor">
+    <StackLayout>
+        <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}" />
+        <Frame Style="{StaticResource EntryFrameStyle}">
+            <Editor Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
+                    Text="{Binding Text, Mode=TwoWay}"
+                    AutoSize="TextChanges" />
+        </Frame>
+    </StackLayout>
+</ContentView>
