@@ -41,7 +41,7 @@
                     <Button Grid.Column="0" HorizontalOptions="Start" Text="Terug" Style="{StaticResource SecondaryButton}" />
 
                    
-                    <Button Grid.Column="1" HorizontalOptions="End" Text="Doorgaan" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked"/>
+                    <Button Grid.Column="1" HorizontalOptions="End" Text="Doorgaan" Style="{StaticResource PrimaryButton}" Clicked="ToRegistration"/>
                 </Grid>
 
             </StackLayout>

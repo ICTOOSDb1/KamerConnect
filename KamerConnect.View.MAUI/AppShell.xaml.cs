@@ -7,5 +7,7 @@ public partial class AppShell : Shell
 		InitializeComponent();
 
 		Routing.RegisterRoute("UpdateAccount", typeof(UpdateAccount));
+		Routing.RegisterRoute("Registration", typeof(Registration));
+		Routing.RegisterRoute("MainPage", typeof(MainPage));
 	}
 }
