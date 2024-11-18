@@ -1,35 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.UpdateAccountInputs.HomePreferencesInputs">
-    <VerticalStackLayout Padding="10">
-        <Label Text="Aantal vierkante meter:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="squareMeters"
-           Placeholder="Aantal vierkante meter"
-           TextColor="Black"
-           Keyboard="Numeric"
-           WidthRequest="200"
-           HeightRequest="40" />
 
-        <Label Text="Slaapkamers:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="bedrooms"
-           Placeholder="Slaapkamers"
-           TextColor="Black"
-           Keyboard="Numeric"
-           WidthRequest="200"
-           HeightRequest="40" />
+    <ScrollView>
+        <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+            <VerticalStackLayout Padding="10">
+                
+                <Components:Entry LabelText="Aantal vierkante meter" Placeholder="VierkanteMeter" />
+                <Components:Entry LabelText="Aantal slaapkamers" Placeholder="Bedrooms" />
+                <Components:Entry LabelText="Woningtype" Placeholder="Woningtype" />
 
-        <Label Text="Woningtype:" TextColor="Black" FontSize="10" WidthRequest="200" HeightRequest="30"/>
-        <Entry x:Name="housingType"
-           Placeholder="Woningtype"
-           TextColor="Black"
-           WidthRequest="200"
-           HeightRequest="40" />
+                <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked"/>
 
-        <Button Text="Update Account"
-                    Clicked="Button_Clicked"
-                    TextColor="Black"
-                    HorizontalOptions="Center" />
-    </VerticalStackLayout>
-
+            </VerticalStackLayout>
+        </Components:FormCard>
+    </ScrollView>
 </ContentView>

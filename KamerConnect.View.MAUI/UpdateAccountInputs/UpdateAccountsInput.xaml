@@ -5,49 +5,38 @@
              x:Class="KamerConnect.View.MAUI.UpdateAccountInputs.UpdateAccountsInput">
 	<ScrollView>
 		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
-		<VerticalStackLayout Padding="10">
+			<VerticalStackLayout Padding="10">
 
-        <Border WidthRequest="100"
-        HeightRequest="100"
-                Stroke="Black"
-                StrokeThickness="1"
-        StrokeShape="RoundRectangle 50">
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Tapped="Image_tapped"/>
-            </Border.GestureRecognizers>
-            <Image Source="camera.jpg" 
-                   x:Name="profile_picture"
-           WidthRequest="98" 
-           HeightRequest="98" />
-        </Border>
+				<Border WidthRequest="100"
+		                HeightRequest="100"
+		                Stroke="Black"
+		                StrokeThickness="1"
+		                StrokeShape="RoundRectangle 50">
+					<Border.GestureRecognizers>
+						<TapGestureRecognizer Tapped="Image_tapped"/>
+					</Border.GestureRecognizers>
+					<Image Source="camera.jpg"
+		                   x:Name="profile_picture"
+		                   WidthRequest="98"
+		                   HeightRequest="98" />
+				</Border>
 
-			<Components:Entry LabelText="Voornaam"
-					 Placeholder="Voornaam" />
-
-			<Components:Entry LabelText="Tussenvoegsel"
-		 Placeholder="Tussenvoegsel" />
-
-			<Components:Entry LabelText="Achternaam"
-		 Placeholder="Achternaam"/>
-
-			<Components:Entry LabelText="Email"
-		 Placeholder="Email" />
-
-			<Components:Entry LabelText="Telefoonnummer"
-		 Placeholder="Telefoonnummer" />
+				<Components:Entry LabelText="Voornaam" Placeholder="Voornaam" />
 
 
-			<Components:Entry LabelText="Adres"
-		 Placeholder="Adres" />
+				<Grid ColumnDefinitions="*,3*">
+					<Components:Entry LabelText="Tussenvoegsel" Placeholder="Tussenvoegsel" Grid.Column="0" />
+					<Components:Entry LabelText="Achternaam" Placeholder="Achternaam" Grid.Column="1" />
+				</Grid>
 
+				<Components:Entry LabelText="Email" Placeholder="Email" />
+				<Components:Entry LabelText="Telefoonnummer" Placeholder="Telefoonnummer" />
+				<Components:Entry LabelText="Adres" Placeholder="Adres" />
+				<Components:Entry LabelText="Huisnummer" Placeholder="Huisnummer" />
 
-			<Components:Entry LabelText="Huisnummer"
-		 Placeholder="Huisnummer" />
+				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked"/>
 
-			<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked"/>
-
-    </VerticalStackLayout>
-		
-		        </Components:FormCard>
+			</VerticalStackLayout>
+		</Components:FormCard>
 	</ScrollView>
 </ContentView>
