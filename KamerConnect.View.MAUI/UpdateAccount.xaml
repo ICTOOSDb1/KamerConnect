@@ -26,7 +26,7 @@
         <Label Grid.Row="1" Grid.Column="0"
                BackgroundColor="#F9FBFD"
                ></Label>
-        <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+        <Components:Entry Style="{StaticResource ContainerFrameStyle}">
             <StackLayout Grid.Row="1" Grid.Column="0" Padding="10" VerticalOptions="CenterAndExpand" >
             <Button Text="Account gegevens"
                     x:Name="AccountDetailsButton"
@@ -46,7 +46,7 @@
                     Style="{StaticResource PrimaryButton}"
                     HorizontalOptions="FillAndExpand" />
             </StackLayout>
-        </Components:FormCard>
+        </Components:Entry>
         <ContentView x:Name="FormsContainer"
              Grid.Row="1" Grid.Column="1"
              BackgroundColor="#F9FBFD"

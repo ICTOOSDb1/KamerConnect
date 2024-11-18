@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.UpdateAccountInputs.UpdateAccountsInput">
-
+	<ScrollView>
 		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
 		<VerticalStackLayout Padding="10">
 
@@ -49,4 +49,5 @@
     </VerticalStackLayout>
 		
 		        </Components:FormCard>
+	</ScrollView>
 </ContentView>
