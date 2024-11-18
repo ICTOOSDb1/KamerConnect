@@ -6,7 +6,7 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new NavigationPage(new MainPage()); // Wrap LoginPage in a NavigationPage
+		MainPage = new NavigationPage(new login()); // Wrap LoginPage in a NavigationPage
 
 	}
 }
