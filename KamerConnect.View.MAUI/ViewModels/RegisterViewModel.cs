@@ -47,9 +47,8 @@ public class RegisterViewModel : BaseViewModel
         SelectTabCommand = new Command<string>(SelectTab);
         GoBackCommand = new Command(GoBack);
         SubmitCommand = new Command(Submit);
-
-        // Initialize with default values
-        SelectedTab = "huis"; // Default tab
+        
+        SelectedTab = "huis"; 
         UpdateSubmitButtonText();
     }
 
@@ -63,13 +62,13 @@ public class RegisterViewModel : BaseViewModel
     {
         if (SelectedTab == "huis")
         {
-            HuisButtonColor = "#EF626C"; // Gold for "ik zoek een huis"
-            HuisgenootButtonColor = "#ffffff"; // Light Gray for "ik zoek een huisgenoot"
+            HuisButtonColor = "#EF626C"; 
+            HuisgenootButtonColor = "#ffffff"; 
         }
         else
         {
-            HuisButtonColor = "#ffffff"; // Light Gray for "ik zoek een huis"
-            HuisgenootButtonColor = "#EF626C"; // Gold for "ik zoek een huisgenoot"
+            HuisButtonColor = "#ffffff";
+            HuisgenootButtonColor = "#EF626C";
         }
     }
 

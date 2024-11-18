@@ -2,7 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:reusableItems="using:KamerConnect.View.MAUI.reusableItems"
+             xmlns:Components="using:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.login"
              BackgroundColor="{StaticResource BackgroundColor}">
     
@@ -36,14 +36,10 @@
                        Style="{StaticResource DescriptionTextStyle}" />
 
                 <!-- Custom Email Entry -->
-                <reusableItems:Entry LabelText="Email adres"
-                             Placeholder="Voer je emailadres in"
-                             Text="{Binding Email}" />
+                <Components:Entry InputType="Email" />
 
                 <!-- Custom Password Entry -->
-                <reusableItems:Entry LabelText="Wachtwoord"
-                             Placeholder="Voer je wachtwoord in"
-                             Text="{Binding Password}" />
+                <Components:Entry InputType="Password" />
 
                 <!-- Login Button -->
                 <Button Text="Inloggen"
