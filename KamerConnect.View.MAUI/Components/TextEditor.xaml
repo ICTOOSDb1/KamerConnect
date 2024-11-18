@@ -2,8 +2,8 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:KamerConnect.View.MAUI.reusableItems"
-             x:Class="KamerConnect.View.MAUI.reusableItems.TextEditor">
+             xmlns:local="clr-namespace:KamerConnect.View.MAUI.Components"
+             x:Class="KamerConnect.View.MAUI.Components.TextEditor">
     <StackLayout>
         <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}" />
         <Frame Style="{StaticResource EntryFrameStyle}">
