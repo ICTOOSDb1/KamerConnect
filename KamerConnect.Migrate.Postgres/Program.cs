@@ -4,16 +4,13 @@ using System.Reflection;
 using DotNetEnv;
 using DbUp;
 using Npgsql;
+using KamerConnect.EnvironmentVariables;
 
 class Program
 {
     static int Main()
     {
-        var rootEnvPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
-        var binEnvPath = Path.Combine(Directory.GetCurrentDirectory(), "../../../..", ".env");
-
-        if (File.Exists(rootEnvPath)) { Env.Load(rootEnvPath); }
-        else if (File.Exists(binEnvPath)) { Env.Load(binEnvPath); }
+        EnvVariables.Load();
 
         var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
         var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
