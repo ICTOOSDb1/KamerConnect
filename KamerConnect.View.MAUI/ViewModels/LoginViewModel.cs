@@ -17,7 +17,7 @@ public class LoginViewModel : BaseViewModel
         // Ensure the Navigation property is set in the code-behind or elsewhere
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
-            await navigationPage.Navigation.PushAsync(new Register());
+            await navigationPage.Navigation.PushAsync(new Registration());
         }
     }
 }

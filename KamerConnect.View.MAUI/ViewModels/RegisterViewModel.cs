@@ -21,6 +21,14 @@ public class RegisterViewModel : BaseViewModel
         }
     }
 
+    private string _titelText = "Aanmeldingsformulier voor huiszoekende";
+
+    public string TitelText
+    {
+        get => _titelText;
+        set => SetProperty(ref _titelText, value);
+    }
+
     private string _submitButtonText;
     public string SubmitButtonText
     {
@@ -49,13 +57,13 @@ public class RegisterViewModel : BaseViewModel
         SubmitCommand = new Command(Submit);
         
         SelectedTab = "huis"; 
-        UpdateSubmitButtonText();
     }
 
     private void SelectTab(string tab)
     {
         SelectedTab = tab;
         UpdateButtonColors();
+        updateTitelText();
     }
     
     private void UpdateButtonColors()
@@ -70,6 +78,11 @@ public class RegisterViewModel : BaseViewModel
             HuisButtonColor = "#ffffff";
             HuisgenootButtonColor = "#EF626C";
         }
+    }
+
+    private void updateTitelText()
+    {
+        TitelText = SelectedTab == "huis" ? "Aanmeldingsformulier voor huiszoekende " : "Aanmeldingsformulier voor huisgenootzoekende";
     }
 
     private void UpdateSubmitButtonText()
