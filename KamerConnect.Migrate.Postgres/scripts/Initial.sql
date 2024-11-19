@@ -64,8 +64,9 @@ CREATE TABLE IF NOT EXISTS social (
 CREATE TABLE IF NOT EXISTS house_image (
 	id UUID PRIMARY KEY default gen_random_uuid(),
 	house_id uuid NOT NULL,
-	path TEXT NOT NULL UNIQUE,
+	path TEXT NOT NULL,
 	bucket TEXT NOT NULL,
 
+    CONSTRAINT unique_bucket_path UNIQUE (bucket, path),
     CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id) ON DELETE CASCADE
 );
