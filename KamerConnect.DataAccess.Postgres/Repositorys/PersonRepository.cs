@@ -8,7 +8,7 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly string ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamer-connect";
+    private readonly string ConnectionString = "Host=localhost;Username=Admin;Password=Password;Database=Kammerconnect";
 
     public List<Person> GetAll()
     {
