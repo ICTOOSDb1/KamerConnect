@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
     <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
@@ -63,5 +63,8 @@
     <MauiXaml Update="UpdateAccountInputs\UpdateAccountsInput.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
   </ItemGroup>
 </Project>
