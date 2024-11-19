@@ -67,7 +67,15 @@
                     
                     <Components:Entry LabelText="Geboortedatum" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
                 </VerticalStackLayout>
+                <VerticalStackLayout>
+<Label x:Name="SelectedLabel" Text="Geslacht" />
 
+    <RadioButton Content="Man" GroupName="Gender" CheckedChanged="OnCheckedChanged"/>
+    <RadioButton Content="Vrouw" GroupName="Gender" CheckedChanged="OnCheckedChanged" />
+    
+    <RadioButton Content="Anders" GroupName="Gender" CheckedChanged="OnCheckedChanged" />
+    </VerticalStackLayout>
+    
                 <!-- Footer Note -->
                 <Label Text="*= verplicht om in te vullen"
                        FontSize="12"
@@ -82,6 +90,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
+ 
+
+
                     <Button Text="terug"
                             Style="{StaticResource SecondaryButton}"
                             Grid.Column="0"
@@ -93,6 +104,8 @@
                             Grid.Column="1"
                             HorizontalOptions="End" />
                 </Grid>
+                
+   
             </VerticalStackLayout>
         </Components:FormCard>
     </ScrollView>

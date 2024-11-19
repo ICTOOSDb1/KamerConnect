@@ -6,13 +6,18 @@ public partial class Registration : ContentPage
 	{
 		InitializeComponent();
 	}
-	private async void Button_Clicked(object sender, EventArgs e){
-
-        
-    }
+	
 	private async void Terug(object sender, EventArgs e){
         await Shell.Current.GoToAsync("MainPage");
 
         
     }
+	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
+{
+    if (sender is RadioButton radioButton && e.Value)
+    {
+        
+    }
+}
+
 }
