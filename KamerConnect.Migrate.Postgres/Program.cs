@@ -57,19 +57,23 @@ class Program
     {
         var personDataAccess = new PersonRepository();
         var personService = new AuthenticationService(personDataAccess);
-
-        Person person = new Person(
-            "niek2004@icloud.com",
-            "Niek",
-            null,
-            "van den Berg",
-            null,
-            new DateTime(2004, 01, 01),
-            Gender.Male,
-            Role.Seeking,
-            null);
+        //
+        // Person person = new Person(
+        //     "niek2004@icloud.com",
+        //     "Niek",
+        //     null,
+        //     "van den Berg",
+        //     null,
+        //     new DateTime(2004, 01, 01),
+        //     Gender.Male,
+        //     Role.Seeking,
+        //     null);
+        //
+        // personService.Register(person, "SchoolIsLeuk");
         
-        personService.Register(person, "SchoolIsLeuk");
+        
+        personService.Authenticate("niek2004@icloud.com", "tyest");
+        
         return 0;
     }
 

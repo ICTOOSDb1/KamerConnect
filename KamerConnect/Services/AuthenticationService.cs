@@ -24,7 +24,7 @@ public class AuthenticationService
 
     public void Authenticate(string email, string password)
     {
-        _repository.AuthenticatePerson(email, password);
+        _repository.AuthenticatePerson(email, HashPassword(password, out byte[] salt, _repository.GetSaltFromPerson(email)));
     }
 
     public void Register(Person person, string password)
@@ -33,14 +33,22 @@ public class AuthenticationService
         
         if (!IsValidPerson(person))
             throw new InvalidOperationException("Person is invalid");
+        //validate password
         
         _repository.CreatePerson(person, HashPassword(password, out salt), salt);
     }
     
-    string HashPassword(string password, out byte[] salt)
+    private string HashPassword(string password, out byte[] salt, byte[] existringSalt = null)
     {
-        salt = new byte[keySize];
-        salt = RandomNumberGenerator.GetBytes(keySize);
+        if (existringSalt == null)
+        {
+            salt = new byte[keySize];
+            salt = RandomNumberGenerator.GetBytes(keySize);
+        }
+        else
+        {
+            salt = existringSalt;
+        }
 
         var hash = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(password),

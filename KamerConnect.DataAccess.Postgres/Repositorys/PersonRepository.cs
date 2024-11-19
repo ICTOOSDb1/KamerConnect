@@ -9,32 +9,7 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 public class PersonRepository : IPersonRepository
 {
     private readonly string ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamer-connect";
-
-    public List<Person> GetAll()
-    {
-        var persons = new List<Person>();
-
-        using (var connection = new NpgsqlConnection(ConnectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand("SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id ",
-                       connection))
-            {
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        persons.Add(ReadToPerson(reader));
-                    }
-                }
-            }
-        }
-
-        return persons;
-    }
-
+    
     public Person GetPersonById(string id)
     {
         using (var connection = new NpgsqlConnection(ConnectionString))
@@ -120,9 +95,49 @@ public class PersonRepository : IPersonRepository
         }
     }
 
-    public void AuthenticatePerson(string email, string password)
+    public Person AuthenticatePerson(string email, string password)
     {
-        throw new NotImplementedException();
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand($"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.email = @email",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return ReadToPerson(reader);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public byte[] GetSaltFromPerson(string email)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand($"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
+
+                byte[] salt = (byte[])(command.ExecuteScalar() ?? throw new InvalidOperationException());
+                return salt;
+            }
+        }
+
+        return null;
     }
 
     private Person ReadToPerson(DbDataReader reader)
