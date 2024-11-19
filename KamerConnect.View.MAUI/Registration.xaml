@@ -30,7 +30,7 @@
 
                     <VerticalStackLayout Grid.Column="0">
                         
-                        <Components:Entry x:Name="Firstname" LabelText="Voornaam"  />
+                        <Components:Entry x:Name="Firstname" LabelText="Voornaam*"  />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="1">
@@ -40,7 +40,7 @@
 
                     <VerticalStackLayout Grid.Column="2">
                        
-                        <Components:Entry x:Name="Surname" LabelText="Achternaam"  />
+                        <Components:Entry x:Name="Surname" LabelText="Achternaam*"  />
                     </VerticalStackLayout>
                 </Grid>
 
@@ -53,7 +53,7 @@
 
                     <VerticalStackLayout Grid.Column="0">
                         
-                        <Components:Entry x:Name="Email" LabelText="E-mail"  Keyboard="Email" />
+                        <Components:Entry x:Name="Email" LabelText="E-mail*"  Keyboard="Email" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="1">
@@ -65,10 +65,10 @@
                
                 <VerticalStackLayout>
                     
-                    <Components:Entry x:Name="Birtdate" LabelText="Geboortedatum" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
+                    <Components:Entry x:Name="Birtdate" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
                 </VerticalStackLayout>
                 <VerticalStackLayout>
-<Label x:Name="SelectedLabel" Text="Geslacht" />
+<Label x:Name="SelectedLabel" Text="Geslacht*" />
 
     <RadioButton Content="Man" GroupName="Gender" CheckedChanged="OnCheckedChanged"/>
     <RadioButton Content="Vrouw" GroupName="Gender" CheckedChanged="OnCheckedChanged" />
