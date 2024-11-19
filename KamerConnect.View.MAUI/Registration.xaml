@@ -9,7 +9,7 @@
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
             <VerticalStackLayout Padding="20" Spacing="15">
 
-                <!-- Form Title -->
+           
                 <Label Text="Aanmeldingsformulier"
                        FontSize="24"
                        FontAttributes="Bold"
@@ -20,7 +20,7 @@
                        FontAttributes="Bold"
                        Margin="0,10,0,20" />
 
-                <!-- Row 1: Voornaam, Tussenvoegsel, Achternaam -->
+              
                 <Grid ColumnSpacing="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -30,21 +30,21 @@
 
                     <VerticalStackLayout Grid.Column="0">
                         
-                        <Components:Entry LabelText="Voornaam"  />
+                        <Components:Entry x:Name="Firstname" LabelText="Voornaam"  />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="1">
                        
-                        <Components:Entry LabelText="Tussenvoegsel"  />
+                        <Components:Entry x:Name="Prefix" LabelText="Tussenvoegsel"  />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="2">
                        
-                        <Components:Entry LabelText="Achternaam"  />
+                        <Components:Entry x:Name="Surname" LabelText="Achternaam"  />
                     </VerticalStackLayout>
                 </Grid>
 
-                <!-- Row 2: Email, Telefoonnummer -->
+               
                 <Grid ColumnSpacing="10" Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -53,19 +53,19 @@
 
                     <VerticalStackLayout Grid.Column="0">
                         
-                        <Components:Entry LabelText="E-mail"  Keyboard="Email" />
+                        <Components:Entry x:Name="Email" LabelText="E-mail"  Keyboard="Email" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="1">
                         
-                        <Components:Entry LabelText="Telefoonnummer"  Keyboard="Telephone" />
+                        <Components:Entry x:Name="Phonenumber" LabelText="Telefoonnummer"  Keyboard="Telephone" />
                     </VerticalStackLayout>
                 </Grid>
 
-                <!-- Row 3: Geboortedatum -->
+               
                 <VerticalStackLayout>
                     
-                    <Components:Entry LabelText="Geboortedatum" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
+                    <Components:Entry x:Name="Birtdate" LabelText="Geboortedatum" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
                 </VerticalStackLayout>
                 <VerticalStackLayout>
 <Label x:Name="SelectedLabel" Text="Geslacht" />
@@ -76,14 +76,14 @@
     <RadioButton Content="Anders" GroupName="Gender" CheckedChanged="OnCheckedChanged" />
     </VerticalStackLayout>
     
-                <!-- Footer Note -->
+             
                 <Label Text="*= verplicht om in te vullen"
                        FontSize="12"
                        TextColor="Gray"
                        HorizontalOptions="Start"
                        Margin="0,20,0,0" />
 
-                <!-- Navigation Buttons -->
+              
                 <Grid ColumnSpacing="20" Margin="0,20,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -99,7 +99,7 @@
                             HorizontalOptions="Start"
 							Clicked="Terug" />
 
-                    <Button Text="verder gaan als huiszoekende"
+                    <Button Text="verder"
                             Style="{StaticResource PrimaryButton}"
                             Grid.Column="1"
                             HorizontalOptions="End" />
