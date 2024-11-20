@@ -7,15 +7,13 @@
  
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" /> <!-- Left side -->
-            <ColumnDefinition Width="*" /> <!-- Right side -->
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-        <!-- Background Colors -->
+        
         <BoxView Grid.Column="0" BackgroundColor="White" />
         <BoxView Grid.Column="1" BackgroundColor="{StaticResource Primary}" />
-
-        <!-- Left side: Form -->
+        
         <StackLayout Grid.Column="0" Padding="250, 0" Spacing="10">
             <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
                 <Label Text="Kamer" 
