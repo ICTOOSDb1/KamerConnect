@@ -2,8 +2,7 @@ namespace KamerConnect.Models;
 
 public class Person
 {
-    //Person
-    public string Id { get; set; }
+    public string? Id { get; set; }
     public string Email { get; set; }
     public string FirstName { get; set; }
     public string? MiddleName { get; set; }
@@ -13,10 +12,10 @@ public class Person
     public Gender Gender { get; set; }
     public Role Role { get; set; }
     public string? ProfilePicturePath { get; set; }
-    
+
+    public House? House { get; set; }
     public Personality? Personality { get; set; }
-    
-    
+
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
         DateTime birthDate, Gender gender, Role role, string? profilePicturePath, string id = "")
     {
@@ -31,7 +30,7 @@ public class Person
         Role = role;
         ProfilePicturePath = profilePicturePath;
     }
-    
+
     public override string ToString()
     {
         return $@"Id: {Id}
@@ -46,27 +45,18 @@ public class Person
         Profile Picture Path: {ProfilePicturePath ?? "N/A"}
         {Personality}";
     }
-
-    
 }
 
 public enum Role
 {
-    Seeking, 
+    Seeking,
     Offering
 }
 public enum Gender
 {
-    Male, 
+    Male,
     Female,
     Other
-}
-
-public enum HouseType
-{
-    Apartment, 
-    House,
-    Studio
 }
 
 public enum SocialType
