@@ -9,7 +9,12 @@ CREATE TABLE IF NOT EXISTS house (
 	price DECIMAL(10, 2) NOT NULL,
 	description TEXT,
 	surface DECIMAL(10, 2),
-	residents INT NOT NULL
+	residents INT NOT NULL,
+    city text NOT NULL,
+    street text NOT NULL,
+    postal_code text NOT NULL,
+    house_number int NOT NULL,
+    house_number_addition text NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS person (

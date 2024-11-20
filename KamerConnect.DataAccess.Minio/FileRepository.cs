@@ -19,7 +19,7 @@ public class FileRepository : IFileRepository
             string.IsNullOrEmpty(endpoint)
         )
         {
-            Console.WriteLine("Minio environment variables are missing. Please check your .env file.");
+            throw new InvalidOperationException("Minio environment variables are missing. Please check your .env file.");
         }
 
         _minioClient = new MinioClient()
