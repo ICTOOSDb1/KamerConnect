@@ -10,4 +10,5 @@ public interface IPersonRepository
     void AddPasswordToPerson(Guid personId, string password, string salt);
     Person AuthenticatePerson(string email, string password);
     byte[] GetSaltFromPerson(string email);
+    void SaveSession(Guid personId, DateTime startingDate, string sessionToken);
 }

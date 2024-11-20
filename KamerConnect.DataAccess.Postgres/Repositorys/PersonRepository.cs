@@ -8,11 +8,16 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly string ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamers-connect";
+    private readonly string connectionString;
+
+   public PersonRepository()
+   {
+       connectionString = GetConnectionString();
+   }
     
     public Person GetPersonById(string id)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
 
@@ -37,7 +42,7 @@ public class PersonRepository : IPersonRepository
 
     public void CreatePerson(Person person, string password, byte[] salt)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
 
@@ -77,7 +82,7 @@ public class PersonRepository : IPersonRepository
 
     public void AddPasswordToPerson(Guid personId, string password, string salt)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
             using (var command = new NpgsqlCommand(
@@ -97,7 +102,7 @@ public class PersonRepository : IPersonRepository
 
     public Person AuthenticatePerson(string email, string password)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
 
@@ -132,7 +137,7 @@ public class PersonRepository : IPersonRepository
 
     public byte[] GetSaltFromPerson(string email)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
 
@@ -157,8 +162,44 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
-    
 
+    public void SaveSession(Guid personId, DateTime startingDate, string sessionToken)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       """
+                       INSERT INTO session (session, startingDate, person_id)
+                                     VALUES (@Session, @StartingDate, @PersonId);
+                       """, connection))
+            {
+                command.Parameters.AddWithValue("@Session", sessionToken);
+                command.Parameters.AddWithValue("@StartingDate", startingDate);
+                command.Parameters.AddWithValue("@PersonId", personId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    private string GetConnectionString()
+    {
+        var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
+        var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
+        var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
+        var username = Environment.GetEnvironmentVariable("POSTGRES_USER");
+        var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+    
+        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(port) ||
+            string.IsNullOrEmpty(database) || string.IsNullOrEmpty(username) ||
+            string.IsNullOrEmpty(password))
+        {
+            throw new("Database environment variables are missing. Please check your .env file.");
+        }
+    
+        return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
+    }
     private Person ReadToPerson(DbDataReader reader)
     {
         var person = new Person
