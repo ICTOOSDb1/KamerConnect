@@ -33,11 +33,21 @@ CREATE TABLE IF NOT EXISTS person (
     CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id)
 );
 
+CREATE TABLE IF NOT EXISTS password (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    salt TEXT NOT NULL,
+    hashed_password TEXT NOT NULL,
+    person_id UUID,
+    
+    CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+
 CREATE TABLE IF NOT EXISTS personality (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     person_id UUID NOT NULL UNIQUE,
     school TEXT,
-    opleiding TEXT,
+    study TEXT,
     description TEXT,
     
     CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
