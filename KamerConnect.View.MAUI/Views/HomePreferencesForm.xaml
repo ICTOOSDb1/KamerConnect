@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-             x:Class="KamerConnect.View.MAUI.UpdateAccountInputs.HomePreferencesInputs">
+             x:Class="KamerConnect.View.MAUI.Views.HomePreferencesForm">
 
     <ScrollView>
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">

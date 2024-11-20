@@ -2,11 +2,11 @@ using Microsoft.Maui.Storage;
 using Microsoft.UI.Xaml.Input;
 using KamerConnect.View.MAUI.ViewModel;
 
-namespace KamerConnect.View.MAUI.UpdateAccountInputs;
+namespace KamerConnect.View.MAUI.Views;
 
-public partial class UpdateAccountsInput : ContentView
+public partial class UpdateAccountsForm : ContentView
 {
-    public UpdateAccountsInput()
+    public UpdateAccountsForm()
     {
         InitializeComponent();
         BindingContext = new UpdateAccountsInputViewModel();

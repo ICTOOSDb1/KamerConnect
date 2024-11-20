@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-             x:Class="KamerConnect.View.MAUI.UpdateAccountInputs.UpdateAccountsInput">
+             x:Class="KamerConnect.View.MAUI.Views.UpdateAccountsForm">
     <ScrollView>
 		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
 			<VerticalStackLayout Padding="10">
@@ -21,17 +21,17 @@
 		                   HeightRequest="98" />
 				</Border>
 
-                <Components:TextEditor LabelText="Voornaam" Placeholder="Voornaam" Text="{Binding FirstName}"/>
 
+				<Components:TextEditor LabelText="Voornaam" Placeholder="Voornaam" Text="{Binding FirstName}" />
 
 				<Grid ColumnDefinitions="*,3*">
-                    <Components:TextEditor LabelText="Tussenvoegsel" Grid.Column="0"/>
-                    <Components:TextEditor LabelText="Achternaam" Placeholder="Achternaam" Grid.Column="1" />
+				<Components:TextEditor LabelText="Tussenvoegsel" Grid.Column="0" />
+				<Components:TextEditor LabelText="Achternaam" Placeholder="Achternaam" Grid.Column="1" />
 				</Grid>
 
-				<Components:Entry LabelText="Email" Placeholder="Email"/>
-                <Components:TextEditor LabelText="Telefoonnummer" Placeholder="Telefoonnummer" />
-                <Components:TextEditor LabelText="Adres" Placeholder="Adres" />
+				<Components:TextEditor LabelText="Email" Placeholder="Email" />
+				<Components:TextEditor LabelText="Telefoonnummer" Placeholder="Telefoonnummer" />
+				<Components:TextEditor LabelText="Adres" Placeholder="Adres" />
                 <Components:TextEditor LabelText="Huisnummer" Placeholder="Huisnummer" />
 
                 <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked" Command="{Binding UpdateAccountCommand}"/>

@@ -1,4 +1,4 @@
-using KamerConnect.View.MAUI.UpdateAccountInputs;
+using KamerConnect.View.MAUI.Views;
 
 using Microsoft.Maui.Controls;
 
@@ -13,22 +13,22 @@ namespace KamerConnect.View.MAUI
 
         private void AccountDetails(object sender, EventArgs e)
         {
-            FormsContainer.Content = new UpdateAccountsInput();
+            FormsContainer.Content = new UpdateAccountsForm();
         }
 
         private void HomePreferences(object sender, EventArgs e)
         {
-            FormsContainer.Content = new HomePreferencesInputs();
+            FormsContainer.Content = new HomePreferencesForm();
         }
         
         private void Interests(object sender, EventArgs e)
         {
-            FormsContainer.Content = new InterestsInputs();
+            FormsContainer.Content = new InterestsForm();
         }
 
         private void Other(object sender, EventArgs e)
         {
-              FormsContainer.Content = new OtherInputs();
+              FormsContainer.Content = new OtherForm();
         }
     }
 }

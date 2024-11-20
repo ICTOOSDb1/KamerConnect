@@ -15,7 +15,6 @@ namespace KamerConnect.View.MAUI.Models
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            Console.WriteLine($"Property changed: {propertyName}"); // For debugging
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); 
         }
     }
