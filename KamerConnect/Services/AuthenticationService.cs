@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
+using KamerConnect.Utils;
 
 namespace KamerConnect;
 
@@ -31,23 +32,25 @@ public class AuthenticationService
     {
         byte[] salt;
         
-        if (!IsValidPerson(person))
-            throw new InvalidOperationException("Person is invalid");
+        if (!Validations.IsValidEmail(person.Email))
+            throw new InvalidOperationException("Email in person is invalid.");
+        
+        if (!Validations.IsValidPerson(person))
+            throw new InvalidOperationException("Some required values are null or empty");
+        
         //validate password
         
         _repository.CreatePerson(person, HashPassword(password, out salt), salt);
     }
     
-    private string HashPassword(string password, out byte[] salt, byte[] existringSalt = null)
+    private string HashPassword(string password, out byte[] salt, byte[] existingSalt = null)
     {
-        if (existringSalt == null)
-        {
+        if (existingSalt == null) {
             salt = new byte[keySize];
             salt = RandomNumberGenerator.GetBytes(keySize);
         }
-        else
-        {
-            salt = existringSalt;
+        else {
+            salt = existingSalt;
         }
 
         var hash = Rfc2898DeriveBytes.Pbkdf2(
@@ -59,21 +62,4 @@ public class AuthenticationService
 
         return Convert.ToHexString(hash);
     }
-    
-    private bool IsValidEmail(string email)
-    {
-        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        Regex regex = new Regex(pattern);
-        return regex.IsMatch(email);
-    }
-
-    private bool IsValidPerson(Person person)
-    {
-        if (!IsValidEmail(person.Email))
-            throw new InvalidOperationException("Email in person is invalid.");
-
-        //Add more needed validations
-        return true;
-    }
-    
 }

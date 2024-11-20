@@ -8,7 +8,7 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly string ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamer-connect";
+    private readonly string ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamers-connect";
     
     public Person GetPersonById(string id)
     {
@@ -102,21 +102,31 @@ public class PersonRepository : IPersonRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.email = @email",
+                   new NpgsqlCommand("""
+                                     SELECT * FROM person 
+                                     LEFT JOIN personality ON person.id = personality.person_id 
+                                     LEFT JOIN password ON person.id = password.person_id
+                                        WHERE person.email = @email
+                                     """,
                        connection))
             {
                 command.Parameters.AddWithValue("@email", email);
 
                 using (var reader = command.ExecuteReader())
                 {
+                    
                     while (reader.Read())
                     {
-                        return ReadToPerson(reader);
+                        if (reader.GetString(18) == password)
+                        {
+                            Console.WriteLine("You are logged in");
+                            return ReadToPerson(reader);
+                        }
                     }
+                    
                 }
             }
         }
-
         return null;
     }
 
@@ -131,14 +141,23 @@ public class PersonRepository : IPersonRepository
                        connection))
             {
                 command.Parameters.AddWithValue("@email", email);
-
-                byte[] salt = (byte[])(command.ExecuteScalar() ?? throw new InvalidOperationException());
-                return salt;
+                try
+                {
+                    byte[] salt = Convert.FromBase64String(command.ExecuteScalar().ToString());
+                    return salt;
+                }
+                catch(NullReferenceException ex)
+                {
+                    Console.WriteLine($"Email not valid: {ex.Message}");
+                    return null;
+                }
+                
             }
         }
 
         return null;
     }
+    
 
     private Person ReadToPerson(DbDataReader reader)
     {
@@ -148,11 +167,11 @@ public class PersonRepository : IPersonRepository
             reader.GetString(2),
             reader.IsDBNull(3) ? null : reader.GetString(3),
             reader.GetString(4),
-            reader.GetString(5),
+            reader.IsDBNull(5) ? null : reader.GetString(5),
             reader.GetDateTime(6),
             ValidateEnum<Gender>(reader.GetString(7)),
             ValidateEnum<Role>(reader.GetString(8)),
-            reader.GetString(9),
+            reader.IsDBNull(9) ? null : reader.GetString(9),
             reader.GetGuid(0).ToString()
         );
 
