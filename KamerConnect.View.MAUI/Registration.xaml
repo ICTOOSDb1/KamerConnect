@@ -6,11 +6,32 @@
 			 BackgroundColor="{StaticResource BackgroundColor}"
              Title="Aanmeldingsformulier">
     <ScrollView>
-        <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+        <StackLayout>
+            <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+                <Grid BackgroundColor="{StaticResource BackgroundColor}" Row="0" Column="1" HeightRequest="50">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" /> 
+                        <ColumnDefinition Width="*" /> 
+                    </Grid.ColumnDefinitions>
+
+                    <Button Text="ik zoek een huis"
+                            BackgroundColor="{Binding HuisButtonColor}"
+                            Command="{Binding SelectTabCommand}"
+                            CommandParameter="huis"
+                            Grid.Column="0"/>
+                    
+                    <Button Text="ik zoek een huisgenoot"
+                            BackgroundColor="{Binding HuisgenootButtonColor}"
+                            Command="{Binding SelectTabCommand}"
+                            CommandParameter="huisgenoot"
+                            Grid.Column="1"/>
+                </Grid>
+            </Components:FormCard>
+            <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
             <VerticalStackLayout Padding="20" Spacing="15">
 
            
-                <Label Text="Aanmeldingsformulier"
+                <Label Text="{Binding TitelText}"
                        FontSize="24"
                        FontAttributes="Bold"
                        HorizontalOptions="Center" />
@@ -24,7 +45,7 @@
                 <Grid ColumnSpacing="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="150" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
@@ -108,5 +129,6 @@
    
             </VerticalStackLayout>
         </Components:FormCard>
+        </StackLayout>
     </ScrollView>
 </ContentPage>
