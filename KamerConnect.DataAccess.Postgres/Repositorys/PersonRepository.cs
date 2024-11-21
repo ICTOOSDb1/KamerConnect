@@ -60,6 +60,111 @@ public class PersonRepository : IPersonRepository
         return null;
     }
 
+    public void CreatePerson(Person person, string password, byte[] salt)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand($"""
+                                      INSERT INTO person (    
+                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
+                                        VALUES (@email,
+                                        @firstName,
+                                        @middleName,
+                                        @surname,
+                                        @phoneNumber,
+                                        @birthDate,
+                                        @gender::gender,
+                                        @role::user_role,
+                                        @profilePicturePath
+                                      ) RETURNING id;
+                                      """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@Email", person.Email);
+                command.Parameters.AddWithValue("@FirstName", person.FirstName);
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@Surname", person.Surname);
+                command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
+                command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
+                command.Parameters.AddWithValue("@Role", person.Role.ToString());
+                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value); 
+
+                var personId = (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
+                
+                AddPasswordToPerson(personId, password, Convert.ToBase64String(salt));
+            }
+        }
+    }
+
+    public void AddPasswordToPerson(Guid personId, string password, string salt)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       """
+                       INSERT INTO password (salt, hashed_password, person_id)
+                                     VALUES (@Salt, @HashedPassword, @PersonId);
+                       """, connection))
+            {
+                command.Parameters.AddWithValue("@Salt", salt);
+                command.Parameters.AddWithValue("@HashedPassword", password);
+                command.Parameters.AddWithValue("@PersonId", personId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public Person AuthenticatePerson(string email, string password)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand($"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.email = @email",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return ReadToPerson(reader);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public byte[] GetSaltFromPerson(string email)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand($"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
+
+                byte[] salt = (byte[])(command.ExecuteScalar() ?? throw new InvalidOperationException());
+                return salt;
+            }
+        }
+
+        return null;
+    }
+
     private Person ReadToPerson(DbDataReader reader)
     {
         var person = new Person

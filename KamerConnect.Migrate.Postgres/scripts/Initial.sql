@@ -9,7 +9,12 @@ CREATE TABLE IF NOT EXISTS house (
 	price DECIMAL(10, 2) NOT NULL,
 	description TEXT,
 	surface DECIMAL(10, 2),
-	residents INT NOT NULL
+	residents INT NOT NULL,
+    city text NOT NULL,
+    street text NOT NULL,
+    postal_code text NOT NULL,
+    house_number int NOT NULL,
+    house_number_addition text NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS person (
@@ -28,11 +33,21 @@ CREATE TABLE IF NOT EXISTS person (
     CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id)
 );
 
+CREATE TABLE IF NOT EXISTS password (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    salt TEXT NOT NULL,
+    hashed_password TEXT NOT NULL,
+    person_id UUID,
+    
+    CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+
 CREATE TABLE IF NOT EXISTS personality (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     person_id UUID NOT NULL UNIQUE,
     school TEXT,
-    opleiding TEXT,
+    study TEXT,
     description TEXT,
     
     CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
@@ -64,8 +79,9 @@ CREATE TABLE IF NOT EXISTS social (
 CREATE TABLE IF NOT EXISTS house_image (
 	id UUID PRIMARY KEY default gen_random_uuid(),
 	house_id uuid NOT NULL,
-	path TEXT NOT NULL UNIQUE,
+	path TEXT NOT NULL,
 	bucket TEXT NOT NULL,
 
+    CONSTRAINT unique_bucket_path UNIQUE (bucket, path),
     CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id) ON DELETE CASCADE
 );

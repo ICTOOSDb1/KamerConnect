@@ -56,6 +56,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="../KamerConnect.EnvironmentVariables/KamerConnect.EnvironmentVariables.csproj" />
+		<ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
+		<ProjectReference Include="..\KamerConnect.DataAccess.Postgres\KamerConnect.DataAccess.Postgres.csproj" />
+		<ProjectReference Include="..\KamerConnect.DataAccess.Minio\KamerConnect.DataAccess.Minio.csproj" />
+
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
