@@ -1,8 +1,23 @@
 services:
   postgres:
     image: postgres:17.0-alpine
+    restart: unless-stopped
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - ./data:/var/lib/postgresql/data
-    env_file: ".env"
+    env_file: "KamerConnect.EnvironmentVariables/local.env"
+
+  minio:
+    image: quay.io/minio/minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    env_file: "KamerConnect.EnvironmentVariables/local.env"
+
+volumes:
+  minio_data:

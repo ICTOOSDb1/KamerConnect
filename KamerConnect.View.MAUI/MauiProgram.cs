@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using KamerConnect.EnvironmentVariables;
 
 namespace KamerConnect.View.MAUI;
 
@@ -6,6 +7,8 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+		EnvVariables.Load();
+
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
