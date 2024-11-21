@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KamerConnect.View.MAUI.ViewModels;
 
 namespace KamerConnect.View.MAUI;
 
@@ -12,6 +11,14 @@ public partial class LoginPage : ContentPage
     public LoginPage()
     {
         InitializeComponent();
-        BindingContext = new LoginViewModel();
+        BindingContext = this;
     }
+    private async void NavigateToRegister(object sender, TappedEventArgs e)
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            await navigationPage.Navigation.PushAsync(new Registration());
+        }
+    }
+    
 }

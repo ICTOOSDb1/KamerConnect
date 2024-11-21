@@ -1,19 +1,30 @@
-using KamerConnect.View.MAUI.ViewModels;
-using KamerConnect.Services;
-using KamerConnect.Models;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using KamerConnect.Models;
+
 namespace KamerConnect.View.MAUI;
-public delegate void sendInfo();
-public partial class Registration : ContentPage
+
+public partial class Registration : ContentPage, INotifyPropertyChanged
 {
-    
-    public Registration()
+	public Registration()
 	{
 		InitializeComponent();
-		BindingContext = new RegisterViewModel();
+        SelectTabAction = SelectTab;
+        BindingContext = this;
+        SelectedTab = "huis"; 
+        UpdateButtonColors();
+	}
+	public event PropertyChangedEventHandler PropertyChanged;
+
+	protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+	{
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 	
-	private async void Back(object sender, EventArgs e)
+    public Action<string> SelectTabAction { get; set; }
+
+	private async void Terug(object sender, EventArgs e)
 	{
 		if (Navigation.NavigationStack.Count > 1)
 		{
@@ -24,12 +35,112 @@ public partial class Registration : ContentPage
 		}
 	}
 
-	private async void CreatePerson(object sender, EventArgs e)
+	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
 	{
+		if (sender is RadioButton radioButton && e.Value)
+		{
 
-		PersonalInformationForm personform = new PersonalInformationForm();
-		
+		}
+	}
+    
+    private void OnHuisClicked(object sender, EventArgs e)
+    {
+        SelectTab("huis");
     }
-	
 
+    private void OnHuisgenootClicked(object sender, EventArgs e)
+    {
+        SelectTab("huisgenoot");
+        
+    }
+
+    private string _selectedTab;
+    public string SelectedTab
+    {
+        get => _selectedTab;
+        set => _selectedTab = value;
+    }
+
+    
+    private string _huisButtonColor = "#EF626C";
+    public string HuisButtonColor
+    {
+	    get => _huisButtonColor;
+	    set
+	    {
+		    if (_huisButtonColor != value)
+		    {
+			    _huisButtonColor = value;
+			    OnPropertyChanged();
+		    }
+	    }
+    }
+
+    private string _huisgenootButtonColor = "#FFFFFF";
+    public string HuisgenootButtonColor
+    {
+	    get => _huisgenootButtonColor;
+	    set
+	    {
+		    if (_huisgenootButtonColor != value)
+		    {
+			    _huisgenootButtonColor = value;
+			    OnPropertyChanged();
+		    }
+	    }
+    }
+   
+
+    private void SelectTab(string tab)
+    {
+        SelectedTab = tab;
+        UpdateButtonColors();
+        
+    }
+    
+    private void UpdateButtonColors()
+    {
+        if (SelectedTab == "huis")
+        {
+            HuisButtonColor = "#EF626C"; 
+            HuisgenootButtonColor = "#ffffff"; 
+        }
+        else
+        {
+            HuisButtonColor = "#ffffff";
+            HuisgenootButtonColor = "#EF626C";
+        }
+    }
+    private void CreatePerson()
+    {
+	    Role role;
+
+	    if (SelectedTab == "huis")
+	    {
+		    role = Role.Seeking;
+	    }
+	    else
+	    {
+		    role = Role.Offering;
+	    }
+
+	    var newPerson = new Person(
+		    personalInformationForm.Email,
+		    personalInformationForm.FirstName,
+		    personalInformationForm.MiddleName,
+		    personalInformationForm.Surname,
+		    personalInformationForm.PhoneNumber,
+		    personalInformationForm.BirthDate,
+		    Enum.Parse<Gender>(personalInformationForm.Gender ?? "Other"),
+		    role,
+		    null
+	    );
+	    Console.WriteLine(newPerson.ToString());
+    }
+
+    private void submit(object? sender, EventArgs e)
+    {
+	    CreatePerson();
+	    
+    }
 }
