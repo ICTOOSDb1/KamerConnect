@@ -73,9 +73,6 @@
 	  <Compile Update="Views\InterestsForm.xaml.cs">
 	    <DependentUpon>InterestsForm.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\OtherForm.xaml.cs">
-	    <DependentUpon>OtherForm.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Views\UpdateAccountsForm.xaml.cs">
 	    <DependentUpon>UpdateAccountsForm.xaml</DependentUpon>
 	  </Compile>
@@ -89,9 +86,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\InterestsForm.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\OtherForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\UpdateAccountsForm.xaml">

@@ -30,8 +30,7 @@
 				</Grid>
 
 				<Components:TextEditor LabelText="Email" Placeholder="Email" />
-				<Components:TextEditor LabelText="Telefoonnummer" Placeholder="Telefoonnummer" />
-				<Components:TextEditor LabelText="Adres" Placeholder="Adres" />
+                <Components:TextEditor LabelText="Telefoonnummer" Placeholder="Telefoonnummer" />
                 <Components:TextEditor LabelText="Huisnummer" Placeholder="Huisnummer" />
 
                 <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked" Command="{Binding UpdateAccountCommand}"/>

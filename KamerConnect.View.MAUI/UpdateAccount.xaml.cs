@@ -25,10 +25,5 @@ namespace KamerConnect.View.MAUI
         {
             FormsContainer.Content = new InterestsForm();
         }
-
-        private void Other(object sender, EventArgs e)
-        {
-              FormsContainer.Content = new OtherForm();
-        }
     }
 }

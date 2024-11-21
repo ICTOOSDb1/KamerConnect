@@ -29,6 +29,7 @@ namespace KamerConnect.View.MAUI.ViewModel
                 }
             }
         }
+        
         public Command UpdateAccountCommand
         {
             get

@@ -40,10 +40,6 @@
                     Clicked="Interests"
                     Style="{StaticResource PrimaryButton}"
                     HorizontalOptions="FillAndExpand" />
-            <Button Text="Overigen"
-                    Clicked="Other"
-                    Style="{StaticResource PrimaryButton}"
-                    HorizontalOptions="FillAndExpand" />
         </StackLayout>
         <ContentView x:Name="FormsContainer"
              Grid.Row="1" Grid.Column="1"
