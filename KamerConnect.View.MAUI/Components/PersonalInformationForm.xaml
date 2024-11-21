@@ -17,15 +17,15 @@
             </Grid.ColumnDefinitions>
 
             <VerticalStackLayout Grid.Column="0">
-                <components:Entry x:Name="Firstname" LabelText="Voornaam*" />
+                <components:Entry x:Name="firstNameEntry" LabelText="Voornaam*" />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1">
-                <components:Entry x:Name="Prefix" LabelText="Tussenvoegsel" />
+                <components:Entry x:Name="middleNameEntry" LabelText="Tussenvoegsel" />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="2">
-                <components:Entry x:Name="Surname" LabelText="Achternaam*" />
+                <components:Entry x:Name="surnameEntry" LabelText="Achternaam*" />
             </VerticalStackLayout>
         </Grid>
 
@@ -37,16 +37,23 @@
             </Grid.ColumnDefinitions>
 
             <VerticalStackLayout Grid.Column="0">
-                <components:Entry x:Name="Email" LabelText="E-mail*" Keyboard="Email" />
+                <components:Entry x:Name="emailEntry" LabelText="E-mail*" Keyboard="Email" />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1">
-                <components:Entry x:Name="Phonenumber" LabelText="Telefoonnummer" Keyboard="Telephone" />
+                <components:Entry x:Name="phoneNumberEntry" LabelText="Telefoonnummer" Keyboard="Telephone" />
             </VerticalStackLayout>
         </Grid>
 
         <VerticalStackLayout>
-            <components:Entry x:Name="Birthdate" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
+            <components:Entry x:Name="birthDateEntry" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
         </VerticalStackLayout>
+        
+        <StackLayout Spacing="10">
+            <Label Text="Geslacht*" FontSize="14" FontAttributes="Bold" />
+            <RadioButton Content="Man" GroupName="GenderGroup" x:Name="maleRadioButton" />
+            <RadioButton Content="Vrouw" GroupName="GenderGroup" x:Name="femaleRadioButton" />
+            <RadioButton Content="Anders" GroupName="GenderGroup" x:Name="otherRadioButton" />
+        </StackLayout>
     </StackLayout>
 </ContentView>

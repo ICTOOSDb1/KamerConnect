@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using KamerConnect.Models;
 
 namespace KamerConnect.View.MAUI;
 
@@ -110,5 +111,36 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
             HuisgenootButtonColor = "#EF626C";
         }
     }
-    
+    private void CreatePerson()
+    {
+	    Role role;
+
+	    if (SelectedTab == "huis")
+	    {
+		    role = Role.Seeking;
+	    }
+	    else
+	    {
+		    role = Role.Offering;
+	    }
+
+	    var newPerson = new Person(
+		    personalInformationForm.Email,
+		    personalInformationForm.FirstName,
+		    personalInformationForm.MiddleName,
+		    personalInformationForm.Surname,
+		    personalInformationForm.PhoneNumber,
+		    personalInformationForm.BirthDate,
+		    Enum.Parse<Gender>(personalInformationForm.Gender ?? "Other"),
+		    role,
+		    null
+	    );
+	    Console.WriteLine(newPerson.ToString());
+    }
+
+    private void submit(object? sender, EventArgs e)
+    {
+	    CreatePerson();
+	    
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls.Compatibility;
 
 namespace KamerConnect.View.MAUI.Components;
 
@@ -52,9 +53,10 @@ public partial class Entry : ContentView
                     break;
 
                 case EntryInputType.DateOfBirth:
-                    entry.Placeholder = "Voer uw geboortedatum in";
-                    entry.Keyboard = Keyboard.Numeric;
-                    entry.LabelText = "Geboortedatum";
+                    entry.Placeholder = "Select your date of birth";
+                    entry.Keyboard = Keyboard.Numeric; // Optional, but typically not used for dates
+                    entry.LabelText = "Date of Birth";
+                    entry.AddTapGestureRecognizerToOpenDatePicker();
                     break;
                 case EntryInputType.PhoneNumber:
                     entry.Placeholder = "voor uw telefoon nummer in";
@@ -68,6 +70,34 @@ public partial class Entry : ContentView
                     break;
             }
         }
+    }
+    private void AddTapGestureRecognizerToOpenDatePicker()
+    {
+        var tapGestureRecognizer = new TapGestureRecognizer();
+        tapGestureRecognizer.Tapped += (s, e) =>
+        {
+            // Temporary DatePicker for selecting date
+            var datePicker = new DatePicker
+            {
+                IsVisible = false // Keep it hidden
+            };
+
+            // Add DatePicker to the parent layout
+            var parent = this.Parent as Layout<Microsoft.Maui.Controls.View>;
+            if (parent != null)
+            {
+                parent.Children.Add(datePicker);
+                datePicker.Focus(); // Focus on the DatePicker to open the dialog
+
+                datePicker.DateSelected += (sender, args) =>
+                {
+                    DefaultText = args.NewDate.ToString("yyyy-MM-dd"); // Set selected date as text
+                    parent.Children.Remove(datePicker); // Remove DatePicker after selection
+                };
+            }
+        };
+
+        this.GestureRecognizers.Add(tapGestureRecognizer);
     }
     
     public static readonly BindableProperty DefaultTextProperty =
