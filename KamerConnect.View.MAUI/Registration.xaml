@@ -74,12 +74,13 @@
                                 Style="{StaticResource SecondaryButton}"
                                 Grid.Column="1"
                                 HorizontalOptions="End"
-                                Clicked="Terug" />
+                                Clicked="Back" />
 
                         <Button Text="verder"
                                 Style="{StaticResource PrimaryButton}"
                                 Grid.Column="2"
-                                HorizontalOptions="End" />
+                                HorizontalOptions="End"
+                                Clicked="CreatePerson"/>
                     </Grid>
                 </StackLayout>
             </Components:FormCard>

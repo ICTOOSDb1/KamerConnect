@@ -1,16 +1,19 @@
 using KamerConnect.View.MAUI.ViewModels;
-
+using KamerConnect.Services;
+using KamerConnect.Models;
+using System.ComponentModel;
 namespace KamerConnect.View.MAUI;
-
+public delegate void sendInfo();
 public partial class Registration : ContentPage
 {
-	public Registration()
+    
+    public Registration()
 	{
 		InitializeComponent();
 		BindingContext = new RegisterViewModel();
 	}
 	
-	private async void Terug(object sender, EventArgs e)
+	private async void Back(object sender, EventArgs e)
 	{
 		if (Navigation.NavigationStack.Count > 1)
 		{
@@ -20,12 +23,13 @@ public partial class Registration : ContentPage
 		{
 		}
 	}
-	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
-{
-    if (sender is RadioButton radioButton && e.Value)
-    {
-        
+
+	private async void CreatePerson(object sender, EventArgs e)
+	{
+
+		PersonalInformationForm personform = new PersonalInformationForm();
+		
     }
-}
+	
 
 }

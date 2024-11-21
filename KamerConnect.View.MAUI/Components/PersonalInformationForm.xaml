@@ -17,15 +17,15 @@
             </Grid.ColumnDefinitions>
 
             <VerticalStackLayout Grid.Column="0">
-                <components:Entry x:Name="Firstname" LabelText="Voornaam*" />
+                <components:Entry x:Name="Firstname" LabelText="Voornaam*" Content="{Binding Firstname_}"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1">
-                <components:Entry x:Name="Prefix" LabelText="Tussenvoegsel" />
+                <components:Entry x:Name="Prefix" LabelText="Tussenvoegsel" Content="{Binding Prefix_}"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="2">
-                <components:Entry x:Name="Surname" LabelText="Achternaam*" />
+                <components:Entry x:Name="Surname" LabelText="Achternaam*" Content="{Binding Surname_}" />
             </VerticalStackLayout>
         </Grid>
 
@@ -37,16 +37,16 @@
             </Grid.ColumnDefinitions>
 
             <VerticalStackLayout Grid.Column="0">
-                <components:Entry x:Name="Email" LabelText="E-mail*" Keyboard="Email" />
+                <components:Entry x:Name="Email" LabelText="E-mail*" Keyboard="Email" Content="{Binding Mail_}"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1">
-                <components:Entry x:Name="Phonenumber" LabelText="Telefoonnummer" Keyboard="Telephone" />
+                <components:Entry x:Name="Phonenumber" LabelText="Telefoonnummer" Keyboard="Telephone" Content="{Binding Phonenumber_}"/>
             </VerticalStackLayout>
         </Grid>
 
         <VerticalStackLayout>
-            <components:Entry x:Name="Birthdate" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
+            <components:Entry x:Name="Birthdate" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" Content="{Binding Birthdate_}"/>
         </VerticalStackLayout>
     </StackLayout>
 </ContentView>
