@@ -63,8 +63,17 @@
     <MauiXaml Update="UpdateAccountInputs\UpdateAccountsInput.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+    <MauiXaml Update="Components\PersonalInformationForm.xaml">
+      <SubType>Designer</SubType>
+    </MauiXaml>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Components\PersonalInformationForm.xaml.cs">
+      <DependentUpon>PersonalInformationForm.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

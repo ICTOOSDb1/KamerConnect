@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KamerConnect.View.MAUI.Registration"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-			 BackgroundColor="{StaticResource BackgroundColor}"
+             xmlns:maui="using:KamerConnect.View.MAUI"
+             BackgroundColor="{StaticResource BackgroundColor}"
              Title="Aanmeldingsformulier">
-    <ScrollView>
+     <ScrollView>
         <StackLayout>
+            <!-- Form Navigation Section -->
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
                 <Grid BackgroundColor="{StaticResource BackgroundColor}" Row="0" Column="1" HeightRequest="50">
                     <Grid.ColumnDefinitions>
@@ -27,108 +29,60 @@
                             Grid.Column="1"/>
                 </Grid>
             </Components:FormCard>
+
+            <!-- Personal Information Section -->
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
-            <VerticalStackLayout Padding="20" Spacing="15">
+                <StackLayout Spacing="20">
+                    <Label Style="{StaticResource TitleTextStyle}" Text="aanmeldingsformulier" HorizontalOptions="Start"></Label>
+                    <Components:Entry DefaultText="test"></Components:Entry>
+                    <BoxView HeightRequest="0.5" 
+                             BackgroundColor="{StaticResource Gray100}" 
+                             HorizontalOptions="FillAndExpand" />
 
-           
-                <Label Text="{Binding TitelText}"
-                       FontSize="24"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center" />
+                    <maui:PersonalInformationForm />
 
-                <Label Text="Persoonlijke gegevens"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       Margin="0,10,0,20" />
-
-              
-                <Grid ColumnSpacing="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <VerticalStackLayout Grid.Column="0">
-                        
-                        <Components:Entry x:Name="Firstname" LabelText="Voornaam*"  />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Grid.Column="1">
-                       
-                        <Components:Entry x:Name="Prefix" LabelText="Tussenvoegsel"  />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Grid.Column="2">
-                       
-                        <Components:Entry x:Name="Surname" LabelText="Achternaam*"  />
-                    </VerticalStackLayout>
-                </Grid>
-
-               
-                <Grid ColumnSpacing="10" Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <VerticalStackLayout Grid.Column="0">
-                        
-                        <Components:Entry x:Name="Email" LabelText="E-mail*"  Keyboard="Email" />
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Grid.Column="1">
-                        
-                        <Components:Entry x:Name="Phonenumber" LabelText="Telefoonnummer"  Keyboard="Telephone" />
-                    </VerticalStackLayout>
-                </Grid>
-
-               
-                <VerticalStackLayout>
                     
-                    <Components:Entry x:Name="Birtdate" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
-                </VerticalStackLayout>
-                <VerticalStackLayout>
-<Label x:Name="SelectedLabel" Text="Geslacht*" />
+                    <!-- Gender Section -->
+                    <StackLayout Spacing="10">
+                        <Label Text="Geslacht*" FontSize="14" FontAttributes="Bold" />
+                        <RadioButton Content="Man" GroupName="Gender" />
+                        <RadioButton Content="Vrouw" GroupName="Gender" />
+                        <RadioButton Content="Anders" GroupName="Gender" />
+                    </StackLayout>
 
-    <RadioButton Content="Man" GroupName="Gender" CheckedChanged="OnCheckedChanged"/>
-    <RadioButton Content="Vrouw" GroupName="Gender" CheckedChanged="OnCheckedChanged" />
-    
-    <RadioButton Content="Anders" GroupName="Gender" CheckedChanged="OnCheckedChanged" />
-    </VerticalStackLayout>
-    
-             
-                <Label Text="*= verplicht om in te vullen"
-                       FontSize="12"
-                       TextColor="Gray"
-                       HorizontalOptions="Start"
-                       Margin="0,20,0,0" />
+                    <!-- BoxView Separator -->
+                    <BoxView HeightRequest="0.5" 
+                             BackgroundColor="{StaticResource Gray100}" 
+                             HorizontalOptions="FillAndExpand" />
+                    
+                    <!-- Required Information Notice -->
+                    <Label Text="*= verplicht om in te vullen"
+                           FontSize="12"
+                           TextColor="Gray"
+                           HorizontalOptions="Start"
+                           Margin="0,20,0,0" />
 
-              
-                <Grid ColumnSpacing="20" Margin="0,20,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                    <!-- Navigation Buttons -->
+                    <Grid ColumnSpacing="20" Margin="0,20,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Button Text="terug"
+                                Style="{StaticResource SecondaryButton}"
+                                Grid.Column="1"
+                                HorizontalOptions="End"
+                                Clicked="Terug" />
 
- 
-
-
-                    <Button Text="terug"
-                            Style="{StaticResource SecondaryButton}"
-                            Grid.Column="0"
-                            HorizontalOptions="Start"
-							Clicked="Terug" />
-
-                    <Button Text="verder"
-                            Style="{StaticResource PrimaryButton}"
-                            Grid.Column="1"
-                            HorizontalOptions="End" />
-                </Grid>
-                
-   
-            </VerticalStackLayout>
-        </Components:FormCard>
+                        <Button Text="verder"
+                                Style="{StaticResource PrimaryButton}"
+                                Grid.Column="2"
+                                HorizontalOptions="End" />
+                    </Grid>
+                </StackLayout>
+            </Components:FormCard>
         </StackLayout>
     </ScrollView>
 </ContentPage>
