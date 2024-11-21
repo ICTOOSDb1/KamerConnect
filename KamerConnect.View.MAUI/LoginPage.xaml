@@ -13,8 +13,13 @@
         
         <BoxView Grid.Column="0" BackgroundColor="White" />
         <BoxView Grid.Column="1" BackgroundColor="{StaticResource Primary}" />
-        
-        <StackLayout Grid.Column="0" Padding="250, 0" Spacing="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="400"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="1" Spacing="10">
             <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
                 <Label Text="Kamer" 
                        FontSize="32" 
@@ -31,7 +36,8 @@
                        TextColor="Black"
                        />
             </HorizontalStackLayout>
-           <VerticalStackLayout Margin="0,0,0,21">
+            
+           <VerticalStackLayout Margin="0,0,0,21" >
                 <Label Text="Welkom terug"
                        FontSize="24"
                        FontFamily="InterBold"
@@ -56,7 +62,7 @@
                 <Label Text="Maak "
                        TextColor="{StaticResource Primary}">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding NavigateToRegisterCommand}" />
+                        <TapGestureRecognizer Tapped="NavigateToRegister" />
                     </Label.GestureRecognizers>
                 </Label>
                 <Label Text=" er een aan"
@@ -65,6 +71,7 @@
             </HorizontalStackLayout>
            
         </StackLayout>
+        </Grid>
 
         <!-- Right side: Image -->
         <Image Grid.Column="1" 

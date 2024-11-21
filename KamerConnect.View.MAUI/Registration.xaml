@@ -18,14 +18,12 @@
 
                     <Button Text="ik zoek een huis"
                             BackgroundColor="{Binding HuisButtonColor}"
-                            Command="{Binding SelectTabCommand}"
-                            CommandParameter="huis"
+                            Clicked="OnHuisClicked"
                             Grid.Column="0"/>
                     
                     <Button Text="ik zoek een huisgenoot"
                             BackgroundColor="{Binding HuisgenootButtonColor}"
-                            Command="{Binding SelectTabCommand}"
-                            CommandParameter="huisgenoot"
+                            Clicked="OnHuisgenootClicked"
                             Grid.Column="1"/>
                 </Grid>
             </Components:FormCard>
