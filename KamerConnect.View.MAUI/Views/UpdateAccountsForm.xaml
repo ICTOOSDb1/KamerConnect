@@ -22,9 +22,8 @@
 				</Border>
 
 
-				<Components:TextEditor LabelText="Voornaam" Placeholder="Voornaam" Text="{Binding FirstName}" />
-
-				<Grid ColumnDefinitions="*,3*">
+                <Components:TextEditor LabelText="Voornaam" Placeholder="Voornaam" />
+                <Grid ColumnDefinitions="*,3*">
 				<Components:TextEditor LabelText="Tussenvoegsel" Grid.Column="0" />
 				<Components:TextEditor LabelText="Achternaam" Placeholder="Achternaam" Grid.Column="1" />
 				</Grid>

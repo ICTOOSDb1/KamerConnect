@@ -6,6 +6,6 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new UpdateAccount();
+		MainPage = new MainPage();
 	}
 }
