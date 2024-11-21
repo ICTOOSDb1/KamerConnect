@@ -5,6 +5,8 @@ using KamerConnect;
 using KamerConnect.DataAccess.Postgres.Repositys;
 using Npgsql;
 using KamerConnect.EnvironmentVariables;
+using KamerConnect.Models;
+using KamerConnect.Services;
 
 
 class Program
@@ -48,9 +50,14 @@ class Program
         //
         // return 0;
         var personDataAcces = new PersonRepository();
-        var authService = new AuthenticationService(personDataAcces);
-        
-        authService.Authenticate("niek2004@icloud.com", "coolheid");
+        var authenDataAcces = new AuthenticationRepository();
+        var personSerivce = new PersonService(personDataAcces);
+        var authService = new AuthenticationService(personSerivce, authenDataAcces);
+
+        //Console.WriteLine(personSerivce.GetPersonById("7a799ba5-4705-4ab6-8610-14e847df5586").ToString());
+        //authService.Authenticate("niek2004@icloud.com", "coolheid");
+        //authService.Register(new Person("email@gmail.com", "henk", null, "bosman", null, new DateTime(1920, 2, 2), Gender.Female, Role.Offering, null), "henkje");
+        //authService.Authenticate("email@gmail.com", "henkje");
         return 0;
     }
 

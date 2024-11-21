@@ -1,15 +1,19 @@
-﻿using System.Security.Cryptography;
+﻿
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using KamerConnect.Exceptions;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
+using KamerConnect.Services;
 using KamerConnect.Utils;
 
 namespace KamerConnect;
 
 public class AuthenticationService
 {
-    private IPersonRepository _repository;
+    private PersonService _personService;
+    private IAuthenticationRepository _repository;
    
     /// <summary>
     /// Moet nog in .env
@@ -18,14 +22,25 @@ public class AuthenticationService
     const int iterations = 100_000;
     HashAlgorithmName hashAlgorithm = HashAlgorithmName.SHA256;
     
-    public AuthenticationService(IPersonRepository repository)
+    public AuthenticationService(PersonService personService, IAuthenticationRepository authenticationRepository)
     {
-        _repository = repository;
+        _personService = personService;
+        _repository = authenticationRepository;
     }
 
-    public void Authenticate(string email, string password)
+    public void Authenticate(string email, string passwordAttempt)
     {
-        _repository.AuthenticatePerson(email, HashPassword(password, out byte[] salt, _repository.GetSaltFromPerson(email)));
+        try
+        {
+            string personPassword = _repository.GetPassword(_personService.GetPersonByEmail(email).Id ?? throw new InvalidCredentialsException());
+            ValidatePassword(HashPassword(passwordAttempt, out byte[] salt, _repository.GetSaltFromPerson(email)), personPassword);
+            Console.WriteLine("User logged in");
+        }
+        catch (InvalidCredentialsException e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public void Register(Person person, string password)
@@ -39,10 +54,23 @@ public class AuthenticationService
             throw new InvalidOperationException("Some required values are null or empty");
         
         //validate password
-        
-        _repository.CreatePerson(person, HashPassword(password, out salt), salt);
+        Guid person_id = _personService.CreatePerson(person);
+
+        if (person_id != null)
+        {
+            _repository.AddPassword(person_id, HashPassword(password, out salt), Convert.ToBase64String(salt));
+        }
     }
-    
+
+    private bool ValidatePassword(string passwordAttempt, string personPassword)
+    {
+        if (passwordAttempt == personPassword)
+        {
+            return true;
+        }
+
+        throw new InvalidCredentialsException();
+    }
     private string HashPassword(string password, out byte[] salt, byte[] existingSalt = null)
     {
         if (existingSalt == null) {

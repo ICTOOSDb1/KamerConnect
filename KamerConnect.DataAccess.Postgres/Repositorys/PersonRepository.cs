@@ -22,7 +22,9 @@ public class PersonRepository : IPersonRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.id = @id::uuid",
+                   new NpgsqlCommand($"SELECT * FROM person " +
+                                     $"LEFT JOIN personality ON person.id = personality.person_id " +
+                                     $"WHERE person.id = @id::uuid",
                        connection))
             {
                 command.Parameters.AddWithValue("@id", id);
@@ -39,8 +41,37 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
+    
+    public Person GetPersonByEmail(string email)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
 
-    public void CreatePerson(Person person, string password, byte[] salt)
+            using (var command =
+                   new NpgsqlCommand("""
+                                     SELECT * FROM person
+                                     LEFT JOIN personality ON person.id = personality.person_id
+                                        WHERE person.email = @email
+                                     """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return ReadToPerson(reader);
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    public Guid CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -73,112 +104,7 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
                 command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value); 
 
-                var personId = (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
-                
-                AddPasswordToPerson(personId, password, Convert.ToBase64String(salt));
-            }
-        }
-    }
-
-    public void AddPasswordToPerson(Guid personId, string password, string salt)
-    {
-        using (var connection = new NpgsqlConnection(connectionString))
-        {
-            connection.Open();
-            using (var command = new NpgsqlCommand(
-                       """
-                       INSERT INTO password (salt, hashed_password, person_id)
-                                     VALUES (@Salt, @HashedPassword, @PersonId);
-                       """, connection))
-            {
-                command.Parameters.AddWithValue("@Salt", salt);
-                command.Parameters.AddWithValue("@HashedPassword", password);
-                command.Parameters.AddWithValue("@PersonId", personId);
-
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    public Person AuthenticatePerson(string email, string password)
-    {
-        using (var connection = new NpgsqlConnection(connectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand("""
-                                     SELECT * FROM person 
-                                     LEFT JOIN personality ON person.id = personality.person_id 
-                                     LEFT JOIN password ON person.id = password.person_id
-                                        WHERE person.email = @email
-                                     """,
-                       connection))
-            {
-                command.Parameters.AddWithValue("@email", email);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    
-                    while (reader.Read())
-                    {
-                        if (reader.GetString(18) == password)
-                        {
-                            Console.WriteLine("You are logged in");
-                            return ReadToPerson(reader);
-                        }
-                    }
-                    
-                }
-            }
-        }
-        return null;
-    }
-
-    public byte[] GetSaltFromPerson(string email)
-    {
-        using (var connection = new NpgsqlConnection(connectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand($"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@email", email);
-                try
-                {
-                    byte[] salt = Convert.FromBase64String(command.ExecuteScalar().ToString());
-                    return salt;
-                }
-                catch(NullReferenceException ex)
-                {
-                    Console.WriteLine($"Email not valid: {ex.Message}");
-                    return null;
-                }
-                
-            }
-        }
-
-        return null;
-    }
-
-    public void SaveSession(Guid personId, DateTime startingDate, string sessionToken)
-    {
-        using (var connection = new NpgsqlConnection(connectionString))
-        {
-            connection.Open();
-            using (var command = new NpgsqlCommand(
-                       """
-                       INSERT INTO session (session, startingDate, person_id)
-                                     VALUES (@Session, @StartingDate, @PersonId);
-                       """, connection))
-            {
-                command.Parameters.AddWithValue("@Session", sessionToken);
-                command.Parameters.AddWithValue("@StartingDate", startingDate);
-                command.Parameters.AddWithValue("@PersonId", personId);
-
-                command.ExecuteNonQuery();
+                return (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
             }
         }
     }
