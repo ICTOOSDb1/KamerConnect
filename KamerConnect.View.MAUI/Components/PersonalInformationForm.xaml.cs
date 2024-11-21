@@ -1,17 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KamerConnect.View.MAUI.ViewModels;
 
 namespace KamerConnect.View.MAUI;
 
-public partial class LoginPage : ContentPage
+public partial class PersonalInformationForm : ContentView
 {
-    public LoginPage()
+    public PersonalInformationForm()
     {
         InitializeComponent();
-        BindingContext = new LoginViewModel();
     }
 }

@@ -69,15 +69,16 @@ public partial class Entry : ContentView
             }
         }
     }
-
-    public static readonly BindableProperty TextProperty =
-        BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(Entry), string.Empty);
     
-    public string Text
+    public static readonly BindableProperty DefaultTextProperty =
+        BindableProperty.Create(nameof(DefaultText), typeof(string), typeof(Entry), string.Empty);
+    public string DefaultText
     {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
+        get => (string)GetValue(DefaultTextProperty);
+        set => SetValue(DefaultTextProperty, value);
     }
+
+    
     
     public static readonly BindableProperty PlaceholderProperty =
         BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(Entry), string.Empty);

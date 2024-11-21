@@ -53,9 +53,12 @@
                 <Label Text="Nog geen account?"
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
-                <Label Text=" Maak"
-                        TextColor="{StaticResource Primary}"
-                        FontFamily="InterLight"/>
+                <Label Text="Maak "
+                       TextColor="{StaticResource Primary}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToRegisterCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Text=" er een aan"
                        TextColor="Black"
                        FontFamily="InterLight"></Label>

@@ -12,7 +12,13 @@ public partial class Registration : ContentPage
 	
 	private async void Terug(object sender, EventArgs e)
 	{
-		await Shell.Current.Navigation.PopAsync();
+		if (Navigation.NavigationStack.Count > 1)
+		{
+			await Navigation.PopAsync();
+		}
+		else
+		{
+		}
 	}
 	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
 {
