@@ -6,6 +6,6 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = serviceProvider.GetRequiredService<UpdateAccount>();
+		MainPage = new NavigationPage(new LoginPage());
 	}
 }

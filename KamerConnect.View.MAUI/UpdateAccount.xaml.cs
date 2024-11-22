@@ -1,6 +1,7 @@
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Views;
 using Microsoft.Extensions.DependencyInjection;
+
 using Microsoft.Maui.Controls;
 
 namespace KamerConnect.View.MAUI

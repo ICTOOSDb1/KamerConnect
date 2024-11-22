@@ -10,7 +10,7 @@
             <Entry Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    Keyboard="{Binding Keyboard, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    IsPassword="{Binding IsPassword, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
-                   Text="{Binding Text, Mode=TwoWay}" />
+                   Text="{Binding DefaultText, Source={RelativeSource AncestorType={x:Type local:Entry}}}" />
         </Frame>
     </StackLayout>
 </ContentView>
