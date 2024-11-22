@@ -170,14 +170,14 @@ public partial class Entry : ContentView
         if (string.IsNullOrWhiteSpace(DefaultText) && InputType!=EntryInputType.PhoneNumber)
         {
             IsValid = false;
-            ValidationMessage = $"{LabelText} cannot be empty.";
+            ValidationMessage = $"{LabelText} mag niet leeg zijn.";
             TestLabel.Text = ValidationMessage;
             showLabel();
         }
         else if (InputType == EntryInputType.Email && !IsValidEmail(DefaultText))
         {
             IsValid = false;
-            ValidationMessage = "Please enter a valid email address.";
+            ValidationMessage = "vul alsjeblieft een geldig emailadres in.";
             TestLabel.Text = ValidationMessage;
             showLabel();
         }

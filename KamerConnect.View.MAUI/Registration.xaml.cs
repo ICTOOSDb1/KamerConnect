@@ -12,7 +12,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		InitializeComponent();
         SelectTabAction = SelectTab;
         BindingContext = this;
-        SelectedTab = "huis"; 
+        SelectedTab = "search house"; 
         UpdateButtonColors();
 	}
 	public event PropertyChangedEventHandler PropertyChanged;
@@ -45,12 +45,12 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
     
     private void OnHuisClicked(object sender, EventArgs e)
     {
-        SelectTab("huis");
+        SelectTab("search house");
     }
 
     private void OnHuisgenootClicked(object sender, EventArgs e)
     {
-        SelectTab("huisgenoot");
+        SelectTab("have a house");
         
     }
 
@@ -100,7 +100,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
     
     private void UpdateButtonColors()
     {
-        if (SelectedTab == "huis")
+        if (SelectedTab == "search house")
         {
             HuisButtonColor = "#EF626C"; 
             HuisgenootButtonColor = "#ffffff"; 
@@ -115,7 +115,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
     {
 	    Role role;
 
-	    if (SelectedTab == "huis")
+	    if (SelectedTab == "search house")
 	    {
 		    role = Role.Seeking;
 	    }
@@ -135,7 +135,6 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		    role,
 		    null
 	    );
-	    PersoonLatenZien.Text = newPerson.ToString();
     }
 
     private void submit(object? sender, EventArgs e)
@@ -144,9 +143,6 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	    {
 		    CreatePerson();
 	    }
-	    else
-	    {
-		    DisplayAlert("Validation Error", "Please correct the highlighted errors.", "OK");
-	    }
+	    
     }
 }
