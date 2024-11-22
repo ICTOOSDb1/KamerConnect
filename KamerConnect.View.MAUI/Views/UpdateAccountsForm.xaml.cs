@@ -1,5 +1,4 @@
 using Microsoft.Maui.Storage;
-using Microsoft.UI.Xaml.Input;
 using KamerConnect.DataAccess.Postgres;
 using KamerConnect.DataAccess.Minio;
 using KamerConnect.Repositories;

@@ -135,11 +135,13 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		    role,
 		    null
 	    );
+	    PersoonLatenZien.Text = newPerson.ToString();
     }
 
     private void submit(object? sender, EventArgs e)
     {
 	    CreatePerson();
+	    
 	    
     }
 }

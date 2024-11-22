@@ -37,7 +37,7 @@
             </Grid.ColumnDefinitions>
 
             <VerticalStackLayout Grid.Column="0">
-                <components:Entry x:Name="emailEntry" LabelText="E-mail*" Keyboard="Email" />
+                <components:Entry InputType="Email" x:Name="emailEntry" LabelText="E-mail*" Keyboard="Email" />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1">
