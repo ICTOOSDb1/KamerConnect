@@ -7,12 +7,18 @@
     <ScrollView>
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
             <VerticalStackLayout Padding="10">
-                
-                <Components:Entry LabelText="Aantal vierkante meter" Placeholder="VierkanteMeter" />
-                <Components:Entry LabelText="Aantal slaapkamers" Placeholder="Bedrooms" />
-                <Components:Entry LabelText="Woningtype" Placeholder="Woningtype" />
 
-                <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked"/>
+                <Components:Entry LabelText="Aantal vierkante meter"
+                                  Placeholder="VierkanteMeter"/>
+                <Components:Entry LabelText="Aantal slaapkamers"
+                                  Placeholder="Bedrooms"/>
+                <Components:Entry LabelText="Woningtype"
+                                  Placeholder="Woningtype"/>
+
+                <Button HorizontalOptions="End"
+                        Text="Update account"
+                        Style="{StaticResource PrimaryButton}"
+                        Clicked="Button_Clicked"/>
 
             </VerticalStackLayout>
         </Components:FormCard>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.DataAccess.Minio;
-using KamerConnect.Repositories;
 using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
 
@@ -16,7 +15,7 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-            .ConfigureFonts(fonts =>
+			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
@@ -36,14 +35,14 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
+		builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
 
 		builder.Services.AddTransient<UpdateAccount>();
 
-        builder.Services.AddTransient<UpdateAccountsForm>();
-        builder.Services.AddTransient<HomePreferencesForm>();
-        builder.Services.AddTransient<InterestsForm>();
+		builder.Services.AddTransient<UpdateAccountsForm>();
+		builder.Services.AddTransient<HomePreferencesForm>();
+		builder.Services.AddTransient<InterestsForm>();
 
-        return builder.Build();
+		return builder.Build();
 	}
 }
