@@ -8,7 +8,6 @@
              Title="Aanmeldingsformulier">
      <ScrollView>
         <StackLayout>
-            <!-- Form Navigation Section -->
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
                 <Grid BackgroundColor="{StaticResource BackgroundColor}" Row="0" Column="1" HeightRequest="50">
                     <Grid.ColumnDefinitions>
@@ -27,8 +26,7 @@
                             Grid.Column="1"/>
                 </Grid>
             </Components:FormCard>
-
-            <!-- Personal Information Section -->
+            
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
                 <StackLayout Spacing="20">
                     <Label Style="{StaticResource TitleTextStyle}" Text="aanmeldingsformulier" HorizontalOptions="Start"></Label>
@@ -38,20 +36,18 @@
                              HorizontalOptions="FillAndExpand" />
 
                     <maui:PersonalInformationForm x:Name="personalInformationForm"/>
-
-                    <!-- BoxView Separator -->
+                    
                     <BoxView HeightRequest="0.5" 
                              BackgroundColor="{StaticResource Gray100}" 
                              HorizontalOptions="FillAndExpand" />
                     
-                    <!-- Required Information Notice -->
+            
                     <Label Text="*= verplicht om in te vullen"
                            FontSize="12"
                            TextColor="Gray"
                            HorizontalOptions="Start"
                            Margin="0,20,0,0" />
-
-                    <!-- Navigation Buttons -->
+                    
                     <Grid ColumnSpacing="20" Margin="0,20,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />

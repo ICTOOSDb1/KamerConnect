@@ -5,10 +5,10 @@
              xmlns:components="using:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.PersonalInformationForm">
     <StackLayout Spacing="15">
-        <!-- Section Title -->
+       
         <Label Text="Persoonlijke gegevens" FontSize="18" FontAttributes="Bold" />
 
-        <!-- Grid for Personal Information -->
+     
         <Grid ColumnSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

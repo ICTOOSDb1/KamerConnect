@@ -135,7 +135,6 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		    role,
 		    null
 	    );
-	    Console.WriteLine(newPerson.ToString());
     }
 
     private void submit(object? sender, EventArgs e)

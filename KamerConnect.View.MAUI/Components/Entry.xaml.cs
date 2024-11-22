@@ -54,7 +54,7 @@ public partial class Entry : ContentView
 
                 case EntryInputType.DateOfBirth:
                     entry.Placeholder = "Select your date of birth";
-                    entry.Keyboard = Keyboard.Numeric; // Optional, but typically not used for dates
+                    entry.Keyboard = Keyboard.Numeric;
                     entry.LabelText = "Date of Birth";
                     entry.AddTapGestureRecognizerToOpenDatePicker();
                     break;
@@ -76,23 +76,22 @@ public partial class Entry : ContentView
         var tapGestureRecognizer = new TapGestureRecognizer();
         tapGestureRecognizer.Tapped += (s, e) =>
         {
-            // Temporary DatePicker for selecting date
+         
             var datePicker = new DatePicker
             {
-                IsVisible = false // Keep it hidden
+                IsVisible = false 
             };
-
-            // Add DatePicker to the parent layout
+            
             var parent = this.Parent as Layout<Microsoft.Maui.Controls.View>;
             if (parent != null)
             {
                 parent.Children.Add(datePicker);
-                datePicker.Focus(); // Focus on the DatePicker to open the dialog
+                datePicker.Focus(); 
 
                 datePicker.DateSelected += (sender, args) =>
                 {
-                    DefaultText = args.NewDate.ToString("yyyy-MM-dd"); // Set selected date as text
-                    parent.Children.Remove(datePicker); // Remove DatePicker after selection
+                    DefaultText = args.NewDate.ToString("yyyy-MM-dd");
+                    parent.Children.Remove(datePicker);
                 };
             }
         };

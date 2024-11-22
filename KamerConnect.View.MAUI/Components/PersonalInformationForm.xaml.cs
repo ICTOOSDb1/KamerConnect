@@ -26,7 +26,7 @@ public partial class PersonalInformationForm : ContentView
             if (maleRadioButton.IsChecked) return "Male";
             if (femaleRadioButton.IsChecked) return "Female";
             if (otherRadioButton.IsChecked) return "Other";
-            return "Other"; // Default if none selected
+            return "Other";
         }
     }
 
