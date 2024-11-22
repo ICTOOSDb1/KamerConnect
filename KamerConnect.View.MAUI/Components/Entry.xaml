@@ -12,5 +12,9 @@
                    IsPassword="{Binding IsPassword, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    Text="{Binding DefaultText, Source={RelativeSource AncestorType={x:Type local:Entry}}}" />
         </Frame>
+        <Label 
+            x:Name="TestLabel"
+            TextColor="red"
+            IsVisible="{Binding IsLabelVisible}"/>
     </StackLayout>
 </ContentView>

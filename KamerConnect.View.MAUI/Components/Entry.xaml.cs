@@ -21,6 +21,7 @@ public partial class Entry : ContentView
     public Entry()
     {
         InitializeComponent();
+        BindingContext = this;
     }
 
     
@@ -60,7 +61,7 @@ public partial class Entry : ContentView
                     break;
                 case EntryInputType.PhoneNumber:
                     entry.Placeholder = "voor uw telefoon nummer in";
-                    entry.Keyboard = Keyboard.Telephone;
+                    entry.Keyboard = Keyboard.Numeric;
                     entry.LabelText = "Telefoon nummer";
                     break;
 
@@ -144,6 +145,88 @@ public partial class Entry : ContentView
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
+    }
+    public static readonly BindableProperty ValidationMessageProperty =
+        BindableProperty.Create(nameof(ValidationMessage), typeof(string), typeof(Entry), string.Empty);
+
+    public string ValidationMessage
+    {
+        get => (string)GetValue(ValidationMessageProperty);
+        set => SetValue(ValidationMessageProperty, value);
+    }
+
+    public static readonly BindableProperty IsValidProperty =
+        BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(Entry), true);
+
+    public bool IsValid
+    {
+        get => (bool)GetValue(IsValidProperty);
+        set => SetValue(IsValidProperty, value);
+    }
+
+    
+    public void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(DefaultText) && InputType!=EntryInputType.PhoneNumber)
+        {
+            IsValid = false;
+            ValidationMessage = $"{LabelText} mag niet leeg zijn.";
+            TestLabel.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.Email && !IsValidEmail(DefaultText))
+        {
+            IsValid = false;
+            ValidationMessage = "vul alsjeblieft een geldig emailadres in.";
+            TestLabel.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.PhoneNumber && !IsNumeric(DefaultText) && !string.IsNullOrWhiteSpace(DefaultText))
+        {
+            IsValid = false;
+            ValidationMessage = "Telefoonnummer is ongeldig.";
+            TestLabel.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.DateOfBirth && !IsNumeric(DefaultText))
+        {
+            IsValid = false;
+            ValidationMessage = "geboorte datum is ongeldig.";
+            TestLabel.Text = ValidationMessage;
+            showLabel();
+        }
+        else
+        {
+            IsValid = true;
+            hideLabel();
+            ValidationMessage = string.Empty;
+        }
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        return System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+    }
+
+    private bool IsNumeric(string text)
+    {
+        return System.Text.RegularExpressions.Regex.IsMatch(text, @"^[\d/]+$");
+    }
+    public static readonly BindableProperty IsLabelVisibleProperty =
+        BindableProperty.Create(nameof(IsLabelVisible), typeof(bool), typeof(Entry), false);
+
+    public bool IsLabelVisible
+    {
+        get => (bool)GetValue(IsLabelVisibleProperty);
+        set => SetValue(IsLabelVisibleProperty, value);
+    }
+    public void showLabel()
+    {
+        IsLabelVisible = true;
+    }
+    public void hideLabel()
+    {
+        IsLabelVisible = false;
     }
 
 }
