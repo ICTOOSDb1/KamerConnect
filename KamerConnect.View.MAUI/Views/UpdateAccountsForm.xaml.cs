@@ -24,7 +24,7 @@ public partial class UpdateAccountsForm : ContentView
     {
         var result = await FilePicker.Default.PickAsync(new PickOptions
         {
-            PickerTitle = "Select an image",
+            PickerTitle = "Selecteer een foto",
             FileTypes = FilePickerFileType.Images
         });
 
