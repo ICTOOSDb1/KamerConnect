@@ -1,5 +1,5 @@
+using KamerConnect.Models;
 using KamerConnect.Repositories;
-using Microsoft.Maui.Storage;
 using Npgsql;
 
 namespace KamerConnect.DataAccess.Postgres.Repositys;
@@ -7,23 +7,21 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 public class AuthenticationRepository : IAuthenticationRepository
 {
     private readonly string connectionString;
-    
-    
+
+
     public AuthenticationRepository()
     {
         connectionString = GetConnectionString();
     }
-    
-    public void SaveSessionInDB(string personId, DateTime startingDate, string sessionToken)
+
+    public void SaveSession(string personId, DateTime startingDate, string sessionToken)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
             using (var command = new NpgsqlCommand(
-                       """
-                       INSERT INTO session (sessiontoken, startingDate, person_id)
-                                     VALUES (@Session, @StartingDate, @PersonId::uuid);
-                       """, connection))
+                       "INSERT INTO session (sessiontoken, startingDate, person_id) VALUES (@Session, @StartingDate, @PersonId::uuid); ",
+                       connection))
             {
                 command.Parameters.AddWithValue("@Session", sessionToken);
                 command.Parameters.AddWithValue("@StartingDate", startingDate);
@@ -34,9 +32,103 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public async Task SaveSessionInLS(string personId, DateTime startingDate, string sessionToken)
+    public Session GetSession(string personId)
     {
-        await SecureStorage.SetAsync("session_token", sessionToken);
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       "SELECT * FROM session WHERE person_id = @personId::uuid;", connection))
+            {
+                command.Parameters.AddWithValue("@personId", personId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                    {
+                        Console.WriteLine("No session found for the given personId.");
+                        return null;
+                    }
+
+                    while (reader.Read())
+                    {
+                        return new Session(
+                            reader.GetString(0),
+                            reader.GetDateTime(1),
+                            reader.GetString(2)
+                        );
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public Session GetSessionWithLocalToken(string localSessionToken)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       "SELECT * FROM session WHERE sessiontoken = @sessiontoken;", connection))
+            {
+                command.Parameters.AddWithValue("@sessiontoken", localSessionToken);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                    {
+                        Console.WriteLine("No session found for the given token.");
+                        return null;
+                    }
+
+                    while (reader.Read())
+                    {
+                        return new Session(
+                            reader.GetString(0),
+                            reader.GetDateTime(1),
+                            reader.GetGuid(2).ToString()
+                        );
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void UpdateSessionDate(string sessionToken)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       "UPDATE session SET startingdate = @startingdate WHERE sessiontoken = @sessionToken",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@sessionToken", sessionToken);
+                command.Parameters.AddWithValue("@startingdate", DateTime.Now);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public void RemoveSession(string sessionToken)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       "DELETE FROM session WHERE sessiontoken = @sessionToken", connection))
+            {
+                command.Parameters.AddWithValue("@sessionToken", sessionToken);
+
+
+                command.ExecuteNonQuery();
+            }
+        }
     }
 
     public byte[] GetSaltFromPerson(string email)
@@ -46,7 +138,8 @@ public class AuthenticationRepository : IAuthenticationRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
+                   new NpgsqlCommand(
+                       $"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
                        connection))
             {
                 command.Parameters.AddWithValue("@email", email);
@@ -55,17 +148,17 @@ public class AuthenticationRepository : IAuthenticationRepository
                     byte[] salt = Convert.FromBase64String(command.ExecuteScalar().ToString());
                     return salt;
                 }
-                catch(NullReferenceException ex)
+                catch (NullReferenceException ex)
                 {
                     Console.WriteLine($"Email not valid: {ex.Message}");
                     return null;
                 }
-                
             }
         }
+
         return null;
     }
-    
+
     public void AddPassword(string personId, string password, string salt)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -85,7 +178,7 @@ public class AuthenticationRepository : IAuthenticationRepository
             }
         }
     }
-    
+
     public string GetPassword(string person_id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -107,10 +200,10 @@ public class AuthenticationRepository : IAuthenticationRepository
                 }
             }
         }
-        
+
         return "";
     }
-    
+
     private string GetConnectionString()
     {
         var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
@@ -118,14 +211,14 @@ public class AuthenticationRepository : IAuthenticationRepository
         var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
         var username = Environment.GetEnvironmentVariable("POSTGRES_USER");
         var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-    
+
         if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(port) ||
             string.IsNullOrEmpty(database) || string.IsNullOrEmpty(username) ||
             string.IsNullOrEmpty(password))
         {
             throw new("Database environment variables are missing. Please check your .env file.");
         }
-    
+
         return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
     }
 }

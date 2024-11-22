@@ -1,5 +1,4 @@
 using System.Data.Common;
-using KamerConnect;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using Npgsql;
@@ -10,11 +9,10 @@ public class PersonRepository : IPersonRepository
 {
     private readonly string connectionString;
 
-   public PersonRepository()
+    public PersonRepository()
    {
        connectionString = GetConnectionString();
    }
-    
     public Person GetPersonById(string id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -41,7 +39,6 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
-    
     public Person GetPersonByEmail(string email)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -70,7 +67,6 @@ public class PersonRepository : IPersonRepository
         
         return null;
     }
-
     public string CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -109,7 +105,6 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
-
     private string GetConnectionString()
     {
         var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
@@ -154,7 +149,6 @@ public class PersonRepository : IPersonRepository
 
         return person;
     }
-
     private static T ValidateEnum<T>(string value) where T : struct
     {
         if (Enum.TryParse(value, out T result) && Enum.IsDefined(typeof(T), result))
