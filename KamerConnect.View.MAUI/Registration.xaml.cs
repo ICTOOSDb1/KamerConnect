@@ -140,8 +140,13 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 
     private void submit(object? sender, EventArgs e)
     {
-	    CreatePerson();
-	    
-	    
+	    if (personalInformationForm.ValidateAll())
+	    {
+		    CreatePerson();
+	    }
+	    else
+	    {
+		    DisplayAlert("Validation Error", "Please correct the highlighted errors.", "OK");
+	    }
     }
 }

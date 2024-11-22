@@ -30,7 +30,28 @@ public partial class PersonalInformationForm : ContentView
         }
     }
 
-
-
-
+    public bool ValidateAll()
+    {
+        emailEntry?.Validate();
+        firstNameEntry?.Validate();
+        surnameEntry?.Validate();
+        phoneNumberEntry?.Validate();
+        birthDateEntry?.Validate();
+        
+        bool isGenderValid = maleRadioButton.IsChecked || femaleRadioButton.IsChecked || otherRadioButton.IsChecked;
+        if (!isGenderValid)
+        {
+            radiobuttonNotSelected.IsVisible = true;
+        }
+        else
+        {
+            radiobuttonNotSelected.IsVisible = false;
+        }
+        
+        return (emailEntry?.IsValid ?? true) &&
+               (firstNameEntry?.IsValid ?? true) &&
+               (surnameEntry?.IsValid ?? true) &&
+               (phoneNumberEntry?.IsValid ?? true) &&
+               (birthDateEntry?.IsValid ?? true);
+    }
 }

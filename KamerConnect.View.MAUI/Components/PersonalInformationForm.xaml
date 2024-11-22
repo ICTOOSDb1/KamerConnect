@@ -41,12 +41,12 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1">
-                <components:Entry x:Name="phoneNumberEntry" LabelText="Telefoonnummer" Keyboard="Telephone" />
+                <components:Entry  InputType="PhoneNumber" x:Name="phoneNumberEntry" LabelText="Telefoonnummer" Keyboard="Telephone" />
             </VerticalStackLayout>
         </Grid>
 
         <VerticalStackLayout>
-            <components:Entry x:Name="birthDateEntry" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
+            <components:Entry InputType="DateOfBirth" x:Name="birthDateEntry" LabelText="Geboortedatum*" Placeholder="dd/mm/jjjj" Keyboard="Numeric" />
         </VerticalStackLayout>
         
         <StackLayout Spacing="10">
@@ -54,6 +54,7 @@
             <RadioButton Content="Man" GroupName="GenderGroup" x:Name="maleRadioButton" />
             <RadioButton Content="Vrouw" GroupName="GenderGroup" x:Name="femaleRadioButton" />
             <RadioButton Content="Anders" GroupName="GenderGroup" x:Name="otherRadioButton" />
+            <Label x:Name="radiobuttonNotSelected" Text="Selecteer alstublieft een gender" TextColor="Red" IsVisible="False"></Label>
         </StackLayout>
     </StackLayout>
 </ContentView>
