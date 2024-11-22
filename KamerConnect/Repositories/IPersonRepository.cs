@@ -7,6 +7,6 @@ public interface IPersonRepository
 {
     Person GetPersonById(string id);
     Person GetPersonByEmail(string email);
-    Guid CreatePerson(Person person);
+    string CreatePerson(Person person);
 
 }

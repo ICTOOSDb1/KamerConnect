@@ -1,4 +1,5 @@
 using KamerConnect.Repositories;
+using Microsoft.Maui.Storage;
 using Npgsql;
 
 namespace KamerConnect.DataAccess.Postgres.Repositys;
@@ -13,15 +14,15 @@ public class AuthenticationRepository : IAuthenticationRepository
         connectionString = GetConnectionString();
     }
     
-    public void SaveSession(Guid personId, DateTime startingDate, string sessionToken)
+    public void SaveSessionInDB(string personId, DateTime startingDate, string sessionToken)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
             using (var command = new NpgsqlCommand(
                        """
-                       INSERT INTO session (session, startingDate, person_id)
-                                     VALUES (@Session, @StartingDate, @PersonId);
+                       INSERT INTO session (sessiontoken, startingDate, person_id)
+                                     VALUES (@Session, @StartingDate, @PersonId::uuid);
                        """, connection))
             {
                 command.Parameters.AddWithValue("@Session", sessionToken);
@@ -32,7 +33,12 @@ public class AuthenticationRepository : IAuthenticationRepository
             }
         }
     }
-    
+
+    public async Task SaveSessionInLS(string personId, DateTime startingDate, string sessionToken)
+    {
+        await SecureStorage.SetAsync("session_token", sessionToken);
+    }
+
     public byte[] GetSaltFromPerson(string email)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -57,11 +63,10 @@ public class AuthenticationRepository : IAuthenticationRepository
                 
             }
         }
-
         return null;
     }
     
-    public void AddPassword(Guid personId, string password, string salt)
+    public void AddPassword(string personId, string password, string salt)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -69,7 +74,7 @@ public class AuthenticationRepository : IAuthenticationRepository
             using (var command = new NpgsqlCommand(
                        """
                        INSERT INTO password (salt, hashed_password, person_id)
-                                     VALUES (@Salt, @HashedPassword, @PersonId);
+                                     VALUES (@Salt, @HashedPassword, @PersonId::uuid);
                        """, connection))
             {
                 command.Parameters.AddWithValue("@Salt", salt);

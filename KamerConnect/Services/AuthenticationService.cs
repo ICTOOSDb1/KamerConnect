@@ -32,8 +32,17 @@ public class AuthenticationService
     {
         try
         {
-            string personPassword = _repository.GetPassword(_personService.GetPersonByEmail(email).Id ?? throw new InvalidCredentialsException());
-            ValidatePassword(HashPassword(passwordAttempt, out byte[] salt, _repository.GetSaltFromPerson(email)), personPassword);
+            Person person = _personService.GetPersonByEmail(email) ?? throw new InvalidCredentialsException();
+            string personPassword = _repository.GetPassword(person.Id);
+            
+            if (ValidatePassword(HashPassword(passwordAttempt, 
+                    out byte[] salt, 
+                    _repository.GetSaltFromPerson(email)), personPassword))
+            {
+                _repository.SaveSessionInDB(person.Id.ToString(), DateTime.Now, GenerateSessionToken());
+            }
+
+            
             Console.WriteLine("User logged in");
         }
         catch (InvalidCredentialsException e)
@@ -54,13 +63,15 @@ public class AuthenticationService
             throw new InvalidOperationException("Some required values are null or empty");
         
         //validate password
-        Guid person_id = _personService.CreatePerson(person);
+        string person_id = _personService.CreatePerson(person);
 
         if (person_id != null)
         {
             _repository.AddPassword(person_id, HashPassword(password, out salt), Convert.ToBase64String(salt));
         }
     }
+
+   
 
     private bool ValidatePassword(string passwordAttempt, string personPassword)
     {
@@ -89,5 +100,12 @@ public class AuthenticationService
             keySize);
 
         return Convert.ToHexString(hash);
+    }
+    
+    
+    
+    private string GenerateSessionToken()
+    {
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(keySize));
     }
 }

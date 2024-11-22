@@ -56,8 +56,9 @@ class Program
 
         //Console.WriteLine(personSerivce.GetPersonById("7a799ba5-4705-4ab6-8610-14e847df5586").ToString());
         //authService.Authenticate("niek2004@icloud.com", "coolheid");
-        //authService.Register(new Person("email@gmail.com", "henk", null, "bosman", null, new DateTime(1920, 2, 2), Gender.Female, Role.Offering, null), "henkje");
-        //authService.Authenticate("email@gmail.com", "henkje");
+        //authService.Register(new Person("janjan@gmail.com", "henk", null, "bosman", null, new DateTime(1920, 2, 2), Gender.Female, Role.Offering, null), "henkje");
+        authService.Authenticate("email@gmail.com", "henkje");
+        
         return 0;
     }
 

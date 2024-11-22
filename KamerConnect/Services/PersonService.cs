@@ -21,7 +21,7 @@ public class PersonService
         return _repository.GetPersonByEmail(email);
     }
     
-    public Guid CreatePerson(Person person)
+    public string CreatePerson(Person person)
     { 
         return _repository.CreatePerson(person);
     }

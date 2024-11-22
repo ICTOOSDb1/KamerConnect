@@ -71,7 +71,7 @@ public class PersonRepository : IPersonRepository
         return null;
     }
 
-    public Guid CreatePerson(Person person)
+    public string CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -102,9 +102,10 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
                 command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
-                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
 
-                return (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
+                var results = command.ExecuteScalar().ToString() ?? throw new InvalidOperationException();
+                return results?.ToString();
             }
         }
     }
