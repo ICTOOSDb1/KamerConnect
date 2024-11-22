@@ -30,7 +30,6 @@ public partial class UpdateAccountsForm : ContentView
 
         if (result != null)
         {
-            //datetime nog toevoegen bij filename
             string filePath = result.FullPath;
             var fileBytes = await File.ReadAllBytesAsync(filePath);
             string fileName = Path.GetFileName(filePath)+DateTime.Now.ToString("yyyyMMddHHmmss");
