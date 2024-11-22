@@ -8,8 +8,33 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly string ConnectionString = "Host=localhost;Username=niekvandenberg;Password=password;Database=kamer-connect";
-    
+    private readonly string ConnectionString = "Host=localhost;Username=Admin;Password=Password;Database=Kammerconnect";
+
+    public List<Person> GetAll()
+    {
+        var persons = new List<Person>();
+
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand("SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id ",
+                       connection))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        persons.Add(ReadToPerson(reader));
+                    }
+                }
+            }
+        }
+
+        return persons;
+    }
+
     public Person GetPersonById(string id)
     {
         using (var connection = new NpgsqlConnection(ConnectionString))

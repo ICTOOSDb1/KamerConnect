@@ -12,23 +12,17 @@
                 <RadioButton Content="Option2" GroupName="Options" />
                 
                 <Components:Entry InputType="Email"/>
-
                 <Components:Entry InputType="Password"/>
-                
                 <Components:Entry InputType="DateOfBirth"/>
-                
                 <Components:Entry InputType="PhoneNumber"/>
-                
                 <Components:Entry  Placeholder = "Voer uw e voornaam in"
                                    Keyboard="Telephone"
                                    LabelText = "voornaam"/>
-                
+              
                 <Components:CustomCheckbox LabelText="Accept Terms and Conditions"
                                               IsChecked="{Binding IsTermsAccepted}" />
-
                 <Components:TextEditor LabelText="Description"
                                           Placeholder="Enter a detailed description"
-                                       
                                           Text="{Binding Description}" />
                 
                 <Grid HorizontalOptions="FillAndExpand" Margin="0,20,0,0">
@@ -36,15 +30,9 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" /> 
                     </Grid.ColumnDefinitions>
-
-                  
-                    <Button Grid.Column="0" HorizontalOptions="Start" Text="Terug" Style="{StaticResource SecondaryButton}" />
-
-                   
+                    <Button Grid.Column="0" HorizontalOptions="Start" Text="Terug" Style="{StaticResource SecondaryButton}" />               
                     <Button Grid.Column="1" HorizontalOptions="End" Text="Doorgaan" Style="{StaticResource PrimaryButton}" Clicked="ToRegistration"/>
                 </Grid>
-
             </StackLayout>
         </Components:FormCard>
-        
 </ContentPage>

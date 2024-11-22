@@ -67,4 +67,31 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Views\HomePreferencesForm.xaml.cs">
+	    <DependentUpon>HomePreferencesForm.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\InterestsForm.xaml.cs">
+	    <DependentUpon>InterestsForm.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\UpdateAccountsForm.xaml.cs">
+	    <DependentUpon>UpdateAccountsForm.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="UpdateAccount.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\HomePreferencesForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\InterestsForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\UpdateAccountsForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

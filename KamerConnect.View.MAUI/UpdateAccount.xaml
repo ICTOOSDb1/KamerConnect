@@ -26,8 +26,7 @@
         <Label Grid.Row="1" Grid.Column="0"
                BackgroundColor="#F9FBFD"
                ></Label>
-        <Components:Entry Style="{StaticResource ContainerFrameStyle}">
-            <StackLayout Grid.Row="1" Grid.Column="0" Padding="10" VerticalOptions="CenterAndExpand" >
+        <StackLayout Grid.Row="1" Grid.Column="0" Padding="10" VerticalOptions="CenterAndExpand" >
             <Button Text="Account gegevens"
                     x:Name="AccountDetailsButton"
                     Clicked="AccountDetails"
@@ -41,12 +40,7 @@
                     Clicked="Interests"
                     Style="{StaticResource PrimaryButton}"
                     HorizontalOptions="FillAndExpand" />
-                <Button Text="Overigen"
-                    Clicked="Other"
-                    Style="{StaticResource PrimaryButton}"
-                    HorizontalOptions="FillAndExpand" />
-            </StackLayout>
-        </Components:Entry>
+        </StackLayout>
         <ContentView x:Name="FormsContainer"
              Grid.Row="1" Grid.Column="1"
              BackgroundColor="#F9FBFD"

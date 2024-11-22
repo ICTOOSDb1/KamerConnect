@@ -1,4 +1,6 @@
-using KamerConnect.View.MAUI.UpdateAccountInputs;
+using KamerConnect.Services;
+using KamerConnect.View.MAUI.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 using Microsoft.Maui.Controls;
 
@@ -6,29 +8,27 @@ namespace KamerConnect.View.MAUI
 {
     public partial class UpdateAccount : ContentPage
     {
-        public UpdateAccount()
+        private FileService _fileService;
+
+        public UpdateAccount(FileService fileService)
         {
             InitializeComponent();
+            _fileService = fileService;
         }
 
         private void AccountDetails(object sender, EventArgs e)
         {
-            FormsContainer.Content = new UpdateAccountsInput();
+            FormsContainer.Content = new UpdateAccountsForm(_fileService);
         }
 
         private void HomePreferences(object sender, EventArgs e)
         {
-            FormsContainer.Content = new HomePreferencesInputs();
-        }
-        
-        private void Interests(object sender, EventArgs e)
-        {
-            FormsContainer.Content = new InterestsInputs();
+            FormsContainer.Content = new HomePreferencesForm();
         }
 
-        private void Other(object sender, EventArgs e)
+        private void Interests(object sender, EventArgs e)
         {
-              FormsContainer.Content = new OtherInputs();
+            FormsContainer.Content = new InterestsForm();
         }
     }
 }
