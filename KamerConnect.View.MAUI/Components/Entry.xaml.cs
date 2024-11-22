@@ -54,9 +54,9 @@ public partial class Entry : ContentView
                     break;
 
                 case EntryInputType.DateOfBirth:
-                    entry.Placeholder = "Select your date of birth";
+                    entry.Placeholder = "selecteer een geldige geboorte datum";
                     entry.Keyboard = Keyboard.Numeric;
-                    entry.LabelText = "Date of Birth";
+                    entry.LabelText = "geboorte datum";
                     entry.AddTapGestureRecognizerToOpenDatePicker();
                     break;
                 case EntryInputType.PhoneNumber:
@@ -171,28 +171,28 @@ public partial class Entry : ContentView
         {
             IsValid = false;
             ValidationMessage = $"{LabelText} mag niet leeg zijn.";
-            TestLabel.Text = ValidationMessage;
+            inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
         else if (InputType == EntryInputType.Email && !IsValidEmail(DefaultText))
         {
             IsValid = false;
             ValidationMessage = "vul alsjeblieft een geldig emailadres in.";
-            TestLabel.Text = ValidationMessage;
+            inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
         else if (InputType == EntryInputType.PhoneNumber && !IsNumeric(DefaultText) && !string.IsNullOrWhiteSpace(DefaultText))
         {
             IsValid = false;
             ValidationMessage = "Telefoonnummer is ongeldig.";
-            TestLabel.Text = ValidationMessage;
+            inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
         else if (InputType == EntryInputType.DateOfBirth && !IsNumeric(DefaultText))
         {
             IsValid = false;
             ValidationMessage = "geboorte datum is ongeldig.";
-            TestLabel.Text = ValidationMessage;
+            inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
         else
