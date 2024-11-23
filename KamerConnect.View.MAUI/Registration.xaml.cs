@@ -7,6 +7,7 @@ namespace KamerConnect.View.MAUI;
 
 public partial class Registration : ContentPage, INotifyPropertyChanged
 {
+	
 	public Registration()
 	{
 		InitializeComponent();
@@ -113,8 +114,8 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
     }
     private void CreatePerson()
     {
-	    Role role;
 
+		Role role;
 	    if (SelectedTab == "huis")
 	    {
 		    role = Role.Seeking;
@@ -138,9 +139,12 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	    Console.WriteLine(newPerson.ToString());
     }
 
-    private void submit(object? sender, EventArgs e)
+    private async void submit(object? sender, EventArgs e)
     {
-	    CreatePerson();
-	    
+        //CreatePerson();
+        if (Application.Current.MainPage is NavigationPage navigationPage && SelectedTab == "huis")
+        {
+            await navigationPage.Navigation.PushAsync(new HomePreferencesPage());
+        }
     }
 }

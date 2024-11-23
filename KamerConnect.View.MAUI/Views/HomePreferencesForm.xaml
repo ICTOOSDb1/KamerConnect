@@ -2,19 +2,109 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-             x:Class="KamerConnect.View.MAUI.Views.HomePreferencesForm">
+             x:Class="KamerConnect.View.MAUI.HomePreferencesForm">
 
-    <ScrollView>
+    
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
-            <VerticalStackLayout Padding="10">
+            <Grid RowSpacing="10" ColumnSpacing="10" Padding="10">
+                <!-- Define Row Definitions -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <!-- Beschikbaar budget -->
+                    <RowDefinition Height="Auto" />
+                    <!-- Aantal vierkante meter -->
+                    <RowDefinition Height="Auto" />
+                    <!-- Aantal slaapkamers -->
+                    <RowDefinition Height="Auto" />
+                    <!-- Woningtype -->
+                    <RowDefinition Height="Auto" />
+                    <!-- Button -->
+                </Grid.RowDefinitions>
+
+                <!-- Define Column Definitions -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="575" />
+                    <!-- Full width for inputs -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Components: Entry Fields -->
+                <Label Text="Wat zoekt u in een huis?" 
+                       FontSize="18" 
+                       FontAttributes="Bold"></Label>
+
+                <Components:Entry LabelText="Beschikbaar budget" 
+                                  x:Name="BudgetInput"
+                                  Placeholder="Budget in €" 
+                                  Grid.Row="1" 
+                                  Grid.Column="0" 
+                                 />
+                <Components:Entry LabelText="Hoeveelheid vierkante meter oppervlak"
+                                  x:Name="AreaInput"
+                                  Placeholder="VierkanteMeter" 
+                                  Grid.Row="2" 
+                                  Grid.Column="0" />
+
+            <Picker x:Name="HousetypePicker"
+                    Title="Type woning"
+                    SelectedIndex="0"
+                    TextColor="Black"
+                    BackgroundColor="#F0F0F0"
+                    Margin="0,5,0,10"
+                    HeightRequest="80"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    SelectedIndexChanged="HouseTypeChanged"
+                    
+                    >
                 
-                <Components:Entry LabelText="Aantal vierkante meter" Placeholder="VierkanteMeter" />
-                <Components:Entry LabelText="Aantal slaapkamers" Placeholder="Bedrooms" />
-                <Components:Entry LabelText="Woningtype" Placeholder="Woningtype" />
+                <Picker.Items>
+                    <x:String>Geen voorkeur</x:String>
+                    <x:String>Huis</x:String>
+                    <x:String>Studio</x:String>
+                    <x:String>Appartement</x:String>
 
-                <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked"/>
+                </Picker.Items>
 
-            </VerticalStackLayout>
+
+            </Picker>
+            <Picker x:Name="BedroomAmountPicker"
+                    Title="Hoeveelheid kamers"
+                    SelectedIndex="0"
+                    TextColor="Black"
+                    BackgroundColor="#F0F0F0"
+                    Margin="0,5,0,10"
+                    HeightRequest="80"
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    SelectedIndexChanged="BedroomAmountChanged"
+                    >
+                <Picker.Items>
+                    <x:String>Geen voorkeur</x:String>
+                    <x:String>1</x:String>
+                    <x:String>2</x:String>
+                    <x:String>3</x:String>
+                    <x:String>4</x:String>
+                    <x:String>5</x:String>
+                    <x:String>6</x:String>
+                    <x:String>7</x:String>
+                    <x:String>8</x:String>
+                </Picker.Items>
+            </Picker>
+            <StackLayout x:Name="StudioRoomAmount" Grid.Column="0" Grid.Row="4" IsVisible="false">
+                <Label Text="Hoeveelheid kamers"></Label>
+                <Border StrokeShape="RoundRectangle 5,5,5,5" Background="#F0F0F0" Stroke="Transparent">
+                    <Label Text="1"
+                       TextColor="Black"
+                       
+                       Margin="0,5,0,10"
+                       HeightRequest="40"
+                       Padding="14"
+                       ></Label>
+                </Border>
+            </StackLayout>
+            
+            </Grid>
         </Components:FormCard>
-    </ScrollView>
+    
 </ContentView>
