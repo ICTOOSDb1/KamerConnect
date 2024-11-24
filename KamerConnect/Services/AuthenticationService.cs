@@ -60,7 +60,6 @@ public class AuthenticationService
         if (!Validations.IsValidPerson(person))
             throw new InvalidOperationException("Some required values are null or empty");
         
-        //validate password
         string person_id = _personService.CreatePerson(person);
 
         if (person_id != null)
