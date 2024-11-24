@@ -29,10 +29,16 @@ CREATE TABLE IF NOT EXISTS person (
     role user_role NOT NULL,
     profile_picture_path TEXT,
     house_id uuid,
-    
+    house_preferences_id uuid,
     CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id)
+    CONSTRAINT fk_house_preferences FOREIGN KEY(house_preferences_id) REFERENCES house_preferences(id)
 );
-
+CREATE TABLE IF NOT EXISTS house_preferences (
+    id UUID PRIMARY KEY default gen_random_uuid(),
+	type house_type,
+	price DECIMAL(10, 2),
+    surface DECIMAL(10, 2)
+)
 CREATE TABLE IF NOT EXISTS password (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     salt TEXT NOT NULL,
