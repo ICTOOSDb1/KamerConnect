@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+			 xmlns:local="clr-namespace:KamerConnect.View.MAUI.Views"
+			 x:Class="KamerConnect.View.MAUI.Views.HouseForm">
+	<ScrollView>
+		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+			<VerticalStackLayout Padding="10"
+								 Spacing="10">
+
+				<Grid ColumnSpacing="10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="150"/>
+						<ColumnDefinition Width="100"/>
+					</Grid.ColumnDefinitions>
+
+					<Components:Entry LabelText="Straat"
+									  Grid.Column="0"
+									  x:Name="streetEntry"/>
+					<Components:Entry LabelText="Huisnummer"
+									  Grid.Column="1"
+									  x:Name="houseNumberEntry"/>
+					<Components:Entry LabelText="Toevoeging"
+									  Grid.Column="2"
+									  x:Name="additionEntry"/>
+				</Grid>
+
+				<Grid ColumnSpacing="10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="250"/>
+					</Grid.ColumnDefinitions>
+
+					<Components:Entry LabelText="Stad"
+									  Grid.Column="0"
+									  x:Name="cityEntry"/>
+					<Components:Entry LabelText="Postcode"
+									  Grid.Column="1"
+									  x:Name="postalCodeEntry"/>
+				</Grid>
+
+				<Grid ColumnSpacing="10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+
+					<Components:Entry LabelText="Prijs"
+									  InputType="Number"
+									  Grid.Column="0"
+									  x:Name="priceEntry"/>
+					<Components:Entry LabelText="Oppervlak"
+									  InputType="Number"
+									  Grid.Column="1"
+									  x:Name="surfaceEntry"/>
+					<Components:Entry LabelText="Bewoners"
+									  InputType="Number"
+									  Grid.Column="2"
+									  x:Name="residentsEntry"/>
+				</Grid>
+
+				<Components:TextEditor LabelText="Beschrijving"
+									   x:Name="descriptionEntry"/>
+
+				<StackLayout Spacing="10">
+					<Label Text="Type*"
+						   FontSize="14"
+						   FontAttributes="Bold"/>
+
+					<RadioButton Content="Appartement"
+								 GroupName="HouseType"
+								 x:Name="apartmentEntry"/>
+					<RadioButton Content="Huis"
+								 GroupName="HouseType"
+								 x:Name="houseEntry"/>
+					<RadioButton Content="Studio"
+								 GroupName="HouseType"
+								 x:Name="studioEntry"/>
+				</StackLayout>
+
+				<Button Text="Kies foto's"
+						Style="{StaticResource SecondaryButton}"
+						Clicked="OnPickFilesClicked"/>
+
+				<CollectionView ItemsSource="{Binding ImageResults}">
+					<CollectionView.ItemTemplate>
+						<DataTemplate>
+							<StackLayout Orientation="Vertical"
+										 Spacing="10">
+								<Image Source="{Binding FileResult.FullPath}"
+									   WidthRequest="300"
+									   HeightRequest="300"
+									   Aspect="AspectFill"/>
+								<Button Text="Verwijderen"
+										Style="{StaticResource SecondaryButton}"
+										CommandParameter="{Binding .}"
+										Clicked="OnRemoveFileClicked"/>
+							</StackLayout>
+						</DataTemplate>
+					</CollectionView.ItemTemplate>
+				</CollectionView>
+
+				<Button HorizontalOptions="End"
+						Text="Publiceer"
+						Style="{StaticResource PrimaryButton}"
+						Clicked="OnPublish"/>
+
+			</VerticalStackLayout>
+		</Components:FormCard>
+	</ScrollView>
+</ContentView>

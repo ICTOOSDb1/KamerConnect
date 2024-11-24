@@ -8,7 +8,7 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly string ConnectionString = "Host=localhost;Username=Admin;Password=Password;Database=Kammerconnect";
+    private readonly string ConnectionString = "Host=localhost;Username=postgres;Password=password;Database=kamer-connect";
 
     public List<Person> GetAll()
     {
@@ -85,16 +85,16 @@ public class PersonRepository : IPersonRepository
             {
                 command.Parameters.AddWithValue("@Email", person.Email);
                 command.Parameters.AddWithValue("@FirstName", person.FirstName);
-                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Surname", person.Surname);
                 command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
                 command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
-                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
 
                 var personId = (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
-                
+
                 AddPasswordToPerson(personId, password, Convert.ToBase64String(salt));
             }
         }
@@ -161,8 +161,6 @@ public class PersonRepository : IPersonRepository
                 return salt;
             }
         }
-
-        return null;
     }
 
     private Person ReadToPerson(DbDataReader reader)

@@ -5,11 +5,11 @@
              xmlns:local="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Components.TextEditor">
     <StackLayout>
-        <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}" />
+        <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"/>
         <Frame Style="{StaticResource EntryFrameStyle}">
             <Editor Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
                     Text="{Binding Text, Mode=TwoWay}"
-                    AutoSize="TextChanges" />
+                    AutoSize="TextChanges"/>
         </Frame>
     </StackLayout>
 </ContentView>

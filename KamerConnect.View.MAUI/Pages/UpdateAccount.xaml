@@ -4,53 +4,58 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.UpdateAccount"
              Title="UpdateAccount">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <Grid>
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <Label Text="Update account"
-               Grid.Row="0"
-               Grid.ColumnSpan="2"
-               TextColor="Black"
-               BackgroundColor="#F9FBFD"
-               HorizontalTextAlignment="Start"
-               VerticalTextAlignment="Center"
-               FontFamily="Inter"
-               FontSize="36"
-               FontAttributes="Bold"/>
-        <Label Grid.Row="1"
-               Grid.Column="0"
-               BackgroundColor="#F9FBFD"></Label>
-        <StackLayout Grid.Row="1"
-                     Grid.Column="0"
-                     Padding="10"
-                     VerticalOptions="CenterAndExpand">
-            <Button Text="Account gegevens"
-                    x:Name="AccountDetailsButton"
-                    Clicked="AccountDetails"
-                    Style="{StaticResource PrimaryButton}"
-                    HorizontalOptions="FillAndExpand"/>
-            <Button Text="Woningvoorkeuren"
-                    Clicked="HomePreferences"
-                    Style="{StaticResource PrimaryButton}"
-                    HorizontalOptions="FillAndExpand"/>
-            <Button Text="Interesses"
-                    Clicked="Interests"
-                    Style="{StaticResource PrimaryButton}"
-                    HorizontalOptions="FillAndExpand"/>
-        </StackLayout>
-        <ContentView x:Name="FormsContainer"
-                     Grid.Row="1"
-                     Grid.Column="1"
-                     BackgroundColor="#F9FBFD"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand"/>
+                <Label Text="Update account"
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       TextColor="Black"
+                       BackgroundColor="#F9FBFD"
+                       HorizontalTextAlignment="Start"
+                       VerticalTextAlignment="Center"
+                       FontFamily="Inter"
+                       FontSize="36"
+                       FontAttributes="Bold"/>
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       BackgroundColor="#F9FBFD"></Label>
+                <StackLayout Grid.Row="1"
+                             Grid.Column="0"
+                             Padding="10"
+                             VerticalOptions="CenterAndExpand">
+                        <Button Text="Account gegevens"
+                                x:Name="AccountDetailsButton"
+                                Clicked="AccountDetails"
+                                Style="{StaticResource PrimaryButton}"
+                                HorizontalOptions="FillAndExpand"/>
+                        <Button Text="Woningvoorkeuren"
+                                Clicked="HomePreferences"
+                                Style="{StaticResource PrimaryButton}"
+                                HorizontalOptions="FillAndExpand"/>
+                        <Button Text="Interesses"
+                                Clicked="Interests"
+                                Style="{StaticResource PrimaryButton}"
+                                HorizontalOptions="FillAndExpand"/>
+                        <Button Text="House"
+                                Clicked="House"
+                                Style="{StaticResource PrimaryButton}"
+                                HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <ContentView x:Name="FormsContainer"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             Style="{StaticResource PrimaryButton}"
+                             BackgroundColor="#F9FBFD"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="FillAndExpand"/>
 
-    </Grid>
+        </Grid>
 </ContentPage>

@@ -23,8 +23,4 @@ public partial class PersonalInformationForm : ContentView
             return "Other";
         }
     }
-
-
-
-
 }

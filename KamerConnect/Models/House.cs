@@ -9,7 +9,7 @@ public class House
     public int Surface { get; set; }
     public int Residents { get; set; }
     public string City { get; set; }
-    public string Steet { get; set; }
+    public string Street { get; set; }
     public string PostalCode { get; set; }
     public int HouseNumber { get; set; }
     public string HouseNumberAddition { get; set; }
@@ -27,7 +27,7 @@ public class House
         Surface = surface;
         Residents = residents;
         City = city;
-        Steet = street;
+        Street = street;
         PostalCode = postalCode;
         HouseNumber = houseNumber;
         HouseNumberAddition = houseNumberAddition;

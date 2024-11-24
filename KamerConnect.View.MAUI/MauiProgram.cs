@@ -3,6 +3,7 @@ using KamerConnect.EnvironmentVariables;
 using KamerConnect.DataAccess.Minio;
 using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
+using KamerConnect.DataAccess.Postgres.Repositories;
 
 namespace KamerConnect.View.MAUI;
 
@@ -36,12 +37,15 @@ public static class MauiProgram
 #endif
 
 		builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
+		builder.Services.AddSingleton<HouseService>(sp => new HouseService(new HouseRepository()));
 
 		builder.Services.AddTransient<UpdateAccount>();
 
 		builder.Services.AddTransient<UpdateAccountsForm>();
 		builder.Services.AddTransient<HomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
+
+		builder.Services.AddFilePicker();
 
 		return builder.Build();
 	}
