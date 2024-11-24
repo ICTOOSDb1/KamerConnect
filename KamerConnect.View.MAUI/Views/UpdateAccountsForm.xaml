@@ -7,32 +7,30 @@
 		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
 			<VerticalStackLayout Padding="10">
 
-				<Border WidthRequest="100"
+                <Border WidthRequest="100"
 		                HeightRequest="100"
 		                Stroke="Black"
 		                StrokeThickness="1"
 		                StrokeShape="RoundRectangle 50">
-					<Border.GestureRecognizers>
-						<TapGestureRecognizer Tapped="Image_tapped"/>
-					</Border.GestureRecognizers>
-					<Image Source="camera.jpg"
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Image_tapped"/>
+                    </Border.GestureRecognizers>
+                    <Image Source="{Binding ProfilePicturePath}"
 		                   x:Name="profile_picture"
 		                   WidthRequest="98"
 		                   HeightRequest="98" />
-				</Border>
+                </Border>
 
-
-                <Components:TextEditor LabelText="Voornaam" Placeholder="Voornaam" />
+                <Components:Entry LabelText="Voornaam" Placeholder="Voornaam" DefaultText="{Binding FirstName}" x:Name = "firstNameEntry"/>
                 <Grid ColumnDefinitions="*,3*">
-				<Components:TextEditor LabelText="Tussenvoegsel" Grid.Column="0" />
-				<Components:TextEditor LabelText="Achternaam" Placeholder="Achternaam" Grid.Column="1" />
+                    <Components:Entry LabelText="Tussenvoegsel" Grid.Column="0"  DefaultText="{Binding MiddleName}" x:Name = "middleNameEntry"/>
+                    <Components:Entry LabelText="Achternaam" Placeholder="Achternaam" Grid.Column="1"  DefaultText="{Binding Surname}" x:Name = "surNameEntry"/>
 				</Grid>
 
-				<Components:TextEditor LabelText="Email" Placeholder="Email" />
-                <Components:TextEditor LabelText="Telefoonnummer" Placeholder="Telefoonnummer" />
-                <Components:TextEditor LabelText="Huisnummer" Placeholder="Huisnummer" />
+                <Components:Entry LabelText="Email" Placeholder="Email" DefaultText="{Binding Email}" x:Name = "emailEntry"/>
+                <Components:Entry LabelText="Telefoonnummer" Placeholder="Telefoonnummer" DefaultText="{Binding PhoneNumber}" x:Name = "phoneNumberEntry"/>
 
-                <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Clicked" Command="{Binding UpdateAccountCommand}"/>
+				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Update_Account" Command="{Binding UpdateAccountCommand}"/>
 
 			</VerticalStackLayout>
 		</Components:FormCard>

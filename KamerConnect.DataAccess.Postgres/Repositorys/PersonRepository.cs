@@ -202,4 +202,63 @@ public class PersonRepository : IPersonRepository
 
         throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
     }
+    
+    public void UpdatePerson(Guid personId, string fieldNameForIdCheck, List<string> fieldsToUpdate, List<NpgsqlParameter> paramaterNotations, string tableName)
+{
+    using (var connection = new NpgsqlConnection(ConnectionString))
+    {
+        connection.Open();
+        if (fieldsToUpdate.Count == 0)
+        {
+            return;
+        }
+        
+        var updateSql = $"""
+            UPDATE {tableName} SET
+            {string.Join(", ", fieldsToUpdate)}
+            WHERE {fieldNameForIdCheck} = @PersonId;
+            """;
+        
+        using (var command = new NpgsqlCommand(updateSql, connection))
+        {
+            command.Parameters.AddWithValue("@PersonId", personId);
+            command.Parameters.AddRange(paramaterNotations.ToArray());
+            command.ExecuteNonQuery();
+        }
+    }
+}
+    public void InsertTableIfIdIfNotExist(Guid personId, string tableName)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+            
+            var checkExistenceSql = $"""
+                                     SELECT COUNT(1) FROM {tableName} WHERE person_id = @PersonId;
+                                     """;
+
+            using (var checkCommand = new NpgsqlCommand(checkExistenceSql, connection))
+            {
+                checkCommand.Parameters.AddWithValue("@PersonId", personId);
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+                
+                if (count == 0)
+                {
+                    var insertSql = $"""
+                                     INSERT INTO {tableName} (person_id)
+                                     VALUES (@PersonId);
+                                     """;
+
+                    using (var insertCommand = new NpgsqlCommand(insertSql, connection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@PersonId", personId);
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+    }
+
+
+
 }

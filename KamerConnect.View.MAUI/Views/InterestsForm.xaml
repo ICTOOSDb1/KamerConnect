@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Views.InterestsForm">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            BackgroundColor="Blue"
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+			<VerticalStackLayout Padding="10">
+				
+				<Components:Entry LabelText="School" Placeholder="School" DefaultText="{Binding School}" x:Name = "schoolEntry"/>
+                <Components:Entry LabelText="Studie" Placeholder="Studie" DefaultText="{Binding Study}" x:Name = "studyEntry"/>
+                <Components:Entry LabelText="Omschrijving van jezelf" Placeholder="Omschrijving van jezelf" DefaultText="{Binding Description}" x:Name = "descriptionEntry"/>
+				<Components:Entry LabelText="Interesses" Placeholder="Interesses" DefaultText="" x:Name = "interestsEntry"/>
+				<Components:Entry LabelText="Sociale media type" Placeholder="Sociale media" DefaultText="" x:Name = "socialEntry"/>
+				
+				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_update_interests" Command="{Binding UpdateAccountCommand}"/>
+
+			</VerticalStackLayout>
+		</Components:FormCard>
+	</ScrollView>
 </ContentView>

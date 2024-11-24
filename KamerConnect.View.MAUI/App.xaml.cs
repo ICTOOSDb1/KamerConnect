@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using KamerConnect.Models;
 
 namespace KamerConnect.View.MAUI;
 
@@ -9,7 +10,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        MainPage = serviceProvider.GetRequiredService<UpdateAccount>(); //om updateaccount te testen
+        MainPage = serviceProvider.GetRequiredService<UpdateAccount>(); 
 
     }
 }

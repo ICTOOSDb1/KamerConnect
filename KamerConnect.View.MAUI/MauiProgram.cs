@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.DataAccess.Minio;
+using KamerConnect.DataAccess.Postgres.Repositys;
 using KamerConnect.Repositories;
 using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
@@ -37,6 +38,7 @@ public static class MauiProgram
 #endif
 
         builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
+        builder.Services.AddSingleton<PersonService>(sp => new PersonService(new PersonRepository()));
 
 		builder.Services.AddTransient<UpdateAccount>();
 
