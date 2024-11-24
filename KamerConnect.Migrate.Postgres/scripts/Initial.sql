@@ -16,7 +16,12 @@ CREATE TABLE IF NOT EXISTS house (
     house_number int NOT NULL,
     house_number_addition text NOT NULL
 );
-
+CREATE TABLE IF NOT EXISTS house_preferences (
+    id UUID PRIMARY KEY default gen_random_uuid(),
+	type house_type,
+	price DECIMAL(10, 2),
+    surface DECIMAL(10, 2)
+);
 CREATE TABLE IF NOT EXISTS person (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT NOT NULL UNIQUE,
@@ -33,12 +38,7 @@ CREATE TABLE IF NOT EXISTS person (
     CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id)
     CONSTRAINT fk_house_preferences FOREIGN KEY(house_preferences_id) REFERENCES house_preferences(id)
 );
-CREATE TABLE IF NOT EXISTS house_preferences (
-    id UUID PRIMARY KEY default gen_random_uuid(),
-	type house_type,
-	price DECIMAL(10, 2),
-    surface DECIMAL(10, 2)
-)
+
 CREATE TABLE IF NOT EXISTS password (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     salt TEXT NOT NULL,
