@@ -24,25 +24,23 @@ public partial class LoginPage : ContentPage
         authService = new AuthenticationService(personSerivce, authenDataAcces);
         
         InitializeComponent();
-
-      
     }
     
     public void LoginButton_Clicked(object sender, System.EventArgs e)
     {
-        // string email = emailEntry.;
-        // string password = passwordEntry.Text;
-        //
-        // try
-        // {
-        //     authService.Authenticate(email, password);
-        // }
-        // catch (InvalidCredentialsException ex)
-        // {
-        //     Console.WriteLine(e);
-        //     emailEntry.Placeholder = ex.Message;
-        //     throw;
-        // }
+        string email = emailEntry.Text;
+        string password = passwordEntry.Text;
+        
+        try
+        {
+            authService.Authenticate(email, password);
+        }
+        catch (InvalidCredentialsException ex)
+        {
+            Console.WriteLine(e);
+            emailEntry.Placeholder = ex.Message;
+            throw;
+        }
      
     }
 }

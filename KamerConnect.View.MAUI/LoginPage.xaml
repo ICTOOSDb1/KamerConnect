@@ -46,8 +46,10 @@
                        VerticalOptions="Start"
                        TextColor="Black"/>
            </VerticalStackLayout>
-            <Components:Entry x:Name="emailEntry" LabelText="Email adres" InputType="Email"/>
-            <Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/>
+            <!--<Components:Entry LabelText="Email adres" InputType="Email"/> -->
+            <Entry x:Name="emailEntry"/>
+            <Entry x:Name="passwordEntry"/>
+            <!--<Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/> -->
             <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
             <HorizontalStackLayout HorizontalOptions="Center">
                 <Label Text="Nog geen account?"

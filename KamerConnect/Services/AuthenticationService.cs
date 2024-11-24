@@ -25,6 +25,8 @@ public class AuthenticationService
         _repository = authenticationRepository;
 
         _passwordHashingConfig = GetHashValues();
+        
+        
     }
 
     public async Task Authenticate(string email, string passwordAttempt)
@@ -69,7 +71,7 @@ public class AuthenticationService
 
     public async Task<bool> CheckSession()
     {
-        string currentToken = await GetSessionFromLS();
+        string currentToken = await GetSession();
 
         if (!string.IsNullOrEmpty(currentToken))
         {
@@ -89,17 +91,18 @@ public class AuthenticationService
     
     private async Task SaveSession(string personId, DateTime currentDate, string sessionToken)
     {
-        
         if (_repository.GetSession(personId) == null)
         {
             _repository.SaveSession(personId, currentDate, sessionToken);
             await SecureStorage.Default.SetAsync("session_token", sessionToken);
         }
     }
-    private async Task<string?> GetSessionFromLS()
+    
+    private async Task<string?> GetSession()
     {
         return await SecureStorage.Default.GetAsync("session_token");
     }
+    
     private void RemoveSession(string currentToken)
     {
         _repository.RemoveSession(currentToken);
@@ -114,7 +117,8 @@ public class AuthenticationService
 
         throw new InvalidCredentialsException();
     }
-    private string HashPassword(string password, out byte[] salt, byte[] existingSalt = null)
+
+    public string HashPassword(string password, out byte[] salt, byte[] existingSalt = null)
     {
         if (existingSalt == null) {
             salt = new byte[_passwordHashingConfig.KeySize];

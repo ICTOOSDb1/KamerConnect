@@ -11,6 +11,5 @@ public interface IAuthenticationRepository
     void RemoveSession(string sessionToken);
     Session GetSession(string personId);
     Session GetSessionWithLocalToken(string localSessionToken);
-    
     string GetPassword(string person_id);
 }
