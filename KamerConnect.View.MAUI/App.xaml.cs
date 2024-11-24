@@ -6,30 +6,27 @@ namespace KamerConnect.View.MAUI;
 
 public partial class App : Application
 {
-	private IPersonRepository personDataAcces;
-	private IAuthenticationRepository authenDataAcces;
-	private PersonService personSerivce;
-	private AuthenticationService authService;
-	public App()
+	private IServiceProvider serviceProvider;
+	public App(IServiceProvider serviceProvider)
 	{
-		personDataAcces = new PersonRepository();
-		authenDataAcces = new AuthenticationRepository();
-		personSerivce = new PersonService(personDataAcces);
-		authService = new AuthenticationService(personSerivce, authenDataAcces);
-		
 		InitializeComponent();
 		_ = InitializeAppAsync(); // Fire-and-forget the async initialization
 	}
 	
 	private async Task InitializeAppAsync()
 	{
-		if (await authService.CheckSession())
+		if (serviceProvider.GetService<AuthenticationService>() == null)
+		{
+			return;
+		}
+		
+		if (await serviceProvider.GetService<AuthenticationService>()?.CheckSession())
 		{
 			MainPage = new MainPage();
 		}
 		else
 		{
-			MainPage = new LoginPage();
+			MainPage = serviceProvider.GetRequiredService<LoginPage>();
 		}
 	}
 }
