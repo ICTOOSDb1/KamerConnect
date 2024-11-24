@@ -3,10 +3,11 @@ namespace KamerConnect.View.MAUI;
 
 public partial class HomePreferencesPage : ContentPage
 {
-
-    public HomePreferencesPage()
+    Person newPerson;
+    public HomePreferencesPage(Person person)
     {
         InitializeComponent();
+        newPerson = person;
     }
 
     private async void Back(object sender, EventArgs e)
@@ -22,7 +23,7 @@ public partial class HomePreferencesPage : ContentPage
     }
     private async void Submit(object sender, EventArgs e)
     {
-        var preferences = new HousePreferences();
+        var preferences = new HousePreferences(homePreferencesForm.Budget, homePreferencesForm.Area, homePreferencesForm.Type);
 
     }
 }
