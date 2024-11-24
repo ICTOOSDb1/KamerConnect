@@ -81,7 +81,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="HomePreferencesPage.xaml">
+	  <MauiXaml Update="Pages\HomePreferencesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UpdateAccount.xaml">

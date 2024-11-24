@@ -1,3 +1,4 @@
+using KamerConnect.Models;
 namespace KamerConnect.View.MAUI;
 
 public partial class HomePreferencesPage : ContentPage
@@ -16,6 +17,12 @@ public partial class HomePreferencesPage : ContentPage
         }
         else
         {
+            
         }
+    }
+    private async void Submit(object sender, EventArgs e)
+    {
+        var preferences = new HousePreferences();
+
     }
 }

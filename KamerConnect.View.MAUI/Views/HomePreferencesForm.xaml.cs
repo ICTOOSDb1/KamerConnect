@@ -1,4 +1,3 @@
-
 using KamerConnect.Models;
 
 namespace KamerConnect.View.MAUI;
@@ -6,10 +5,10 @@ namespace KamerConnect.View.MAUI;
 public partial class HomePreferencesForm : ContentView
 {
 
-    private string Budget => BudgetInput.DefaultText ?? string.Empty;
-    private string Area => AreaInput.DefaultText ?? string.Empty;
-    private string HouseType;
-    private string BedroomAmount;
+    public string Budget => BudgetInput.DefaultText ?? string.Empty;
+    public string Area => AreaInput.DefaultText ?? string.Empty;
+    public HouseType Type;
+ 
 
 
 
@@ -22,41 +21,20 @@ public partial class HomePreferencesForm : ContentView
     {
 
     }
-	private async void BedroomAmountChanged(object sender, EventArgs e)
-	{
-        if (BedroomAmountPicker.SelectedIndex != 0)
-        {
-            BedroomAmount = $"{BedroomAmountPicker.SelectedItem}";
-        }
-        else
-        {
-            BedroomAmount = null;
-        }
-    }
+	
 	private async void HouseTypeChanged(object sender, EventArgs e)
-	{
-        if ($"{HousetypePicker.SelectedItem}" == "Studio")
+	{        
+        switch (HousetypePicker.SelectedIndex)
         {
-            BedroomAmountPicker.IsVisible = false;
-            StudioRoomAmount.IsVisible = true;
-            BedroomAmount = "1";
-        }
-        else
-        {
-            BedroomAmountPicker.IsVisible = true;
-            StudioRoomAmount.IsVisible = false;
-        }
-
-        //int currentIndex = .SelectedIndex;
-        //if(currentIndex != -1)
-        //{
-
-        //	if(currentIndex == 1)
-        //	{
-
-        //	}
-
-        //}
-
+            case 1:
+                Type = HouseType.House; 
+                break;
+            case 2:
+                Type = HouseType.Apartment; 
+                break;
+            case 3:
+                Type = HouseType.Studio; 
+                break;
+            }
     }
 }

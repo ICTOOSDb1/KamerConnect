@@ -53,8 +53,8 @@
                 <Picker.Items>
                     <x:String>Geen voorkeur</x:String>
                     <x:String>Huis</x:String>
-                    <x:String>Studio</x:String>
                     <x:String>Appartement</x:String>
+                    <x:String>Studio</x:String>
 
                 </Picker.Items>
 
