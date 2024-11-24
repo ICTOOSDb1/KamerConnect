@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KamerConnect.View.MAUI;
+﻿namespace KamerConnect.View.MAUI;
 
 public partial class PersonalInformationForm : ContentView
 {
@@ -17,8 +11,8 @@ public partial class PersonalInformationForm : ContentView
     public string MiddleName => string.IsNullOrWhiteSpace(middleNameEntry?.DefaultText) ? null : middleNameEntry.DefaultText;
     public string Surname => surnameEntry?.DefaultText ?? string.Empty;
     public string PhoneNumber => string.IsNullOrWhiteSpace(phoneNumberEntry?.DefaultText) ? null : phoneNumberEntry.DefaultText;
-    
-    public DateTime BirthDate => (birthDateEntry == null)?DateTime.Parse(birthDateEntry?.DefaultText ?? DateTime.MinValue.ToString("yyyy-MM-dd")) : DateTime.Today;
+
+    public DateTime BirthDate => (birthDateEntry == null) ? DateTime.Parse(birthDateEntry?.DefaultText ?? DateTime.MinValue.ToString("yyyy-MM-dd")) : DateTime.Today;
     public string Gender
     {
         get
@@ -26,7 +20,7 @@ public partial class PersonalInformationForm : ContentView
             if (maleRadioButton.IsChecked) return "Male";
             if (femaleRadioButton.IsChecked) return "Female";
             if (otherRadioButton.IsChecked) return "Other";
-            return "Other"; // Default if none selected
+            return "Other";
         }
     }
 
