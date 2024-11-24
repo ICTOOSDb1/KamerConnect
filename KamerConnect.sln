@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KamerConnect.DataAccess.Min
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KamerConnect.EnvironmentVariables", "KamerConnect.EnvironmentVariables\KamerConnect.EnvironmentVariables.csproj", "{4DDAFB58-9E2B-4354-A9C6-F6AA287D254B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KamerConnect.UnitTests", "KamerConnect.UnitTests\KamerConnect.UnitTests.csproj", "{3175E333-0377-47DD-A475-ABF97E96099A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,12 @@ Global
 		{4DDAFB58-9E2B-4354-A9C6-F6AA287D254B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DDAFB58-9E2B-4354-A9C6-F6AA287D254B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DDAFB58-9E2B-4354-A9C6-F6AA287D254B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7B3EC3-5B02-4088-93CB-942AD4BA83BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7B3EC3-5B02-4088-93CB-942AD4BA83BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3175E333-0377-47DD-A475-ABF97E96099A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3175E333-0377-47DD-A475-ABF97E96099A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3175E333-0377-47DD-A475-ABF97E96099A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3175E333-0377-47DD-A475-ABF97E96099A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
