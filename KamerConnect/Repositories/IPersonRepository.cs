@@ -11,6 +11,8 @@ public interface IPersonRepository
     void AddPasswordToPerson(Guid personId, string password, string salt);
     Person AuthenticatePerson(string email, string password);
     byte[] GetSaltFromPerson(string email);
-    void UpdatePerson(Guid personId, string fieldNameForIdCheck, List<string> fieldsToUpdate, List<NpgsqlParameter> paramaterNotations, string tableName);
-    void InsertTableIfIdIfNotExist(Guid personId, string tableName);
+    void UpdatePerson(Person person);
+    void UpdatePersonality(Person person);
+    void UpdateSocial(Person person);
+    
 }

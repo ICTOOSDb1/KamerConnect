@@ -15,6 +15,8 @@ public class Person
 
     public House? House { get; set; }
     public Personality? Personality { get; set; }
+    public HousePreferences? HousePreferences { get; set; }
+    public Social? Social { get; set; }
 
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
         DateTime birthDate, Gender gender, Role role, string? profilePicturePath, string id = "")

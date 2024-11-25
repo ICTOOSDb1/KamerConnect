@@ -22,14 +22,19 @@ public class PersonService
     {
         _repository.CreatePerson(person, password, salt);
     }
-    
-    public void UpdatePerson(Guid personId,  string fieldNameForIdCheck, List<string> fieldsToUpdate, List<NpgsqlParameter> paramaterNotations, string tableName)
+
+    public void UpdatePerson(Person person)
     {
-        _repository.UpdatePerson(personId, fieldNameForIdCheck, fieldsToUpdate, paramaterNotations, tableName);
+        _repository.UpdatePerson(person);
+    }
+    
+    public void UpdatePersonality(Person person)
+    {
+        _repository.UpdatePersonality(person);
     }
 
-    public void InsertTableIfIdIfNotExist(Guid personId, string tableName)
+    public void UpdateSocial(Person person)
     {
-        _repository.InsertTableIfIdIfNotExist(personId, tableName);
+        _repository.UpdateSocial(person);
     }
 }

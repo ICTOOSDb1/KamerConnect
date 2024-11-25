@@ -3,13 +3,14 @@ using KamerConnect;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
+    
     private readonly string ConnectionString = "Host=localhost;Username=Admin;Password=Password;Database=Kammerconnect";
-
     public List<Person> GetAll()
     {
         var persons = new List<Person>();
@@ -42,7 +43,8 @@ public class PersonRepository : IPersonRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.id = @id::uuid",
+                   new NpgsqlCommand(
+                       $"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.id = @id::uuid",
                        connection))
             {
                 command.Parameters.AddWithValue("@id", id);
@@ -85,16 +87,17 @@ public class PersonRepository : IPersonRepository
             {
                 command.Parameters.AddWithValue("@Email", person.Email);
                 command.Parameters.AddWithValue("@FirstName", person.FirstName);
-                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Surname", person.Surname);
                 command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
                 command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
-                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@ProfilePicturePath",
+                    person.ProfilePicturePath ?? (object)DBNull.Value);
 
                 var personId = (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
-                
+
                 AddPasswordToPerson(personId, password, Convert.ToBase64String(salt));
             }
         }
@@ -127,7 +130,8 @@ public class PersonRepository : IPersonRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.email = @email",
+                   new NpgsqlCommand(
+                       $"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.email = @email",
                        connection))
             {
                 command.Parameters.AddWithValue("@email", email);
@@ -152,7 +156,8 @@ public class PersonRepository : IPersonRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
+                   new NpgsqlCommand(
+                       $"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
                        connection))
             {
                 command.Parameters.AddWithValue("@email", email);
@@ -202,63 +207,121 @@ public class PersonRepository : IPersonRepository
 
         throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
     }
+
+    public void UpdatePerson(Person person)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       """
+                       UPDATE person SET
+                           email = @Email,
+                           first_name = @FirstName,
+                           middle_name = @MiddleName,
+                           surname = @Surname,
+                           phone_number = @PhoneNumber,
+                           birth_date = @BirthDate,
+                           gender = @gender::gender,
+                           role = @Role::user_role,
+                           profile_picture_path = @ProfilePicturePath
+                       WHERE id = @Id;
+                       """, connection))
+            {
+                command.Parameters.AddWithValue("@Id", Guid.Parse(person.Id));
+                command.Parameters.AddWithValue("@Email", person.Email);
+                command.Parameters.AddWithValue("@FirstName", person.FirstName);
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? string.Empty);
+                command.Parameters.AddWithValue("@Surname", person.Surname);
+                command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? string.Empty);
+                command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
+                command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
+                command.Parameters.AddWithValue("@Role", person.Role.ToString());
+                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? string.Empty);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
     
-    public void UpdatePerson(Guid personId, string fieldNameForIdCheck, List<string> fieldsToUpdate, List<NpgsqlParameter> paramaterNotations, string tableName)
+    public void UpdatePersonality(Person person)
 {
     using (var connection = new NpgsqlConnection(ConnectionString))
     {
         connection.Open();
-        if (fieldsToUpdate.Count == 0)
-        {
-            return;
-        }
         
-        var updateSql = $"""
-            UPDATE {tableName} SET
-            {string.Join(", ", fieldsToUpdate)}
-            WHERE {fieldNameForIdCheck} = @PersonId;
-            """;
-        
-        using (var command = new NpgsqlCommand(updateSql, connection))
+        using (var transaction = connection.BeginTransaction())
         {
-            command.Parameters.AddWithValue("@PersonId", personId);
-            command.Parameters.AddRange(paramaterNotations.ToArray());
-            command.ExecuteNonQuery();
+            using (var updateCommand = new NpgsqlCommand(
+                """
+                UPDATE personality
+                SET school = @School,
+                    study = @Study,
+                    description = @Description
+                WHERE person_id = @PersonalityId;
+                """, connection))
+            {
+                updateCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
+                updateCommand.Parameters.AddWithValue("@School", person.Personality.School ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Study", person.Personality.Study ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Description", person.Personality.Description ?? string.Empty);
+
+                var rowsAffected = updateCommand.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    using (var insertCommand = new NpgsqlCommand(
+                        """
+                        INSERT INTO personality (person_id, school, study, description)
+                        VALUES (@PersonalityId, @School, @Study, @Description);
+                        """, connection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
+                        insertCommand.Parameters.AddWithValue("@School", person.Personality.School ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@Study", person.Personality.Study ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@Description", person.Personality.Description ?? string.Empty);
+
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            transaction.Commit();
         }
     }
 }
-    public void InsertTableIfIdIfNotExist(Guid personId, string tableName)
+
+
+    public void UpdateSocial(Person person)
     {
         using (var connection = new NpgsqlConnection(ConnectionString))
         {
             connection.Open();
             
-            var checkExistenceSql = $"""
-                                     SELECT COUNT(1) FROM {tableName} WHERE person_id = @PersonId;
-                                     """;
-
-            using (var checkCommand = new NpgsqlCommand(checkExistenceSql, connection))
+            using (var transaction = connection.BeginTransaction())
             {
-                checkCommand.Parameters.AddWithValue("@PersonId", personId);
-                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
-                
-                if (count == 0)
+                using (var updateCommand = new NpgsqlCommand(
+                           "UPDATE social SET type = @Type::social_type, url = @Url WHERE person_id = @PersonalityId", connection))
                 {
-                    var insertSql = $"""
-                                     INSERT INTO {tableName} (person_id)
-                                     VALUES (@PersonId);
-                                     """;
-
-                    using (var insertCommand = new NpgsqlCommand(insertSql, connection))
+                    updateCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
+                    updateCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString());
+                    updateCommand.Parameters.AddWithValue("@Url", person.Social.Url);
+                    var rowsAffected = updateCommand.ExecuteNonQuery();
+                    
+                    if (rowsAffected == 0)
                     {
-                        insertCommand.Parameters.AddWithValue("@PersonId", personId);
-                        insertCommand.ExecuteNonQuery();
+                        using (var insertCommand = new NpgsqlCommand(
+                                   "INSERT INTO social (person_id, type, url) VALUES (@PersonalityId, @Type::social_type, @Url)", connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
+                            insertCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString());
+                            insertCommand.Parameters.AddWithValue("@Url", person.Social.Url);
+                            insertCommand.ExecuteNonQuery();
+                        }
                     }
                 }
+                transaction.Commit();
             }
         }
     }
-
-
 
 }

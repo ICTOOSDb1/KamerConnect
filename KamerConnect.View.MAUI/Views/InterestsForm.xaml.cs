@@ -8,79 +8,87 @@ public partial class InterestsForm : ContentView
 {
 	private readonly PersonService _personService;
 	private Person? _currentPerson;
-	private Personality? personality;
-	public Personality? Personality
-	{
-		get => personality;
-		set
-		{
-			personality = value;
-		}
-	}
 	
 	public InterestsForm(PersonService personService, Person person)
 	{
 		_personService = personService;
 		_currentPerson = person;
-		Personality = person.Personality;
 		CheckIfPersonalityFieldsAreNull(person);
-		BindingContext = Personality;
+		BindingContext = person.Personality;
 		InitializeComponent();
 	}
 
 	private void Button_update_interests(object? sender, EventArgs e)
 	{
-		Guid personId = Guid.Parse(_currentPerson.Id);
-		_personService.InsertTableIfIdIfNotExist(personId, "personality");
 		ValidateIfAccountDetailsChanged(_currentPerson);
+		_personService.UpdatePersonality(_currentPerson);
+		CheckIfSocialsArePicked(_currentPerson);
+		_personService.UpdateSocial(_currentPerson);
 	}
 	
 	public void ValidateIfAccountDetailsChanged(Person person)
     {
-        
-        List<string> fieldsToUpdate = new List<string>();
-        List<NpgsqlParameter> parametersToUpdate = new List<NpgsqlParameter>(); 
-        
-        if (Personality.School != schoolEntry.DefaultText)
+
+        if (person.Personality.School != schoolEntry.DefaultText)
         {
-	        Personality.School = schoolEntry.DefaultText;
-            fieldsToUpdate.Add("school = @School");
-            parametersToUpdate.Add(new NpgsqlParameter("@School", Personality.School));
+	        person.Personality.School = schoolEntry.DefaultText;
         }
-        if (Personality.Study != studyEntry.DefaultText)
+        if (person.Personality.Study != studyEntry.DefaultText)
         {
-	        Personality.Study = studyEntry.DefaultText;
-	        fieldsToUpdate.Add("study = @Study");
-	        parametersToUpdate.Add(new NpgsqlParameter("@Study", Personality.Study));
+	        person.Personality.Study = studyEntry.DefaultText;
         }
-        if (Personality.Description != descriptionEntry.DefaultText)
+        if (person.Personality.Description != descriptionEntry.DefaultText)
         {
-	        Personality.Description = descriptionEntry.DefaultText;
-	        fieldsToUpdate.Add("description = @Description");
-	        parametersToUpdate.Add(new NpgsqlParameter("@Description", Personality.Description));
+	        person.Personality.Description = descriptionEntry.DefaultText;
         }
-        Guid personId = Guid.Parse(_currentPerson.Id);
-        
-        _personService.UpdatePerson(personId, "person_id", fieldsToUpdate, parametersToUpdate, "personality");
+        if (person.Social.Url != socialUrlEntry.DefaultText)
+        {
+	        person.Social.Url = socialUrlEntry.DefaultText;
+        }
     }
 	
 	private void CheckIfPersonalityFieldsAreNull(Person person)
 	{
-		if (Personality == null)
+		if (person.Personality == null)
 		{
-			Personality = new Personality(null, null, null);
+			person.Personality = new Personality(null, null, null);
 		}
-		if (Personality.Description == null)
+		if (person.Personality.Description == null)
 		{
-			Personality.Description = "";
+			person.Personality.Description = "";
 		}
-		if (Personality.School == null)
+		if (person.Personality.School == null)
 		{
-			Personality.School = "";
+			person.Personality.School = "";
 		}
-		if (Personality.Study == null)
+		if (person.Personality.Study == null)
 		{
-			Personality.Study = "";
+			person.Personality.Study = "";
+		}
+		if (person.Social == null)
+		{
+			person.Social = new Social(SocialType.Facebook, "");
+		}
+		if (person.Social.Url == null)
+		{
+			person.Social.Url = "";
 		}
 	}
+	
+	public void CheckIfSocialsArePicked(Person person)
+	{
+		var selectedOption = SocialtypePicker.SelectedItem?.ToString();
+		if (Enum.TryParse(selectedOption, true, out SocialType socialType))
+		{
+			if (person.Social == null)
+			{
+				person.Social = new Social(socialType, "");
+			}
+			else
+			{
+				person.Social.Type = socialType;
+			}
+		}
+	}
+
 }

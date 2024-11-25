@@ -13,31 +13,44 @@ namespace KamerConnect.View.MAUI
         private PersonService _personService;
         private Person _currentPerson;
         
-        public UpdateAccount(FileService fileService, PersonService personService, Person currentPerson)
+        public UpdateAccount(FileService fileService, PersonService personService, Person person)
         {
             _fileService = fileService;
             _personService = personService;
+            _currentPerson = person;
             InitializeComponent();
-            _currentPerson = currentPerson;
             if (_currentPerson.Role == Role.Offering)
             {
                 HomePreferencesButton.IsVisible = false;
             }
         }
 
+
         private void AccountDetails(object sender, EventArgs e)
         {
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _currentPerson);
+            SetButtonStyles(AccountDetailsButton);
         }
-        
         private void Interests(object sender, EventArgs e)
         {
             FormsContainer.Content = new InterestsForm(_personService, _currentPerson);
+            SetButtonStyles(InterestsButton);
         }
 
         private void HomePreferences(object sender, EventArgs e)
         {
-            FormsContainer.Content = new HomePreferencesForm();
+            FormsContainer.Content = new HomePreferencesForm(_personService, _currentPerson);
+            SetButtonStyles(HomePreferencesButton);
+        }
+
+
+        private void SetButtonStyles(Button buttonSource)
+        {
+            InterestsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            AccountDetailsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            HomePreferencesButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            
+            buttonSource.Style = (Style)Application.Current.Resources["PrimaryButton"];
         }
     }
 }
