@@ -1,4 +1,5 @@
-using Microsoft.Maui.Controls.Compatibility;
+﻿using KamerConnect.Utils;
+
 namespace KamerConnect.View.MAUI.Components;
 
 public partial class Entry : ContentView
@@ -10,13 +11,14 @@ public partial class Entry : ContentView
         Date,
         PhoneNumber,
         Text,
-        Number
+        Number,
+        Decimal,
+        PostalCode
     }
 
     public Entry()
     {
         InitializeComponent();
-        BindingContext = this;
     }
 
 
@@ -67,13 +69,12 @@ public partial class Entry : ContentView
         }
     }
 
-
-    public static readonly BindableProperty DefaultTextProperty =
+    public static readonly BindableProperty TextProperty =
         BindableProperty.Create(nameof(Text), typeof(string), typeof(Entry), string.Empty);
     public string Text
     {
-        get => (string)GetValue(DefaultTextProperty);
-        set => SetValue(DefaultTextProperty, value);
+        get => (string)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
     }
 
     public static readonly BindableProperty PlaceholderProperty =
@@ -139,24 +140,45 @@ public partial class Entry : ContentView
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.Email && !EntryValidation.IsValidEmail(Text))
+        else if (InputType == EntryInputType.Email && !ValidationUtils.IsValidEmail(Text))
         {
             IsValid = false;
             ValidationMessage = "Emailadres is ongeldig.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.PhoneNumber && !EntryValidation.IsNumeric(Text) && !string.IsNullOrWhiteSpace(Text))
+        else if (InputType == EntryInputType.PhoneNumber && !ValidationUtils.IsValidPhoneNumber(Text))
         {
             IsValid = false;
             ValidationMessage = "Telefoonnummer is ongeldig.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.Date && !EntryValidation.IsNumeric(Text))
+        else if (InputType == EntryInputType.Date)
         {
             IsValid = false;
             ValidationMessage = "Geboorte datum is ongeldig.";
+            inputNotCorrect.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.PostalCode && !ValidationUtils.IsValidPostalCode(Text))
+        {
+            IsValid = false;
+            ValidationMessage = "Postcode is ongeldig.";
+            inputNotCorrect.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.Number && !ValidationUtils.IsInteger(Text))
+        {
+            IsValid = false;
+            ValidationMessage = "Geen geldig heel nummer.";
+            inputNotCorrect.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.Decimal && !ValidationUtils.IsDouble(Text))
+        {
+            IsValid = false;
+            ValidationMessage = "Geen geldig nummer.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
@@ -167,8 +189,6 @@ public partial class Entry : ContentView
             ValidationMessage = string.Empty;
         }
     }
-
-
 
     public static readonly BindableProperty IsLabelVisibleProperty =
         BindableProperty.Create(nameof(IsLabelVisible), typeof(bool), typeof(Entry), false);

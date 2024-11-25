@@ -1,3 +1,4 @@
+﻿using KamerConnect.EnvironmentVariables;
 using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;

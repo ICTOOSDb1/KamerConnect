@@ -1,7 +1,6 @@
 ﻿
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using KamerConnect.Exceptions;
 using KamerConnect.Models;
 using KamerConnect.Models.ConfigModels;
@@ -57,18 +56,15 @@ public class AuthenticationService
     {
         byte[] salt;
 
-        if (!Validations.IsValidEmail(person.Email))
+        if (!ValidationUtils.IsValidEmail(person.Email))
             throw new InvalidOperationException("Email in person is invalid.");
 
-        if (!Validations.IsValidPerson(person))
+        if (!ValidationUtils.IsValidPerson(person))
             throw new InvalidOperationException("Some required values are null or empty");
 
         Guid personId = _personService.CreatePerson(person);
 
-        if (personId != null)
-        {
-            _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
-        }
+        _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
     }
 
     public async Task<Session?> GetSession()
@@ -129,7 +125,7 @@ public class AuthenticationService
         throw new InvalidCredentialsException();
     }
 
-    public string HashPassword(string password, out byte[] salt, byte[] existingSalt = null)
+    public string HashPassword(string password, out byte[] salt, byte[]? existingSalt = null)
     {
         if (existingSalt == null)
         {
