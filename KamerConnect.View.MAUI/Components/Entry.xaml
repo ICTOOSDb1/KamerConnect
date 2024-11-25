@@ -10,7 +10,11 @@
             <Entry Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    Keyboard="{Binding Keyboard, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    IsPassword="{Binding IsPassword, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
-                   Text="{Binding DefaultText, Source={RelativeSource AncestorType={x:Type local:Entry}}}"/>
+                   Text="{Binding Text, Source={RelativeSource AncestorType={x:Type local:Entry}}}"/>
         </Frame>
+        <Label
+            x:Name="inputNotCorrect"
+            TextColor="red"
+            IsVisible="{Binding IsLabelVisible}"/>
     </StackLayout>
 </ContentView>

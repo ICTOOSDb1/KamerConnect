@@ -8,6 +8,8 @@ public partial class App : Application
 
 	public App(IServiceProvider serviceProvider)
 	{
+		EnvVariables.Load();
+
 		_serviceProvider = serviceProvider;
 		InitializeComponent();
 		InitializeAppAsync().GetAwaiter().GetResult();
@@ -30,4 +32,5 @@ public partial class App : Application
 			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
 		}
 	}
+
 }
