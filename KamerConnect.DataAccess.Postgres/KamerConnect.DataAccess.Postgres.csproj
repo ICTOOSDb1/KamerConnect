@@ -8,9 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.83" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KamerConnect.EnvironmentVariables\KamerConnect.EnvironmentVariables.csproj" />
     <ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
   </ItemGroup>
 

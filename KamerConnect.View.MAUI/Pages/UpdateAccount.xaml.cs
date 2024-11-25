@@ -26,7 +26,6 @@ namespace KamerConnect.View.MAUI
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _currentPerson);
         }
 
-
         private void AccountDetails(object sender, EventArgs e)
         {
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _currentPerson);

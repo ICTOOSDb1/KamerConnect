@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-             x:Class="KamerConnect.View.MAUI.LoginPage">
- 
-    <Grid>
+             x:Class="KamerConnect.View.MAUI.Pages.LoginPage">
+   <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -52,9 +50,11 @@
                        VerticalOptions="Start"
                        TextColor="Black"/>
            </VerticalStackLayout>
-            <Components:Entry LabelText="Email adres" InputType="Email"/>
-            <Components:Entry LabelText="wachtwoord" InputType="Password"/>
-            <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" />
+            <!--<Components:Entry LabelText="Email adres" InputType="Email"/> -->
+            <Entry x:Name="emailEntry"/>
+            <Entry x:Name="passwordEntry"/>
+            <!--<Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/> -->
+            <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
             <HorizontalStackLayout HorizontalOptions="Center">
                 <Label Text="Nog geen account?"
                        TextColor="Black"
@@ -80,7 +80,4 @@
                VerticalOptions="Center" 
                HorizontalOptions="Center" />
     </Grid>
-    
-
-
 </ContentPage>

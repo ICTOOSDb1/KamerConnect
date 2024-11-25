@@ -1,9 +1,5 @@
 using System.Security.Cryptography;
 using Microsoft.Maui.Storage;
-using Microsoft.UI.Xaml.Input;
-using KamerConnect.DataAccess.Postgres;
-using KamerConnect.DataAccess.Minio;
-using KamerConnect.Repositories;
 using KamerConnect.Services;
 using KamerConnect.Models;
 using Npgsql;
@@ -42,7 +38,7 @@ public partial class UpdateAccountsForm : ContentView
         {
             string filePath = result.FullPath;
             var fileBytes = await File.ReadAllBytesAsync(filePath);
-            string fileName = Path.GetFileName(filePath)+DateTime.Now.ToString("yyyyMMddHHmmss");
+            string fileName = Path.GetFileName(filePath) + DateTime.Now.ToString("yyyyMMddHHmmss");
             string contentType = GetContentType(fileName);
 
             await _fileService.UploadFileAsync(BucketName, fileName, fileBytes, contentType);

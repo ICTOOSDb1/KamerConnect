@@ -45,10 +45,20 @@ CREATE TABLE IF NOT EXISTS password (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     salt TEXT NOT NULL,
     hashed_password TEXT NOT NULL,
-    person_id UUID,
+    person_id UUID NOT NULL,
     
     CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS session (
+    SessionToken TEXT NOT NULL,
+    StartingDate DATE NOT NULL,
+    person_id UUID UNIQUE NOT NULL,
+
+    PRIMARY KEY (SessionToken),
+    CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
 
 
 CREATE TABLE IF NOT EXISTS personality (

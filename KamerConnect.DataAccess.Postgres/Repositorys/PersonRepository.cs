@@ -1,5 +1,5 @@
 using System.Data.Common;
-using KamerConnect;
+using KamerConnect.EnvironmentVariables;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using Npgsql;
@@ -9,42 +9,22 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    
-    private readonly string ConnectionString = "Host=localhost;Username=Admin;Password=Password;Database=Kammerconnect";
-    public List<Person> GetAll()
-    {
-        var persons = new List<Person>();
+    private readonly string connectionString;
 
-        using (var connection = new NpgsqlConnection(ConnectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand("SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id ",
-                       connection))
-            {
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        persons.Add(ReadToPerson(reader));
-                    }
-                }
-            }
-        }
-
-        return persons;
-    }
-
+    public PersonRepository()
+   {
+       connectionString = GetConnectionString();
+   }
     public Person GetPersonById(string id)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand(
-                       $"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.id = @id::uuid",
+                   new NpgsqlCommand($"SELECT * FROM person " +
+                                     $"LEFT JOIN personality ON person.id = personality.person_id " +
+                                     $"WHERE person.id = @id::uuid",
                        connection))
             {
                 command.Parameters.AddWithValue("@id", id);
@@ -61,10 +41,37 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
-
-    public void CreatePerson(Person person, string password, byte[] salt)
+    public Person GetPersonByEmail(string email)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand("""
+                                     SELECT * FROM person
+                                     LEFT JOIN personality ON person.id = personality.person_id
+                                        WHERE person.email = @email
+                                     """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return ReadToPerson(reader);
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+    public string CreatePerson(Person person)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
 
@@ -93,83 +100,30 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
                 command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
-                command.Parameters.AddWithValue("@ProfilePicturePath",
-                    person.ProfilePicturePath ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
 
-                var personId = (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
-
-                AddPasswordToPerson(personId, password, Convert.ToBase64String(salt));
+                var results = command.ExecuteScalar().ToString() ?? throw new InvalidOperationException();
+                return results?.ToString();
             }
         }
     }
-
-    public void AddPasswordToPerson(Guid personId, string password, string salt)
+    private string GetConnectionString()
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
+        var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
+        var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
+        var username = Environment.GetEnvironmentVariable("POSTGRES_USER");
+        var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+    
+        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(port) ||
+            string.IsNullOrEmpty(database) || string.IsNullOrEmpty(username) ||
+            string.IsNullOrEmpty(password))
         {
-            connection.Open();
-            using (var command = new NpgsqlCommand(
-                       """
-                       INSERT INTO password (salt, hashed_password, person_id)
-                                     VALUES (@Salt, @HashedPassword, @PersonId);
-                       """, connection))
-            {
-                command.Parameters.AddWithValue("@Salt", salt);
-                command.Parameters.AddWithValue("@HashedPassword", password);
-                command.Parameters.AddWithValue("@PersonId", personId);
-
-                command.ExecuteNonQuery();
-            }
+            throw new("Database environment variables are missing. Please check your .env file.");
         }
+    
+        return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
     }
-
-    public Person AuthenticatePerson(string email, string password)
-    {
-        using (var connection = new NpgsqlConnection(ConnectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand(
-                       $"SELECT * FROM person LEFT JOIN personality ON person.id = personality.person_id WHERE person.email = @email",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@email", email);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        return ReadToPerson(reader);
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public byte[] GetSaltFromPerson(string email)
-    {
-        using (var connection = new NpgsqlConnection(ConnectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand(
-                       $"SELECT salt FROM person LEFT JOIN password ON person.id = password.person_id WHERE person.email = @email",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@email", email);
-
-                byte[] salt = (byte[])(command.ExecuteScalar() ?? throw new InvalidOperationException());
-                return salt;
-            }
-        }
-
-        return null;
-    }
-
     private Person ReadToPerson(DbDataReader reader)
     {
         var person = new Person
@@ -178,11 +132,11 @@ public class PersonRepository : IPersonRepository
             reader.GetString(2),
             reader.IsDBNull(3) ? null : reader.GetString(3),
             reader.GetString(4),
-            reader.GetString(5),
+            reader.IsDBNull(5) ? null : reader.GetString(5),
             reader.GetDateTime(6),
             ValidateEnum<Gender>(reader.GetString(7)),
             ValidateEnum<Role>(reader.GetString(8)),
-            reader.GetString(9),
+            reader.IsDBNull(9) ? null : reader.GetString(9),
             reader.GetGuid(0).ToString()
         );
 
@@ -197,7 +151,6 @@ public class PersonRepository : IPersonRepository
 
         return person;
     }
-
     private static T ValidateEnum<T>(string value) where T : struct
     {
         if (Enum.TryParse(value, out T result) && Enum.IsDefined(typeof(T), result))
@@ -210,7 +163,7 @@ public class PersonRepository : IPersonRepository
 
     public void UpdatePerson(Person person)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
             using (var command = new NpgsqlCommand(
@@ -246,7 +199,7 @@ public class PersonRepository : IPersonRepository
     
     public void UpdatePersonality(Person person)
 {
-    using (var connection = new NpgsqlConnection(ConnectionString))
+    using (var connection = new NpgsqlConnection(connectionString))
     {
         connection.Open();
         
@@ -293,7 +246,7 @@ public class PersonRepository : IPersonRepository
 
     public void UpdateSocial(Person person)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
             
@@ -325,11 +278,10 @@ public class PersonRepository : IPersonRepository
     }
     public void UpdateHousePreferences(Person person)
     {
-        using (var connection = new NpgsqlConnection(ConnectionString))
+        using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
-        
-            // Prepare the update command
+            
             using (var updateCommand = new NpgsqlCommand(
                        """
                        UPDATE house_preferences
@@ -339,13 +291,11 @@ public class PersonRepository : IPersonRepository
                        WHERE id = @HousePreferencesId;
                        """, connection))
             {
-                // Set parameters from the person's house preferences
                 updateCommand.Parameters.AddWithValue("@HousePreferencesId", person.HousePreferencesId);
                 updateCommand.Parameters.AddWithValue("@Type", person.HousePreferences.Type.ToString() ?? string.Empty);
                 updateCommand.Parameters.AddWithValue("@Price", person.HousePreferences.Budget ?? string.Empty);
                 updateCommand.Parameters.AddWithValue("@Surface", person.HousePreferences.SurfaceArea ?? string.Empty);
-            
-                // Execute the update command
+                
                 updateCommand.ExecuteNonQuery();
             }
         }

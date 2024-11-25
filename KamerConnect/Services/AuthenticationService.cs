@@ -1,79 +1,157 @@
-﻿using System.Security.Cryptography;
+﻿
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using KamerConnect.Exceptions;
 using KamerConnect.Models;
+using KamerConnect.Models.ConfigModels;
 using KamerConnect.Repositories;
+using KamerConnect.Services;
+using KamerConnect.Utils;
+using Microsoft.Maui.Storage;
 
 namespace KamerConnect;
 
 public class AuthenticationService
 {
-    private IPersonRepository _repository;
-   
-    /// <summary>
-    /// Moet nog in .env
-    /// </summary>
-    const int keySize = 32;
-    const int iterations = 100_000;
-    HashAlgorithmName hashAlgorithm = HashAlgorithmName.SHA256;
+    private PersonService _personService;
+    private IAuthenticationRepository _repository;
     
-    public AuthenticationService(IPersonRepository repository)
+    private PasswordHashingConfig _passwordHashingConfig;
+    
+    public AuthenticationService(PersonService personService, IAuthenticationRepository authenticationRepository)
     {
-        _repository = repository;
+        _personService = personService;
+        _repository = authenticationRepository;
+
+        _passwordHashingConfig = GetHashValues();
+        
+        
     }
 
-    public void Authenticate(string email, string password)
+    public async Task Authenticate(string email, string passwordAttempt)
     {
-        _repository.AuthenticatePerson(email, HashPassword(password, out byte[] salt, _repository.GetSaltFromPerson(email)));
+        try
+        {
+            Person person = _personService.GetPersonByEmail(email) ?? throw new InvalidCredentialsException();
+            string personPassword = _repository.GetPassword(person.Id);
+            
+            if (ValidatePassword(HashPassword(passwordAttempt, 
+                    out byte[] salt, 
+                    _repository.GetSaltFromPerson(email)), personPassword))
+            {
+                await SaveSession(person.Id, DateTime.Now, GenerateSessionToken());
+            }
+        }
+        catch (InvalidCredentialsException e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public void Register(Person person, string password)
     {
         byte[] salt;
         
-        if (!IsValidPerson(person))
-            throw new InvalidOperationException("Person is invalid");
-        //validate password
+        if (!Validations.IsValidEmail(person.Email))
+            throw new InvalidOperationException("Email in person is invalid.");
         
-        _repository.CreatePerson(person, HashPassword(password, out salt), salt);
+        if (!Validations.IsValidPerson(person))
+            throw new InvalidOperationException("Some required values are null or empty");
+        
+        string person_id = _personService.CreatePerson(person);
+
+        if (person_id != null)
+        {
+            _repository.AddPassword(person_id, HashPassword(password, out salt), Convert.ToBase64String(salt));
+        }
+    }
+
+    public async Task<bool> CheckSession()
+    {
+        string currentToken = await GetSession();
+
+        if (!string.IsNullOrEmpty(currentToken))
+        {
+            Session sessionExpirationDate = _repository.GetSessionWithLocalToken(currentToken);
+
+            if (DateTime.Now >= sessionExpirationDate.startingDate.AddMonths(6))
+            {
+                RemoveSession(currentToken);
+                return false;
+            }
+            
+            return true;
+        }
+        
+        return false;
     }
     
-    private string HashPassword(string password, out byte[] salt, byte[] existringSalt = null)
+    private async Task SaveSession(string personId, DateTime currentDate, string sessionToken)
     {
-        if (existringSalt == null)
+        if (_repository.GetSession(personId) == null)
         {
-            salt = new byte[keySize];
-            salt = RandomNumberGenerator.GetBytes(keySize);
+            _repository.SaveSession(personId, currentDate, sessionToken);
+            await SecureStorage.Default.SetAsync("session_token", sessionToken);
         }
-        else
+    }
+    
+    private async Task<string?> GetSession()
+    {
+        return await SecureStorage.Default.GetAsync("session_token");
+    }
+    
+    private void RemoveSession(string currentToken)
+    {
+        _repository.RemoveSession(currentToken);
+        SecureStorage.Default.Remove("session_token");
+    }
+    private bool ValidatePassword(string passwordAttempt, string personPassword)
+    {
+        if (passwordAttempt == personPassword)
         {
-            salt = existringSalt;
+            return true;
+        }
+
+        throw new InvalidCredentialsException();
+    }
+
+    public string HashPassword(string password, out byte[] salt, byte[] existingSalt = null)
+    {
+        if (existingSalt == null) {
+            salt = new byte[_passwordHashingConfig.KeySize];
+            salt = RandomNumberGenerator.GetBytes(_passwordHashingConfig.KeySize);
+        }
+        else {
+            salt = existingSalt;
         }
 
         var hash = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(password),
             salt,
-            iterations,
-            hashAlgorithm,
-            keySize);
+            _passwordHashingConfig.Iterations,
+            new HashAlgorithmName(_passwordHashingConfig.HashAlgorithm),
+            _passwordHashingConfig.KeySize);
 
         return Convert.ToHexString(hash);
     }
-    
-    private bool IsValidEmail(string email)
+    private string GenerateSessionToken()
     {
-        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        Regex regex = new Regex(pattern);
-        return regex.IsMatch(email);
+        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(_passwordHashingConfig.KeySize));
     }
-
-    private bool IsValidPerson(Person person)
+    private PasswordHashingConfig GetHashValues()
     {
-        if (!IsValidEmail(person.Email))
-            throw new InvalidOperationException("Email in person is invalid.");
-
-        //Add more needed validations
-        return true;
-    }
+        var keySize = Environment.GetEnvironmentVariable("HASH_KEY_SIZE");
+        var iterations = Environment.GetEnvironmentVariable("HASH_ITERATIONS");
+        var algorithm = Environment.GetEnvironmentVariable("HASH_ALGORITHM");
+       
     
+        if (string.IsNullOrEmpty(keySize) || string.IsNullOrEmpty(iterations) || string.IsNullOrEmpty(algorithm))
+        {
+            throw new("Some hash data has not been set");
+        }
+
+        return new PasswordHashingConfig(int.Parse(keySize), int.Parse(iterations), algorithm);
+    }
 }
