@@ -1,3 +1,4 @@
+using System;
 using System.Data.Common;
 using KamerConnect;
 using KamerConnect.Models;
@@ -8,7 +9,7 @@ namespace KamerConnect.DataAccess.Postgres.Repositys;
 
 public class PersonRepository : IPersonRepository
 {
-    private readonly string ConnectionString = "Host=localhost;Username=Admin;Password=Password;Database=Kammerconnect";
+    private readonly string ConnectionString = "Host=localhost;Username=Admin;Password=Password;Database=Kamerconnect";
 
     public List<Person> GetAll()
     {
@@ -201,5 +202,27 @@ public class PersonRepository : IPersonRepository
         }
 
         throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
+    }
+
+    public void CreateHousePreference(Person person, HousePreferences housePreferences)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand($"""
+                                      INSERT INTO HousePreference
+                                      """,
+                       connection))
+            {
+
+
+
+                var personId = (Guid)(command.ExecuteScalar() ?? throw new InvalidOperationException());
+
+
+            }
+        }
     }
 }

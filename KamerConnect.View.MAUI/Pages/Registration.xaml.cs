@@ -7,6 +7,8 @@ namespace KamerConnect.View.MAUI;
 
 public partial class Registration : ContentPage, INotifyPropertyChanged
 {
+	public Person newPerson {  get; set; }
+
 	public Registration()
 	{
 		InitializeComponent();
@@ -30,9 +32,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		{
 			await Navigation.PopAsync();
 		}
-		else
-		{
-		}
+		
 	}
 
 	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -124,7 +124,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			role = Role.Offering;
 		}
 
-		var newPerson = new Person(
+		newPerson = new Person(
 			personalInformationForm.Email,
 			personalInformationForm.FirstName,
 			personalInformationForm.MiddleName,
@@ -137,9 +137,20 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		);
 	}
 
-	private void submit(object? sender, EventArgs e)
+	private async void submit(object? sender, EventArgs e)
 	{
 		CreatePerson();
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+			if (SelectedTab == "huis")
+			{
 
-	}
+				await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+			}
+			else
+			{
+				//naar de woning registratie pagina
+			}
+        }
+    }
 }

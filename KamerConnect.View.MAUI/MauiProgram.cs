@@ -40,7 +40,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateAccount>();
 
 		builder.Services.AddTransient<UpdateAccountsForm>();
-		builder.Services.AddTransient<HomePreferencesForm>();
+		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
 
 		return builder.Build();

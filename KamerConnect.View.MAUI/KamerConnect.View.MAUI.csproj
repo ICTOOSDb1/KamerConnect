@@ -69,8 +69,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\HomePreferencesForm.xaml.cs">
-	    <DependentUpon>HomePreferencesForm.xaml</DependentUpon>
+	  <Compile Update="Pages\RegisterHomePreferences.xaml.cs">
+	    <DependentUpon>RegisterHomePreferences.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\RegisterHomePreferencesForm.xaml.cs">
+	    <DependentUpon>RegisterHomePreferencesForm.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\InterestsForm.xaml.cs">
 	    <DependentUpon>InterestsForm.xaml</DependentUpon>
@@ -81,10 +84,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\RegisterHomePreferences.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UpdateAccount.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\HomePreferencesForm.xaml">
+	  <MauiXaml Update="Views\RegisterHomePreferencesForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\InterestsForm.xaml">
