@@ -9,13 +9,12 @@ public class AuthenticationRepository : IAuthenticationRepository
 {
     private readonly string connectionString;
 
-
     public AuthenticationRepository()
     {
         connectionString = EnvironmentUtils.GetConnectionString();
     }
 
-    public void SaveSession(string personId, DateTime startingDate, string sessionToken)
+    public void SaveSession(Guid personId, DateTime startingDate, string sessionToken)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -33,7 +32,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public Session GetSession(string personId)
+    public Session GetSession(Guid personId)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -160,7 +159,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         return null;
     }
 
-    public void AddPassword(string personId, string password, string salt)
+    public void AddPassword(Guid personId, string password, string salt)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -180,7 +179,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public string GetPassword(string person_id)
+    public string GetPassword(Guid person_id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {

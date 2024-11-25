@@ -1,9 +1,10 @@
-using System;
 using KamerConnect.Models;
 
 namespace KamerConnect.Repositories;
 
 public interface IHouseRepository
 {
-    public string CreateHouse(House house);
+    void Update(House house);
+    House Get(Guid id);
+    Guid Create(House house);
 }

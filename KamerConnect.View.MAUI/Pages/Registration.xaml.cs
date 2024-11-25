@@ -133,6 +133,8 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			personalInformationForm.BirthDate,
 			Enum.Parse<Gender>(personalInformationForm.Gender ?? "Other"),
 			role,
+			null,
+			null,
 			null
 		);
 	}

@@ -34,13 +34,16 @@ public class AuthenticationService
         try
         {
             Person person = _personService.GetPersonByEmail(email) ?? throw new InvalidCredentialsException();
-            string personPassword = _repository.GetPassword(person.Id);
-
-            if (ValidatePassword(HashPassword(passwordAttempt,
-                    out byte[] salt,
-                    _repository.GetSaltFromPerson(email)), personPassword))
+            if (person.Id != null)
             {
-                await SaveSession(person.Id, DateTime.Now, GenerateSessionToken());
+                string personPassword = _repository.GetPassword((Guid)person.Id);
+
+                if (ValidatePassword(HashPassword(passwordAttempt,
+                        out byte[] salt,
+                        _repository.GetSaltFromPerson(email)), personPassword))
+                {
+                    await SaveSession((Guid)person.Id, DateTime.Now, GenerateSessionToken());
+                }
             }
         }
         catch (InvalidCredentialsException e)
@@ -60,17 +63,26 @@ public class AuthenticationService
         if (!Validations.IsValidPerson(person))
             throw new InvalidOperationException("Some required values are null or empty");
 
-        string person_id = _personService.CreatePerson(person);
+        Guid personId = _personService.CreatePerson(person);
 
-        if (person_id != null)
+        if (personId != null)
         {
-            _repository.AddPassword(person_id, HashPassword(password, out salt), Convert.ToBase64String(salt));
+            _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
         }
+    }
+
+    public async Task<Session?> GetSession()
+    {
+        var sessionToken = await GetSessionToken();
+        if (sessionToken != null)
+            return _repository.GetSessionWithLocalToken(sessionToken);
+
+        return null;
     }
 
     public async Task<bool> CheckSession()
     {
-        string? currentToken = await GetSession();
+        string? currentToken = await GetSessionToken();
 
         if (!string.IsNullOrEmpty(currentToken))
         {
@@ -88,7 +100,7 @@ public class AuthenticationService
         return false;
     }
 
-    private async Task SaveSession(string personId, DateTime currentDate, string sessionToken)
+    private async Task SaveSession(Guid personId, DateTime currentDate, string sessionToken)
     {
         if (_repository.GetSession(personId) == null)
         {
@@ -97,7 +109,7 @@ public class AuthenticationService
         }
     }
 
-    public async Task<string?> GetSession()
+    public async Task<string?> GetSessionToken()
     {
         return await SecureStorage.Default.GetAsync("session_token");
     }

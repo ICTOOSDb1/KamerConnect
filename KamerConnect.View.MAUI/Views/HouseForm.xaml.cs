@@ -11,15 +11,57 @@ public partial class HouseForm : ContentView
     private const string bucketName = "house";
     private readonly FileService _fileService;
     private readonly HouseService _houseService;
+    private readonly Person _person;
+    private House? _house;
+    public House? House
+    {
+        get => _house;
+        set
+        {
+            _house = value;
+            OnPropertyChanged(nameof(House));
+        }
+    }
     public ObservableCollection<IPickFile> ImageResults { get; set; } = new ObservableCollection<IPickFile>();
     private List<HouseImage> houseImages = new List<HouseImage>();
 
-    public HouseForm(FileService fileService, HouseService houseService)
+    public HouseForm(FileService fileService, HouseService houseService,
+        Person person)
     {
         _fileService = fileService;
         _houseService = houseService;
+        _person = person;
+
+        GetCurrentHouse();
         InitializeComponent();
+        SetDefaultHouseType();
         BindingContext = this;
+    }
+
+    private void SetDefaultHouseType()
+    {
+        switch (House?.Type)
+        {
+            case HouseType.Apartment:
+                apartmentEntry.IsChecked = true;
+                break;
+
+            case HouseType.House:
+                apartmentEntry.IsChecked = true;
+                break;
+
+            case HouseType.Studio:
+                apartmentEntry.IsChecked = true;
+                break;
+        }
+    }
+
+    private void GetCurrentHouse()
+    {
+        if (_person.HouseId != null)
+        {
+            // House = _houseService.Get((Guid)_person.HouseId);
+        }
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
@@ -40,7 +82,6 @@ public partial class HouseForm : ContentView
                     ImageResults.Add(result);
 
                     string filePath = result.FileResult!.FullPath;
-                    var fileBytes = await File.ReadAllBytesAsync(filePath);
                     string fileName = Path.GetFileName(filePath);
                     string contentType = FileUtils.GetContentType(fileName);
 
@@ -86,19 +127,40 @@ public partial class HouseForm : ContentView
             houseType = HouseType.House;
         }
 
-        _houseService.Create(new House(
-            null,
-            houseType,
-            price,
-            description,
-            surface,
-            residents,
-            city,
-            street,
-            postalCode,
-            houseNumber,
-            addition,
-            houseImages
-        ));
+        if (House == null)
+        {
+            _houseService.Create(new House(
+                null,
+                houseType,
+                price,
+                description,
+                surface,
+                residents,
+                city,
+                street,
+                postalCode,
+                houseNumber,
+                addition,
+                houseImages
+            ));
+        }
+        else
+        {
+            _houseService.Update(new House(
+                House.Id,
+                houseType,
+                price,
+                description,
+                surface,
+                residents,
+                city,
+                street,
+                postalCode,
+                houseNumber,
+                addition,
+                houseImages
+            ));
+        }
     }
+
 }

@@ -14,7 +14,7 @@ public class PersonRepository : IPersonRepository
     {
         connectionString = EnvironmentUtils.GetConnectionString();
     }
-    public Person GetPersonById(string id)
+    public Person GetPersonById(Guid id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -68,7 +68,7 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
-    public string CreatePerson(Person person)
+    public Guid CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -101,8 +101,8 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
                 command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
 
-                var results = command.ExecuteScalar().ToString() ?? throw new InvalidOperationException();
-                return results?.ToString();
+                var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                return (Guid)result;
             }
         }
     }
@@ -117,10 +117,11 @@ public class PersonRepository : IPersonRepository
             reader.GetString(4),
             reader.IsDBNull(5) ? null : reader.GetString(5),
             reader.GetDateTime(6),
-            ValidateEnum<Gender>(reader.GetString(7)),
-            ValidateEnum<Role>(reader.GetString(8)),
+            EnumUtils.Validate<Gender>(reader.GetString(7)),
+            EnumUtils.Validate<Role>(reader.GetString(8)),
             reader.IsDBNull(9) ? null : reader.GetString(9),
-            reader.GetGuid(0).ToString()
+            reader.GetGuid(0),
+            reader.GetGuid(10)
         );
 
 
@@ -133,14 +134,5 @@ public class PersonRepository : IPersonRepository
         );
 
         return person;
-    }
-    private static T ValidateEnum<T>(string value) where T : struct
-    {
-        if (Enum.TryParse(value, out T result) && Enum.IsDefined(typeof(T), result))
-        {
-            return result;
-        }
-
-        throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
     }
 }

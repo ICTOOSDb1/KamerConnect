@@ -18,13 +18,16 @@
 
 					<Components:Entry LabelText="Straat"
 									  Grid.Column="0"
-									  x:Name="streetEntry"/>
+									  x:Name="streetEntry"
+									  DefaultText="{Binding House.Street}"/>
 					<Components:Entry LabelText="Huisnummer"
 									  Grid.Column="1"
-									  x:Name="houseNumberEntry"/>
+									  x:Name="houseNumberEntry"
+									  DefaultText="{Binding House.HouseNumber}"/>
 					<Components:Entry LabelText="Toevoeging"
 									  Grid.Column="2"
-									  x:Name="additionEntry"/>
+									  x:Name="additionEntry"
+									  DefaultText="{Binding House.HouseNumberAddition}"/>
 				</Grid>
 
 				<Grid ColumnSpacing="10">
@@ -35,10 +38,12 @@
 
 					<Components:Entry LabelText="Stad"
 									  Grid.Column="0"
-									  x:Name="cityEntry"/>
+									  x:Name="cityEntry"
+									  DefaultText="{Binding House.City}"/>
 					<Components:Entry LabelText="Postcode"
 									  Grid.Column="1"
-									  x:Name="postalCodeEntry"/>
+									  x:Name="postalCodeEntry"
+									  DefaultText="{Binding House.PostalCode}"/>
 				</Grid>
 
 				<Grid ColumnSpacing="10">
@@ -51,19 +56,23 @@
 					<Components:Entry LabelText="Prijs"
 									  InputType="Number"
 									  Grid.Column="0"
-									  x:Name="priceEntry"/>
+									  x:Name="priceEntry"
+									  DefaultText="{Binding House.Price}"/>
 					<Components:Entry LabelText="Oppervlak"
 									  InputType="Number"
 									  Grid.Column="1"
-									  x:Name="surfaceEntry"/>
+									  x:Name="surfaceEntry"
+									  DefaultText="{Binding House.Surface}"/>
 					<Components:Entry LabelText="Bewoners"
 									  InputType="Number"
 									  Grid.Column="2"
-									  x:Name="residentsEntry"/>
+									  x:Name="residentsEntry"
+									  DefaultText="{Binding House.Residents}"/>
 				</Grid>
 
 				<Components:TextEditor LabelText="Beschrijving"
-									   x:Name="descriptionEntry"/>
+									   x:Name="descriptionEntry"
+									   Text="{Binding House.Description}"/>
 
 				<StackLayout Spacing="10">
 					<Label Text="Type*"
