@@ -19,15 +19,15 @@
 					<Components:Entry LabelText="Straat"
 									  Grid.Column="0"
 									  x:Name="streetEntry"
-									  DefaultText="{Binding House.Street}"/>
+									  Text="{Binding House.Street}"/>
 					<Components:Entry LabelText="Huisnummer"
 									  Grid.Column="1"
 									  x:Name="houseNumberEntry"
-									  DefaultText="{Binding House.HouseNumber}"/>
+									  Text="{Binding House.HouseNumber}"/>
 					<Components:Entry LabelText="Toevoeging"
 									  Grid.Column="2"
 									  x:Name="additionEntry"
-									  DefaultText="{Binding House.HouseNumberAddition}"/>
+									  Text="{Binding House.HouseNumberAddition}"/>
 				</Grid>
 
 				<Grid ColumnSpacing="10">
@@ -39,11 +39,12 @@
 					<Components:Entry LabelText="Stad"
 									  Grid.Column="0"
 									  x:Name="cityEntry"
-									  DefaultText="{Binding House.City}"/>
+									  Text="{Binding House.City}"/>
 					<Components:Entry LabelText="Postcode"
 									  Grid.Column="1"
 									  x:Name="postalCodeEntry"
-									  DefaultText="{Binding House.PostalCode}"/>
+									  InputType="PostalCode"
+									  Text="{Binding House.PostalCode}"/>
 				</Grid>
 
 				<Grid ColumnSpacing="10">
@@ -54,20 +55,20 @@
 					</Grid.ColumnDefinitions>
 
 					<Components:Entry LabelText="Prijs"
-									  InputType="Number"
+									  InputType="Decimal"
 									  Grid.Column="0"
 									  x:Name="priceEntry"
-									  DefaultText="{Binding House.Price}"/>
+									  Text="{Binding House.Price}"/>
 					<Components:Entry LabelText="Oppervlak"
 									  InputType="Number"
 									  Grid.Column="1"
 									  x:Name="surfaceEntry"
-									  DefaultText="{Binding House.Surface}"/>
+									  Text="{Binding House.Surface}"/>
 					<Components:Entry LabelText="Bewoners"
 									  InputType="Number"
 									  Grid.Column="2"
 									  x:Name="residentsEntry"
-									  DefaultText="{Binding House.Residents}"/>
+									  Text="{Binding House.Residents}"/>
 				</Grid>
 
 				<Components:TextEditor LabelText="Beschrijving"
@@ -78,6 +79,10 @@
 					<Label Text="Type*"
 						   FontSize="14"
 						   FontAttributes="Bold"/>
+					<Label x:Name="radiobuttonNotSelected"
+						   IsVisible="False"
+						   TextColor="Red"
+						   Text="Vul een soort huis in."></Label>
 
 					<RadioButton Content="Appartement"
 								 GroupName="HouseType"

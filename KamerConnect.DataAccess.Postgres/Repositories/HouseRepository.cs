@@ -58,7 +58,6 @@ public class HouseRepository : IHouseRepository
         }
     }
 
-
     private void CreateHouseImages(Guid houseId, List<HouseImage> houseImages, NpgsqlConnection connection)
     {
         if (houseImages == null || !houseImages.Any()) return;

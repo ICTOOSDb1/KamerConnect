@@ -47,11 +47,11 @@ public partial class HouseForm : ContentView
                 break;
 
             case HouseType.House:
-                apartmentEntry.IsChecked = true;
+                houseEntry.IsChecked = true;
                 break;
 
             case HouseType.Studio:
-                apartmentEntry.IsChecked = true;
+                studioEntry.IsChecked = true;
                 break;
         }
     }
@@ -103,16 +103,51 @@ public partial class HouseForm : ContentView
         }
     }
 
-    private void OnPublish(object sender, EventArgs e)
+    public bool ValidateForm()
     {
-        string street = streetEntry.DefaultText;
-        int houseNumber = int.Parse(houseNumberEntry.DefaultText);
-        string addition = additionEntry.DefaultText;
-        string city = cityEntry.DefaultText;
-        string postalCode = postalCodeEntry.DefaultText;
-        double price = double.Parse(priceEntry.DefaultText);
-        int surface = int.Parse(surfaceEntry.DefaultText);
-        int residents = int.Parse(residentsEntry.DefaultText);
+        streetEntry.Validate();
+        houseNumberEntry.Validate();
+        additionEntry.Validate();
+        cityEntry.Validate();
+        postalCodeEntry.Validate();
+        priceEntry.Validate();
+        surfaceEntry.Validate();
+        residentsEntry.Validate();
+
+        bool isHouseTypeValid = apartmentEntry.IsChecked || houseEntry.IsChecked || studioEntry.IsChecked;
+        if (!isHouseTypeValid)
+        {
+            radiobuttonNotSelected.IsVisible = true;
+        }
+        else
+        {
+            radiobuttonNotSelected.IsVisible = false;
+        }
+
+        return streetEntry.IsValid &&
+               houseNumberEntry.IsValid &&
+               additionEntry.IsValid &&
+               cityEntry.IsValid &&
+               postalCodeEntry.IsValid &&
+               priceEntry.IsValid &&
+               houseNumberEntry.IsValid &&
+               surfaceEntry.IsValid &&
+               residentsEntry.IsValid &&
+               isHouseTypeValid;
+    }
+
+    private async void OnPublish(object sender, EventArgs e)
+    {
+        if (!ValidateForm()) return;
+
+        string street = streetEntry.Text;
+        int houseNumber = int.Parse(houseNumberEntry.Text);
+        string addition = additionEntry.Text;
+        string city = cityEntry.Text;
+        string postalCode = postalCodeEntry.Text;
+        double price = double.Parse(priceEntry.Text);
+        int surface = int.Parse(surfaceEntry.Text);
+        int residents = int.Parse(residentsEntry.Text);
         string description = descriptionEntry.Text;
 
         HouseType houseType;
@@ -161,6 +196,9 @@ public partial class HouseForm : ContentView
                 houseImages
             ));
         }
+
+        await Application.Current?.MainPage?.DisplayAlert("Huis opgeslagen", "Succesvol opgeslagen!", "Ga verder");
+
     }
 
 }
