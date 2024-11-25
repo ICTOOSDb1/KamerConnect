@@ -151,7 +151,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
                 if (SelectedTab == Tab.SearchingHouse)
                 {
 
-                   // await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+                   // RegisterHomePreference moet toegevoegd worden aan service provider en er moet hiernaartoe genavigeerd worden
                 }
                 else
                 {
