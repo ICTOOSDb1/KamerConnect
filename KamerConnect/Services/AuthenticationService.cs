@@ -29,30 +29,34 @@ public class AuthenticationService
         
     }
 
-    public async Task Authenticate(string email, string passwordAttempt)
+    public async Task<string?> Authenticate(string email, string passwordAttempt)
     {
         try
         {
             Person person = _personService.GetPersonByEmail(email) ?? throw new InvalidCredentialsException();
-            string personPassword = _repository.GetPassword(person.Id);
+            string? personPassword = _repository.GetPassword(person.Id);
             
             if (ValidatePassword(HashPassword(passwordAttempt, 
-                    out byte[] salt, 
+                    out byte[]? salt, 
                     _repository.GetSaltFromPerson(email)), personPassword))
             {
-                await SaveSession(person.Id, DateTime.Now, GenerateSessionToken());
+                string sessionToken = GenerateSessionToken();
+                await SaveSession(person.Id, DateTime.Now, sessionToken);
+                return sessionToken;
             }
         }
         catch (InvalidCredentialsException e)
         {
             Console.WriteLine(e);
-            throw;
+            return null;
         }
+
+        return null;
     }
 
     public void Register(Person person, string password)
     {
-        byte[] salt;
+        byte[]? salt;
         
         if (!Validations.IsValidEmail(person.Email))
             throw new InvalidOperationException("Email in person is invalid.");
@@ -60,7 +64,7 @@ public class AuthenticationService
         if (!Validations.IsValidPerson(person))
             throw new InvalidOperationException("Some required values are null or empty");
         
-        string person_id = _personService.CreatePerson(person);
+        string? person_id = _personService.CreatePerson(person);
 
         if (person_id != null)
         {
@@ -70,13 +74,13 @@ public class AuthenticationService
 
     public async Task<bool> CheckSession()
     {
-        string currentToken = await GetSession();
+        string? currentToken = await GetSession();
 
         if (!string.IsNullOrEmpty(currentToken))
         {
-            Session sessionExpirationDate = _repository.GetSessionWithLocalToken(currentToken);
+            Session? sessionExpirationDate = _repository.GetSessionWithLocalToken(currentToken);
 
-            if (DateTime.Now >= sessionExpirationDate.startingDate.AddMonths(6))
+            if (sessionExpirationDate == null || DateTime.Now >= sessionExpirationDate.startingDate.AddMonths(6))
             {
                 RemoveSession(currentToken);
                 return false;
@@ -102,12 +106,12 @@ public class AuthenticationService
         return await SecureStorage.Default.GetAsync("session_token");
     }
     
-    private void RemoveSession(string currentToken)
+    private void RemoveSession(string? currentToken)
     {
         _repository.RemoveSession(currentToken);
         SecureStorage.Default.Remove("session_token");
     }
-    private bool ValidatePassword(string passwordAttempt, string personPassword)
+    private bool ValidatePassword(string passwordAttempt, string? personPassword)
     {
         if (passwordAttempt == personPassword)
         {
@@ -117,7 +121,7 @@ public class AuthenticationService
         throw new InvalidCredentialsException();
     }
 
-    public string HashPassword(string password, out byte[] salt, byte[] existingSalt = null)
+    private string HashPassword(string password, out byte[]? salt, byte[]? existingSalt = null)
     {
         if (existingSalt == null) {
             salt = new byte[_passwordHashingConfig.KeySize];
@@ -145,8 +149,7 @@ public class AuthenticationService
         var keySize = Environment.GetEnvironmentVariable("HASH_KEY_SIZE");
         var iterations = Environment.GetEnvironmentVariable("HASH_ITERATIONS");
         var algorithm = Environment.GetEnvironmentVariable("HASH_ALGORITHM");
-       
-    
+        
         if (string.IsNullOrEmpty(keySize) || string.IsNullOrEmpty(iterations) || string.IsNullOrEmpty(algorithm))
         {
             throw new("Some hash data has not been set");

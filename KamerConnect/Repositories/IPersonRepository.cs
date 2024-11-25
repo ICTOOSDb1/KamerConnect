@@ -5,8 +5,8 @@ namespace KamerConnect.Repositories;
 
 public interface IPersonRepository
 {
-    Person GetPersonById(string id);
-    Person GetPersonByEmail(string email);
-    string CreatePerson(Person person);
+    Person? GetPersonById(string id);
+    Person? GetPersonByEmail(string email);
+    string? CreatePerson(Person person);
 
 }

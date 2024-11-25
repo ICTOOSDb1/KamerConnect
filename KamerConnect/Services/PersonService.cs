@@ -11,17 +11,16 @@ public class PersonService
     {
         _repository = repository;
     }
-
-    public Person GetPersonById(string id)
+    public Person? GetPersonById(string id)
     {
         return _repository.GetPersonById(id);
     }
-    public Person GetPersonByEmail(string email)
+    public Person? GetPersonByEmail(string email)
     {
         return _repository.GetPersonByEmail(email);
     }
     
-    public string CreatePerson(Person person)
+    public string? CreatePerson(Person person)
     { 
         return _repository.CreatePerson(person);
     }
