@@ -3,6 +3,7 @@ using KamerConnect.EnvironmentVariables;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using Npgsql;
+using NpgsqlTypes;
 
 namespace KamerConnect.DataAccess.Postgres.Repositys;
 
@@ -93,7 +94,7 @@ public class PersonRepository : IPersonRepository
             {
                 command.Parameters.AddWithValue("@Email", person.Email);
                 command.Parameters.AddWithValue("@FirstName", person.FirstName);
-                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Surname", person.Surname);
                 command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
@@ -159,4 +160,145 @@ public class PersonRepository : IPersonRepository
 
         throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
     }
+
+    public void UpdatePerson(Person person)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(
+                       """
+                       UPDATE person SET
+                           email = @Email,
+                           first_name = @FirstName,
+                           middle_name = @MiddleName,
+                           surname = @Surname,
+                           phone_number = @PhoneNumber,
+                           birth_date = @BirthDate,
+                           gender = @gender::gender,
+                           role = @Role::user_role,
+                           profile_picture_path = @ProfilePicturePath
+                       WHERE id = @Id;
+                       """, connection))
+            {
+                command.Parameters.AddWithValue("@Id", Guid.Parse(person.Id));
+                command.Parameters.AddWithValue("@Email", person.Email);
+                command.Parameters.AddWithValue("@FirstName", person.FirstName);
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? string.Empty);
+                command.Parameters.AddWithValue("@Surname", person.Surname);
+                command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? string.Empty);
+                command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
+                command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
+                command.Parameters.AddWithValue("@Role", person.Role.ToString());
+                command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? string.Empty);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+    
+    public void UpdatePersonality(string personId, Personality personality)
+{
+    using (var connection = new NpgsqlConnection(connectionString))
+    {
+        connection.Open();
+        
+        using (var transaction = connection.BeginTransaction())
+        {
+            using (var updateCommand = new NpgsqlCommand(
+                """
+                UPDATE personality
+                SET school = @School,
+                    study = @Study,
+                    description = @Description
+                WHERE person_id = @PersonalityId;
+                """, connection))
+            {
+                updateCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                updateCommand.Parameters.AddWithValue("@School", personality.School ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Study", personality.Study ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Description", personality.Description ?? string.Empty);
+
+                var rowsAffected = updateCommand.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    using (var insertCommand = new NpgsqlCommand(
+                        """
+                        INSERT INTO personality (person_id, school, study, description)
+                        VALUES (@PersonalityId, @School, @Study, @Description);
+                        """, connection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                        insertCommand.Parameters.AddWithValue("@School", personality.School ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@Study", personality.Study ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@Description", personality.Description ?? string.Empty);
+
+                        insertCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            transaction.Commit();
+        }
+    }
+}
+
+
+    public void UpdateSocial(string personId, Social social)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            
+            using (var transaction = connection.BeginTransaction())
+            {
+                using (var updateCommand = new NpgsqlCommand(
+                           "UPDATE social SET type = @Type::social_type, url = @Url WHERE person_id = @PersonalityId", connection))
+                {
+                    updateCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                    updateCommand.Parameters.AddWithValue("@Type", social.Type.ToString() ?? null);
+                    updateCommand.Parameters.AddWithValue("@Url", social.Url ?? null);
+                    var rowsAffected = updateCommand.ExecuteNonQuery();
+                    
+                    if (rowsAffected == 0)
+                    {
+                        using (var insertCommand = new NpgsqlCommand(
+                                   "INSERT INTO social (person_id, type, url) VALUES (@PersonalityId, @Type::social_type, @Url)", connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                            insertCommand.Parameters.AddWithValue("@Type", social.Type.ToString() ?? null);
+                            insertCommand.Parameters.AddWithValue("@Url", social.Url ?? null);
+                            insertCommand.ExecuteNonQuery();
+                        }
+                    }
+                }
+                transaction.Commit();
+            }
+        }
+    }
+    public void UpdateHousePreferences(string housePreferencesId, HousePreferences housePreferences)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            
+            using (var updateCommand = new NpgsqlCommand(
+                       """
+                       UPDATE house_preferences
+                       SET type = @Type,
+                           price = @Price,
+                           surface = @Surface
+                       WHERE id = @HousePreferencesId;
+                       """, connection))
+            {
+                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferencesId);
+                updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type.ToString() ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Price", housePreferences.Budget ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea ?? string.Empty);
+                
+                updateCommand.ExecuteNonQuery();
+            }
+        }
+    }
+
 }

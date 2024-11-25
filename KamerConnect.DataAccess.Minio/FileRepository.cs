@@ -64,4 +64,6 @@ public class FileRepository : IFileRepository
             );
         }
     }
+    
+    //TO DO: toevoegen dat de bucket automatisch op public gezet nadat hij gemaakt is
 }
