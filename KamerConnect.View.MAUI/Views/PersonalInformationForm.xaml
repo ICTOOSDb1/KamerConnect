@@ -33,7 +33,7 @@
                                   LabelText="Achternaam*"/>
             </VerticalStackLayout>
         </Grid>
-
+        
         <Grid ColumnSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -42,6 +42,7 @@
 
             <VerticalStackLayout Grid.Column="0" Spacing="10">
                 <components:Entry x:Name="emailEntry"
+                                  InputType="Email"
                                   LabelText="E-mail*"
                                   Keyboard="Email"/>
 
@@ -52,6 +53,7 @@
 
             <VerticalStackLayout Grid.Column="1" Spacing="10">
                 <components:Entry x:Name="phoneNumberEntry"
+                                  InputType="PhoneNumber"
                                   LabelText="Telefoonnummer"
                                   Keyboard="Telephone"/>
                 
@@ -63,6 +65,7 @@
 
         <VerticalStackLayout>
             <components:Entry x:Name="birthDateEntry"
+                              InputType="Date"
                               LabelText="Geboortedatum*"
                               Placeholder="dd/mm/jjjj"
                               Keyboard="Numeric"/>
@@ -81,6 +84,7 @@
             <RadioButton Content="Anders"
                          GroupName="GenderGroup"
                          x:Name="otherRadioButton"/>
+            <Label x:Name="radiobuttonNotSelected" IsVisible="False" TextColor="Red " Text="vul een geslacht in"></Label>
         </StackLayout>
     </StackLayout>
 </ContentView>

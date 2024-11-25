@@ -7,14 +7,28 @@ namespace KamerConnect.View.MAUI;
 
 public partial class Registration : ContentPage, INotifyPropertyChanged
 {
-	public Person newPerson {  get; set; }
-
+	public Person newPerson { get; set; }
+	public enum Tab
+	{
+		SearchingHouse,
+		HavingHouse
+	}
+	private Tab _selectedTab;
+	public Tab SelectedTab
+	{
+		get => _selectedTab;
+		set
+		{
+			_selectedTab = value;
+			OnPropertyChanged();
+		}
+	}
 	public Registration()
 	{
 		InitializeComponent();
 		SelectTabAction = SelectTab;
 		BindingContext = this;
-		SelectedTab = "huis";
+		SelectedTab = Tab.SearchingHouse;
 		UpdateButtonColors();
 	}
 	public event PropertyChangedEventHandler PropertyChanged;
@@ -24,7 +38,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 
-	public Action<string> SelectTabAction { get; set; }
+	public Action<Tab> SelectTabAction { get; set; }
 
 	private async void Terug(object sender, EventArgs e)
 	{
@@ -32,7 +46,6 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		{
 			await Navigation.PopAsync();
 		}
-		
 	}
 
 	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -43,24 +56,15 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-	private void OnHuisClicked(object sender, EventArgs e)
+	private void OnSearchingClicked(object sender, EventArgs e)
 	{
-		SelectTab("huis");
+		SelectTab(Tab.SearchingHouse);
 	}
 
-	private void OnHuisgenootClicked(object sender, EventArgs e)
+	private void OnHavingClicked(object sender, EventArgs e)
 	{
-		SelectTab("huisgenoot");
-
+		SelectTab(Tab.HavingHouse);
 	}
-
-	private string _selectedTab;
-	public string SelectedTab
-	{
-		get => _selectedTab;
-		set => _selectedTab = value;
-	}
-
 
 	private string _huisButtonColor = "#EF626C";
 	public string HuisButtonColor
@@ -90,39 +94,29 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-
-	private void SelectTab(string tab)
+	private void SelectTab(Tab tab)
 	{
 		SelectedTab = tab;
 		UpdateButtonColors();
-
 	}
 
 	private void UpdateButtonColors()
 	{
-		if (SelectedTab == "huis")
+		if (SelectedTab == Tab.SearchingHouse)
 		{
 			HuisButtonColor = "#EF626C";
-			HuisgenootButtonColor = "#ffffff";
+			HuisgenootButtonColor = "#FFFFFF";
 		}
 		else
 		{
-			HuisButtonColor = "#ffffff";
+			HuisButtonColor = "#FFFFFF";
 			HuisgenootButtonColor = "#EF626C";
 		}
 	}
+
 	private void CreatePerson()
 	{
-		Role role;
-
-		if (SelectedTab == "huis")
-		{
-			role = Role.Seeking;
-		}
-		else
-		{
-			role = Role.Offering;
-		}
+		Role role = SelectedTab == Tab.SearchingHouse ? Role.Seeking : Role.Offering;
 
 		newPerson = new Person(
 			personalInformationForm.Email,
@@ -130,7 +124,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			personalInformationForm.MiddleName,
 			personalInformationForm.Surname,
 			personalInformationForm.PhoneNumber,
-			personalInformationForm.BirthDate,
+			personalInformationForm.BirthDate.Value,
 			Enum.Parse<Gender>(personalInformationForm.Gender ?? "Other"),
 			role,
 			null
@@ -139,18 +133,21 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 
 	private async void submit(object? sender, EventArgs e)
 	{
-		CreatePerson();
-        if (Application.Current.MainPage is NavigationPage navigationPage)
-        {
-			if (SelectedTab == "huis")
+		if (personalInformationForm.ValidateAll())
+		{
+			CreatePerson();
+			if (Application.Current.MainPage is NavigationPage navigationPage)
 			{
+				if (SelectedTab == Tab.SearchingHouse)
+				{
 
-				await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+				}
+				else
+				{
+					//naar de woning registratie pagina
+				}
 			}
-			else
-			{
-				//naar de woning registratie pagina
-			}
-        }
-    }
+		}
+	}
 }

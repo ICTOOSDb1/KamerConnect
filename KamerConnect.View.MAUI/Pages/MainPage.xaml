@@ -17,7 +17,7 @@
 
             <Components:Entry InputType="Email"/>
             <Components:Entry InputType="Password"/>
-            <Components:Entry InputType="DateOfBirth"/>
+            <Components:Entry InputType="Date"/>
             <Components:Entry InputType="PhoneNumber"/>
             <Components:Entry  Placeholder="Voer uw e voornaam in"
                                Keyboard="Telephone"

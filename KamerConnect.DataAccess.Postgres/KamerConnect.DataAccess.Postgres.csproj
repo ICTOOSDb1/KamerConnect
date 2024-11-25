@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KamerConnect.EnvironmentVariables\KamerConnect.EnvironmentVariables.csproj" />
     <ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
   </ItemGroup>
 
