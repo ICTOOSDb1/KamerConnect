@@ -1,5 +1,6 @@
 using KamerConnect.DataAccess.Postgres.Repositys;
 using KamerConnect.Exceptions;
+using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Services;
 
@@ -12,8 +13,7 @@ public partial class LoginPage : ContentPage
     public LoginPage(AuthenticationService authService)
     {
         this.authService = authService;
-    
-
+        
         InitializeComponent();
     }
     
