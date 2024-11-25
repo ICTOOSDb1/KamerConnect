@@ -40,6 +40,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<AuthenticationService>(sp => new AuthenticationService(sp.GetRequiredService<PersonService>(), new AuthenticationRepository()));
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();
+		builder.Services.AddTransient<Registration>();
 
 		return builder.Build();
 	}

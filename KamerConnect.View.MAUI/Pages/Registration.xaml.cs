@@ -1,12 +1,19 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using KamerConnect.DataAccess.Postgres.Repositys;
 using KamerConnect.Models;
-
+using KamerConnect.Services;
+using Microsoft.Extensions.DependencyInjection;
+using KamerConnect.View.MAUI.Pages;
 namespace KamerConnect.View.MAUI;
+
 
 public partial class Registration : ContentPage, INotifyPropertyChanged
 {
+
+	public Person newPerson {  get; set; }
+	private readonly IServiceProvider _serviceProvider;
 	public enum Tab
 	{
 		SearchingHouse,
@@ -22,13 +29,14 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			OnPropertyChanged();
 		}
 	}
-	public Registration()
+	public Registration(IServiceProvider serviceProvider)
 	{
 		InitializeComponent();
 		SelectTabAction = SelectTab;
 		BindingContext = this;
 		SelectedTab = Tab.SearchingHouse;
 		UpdateButtonColors();
+		_serviceProvider = serviceProvider;
 	}
 	public event PropertyChangedEventHandler PropertyChanged;
 
@@ -58,14 +66,17 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	private void OnSearchingClicked(object sender, EventArgs e)
 	{
 		SelectTab(Tab.SearchingHouse);
+		Submit.Text = "verder";
 	}
 
 	private void OnHavingClicked(object sender, EventArgs e)
 	{
 		SelectTab(Tab.HavingHouse);
-	}
-	
-	private string _huisButtonColor = "#EF626C";
+        Submit.Text = "registreren";
+
+    }
+
+    private string _huisButtonColor = "#EF626C";
 	public string HuisButtonColor
 	{
 		get => _huisButtonColor;
@@ -117,7 +128,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	{
 		Role role = SelectedTab == Tab.SearchingHouse ? Role.Seeking : Role.Offering;
 
-		var newPerson = new Person(
+		newPerson = new Person(
 			personalInformationForm.Email,
 			personalInformationForm.FirstName,
 			personalInformationForm.MiddleName,
@@ -132,14 +143,25 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	
 	private async void submit(object? sender, EventArgs e)
 	{
-		if (personalInformationForm.ValidateAll())
-		{
-			CreatePerson();
-			if (Navigation.NavigationStack.Count > 1)
-			{
-				await Navigation.PopAsync();
-			}
-			
-		}
-	}
+        if (personalInformationForm.ValidateAll())
+        {
+            CreatePerson();
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                if (SelectedTab == Tab.SearchingHouse)
+                {
+
+                   // await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+                }
+                else
+                {
+					PersonService personService = new PersonService(new PersonRepository());
+                    personService.CreatePerson(newPerson);
+
+                    await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+
+                }
+            }
+        }
+    }
 }
