@@ -21,7 +21,6 @@
 						   HeightRequest="98"/>
 				</Border>
 
-
 				<Components:TextEditor LabelText="Voornaam"
 									   Placeholder="Voornaam"/>
 				<Grid ColumnDefinitions="*,3*">

@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KamerConnect.ValidationUtils;
 using Microsoft.Maui.Controls.Compatibility;
-
 namespace KamerConnect.View.MAUI.Components;
 
 public partial class Entry : ContentView
 {
     public enum EntryInputType
     {
-        Email, 
+        Email,
         Password,
         Date,
         PhoneNumber,
-        Text
+        Text,
+        Number
     }
-    
+
     public Entry()
     {
         InitializeComponent();
         BindingContext = this;
     }
 
-    
+
     public static readonly BindableProperty InputTypeProperty =
         BindableProperty.Create(nameof(InputType), typeof(EntryInputType), typeof(Entry), EntryInputType.Text, propertyChanged: OnInputTypeChanged);
 
@@ -34,7 +28,7 @@ public partial class Entry : ContentView
         get => (EntryInputType)GetValue(InputTypeProperty);
         set => SetValue(InputTypeProperty, value);
     }
-    
+
     private static void OnInputTypeChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Entry entry && newValue is EntryInputType inputType)
@@ -55,9 +49,14 @@ public partial class Entry : ContentView
                 case EntryInputType.Date:
                     entry.Keyboard = Keyboard.Numeric;
                     break;
+
                 case EntryInputType.PhoneNumber:
                     entry.Keyboard = Keyboard.Numeric;
                     entry.LabelText = "Telefoon nummer";
+                    break;
+
+                case EntryInputType.Number:
+                    entry.Keyboard = Keyboard.Numeric;
                     break;
 
                 default:
@@ -67,8 +66,8 @@ public partial class Entry : ContentView
             }
         }
     }
-    
-    
+
+
     public static readonly BindableProperty DefaultTextProperty =
         BindableProperty.Create(nameof(Text), typeof(string), typeof(Entry), string.Empty);
     public string Text
@@ -77,8 +76,6 @@ public partial class Entry : ContentView
         set => SetValue(DefaultTextProperty, value);
     }
 
-    
-    
     public static readonly BindableProperty PlaceholderProperty =
         BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(Entry), string.Empty);
 
@@ -105,9 +102,8 @@ public partial class Entry : ContentView
         get => (bool)GetValue(IsPasswordProperty);
         set => SetValue(IsPasswordProperty, value);
     }
-                                  
-        
-    public static readonly BindableProperty LabelTextProperty = 
+
+    public static readonly BindableProperty LabelTextProperty =
         BindableProperty.Create(nameof(LabelText), typeof(string), typeof(Entry), default(string));
 
     public string LabelText
@@ -133,10 +129,10 @@ public partial class Entry : ContentView
         set => SetValue(IsValidProperty, value);
     }
 
-    
+
     public void Validate()
     {
-        if (string.IsNullOrWhiteSpace(Text) && InputType!=EntryInputType.PhoneNumber)
+        if (string.IsNullOrWhiteSpace(Text) && InputType != EntryInputType.PhoneNumber)
         {
             IsValid = false;
             ValidationMessage = $"{LabelText} mag niet leeg zijn.";
@@ -172,8 +168,8 @@ public partial class Entry : ContentView
         }
     }
 
-    
-    
+
+
     public static readonly BindableProperty IsLabelVisibleProperty =
         BindableProperty.Create(nameof(IsLabelVisible), typeof(bool), typeof(Entry), false);
 

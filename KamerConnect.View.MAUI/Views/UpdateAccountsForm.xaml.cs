@@ -1,5 +1,7 @@
-using Microsoft.Maui.Storage;
 using KamerConnect.Services;
+using KamerConnect.Utils;
+using KamerConnect.View.MAUI.Utils;
+using LukeMauiFilePicker;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -16,42 +18,28 @@ public partial class UpdateAccountsForm : ContentView
         InitializeComponent();
     }
 
-    private async void Image_tapped(object sender, TappedEventArgs e)
+    private async void Image_tapped(object sender, EventArgs e)
     {
-        var result = await FilePicker.Default.PickAsync(new PickOptions
-        {
-            PickerTitle = "Selecteer een foto",
-            FileTypes = FilePickerFileType.Images
-        });
+        IFilePickerService picker = new FilePickerService();
 
-        if (result != null)
+        var result = await picker.PickFileAsync(
+            "Selecteer foto's",
+            MauiFileUtils.ImageFileTypes
+        );
+
+        if (result?.FileResult != null)
         {
-            string filePath = result.FullPath;
+            string filePath = result.FileResult.FullPath;
             var fileBytes = await File.ReadAllBytesAsync(filePath);
             string fileName = Path.GetFileName(filePath) + DateTime.Now.ToString("yyyyMMddHHmmss");
-            string contentType = GetContentType(fileName);
+            string contentType = FileUtils.GetContentType(fileName);
 
-            await _fileService.UploadFileAsync(bucketName, fileName, fileBytes, contentType);
+            await _fileService.UploadFileAsync(bucketName, fileName, filePath, contentType);
         }
     }
     private void Button_Clicked(object sender, EventArgs e)
     {
 
     }
-
-
-    private string GetContentType(string fileName)
-    {
-        var extension = Path.GetExtension(fileName)?.ToLowerInvariant();
-
-        return extension switch
-        {
-            ".png" => "image/png",
-            ".jpg" or ".jpeg" => "image/jpeg",
-            ".gif" => "image/gif",
-            ".bmp" => "image/bmp",
-            ".tiff" => "image/tiff",
-            _ => "application/octet-stream"
-        };
-    }
 }
+

@@ -15,53 +15,65 @@ public class FileRepository : IFileRepository
         var secretKey = Environment.GetEnvironmentVariable("MINIO_SECRET");
         var endpoint = Environment.GetEnvironmentVariable("MINIO_ENDPOINT");
 
-        if (string.IsNullOrEmpty(accessKey) || string.IsNullOrEmpty(secretKey) ||
-            string.IsNullOrEmpty(endpoint)
-        )
+        if (string.IsNullOrEmpty(accessKey) || string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(endpoint))
         {
             throw new InvalidOperationException("Minio environment variables are missing. Please check your .env file.");
         }
 
         _minioClient = new MinioClient()
-                .WithEndpoint(endpoint)
-                .WithCredentials(accessKey, secretKey)
-                .Build();
+            .WithEndpoint(endpoint)
+            .WithCredentials(accessKey, secretKey)
+            .Build();
     }
 
-    public async Task UploadFileAsync(string bucketName, string objectName, byte[] fileBytes, string contentType)
+    public async Task UploadFileAsync(string bucketName, string objectName, string filePath, string contentType)
     {
         try
         {
             await CreateBucketIfNotExists(bucketName);
 
-            using (var stream = new MemoryStream(fileBytes))
-            {
-                await _minioClient.PutObjectAsync(new PutObjectArgs()
-                    .WithBucket(bucketName)
-                    .WithObject(objectName)
-                    .WithObjectSize(fileBytes.Length)
-                    .WithStreamData(stream)
-                    .WithContentType(contentType));
-            }
+            var putObjectArgs = new PutObjectArgs()
+                .WithBucket(bucketName)
+                .WithObject(objectName)
+                .WithFileName(filePath)
+                .WithContentType(contentType);
+
+            await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
+
+            Console.WriteLine($"File '{objectName}' uploaded successfully to bucket '{bucketName}'.");
         }
         catch (MinioException ex)
         {
-            Console.WriteLine($"Error uploading file: {ex.Message}");
+            Console.WriteLine($"Minio error while uploading file: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error occurred while uploading file: {ex.Message}");
             throw;
         }
     }
 
     private async Task CreateBucketIfNotExists(string bucketName)
     {
-        var bucketExists = await _minioClient.BucketExistsAsync(
-            new BucketExistsArgs().WithBucket(bucketName)
-        );
-
-        if (!bucketExists)
+        try
         {
-            await _minioClient.MakeBucketAsync(
-                new MakeBucketArgs().WithBucket(bucketName)
+            var bucketExists = await _minioClient.BucketExistsAsync(
+                new BucketExistsArgs().WithBucket(bucketName)
             );
+
+            if (!bucketExists)
+            {
+                await _minioClient.MakeBucketAsync(
+                    new MakeBucketArgs().WithBucket(bucketName)
+                );
+                Console.WriteLine($"Bucket '{bucketName}' created successfully.");
+            }
+        }
+        catch (MinioException ex)
+        {
+            Console.WriteLine($"Minio error while checking/creating bucket: {ex.Message}");
+            throw;
         }
     }
 }
