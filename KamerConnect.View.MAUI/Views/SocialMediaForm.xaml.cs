@@ -24,7 +24,7 @@ public partial class SocialMediaForm : ContentView
     private void Button_Update_social_media(object sender, EventArgs e)
     {
         CheckIfSocialsArePicked(_currentPerson);
-        _personService.UpdateSocial(_currentPerson);
+        _personService.UpdateSocial(_currentPerson.Id, _currentPerson.Social);
     }
     
     public void CheckIfSocialsArePicked(Person person)
@@ -33,7 +33,6 @@ public partial class SocialMediaForm : ContentView
         if (Enum.TryParse(selectedOption, true, out SocialType socialType))
         {
                 person.Social.Type = socialType;
-            
         }
     }
 }

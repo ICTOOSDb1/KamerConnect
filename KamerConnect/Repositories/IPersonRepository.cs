@@ -10,11 +10,8 @@ public interface IPersonRepository
     Person GetPersonByEmail(string email);
     string CreatePerson(Person person);
     
-    void AddPasswordToPerson(Guid personId, string password, string salt);
-    Person AuthenticatePerson(string email, string password);
-    byte[] GetSaltFromPerson(string email);
     void UpdatePerson(Person person);
-    void UpdatePersonality(Person person);
-    void UpdateSocial(Person person);
-    public void UpdateHousePreferences(Person person);
+    void UpdatePersonality(string personId, Personality personality);
+    void UpdateSocial(string personId, Social social);
+    public void UpdateHousePreferences(string housePreferencesId, HousePreferences housePreferences);
 }

@@ -12,11 +12,7 @@ public class PersonService
     {
         _repository = repository;
     }
-
-    public Person GetPersonById(string id)
-    {
-        return _repository.GetPersonById(id);
-    }
+    
     public Person GetPersonByEmail(string email)
     {
         return _repository.GetPersonByEmail(email);
@@ -26,29 +22,25 @@ public class PersonService
     { 
         return _repository.CreatePerson(person);
     }
-
-    public void CreatePerson(Person person, string password, byte[] salt)
-    {
-        _repository.CreatePerson(person, password, salt);
-    }
+    
 
     public void UpdatePerson(Person person)
     {
         _repository.UpdatePerson(person);
     }
     
-    public void UpdatePersonality(Person person)
+    public void UpdatePersonality(string personId, Personality personality)
     {
-        _repository.UpdatePersonality(person);
+        _repository.UpdatePersonality(personId, personality);
     }
 
-    public void UpdateSocial(Person person)
+    public void UpdateSocial(string personId, Social social)
     {
-        _repository.UpdateSocial(person);
+        _repository.UpdateSocial(personId, social);
     }
 
-    public void UpdateHousePreferences(Person person)
+    public void UpdateHousePreferences(string housePreferencesId, HousePreferences housePreferences)
     {
-        _repository.UpdateHousePreferences(person);
+        _repository.UpdateHousePreferences(housePreferencesId, housePreferences);
     }
 }

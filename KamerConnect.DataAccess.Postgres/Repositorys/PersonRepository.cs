@@ -197,7 +197,7 @@ public class PersonRepository : IPersonRepository
         }
     }
     
-    public void UpdatePersonality(Person person)
+    public void UpdatePersonality(string personId, Personality personality)
 {
     using (var connection = new NpgsqlConnection(connectionString))
     {
@@ -214,10 +214,10 @@ public class PersonRepository : IPersonRepository
                 WHERE person_id = @PersonalityId;
                 """, connection))
             {
-                updateCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
-                updateCommand.Parameters.AddWithValue("@School", person.Personality.School ?? string.Empty);
-                updateCommand.Parameters.AddWithValue("@Study", person.Personality.Study ?? string.Empty);
-                updateCommand.Parameters.AddWithValue("@Description", person.Personality.Description ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                updateCommand.Parameters.AddWithValue("@School", personality.School ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Study", personality.Study ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Description", personality.Description ?? string.Empty);
 
                 var rowsAffected = updateCommand.ExecuteNonQuery();
 
@@ -229,10 +229,10 @@ public class PersonRepository : IPersonRepository
                         VALUES (@PersonalityId, @School, @Study, @Description);
                         """, connection))
                     {
-                        insertCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
-                        insertCommand.Parameters.AddWithValue("@School", person.Personality.School ?? string.Empty);
-                        insertCommand.Parameters.AddWithValue("@Study", person.Personality.Study ?? string.Empty);
-                        insertCommand.Parameters.AddWithValue("@Description", person.Personality.Description ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                        insertCommand.Parameters.AddWithValue("@School", personality.School ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@Study", personality.Study ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@Description", personality.Description ?? string.Empty);
 
                         insertCommand.ExecuteNonQuery();
                     }
@@ -244,7 +244,7 @@ public class PersonRepository : IPersonRepository
 }
 
 
-    public void UpdateSocial(Person person)
+    public void UpdateSocial(string personId, Social social)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -255,9 +255,9 @@ public class PersonRepository : IPersonRepository
                 using (var updateCommand = new NpgsqlCommand(
                            "UPDATE social SET type = @Type::social_type, url = @Url WHERE person_id = @PersonalityId", connection))
                 {
-                    updateCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
-                    updateCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString() ?? null);
-                    updateCommand.Parameters.AddWithValue("@Url", person.Social.Url ?? null);
+                    updateCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                    updateCommand.Parameters.AddWithValue("@Type", social.Type.ToString() ?? null);
+                    updateCommand.Parameters.AddWithValue("@Url", social.Url ?? null);
                     var rowsAffected = updateCommand.ExecuteNonQuery();
                     
                     if (rowsAffected == 0)
@@ -265,9 +265,9 @@ public class PersonRepository : IPersonRepository
                         using (var insertCommand = new NpgsqlCommand(
                                    "INSERT INTO social (person_id, type, url) VALUES (@PersonalityId, @Type::social_type, @Url)", connection))
                         {
-                            insertCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
-                            insertCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString() ?? null);
-                            insertCommand.Parameters.AddWithValue("@Url", person.Social.Url ?? null);
+                            insertCommand.Parameters.AddWithValue("@PersonalityId", personId);
+                            insertCommand.Parameters.AddWithValue("@Type", social.Type.ToString() ?? null);
+                            insertCommand.Parameters.AddWithValue("@Url", social.Url ?? null);
                             insertCommand.ExecuteNonQuery();
                         }
                     }
@@ -276,7 +276,7 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
-    public void UpdateHousePreferences(Person person)
+    public void UpdateHousePreferences(string housePreferencesId, HousePreferences housePreferences)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -291,10 +291,10 @@ public class PersonRepository : IPersonRepository
                        WHERE id = @HousePreferencesId;
                        """, connection))
             {
-                updateCommand.Parameters.AddWithValue("@HousePreferencesId", person.HousePreferencesId);
-                updateCommand.Parameters.AddWithValue("@Type", person.HousePreferences.Type.ToString() ?? string.Empty);
-                updateCommand.Parameters.AddWithValue("@Price", person.HousePreferences.Budget ?? string.Empty);
-                updateCommand.Parameters.AddWithValue("@Surface", person.HousePreferences.SurfaceArea ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferencesId);
+                updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type.ToString() ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Price", housePreferences.Budget ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea ?? string.Empty);
                 
                 updateCommand.ExecuteNonQuery();
             }

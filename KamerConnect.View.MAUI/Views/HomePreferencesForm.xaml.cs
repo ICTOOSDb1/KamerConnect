@@ -24,7 +24,7 @@ public partial class HomePreferencesForm : ContentView
 	private void Button_Update_house_preferences(object sender, EventArgs e)
 	{
 		CheckIfHomeTypeIsPicked(_currentPerson);
-		_personService.UpdateHousePreferences(_currentPerson);
+		_personService.UpdateHousePreferences(_currentPerson.HousePreferencesId, _currentPerson.HousePreferences);
 	}
 	
     

@@ -23,7 +23,7 @@ public partial class InterestsForm : ContentView
 
 	private void Button_update_interests(object? sender, EventArgs e)
 	{
-		_personService.UpdatePersonality(_currentPerson);
+		_personService.UpdatePersonality(_currentPerson.Id, _currentPerson.Personality);
 	}
 
 }
