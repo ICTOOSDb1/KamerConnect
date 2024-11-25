@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 using KamerConnect.Models;
 
@@ -28,6 +29,16 @@ public static class ValidationUtils
     public static bool IsValidPhoneNumber(string phoneNumber)
     {
         return Regex.IsMatch(phoneNumber, @"^(\+31|0)?\s?\d{9}$");
+    }
+
+    public static bool IsValidDate(string date)
+    {
+        return DateTime.TryParseExact(
+            date,
+            "dd/MM/yyyy",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out _);
     }
 
     public static bool IsValidPerson(Person person)

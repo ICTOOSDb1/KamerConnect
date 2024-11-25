@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KamerConnect.ValidationUtils;
-using Microsoft.Maui.Controls.Compatibility;
+﻿using KamerConnect.Utils;
 
 namespace KamerConnect.View.MAUI.Components;
 
@@ -157,7 +151,7 @@ public partial class Entry : ContentView
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.Date)
+        else if (InputType == EntryInputType.Date && !ValidationUtils.IsValidDate(Text))
         {
             IsValid = false;
             ValidationMessage = "Geboorte datum is ongeldig.";
