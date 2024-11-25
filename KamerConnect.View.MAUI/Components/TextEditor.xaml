@@ -8,7 +8,7 @@
         <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}" />
         <Frame Style="{StaticResource EntryFrameStyle}">
             <Editor Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
-                    Text="{Binding Text, Mode=TwoWay}"
+                    Text="{Binding Text, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
                     AutoSize="TextChanges" />
         </Frame>
     </StackLayout>

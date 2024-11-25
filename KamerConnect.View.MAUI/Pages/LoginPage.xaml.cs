@@ -1,10 +1,11 @@
-using KamerConnect.DataAccess.Postgres.Repositys;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using KamerConnect.Exceptions;
-using KamerConnect.Models;
-using KamerConnect.Repositories;
-using KamerConnect.Services;
 
-namespace KamerConnect.View.MAUI;
+namespace KamerConnect.View.MAUI.Pages;
 
 public partial class LoginPage : ContentPage
 {
@@ -13,7 +14,8 @@ public partial class LoginPage : ContentPage
     public LoginPage(AuthenticationService authService)
     {
         this.authService = authService;
-        
+    
+
         InitializeComponent();
     }
     
@@ -25,6 +27,7 @@ public partial class LoginPage : ContentPage
         try
         {
             authService.Authenticate(email, password);
+            
         }
         catch (InvalidCredentialsException ex)
         {
@@ -34,4 +37,13 @@ public partial class LoginPage : ContentPage
         }
      
     }
+    private void NavigateToRegister(object sender, TappedEventArgs e)
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            navigationPage.Navigation.PushAsync(new Registration());
+        }
+    }
+
+    
 }

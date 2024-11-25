@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KamerConnect.ValidationUtils;
+using Microsoft.Maui.Controls.Compatibility;
 
 namespace KamerConnect.View.MAUI.Components;
 
@@ -12,7 +14,7 @@ public partial class Entry : ContentView
     {
         Email, 
         Password,
-        DateOfBirth,
+        Date,
         PhoneNumber,
         Text
     }
@@ -20,6 +22,7 @@ public partial class Entry : ContentView
     public Entry()
     {
         InitializeComponent();
+        BindingContext = this;
     }
 
     
@@ -39,26 +42,21 @@ public partial class Entry : ContentView
             switch (inputType)
             {
                 case EntryInputType.Email:
-                    entry.Placeholder = "Voer uw e-mailadres in";
                     entry.Keyboard = Keyboard.Email;
                     entry.LabelText = "E-mail";
                     break;
 
                 case EntryInputType.Password:
-                    entry.Placeholder = "Voer uw wachtwoord in";
                     entry.Keyboard = Keyboard.Text;
                     entry.IsPassword = true;
                     entry.LabelText = "Wachtwoord";
                     break;
 
-                case EntryInputType.DateOfBirth:
-                    entry.Placeholder = "Voer uw geboortedatum in";
+                case EntryInputType.Date:
                     entry.Keyboard = Keyboard.Numeric;
-                    entry.LabelText = "Geboortedatum";
                     break;
                 case EntryInputType.PhoneNumber:
-                    entry.Placeholder = "voor uw telefoon nummer in";
-                    entry.Keyboard = Keyboard.Telephone;
+                    entry.Keyboard = Keyboard.Numeric;
                     entry.LabelText = "Telefoon nummer";
                     break;
 
@@ -69,6 +67,17 @@ public partial class Entry : ContentView
             }
         }
     }
+    
+    
+    public static readonly BindableProperty DefaultTextProperty =
+        BindableProperty.Create(nameof(Text), typeof(string), typeof(Entry), string.Empty);
+    public string Text
+    {
+        get => (string)GetValue(DefaultTextProperty);
+        set => SetValue(DefaultTextProperty, value);
+    }
+
+    
     
     public static readonly BindableProperty PlaceholderProperty =
         BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(Entry), string.Empty);
@@ -105,6 +114,81 @@ public partial class Entry : ContentView
     {
         get => (string)GetValue(LabelTextProperty);
         set => SetValue(LabelTextProperty, value);
+    }
+    public static readonly BindableProperty ValidationMessageProperty =
+        BindableProperty.Create(nameof(ValidationMessage), typeof(string), typeof(Entry), string.Empty);
+
+    public string ValidationMessage
+    {
+        get => (string)GetValue(ValidationMessageProperty);
+        set => SetValue(ValidationMessageProperty, value);
+    }
+
+    public static readonly BindableProperty IsValidProperty =
+        BindableProperty.Create(nameof(IsValid), typeof(bool), typeof(Entry), true);
+
+    public bool IsValid
+    {
+        get => (bool)GetValue(IsValidProperty);
+        set => SetValue(IsValidProperty, value);
+    }
+
+    
+    public void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(Text) && InputType!=EntryInputType.PhoneNumber)
+        {
+            IsValid = false;
+            ValidationMessage = $"{LabelText} mag niet leeg zijn.";
+            inputNotCorrect.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.Email && !EntryValidation.IsValidEmail(Text))
+        {
+            IsValid = false;
+            ValidationMessage = "Emailadres is ongeldig.";
+            inputNotCorrect.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.PhoneNumber && !EntryValidation.IsNumeric(Text) && !string.IsNullOrWhiteSpace(Text))
+        {
+            IsValid = false;
+            ValidationMessage = "Telefoonnummer is ongeldig.";
+            inputNotCorrect.Text = ValidationMessage;
+            showLabel();
+        }
+        else if (InputType == EntryInputType.Date && !EntryValidation.IsNumeric(Text))
+        {
+            IsValid = false;
+            ValidationMessage = "Geboorte datum is ongeldig.";
+            inputNotCorrect.Text = ValidationMessage;
+            showLabel();
+        }
+        else
+        {
+            IsValid = true;
+            hideLabel();
+            ValidationMessage = string.Empty;
+        }
+    }
+
+    
+    
+    public static readonly BindableProperty IsLabelVisibleProperty =
+        BindableProperty.Create(nameof(IsLabelVisible), typeof(bool), typeof(Entry), false);
+
+    public bool IsLabelVisible
+    {
+        get => (bool)GetValue(IsLabelVisibleProperty);
+        set => SetValue(IsLabelVisibleProperty, value);
+    }
+    public void showLabel()
+    {
+        IsLabelVisible = true;
+    }
+    public void hideLabel()
+    {
+        IsLabelVisible = false;
     }
 
 }
