@@ -19,13 +19,17 @@ public partial class RegisterHomePreferencesPage : ContentPage
         {
             await Navigation.PopAsync();
         }
-       
     }
     private async void Submit(object sender, EventArgs e)
     {
-        HousePreferences preferences = new HousePreferences(homePreferencesForm.Budget, homePreferencesForm.Area, homePreferencesForm.Type);
-        AuthenticationService authentication = new AuthenticationService(new PersonService(new PersonRepository()), new AuthenticationRepository());
+        HousePreferences preferences = new HousePreferences(Convert.ToDouble(homePreferencesForm.Budget), double.Parse(homePreferencesForm.Area), homePreferencesForm.Type, int.Parse(homePreferencesForm.Residents));
+        PersonService personService = new PersonService(new PersonRepository());
+        AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
+        
+        Guid preferencesId = personService.CreateHousePreferences(preferences);
+        newPerson.HousePreferencesId = preferencesId;
+        
         authentication.Register(newPerson, "password123");
-        DisplayAlert("test", "Succes!", "Ok.");
+        await DisplayAlert("test", "Succes!", "Ok.");
     }
 }

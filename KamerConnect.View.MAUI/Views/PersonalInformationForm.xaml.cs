@@ -11,6 +11,7 @@ public partial class PersonalInformationForm : ContentView
     public string? MiddleName => middleNameEntry.Text;
     public string? Surname => surnameEntry.Text;
     public string? PhoneNumber => phoneNumberEntry.Text;
+    public string Password => passwordEntry.Text;
     public DateTime? BirthDate => birthDateEntry.Text != null ? DateTime.Parse(birthDateEntry.Text) : null;
     public string Gender
     {

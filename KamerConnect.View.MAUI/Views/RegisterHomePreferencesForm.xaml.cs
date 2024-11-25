@@ -10,8 +10,6 @@ public partial class RegisterHomePreferencesForm : ContentView
     public HouseType Type;
     public string Residents => ResidentsInput.Text ?? string.Empty;
 
-
-
     public RegisterHomePreferencesForm()
 	{
 		InitializeComponent();

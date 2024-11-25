@@ -77,16 +77,17 @@ public class PersonRepository : IPersonRepository
             using (var command =
                    new NpgsqlCommand($"""
                                       INSERT INTO person (    
-                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
-                                        VALUES (@email,
-                                        @firstName,
-                                        @middleName,
-                                        @surname,
-                                        @phoneNumber,
-                                        @birthDate,
-                                        @gender::gender,
-                                        @role::user_role,
-                                        @profilePicturePath
+                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path, house_preferences_id)
+                                        VALUES (@Email,
+                                        @FirstName,
+                                        @MiddleName,
+                                        @Surname,
+                                        @PhoneNumber,
+                                        @BirthDate,
+                                        @Gender::gender,
+                                        @Role::user_role,
+                                        @ProfilePicturePath,
+                                        @housePreferences_id::uuid
                                       ) RETURNING id;
                                       """,
                        connection))
@@ -100,6 +101,7 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
                 command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@housePreferences_id", person.HousePreferencesId ?? (object)DBNull.Value);
 
                 var results = command.ExecuteScalar().ToString() ?? throw new InvalidOperationException();
                 return results?.ToString();
@@ -160,8 +162,27 @@ public class PersonRepository : IPersonRepository
         throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
     }
 
-    public void AddHousePreference(Person person)
+    public Guid CreateHousePreferences(HousePreferences housePreferences)
     {
-        throw new NotImplementedException();
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            
+            using (var command = new NpgsqlCommand(
+                       """
+                       INSERT INTO house_preferences (type, price, surface, residents)
+                       VALUES (@Type::house_type, @Price, @Surface, @Residents)
+                       RETURNING id;
+                      """, connection))
+            {
+                command.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
+                command.Parameters.AddWithValue("@Price", housePreferences.Budget);
+                command.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea);
+                command.Parameters.AddWithValue("@Residents", housePreferences.Residents);
+                
+                
+                return Guid.Parse(command.ExecuteScalar()?.ToString() ?? throw new InvalidOperationException());
+            }
+        }
     }
 }

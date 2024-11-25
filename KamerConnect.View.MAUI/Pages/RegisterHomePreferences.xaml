@@ -37,14 +37,14 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Button Text="terug"
+                        <Button Text="Terug"
                                 Style="{StaticResource SecondaryButton}"
                                 Grid.Column="1"
                                 HorizontalOptions="End"
                                 Clicked="Back"
                                  />
 
-                        <Button Text="verder"
+                        <Button Text="Registreren"
                                 Style="{StaticResource PrimaryButton}"
                                 Grid.Column="2"
                                 Clicked="Submit"
