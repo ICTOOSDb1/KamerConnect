@@ -5,10 +5,10 @@ namespace KamerConnect.View.MAUI;
 public partial class RegisterHomePreferencesForm : ContentView
 {
 
-    public string Budget => BudgetInput.DefaultText ?? string.Empty;
-    public string Area => AreaInput.DefaultText ?? string.Empty;
+    public string Budget => BudgetInput.Text ?? string.Empty;
+    public string Area => AreaInput.Text ?? string.Empty;
     public HouseType Type;
-    public string Residents => ResidentsInput.DefaultText ?? string.Empty;
+    public string Residents => ResidentsInput.Text ?? string.Empty;
 
 
 
