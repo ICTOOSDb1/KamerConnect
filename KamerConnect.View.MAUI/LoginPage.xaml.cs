@@ -26,7 +26,7 @@ public partial class LoginPage : ContentPage
 
         if (token != null)
         {
-            await DisplayAlert("Succes", "Logged in", "OK");
+            App.Current.MainPage = new MainPage();
         }
         else
         {
