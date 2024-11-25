@@ -2,7 +2,7 @@ using KamerConnect.Models;
 
 namespace KamerConnect.View.MAUI;
 
-public partial class HomePreferencesForm : ContentView
+public partial class RegisterHomePreferencesForm : ContentView
 {
 
     public string Budget => BudgetInput.DefaultText ?? string.Empty;
@@ -12,7 +12,7 @@ public partial class HomePreferencesForm : ContentView
 
 
 
-    public HomePreferencesForm()
+    public RegisterHomePreferencesForm()
 	{
 		InitializeComponent();
 	}
@@ -24,15 +24,15 @@ public partial class HomePreferencesForm : ContentView
 	
 	private async void HouseTypeChanged(object sender, EventArgs e)
 	{        
-        switch (HousetypePicker.SelectedIndex)
+        switch ($"{HousetypePicker.SelectedItem}")
         {
-            case 1:
+            case "Huis":
                 Type = HouseType.House; 
                 break;
-            case 2:
+            case "Appartement":
                 Type = HouseType.Apartment; 
                 break;
-            case 3:
+            case "Studio":
                 Type = HouseType.Studio; 
                 break;
             }

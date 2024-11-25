@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS person (
     profile_picture_path TEXT,
     house_id uuid,
     house_preferences_id uuid,
-    CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id)
+    CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id),
     CONSTRAINT fk_house_preferences FOREIGN KEY(house_preferences_id) REFERENCES house_preferences(id)
 );
 

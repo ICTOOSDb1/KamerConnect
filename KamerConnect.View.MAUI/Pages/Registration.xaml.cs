@@ -147,7 +147,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			if (SelectedTab == "huis")
 			{
 
-				await navigationPage.Navigation.PushAsync(new HomePreferencesPage(newPerson));
+				await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
 			}
 			else
 			{

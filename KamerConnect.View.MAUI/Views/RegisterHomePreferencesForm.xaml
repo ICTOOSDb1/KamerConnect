@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-             x:Class="KamerConnect.View.MAUI.HomePreferencesForm">
+             x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm">
 
     
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
@@ -20,20 +20,20 @@
                     <ColumnDefinition Width="575" />
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Wat zoekt u in een huis?" 
+                <Label Text="Wat zoekt u in een woning?" 
                        FontSize="18" 
                        FontAttributes="Bold"></Label>
 
                 <Components:Entry LabelText="Beschikbaar budget" 
                                   x:Name="BudgetInput"
                                   Placeholder="Budget in €" 
-                                  Grid.Row="0" 
+                                  Grid.Row="1" 
                                   Grid.Column="0" 
                                  />
-                <Components:Entry LabelText="Hoeveelheid vierkante meter oppervlak"
+                <Components:Entry LabelText="Oppervlak in vierkante meter"
                                   x:Name="AreaInput"
-                                  Placeholder="VierkanteMeter" 
-                                  Grid.Row="1" 
+                                  Placeholder="m²" 
+                                  Grid.Row="2" 
                                   Grid.Column="0" />
                
 
@@ -44,7 +44,7 @@
                     BackgroundColor="#F0F0F0"
                     Margin="0,5,0,10"
                     HeightRequest="80"
-                    Grid.Row="2"
+                    Grid.Row="3"
                     Grid.Column="0"
                     SelectedIndexChanged="HouseTypeChanged"
                     
