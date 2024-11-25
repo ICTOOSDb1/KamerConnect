@@ -20,18 +20,20 @@ public partial class App : Application
 	
 	private async Task InitializeAppAsync()
 	{
-		if (serviceProvider.GetService<AuthenticationService>() == null)
+		var authService = serviceProvider.GetService<AuthenticationService>();
+		if (authService == null)
 		{
 			return;
 		}
-		
-		if (await serviceProvider.GetService<AuthenticationService>()?.CheckSession())
+    
+		if (await authService.CheckSession())
 		{
-			MainPage = new MainPage();
+			MainPage = new NavigationPage(new MainPage());
 		}
 		else
 		{
-			MainPage = serviceProvider.GetRequiredService<LoginPage>();
+			MainPage = new NavigationPage(serviceProvider.GetRequiredService<LoginPage>());
 		}
 	}
+
 }
