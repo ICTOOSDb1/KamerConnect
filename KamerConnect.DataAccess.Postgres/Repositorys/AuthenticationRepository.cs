@@ -65,7 +65,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         return null;
     }
 
-    public Session GetSessionWithLocalToken(string localSessionToken)
+    public Session? GetSessionWithLocalToken(string localSessionToken)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {

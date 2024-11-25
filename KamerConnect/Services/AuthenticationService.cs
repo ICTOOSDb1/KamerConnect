@@ -74,9 +74,9 @@ public class AuthenticationService
 
         if (!string.IsNullOrEmpty(currentToken))
         {
-            Session sessionExpirationDate = _repository.GetSessionWithLocalToken(currentToken);
+            Session? sessionExpirationDate = _repository.GetSessionWithLocalToken(currentToken);
 
-            if (DateTime.Now >= sessionExpirationDate.startingDate.AddMonths(6))
+            if (sessionExpirationDate == null || DateTime.Now >= sessionExpirationDate.startingDate.AddMonths(6))
             {
                 RemoveSession(currentToken);
                 return false;

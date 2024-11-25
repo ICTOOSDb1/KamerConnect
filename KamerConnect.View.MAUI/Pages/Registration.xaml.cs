@@ -1,7 +1,9 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using KamerConnect.DataAccess.Postgres.Repositys;
 using KamerConnect.Models;
+using KamerConnect.Services;
 
 namespace KamerConnect.View.MAUI;
 
@@ -133,6 +135,10 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 
 	private async void submit(object? sender, EventArgs e)
 	{
+		
+		PersonService personService = new PersonService(new PersonRepository());
+		AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
+		
 		if (personalInformationForm.ValidateAll())
 		{
 			CreatePerson();
@@ -140,12 +146,11 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			{
 				if (SelectedTab == Tab.SearchingHouse)
 				{
-
 					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
 				}
 				else
 				{
-					//naar de woning registratie pagina
+					authentication.Register(newPerson, personalInformationForm.Password);
 				}
 			}
 		}

@@ -12,10 +12,10 @@ public class Person
     public Gender Gender { get; set; }
     public Role Role { get; set; }
     public string? ProfilePicturePath { get; set; }
-
     public House? House { get; set; }
     public Personality? Personality { get; set; }
-
+    
+    public Guid? HousePreferencesId { get; set; }
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
         DateTime birthDate, Gender gender, Role role, string? profilePicturePath, string id = "")
     {

@@ -10,6 +10,6 @@ public interface IAuthenticationRepository
     void UpdateSessionDate(string sessionToken);
     void RemoveSession(string sessionToken);
     Session GetSession(string personId);
-    Session GetSessionWithLocalToken(string localSessionToken);
+    Session? GetSessionWithLocalToken(string localSessionToken);
     string GetPassword(string person_id);
 }
