@@ -1,4 +1,5 @@
 ﻿using KamerConnect.DataAccess.Postgres.Repositys;
+using KamerConnect.EnvironmentVariables;
 using KamerConnect.Repositories;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
@@ -10,9 +11,12 @@ public partial class App : Application
 	private IServiceProvider serviceProvider;
 	public App(IServiceProvider serviceProvider)
 	{
+		EnvVariables.Load();
+		
 		this.serviceProvider = serviceProvider;
+		
 		InitializeComponent();
-		_ = InitializeAppAsync(); // Fire-and-forget the async initialization
+		InitializeAppAsync().GetAwaiter().GetResult();
 	}
 	
 	private async Task InitializeAppAsync()
@@ -32,4 +36,5 @@ public partial class App : Application
 			MainPage = new NavigationPage(serviceProvider.GetRequiredService<LoginPage>());
 		}
 	}
+
 }

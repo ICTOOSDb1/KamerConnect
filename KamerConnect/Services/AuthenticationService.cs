@@ -131,7 +131,7 @@ public class AuthenticationService
             Encoding.UTF8.GetBytes(password),
             salt,
             _passwordHashingConfig.Iterations,
-            Enum.Parse<HashAlgorithmName>(_passwordHashingConfig.HashAlgorithm),
+            new HashAlgorithmName(_passwordHashingConfig.HashAlgorithm),
             _passwordHashingConfig.KeySize);
 
         return Convert.ToHexString(hash);
