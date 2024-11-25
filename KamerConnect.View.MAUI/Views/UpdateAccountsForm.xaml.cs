@@ -25,7 +25,6 @@ public partial class UpdateAccountsForm : ContentView
         _fileService = fileService;
         _personService = personService;
         _currentPerson = person;
-        CheckIfPersonFieldsAreNull(person);
         _minioURL = person.ProfilePicturePath;
         BindingContext = _currentPerson;
         InitializeComponent();
@@ -54,7 +53,6 @@ public partial class UpdateAccountsForm : ContentView
     }
     private void Button_Update_Account(object sender, EventArgs e)
     {
-        ValidateIfAccountDetailsChanged(_currentPerson);
         _personService.UpdatePerson(_currentPerson);
     }
 
@@ -73,52 +71,7 @@ public partial class UpdateAccountsForm : ContentView
             _ => "application/octet-stream"
         };
     }
-
-    public void ValidateIfAccountDetailsChanged(Person person)
-    {
-        if (person.FirstName != firstNameEntry.DefaultText)
-        {
-            person.FirstName = firstNameEntry.DefaultText;
-        }
-        if (person.MiddleName != middleNameEntry.DefaultText)
-        {
-            person.MiddleName = middleNameEntry.DefaultText;
-        }
-        if (person.Surname != surNameEntry.DefaultText)
-        {
-            person.Surname = surNameEntry.DefaultText;
-        }
-        if (person.Email != emailEntry.DefaultText)
-        {
-            person.Email = emailEntry.DefaultText;
-        }
-
-        if (person.PhoneNumber != phoneNumberEntry.DefaultText)
-        {
-            person.PhoneNumber = phoneNumberEntry.DefaultText; }
-        
-        if (person.ProfilePicturePath != _minioURL)
-        {
-            person.ProfilePicturePath = _minioURL;
-        }
-    }
-
-    private void CheckIfPersonFieldsAreNull(Person person)
-    {
-        if (person.PhoneNumber == null)
-        {
-            person.PhoneNumber = "";
-        }
-        if (person.MiddleName == null)
-        {
-            person.MiddleName = "";
-        }
-        if (person.ProfilePicturePath == null)
-        {
-            person.ProfilePicturePath = "";
-        }
-    }
-
+    
     public string LoadLocalEnv()
     {
         try

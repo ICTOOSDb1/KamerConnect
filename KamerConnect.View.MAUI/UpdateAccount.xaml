@@ -42,6 +42,11 @@
                     Clicked="HomePreferences"
                     Style="{StaticResource SecondaryButton}"
                     HorizontalOptions="FillAndExpand" />
+            <Button Text="Sociale media"
+                    x:Name="SocialMediaButton"
+                    Clicked="SocialMedia"
+                    Style="{StaticResource SecondaryButton}"
+                    HorizontalOptions="FillAndExpand" />
         </StackLayout>
         <ContentView x:Name="FormsContainer"
              Grid.Row="1" Grid.Column="1"

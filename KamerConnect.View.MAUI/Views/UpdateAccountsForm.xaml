@@ -22,16 +22,16 @@
 		                   Aspect="AspectFill" />
                 </Border>
 
-                <Components:Entry LabelText="Voornaam" DefaultText="{Binding FirstName}" x:Name = "firstNameEntry"/>
+                <Components:Entry LabelText="Voornaam" DefaultText="{Binding FirstName, Mode=TwoWay}" x:Name = "firstNameEntry"/>
                 <Grid ColumnDefinitions="*,3*">
-                    <Components:Entry LabelText="Tussenvoegsel" Grid.Column="0"  DefaultText="{Binding MiddleName}" x:Name = "middleNameEntry"/>
-                    <Components:Entry LabelText="Achternaam" Grid.Column="1"  DefaultText="{Binding Surname}" x:Name = "surNameEntry"/>
+                    <Components:Entry LabelText="Tussenvoegsel" Grid.Column="0"  DefaultText="{Binding MiddleName, Mode=TwoWay}" x:Name = "middleNameEntry"/>
+                    <Components:Entry LabelText="Achternaam" Grid.Column="1"  DefaultText="{Binding Surname, Mode=TwoWay}" x:Name = "surNameEntry"/>
 				</Grid>
 
-                <Components:Entry LabelText="Email" DefaultText="{Binding Email}" x:Name = "emailEntry"/>
-                <Components:Entry LabelText="Telefoonnummer" DefaultText="{Binding PhoneNumber}" x:Name = "phoneNumberEntry"/>
+                <Components:Entry LabelText="Email" DefaultText="{Binding Email, Mode=TwoWay}" x:Name = "emailEntry"/>
+                <Components:Entry LabelText="Telefoonnummer" DefaultText="{Binding PhoneNumber, Mode=TwoWay}" x:Name = "phoneNumberEntry"/>
                 
-				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Update_Account" Command="{Binding UpdateAccountCommand}"/>
+				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Update_Account"/>
 
 			</VerticalStackLayout>
 		</Components:FormCard>

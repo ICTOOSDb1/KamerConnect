@@ -14,5 +14,5 @@ public interface IPersonRepository
     void UpdatePerson(Person person);
     void UpdatePersonality(Person person);
     void UpdateSocial(Person person);
-    
+    public void UpdateHousePreferences(Person person);
 }

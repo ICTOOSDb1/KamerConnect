@@ -37,4 +37,9 @@ public class PersonService
     {
         _repository.UpdateSocial(person);
     }
+
+    public void UpdateHousePreferences(Person person)
+    {
+        _repository.UpdateHousePreferences(person);
+    }
 }

@@ -303,8 +303,8 @@ public class PersonRepository : IPersonRepository
                            "UPDATE social SET type = @Type::social_type, url = @Url WHERE person_id = @PersonalityId", connection))
                 {
                     updateCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
-                    updateCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString());
-                    updateCommand.Parameters.AddWithValue("@Url", person.Social.Url);
+                    updateCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString() ?? null);
+                    updateCommand.Parameters.AddWithValue("@Url", person.Social.Url ?? null);
                     var rowsAffected = updateCommand.ExecuteNonQuery();
                     
                     if (rowsAffected == 0)
@@ -313,13 +313,40 @@ public class PersonRepository : IPersonRepository
                                    "INSERT INTO social (person_id, type, url) VALUES (@PersonalityId, @Type::social_type, @Url)", connection))
                         {
                             insertCommand.Parameters.AddWithValue("@PersonalityId", Guid.Parse(person.Id));
-                            insertCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString());
-                            insertCommand.Parameters.AddWithValue("@Url", person.Social.Url);
+                            insertCommand.Parameters.AddWithValue("@Type", person.Social.Type.ToString() ?? null);
+                            insertCommand.Parameters.AddWithValue("@Url", person.Social.Url ?? null);
                             insertCommand.ExecuteNonQuery();
                         }
                     }
                 }
                 transaction.Commit();
+            }
+        }
+    }
+    public void UpdateHousePreferences(Person person)
+    {
+        using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            connection.Open();
+        
+            // Prepare the update command
+            using (var updateCommand = new NpgsqlCommand(
+                       """
+                       UPDATE house_preferences
+                       SET type = @Type,
+                           price = @Price,
+                           surface = @Surface
+                       WHERE id = @HousePreferencesId;
+                       """, connection))
+            {
+                // Set parameters from the person's house preferences
+                updateCommand.Parameters.AddWithValue("@HousePreferencesId", person.HousePreferencesId);
+                updateCommand.Parameters.AddWithValue("@Type", person.HousePreferences.Type.ToString() ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Price", person.HousePreferences.Budget ?? string.Empty);
+                updateCommand.Parameters.AddWithValue("@Surface", person.HousePreferences.SurfaceArea ?? string.Empty);
+            
+                // Execute the update command
+                updateCommand.ExecuteNonQuery();
             }
         }
     }

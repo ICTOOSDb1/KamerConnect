@@ -23,6 +23,7 @@ namespace KamerConnect.View.MAUI
             {
                 HomePreferencesButton.IsVisible = false;
             }
+            FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _currentPerson);
         }
 
 
@@ -42,6 +43,12 @@ namespace KamerConnect.View.MAUI
             FormsContainer.Content = new HomePreferencesForm(_personService, _currentPerson);
             SetButtonStyles(HomePreferencesButton);
         }
+        
+        private void SocialMedia(object sender, EventArgs e)
+        {
+            FormsContainer.Content = new SocialMediaForm(_personService, _currentPerson);
+            SetButtonStyles(SocialMediaButton);
+        }
 
 
         private void SetButtonStyles(Button buttonSource)
@@ -49,6 +56,7 @@ namespace KamerConnect.View.MAUI
             InterestsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             AccountDetailsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             HomePreferencesButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            SocialMediaButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             
             buttonSource.Style = (Style)Application.Current.Resources["PrimaryButton"];
         }

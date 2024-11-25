@@ -8,18 +8,12 @@
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
             <VerticalStackLayout Padding="10" Spacing="10">
             
-                <Components:Entry LabelText="Aantal vierkante meter" DefaultText="{Binding Surface}" x:Name="surfaceEntry"/>
-                <Components:Entry LabelText="Prijs" DefaultText="{Binding Price}" x:Name="priceEntry"/>
+                <Components:Entry LabelText="Aantal vierkante meter" DefaultText="{Binding SurfaceArea, Mode=TwoWay}" x:Name="surfaceEntry"/>
+                <Components:Entry LabelText="Prijs" DefaultText="{Binding Budget, Mode=TwoWay}" x:Name="priceEntry"/>
 
                 <Picker x:Name="HometypePicker"
                         Title="Woning type"
-                        SelectedIndex="0"
-                        TextColor="Black"
-                        BackgroundColor="#F0F0F0"
-                        Margin="0,5,0,10"
-                        HeightRequest="80"
-                        Grid.Row="3"
-                        Grid.Column="0">
+                        SelectedIndex="0">
                     <Picker.Items>
                         <x:String>Maak een keuze</x:String>
                         <x:String>Apartment</x:String>
