@@ -6,12 +6,12 @@ public partial class PersonalInformationForm : ContentView
     {
         InitializeComponent();
     }
-    public string? Email => emailEntry.DefaultText;
-    public string? FirstName => firstNameEntry.DefaultText;
-    public string? MiddleName => middleNameEntry.DefaultText;
-    public string? Surname => surnameEntry.DefaultText;
-    public string? PhoneNumber => phoneNumberEntry.DefaultText;
-    public DateTime? BirthDate => birthDateEntry.DefaultText != null ? DateTime.Parse(birthDateEntry.DefaultText) : null;
+    public string? Email => emailEntry.Text;
+    public string? FirstName => firstNameEntry.Text;
+    public string? MiddleName => middleNameEntry.Text;
+    public string? Surname => surnameEntry.Text;
+    public string? PhoneNumber => phoneNumberEntry.Text;
+    public DateTime? BirthDate => birthDateEntry.Text != null ? DateTime.Parse(birthDateEntry.Text) : null;
     public string Gender
     {
         get

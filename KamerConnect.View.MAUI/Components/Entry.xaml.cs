@@ -42,13 +42,11 @@ public partial class Entry : ContentView
             switch (inputType)
             {
                 case EntryInputType.Email:
-                    entry.Placeholder = "Voer uw e-mailadres in";
                     entry.Keyboard = Keyboard.Email;
                     entry.LabelText = "E-mail";
                     break;
 
                 case EntryInputType.Password:
-                    entry.Placeholder = "Voer uw wachtwoord in";
                     entry.Keyboard = Keyboard.Text;
                     entry.IsPassword = true;
                     entry.LabelText = "Wachtwoord";
@@ -58,7 +56,6 @@ public partial class Entry : ContentView
                     entry.Keyboard = Keyboard.Numeric;
                     break;
                 case EntryInputType.PhoneNumber:
-                    entry.Placeholder = "Voer uw telefoon nummer in";
                     entry.Keyboard = Keyboard.Numeric;
                     entry.LabelText = "Telefoon nummer";
                     break;
@@ -73,8 +70,8 @@ public partial class Entry : ContentView
     
     
     public static readonly BindableProperty DefaultTextProperty =
-        BindableProperty.Create(nameof(DefaultText), typeof(string), typeof(Entry), string.Empty);
-    public string DefaultText
+        BindableProperty.Create(nameof(Text), typeof(string), typeof(Entry), string.Empty);
+    public string Text
     {
         get => (string)GetValue(DefaultTextProperty);
         set => SetValue(DefaultTextProperty, value);
@@ -139,28 +136,28 @@ public partial class Entry : ContentView
     
     public void Validate()
     {
-        if (string.IsNullOrWhiteSpace(DefaultText) && InputType!=EntryInputType.PhoneNumber)
+        if (string.IsNullOrWhiteSpace(Text) && InputType!=EntryInputType.PhoneNumber)
         {
             IsValid = false;
             ValidationMessage = $"{LabelText} mag niet leeg zijn.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.Email && !EntryValidation.IsValidEmail(DefaultText))
+        else if (InputType == EntryInputType.Email && !EntryValidation.IsValidEmail(Text))
         {
             IsValid = false;
             ValidationMessage = "Emailadres is ongeldig.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.PhoneNumber && !EntryValidation.IsNumeric(DefaultText) && !string.IsNullOrWhiteSpace(DefaultText))
+        else if (InputType == EntryInputType.PhoneNumber && !EntryValidation.IsNumeric(Text) && !string.IsNullOrWhiteSpace(Text))
         {
             IsValid = false;
             ValidationMessage = "Telefoonnummer is ongeldig.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.Date && !EntryValidation.IsNumeric(DefaultText))
+        else if (InputType == EntryInputType.Date && !EntryValidation.IsNumeric(Text))
         {
             IsValid = false;
             ValidationMessage = "Geboorte datum is ongeldig.";
