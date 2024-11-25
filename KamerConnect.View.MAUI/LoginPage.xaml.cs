@@ -13,8 +13,6 @@ public partial class LoginPage : ContentPage
     public LoginPage(AuthenticationService authService)
     {
         this.authService = authService;
-    
-        //authService.Register(new Person("niek2004@icloud.com", "Niek", null, "van den Berg", null, new DateTime(2004, 6 ,23), Gender.Male, Role.Seeking, null), "wachtwoord");
         
         InitializeComponent();
     }
