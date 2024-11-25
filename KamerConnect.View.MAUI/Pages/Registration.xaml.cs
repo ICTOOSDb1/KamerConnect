@@ -118,7 +118,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	{
 		Role role = SelectedTab == Tab.SearchingHouse ? Role.Seeking : Role.Offering;
 
-		newPerson = new Person(
+		var newPerson = new Person(
 			personalInformationForm.Email,
 			personalInformationForm.FirstName,
 			personalInformationForm.MiddleName,
@@ -131,6 +131,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		);
 	}
 
+
 	private async void submit(object? sender, EventArgs e)
 	{
 		if (personalInformationForm.ValidateAll())
@@ -142,10 +143,6 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 				{
 
 					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
-				}
-				else
-				{
-					//naar de woning registratie pagina
 				}
 			}
 		}
