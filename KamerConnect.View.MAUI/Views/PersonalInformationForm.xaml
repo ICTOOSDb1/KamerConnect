@@ -33,8 +33,7 @@
                                   LabelText="Achternaam*"/>
             </VerticalStackLayout>
         </Grid>
-
-        <!-- Additional Fields -->
+        
         <Grid ColumnSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -58,7 +57,7 @@
 
         <VerticalStackLayout>
             <components:Entry x:Name="birthDateEntry"
-                              InputType="DateOfBirth"
+                              InputType="Date"
                               LabelText="Geboortedatum*"
                               Placeholder="dd/mm/jjjj"
                               Keyboard="Numeric"/>

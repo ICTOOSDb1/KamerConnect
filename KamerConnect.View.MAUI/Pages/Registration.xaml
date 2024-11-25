@@ -17,12 +17,12 @@
 
                     <Button Text="ik zoek een huis"
                             BackgroundColor="{Binding HuisButtonColor}"
-                            Clicked="OnHuisClicked"
+                            Clicked="OnSearchingClicked"
                             Grid.Column="0"/>
                     
                     <Button Text="ik zoek een huisgenoot"
                             BackgroundColor="{Binding HuisgenootButtonColor}"
-                            Clicked="OnHuisgenootClicked"
+                            Clicked="OnHavingClicked"
                             Grid.Column="1"/>
                 </Grid>
             </Components:FormCard>
@@ -36,8 +36,6 @@
 
                     <maui:PersonalInformationForm x:Name="personalInformationForm"/>
                     
-                    
-            
                     <Label Text="*= verplicht om in te vullen"
                            FontSize="12"
                            TextColor="Gray"

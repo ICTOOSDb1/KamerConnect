@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KamerConnect.ValidationUtils;
 using Microsoft.Maui.Controls.Compatibility;
 
 namespace KamerConnect.View.MAUI.Components;
@@ -13,7 +14,7 @@ public partial class Entry : ContentView
     {
         Email, 
         Password,
-        DateOfBirth,
+        Date,
         PhoneNumber,
         Text
     }
@@ -53,14 +54,11 @@ public partial class Entry : ContentView
                     entry.LabelText = "Wachtwoord";
                     break;
 
-                case EntryInputType.DateOfBirth:
-                    entry.Placeholder = "selecteer een geldige geboorte datum";
+                case EntryInputType.Date:
                     entry.Keyboard = Keyboard.Numeric;
-                    entry.LabelText = "geboorte datum";
-                    entry.AddTapGestureRecognizerToOpenDatePicker();
                     break;
                 case EntryInputType.PhoneNumber:
-                    entry.Placeholder = "voor uw telefoon nummer in";
+                    entry.Placeholder = "Voer uw telefoon nummer in";
                     entry.Keyboard = Keyboard.Numeric;
                     entry.LabelText = "Telefoon nummer";
                     break;
@@ -72,33 +70,7 @@ public partial class Entry : ContentView
             }
         }
     }
-    private void AddTapGestureRecognizerToOpenDatePicker()
-    {
-        var tapGestureRecognizer = new TapGestureRecognizer();
-        tapGestureRecognizer.Tapped += (s, e) =>
-        {
-         
-            var datePicker = new DatePicker
-            {
-                IsVisible = false 
-            };
-            
-            var parent = this.Parent as Layout<Microsoft.Maui.Controls.View>;
-            if (parent != null)
-            {
-                parent.Children.Add(datePicker);
-                datePicker.Focus(); 
-
-                datePicker.DateSelected += (sender, args) =>
-                {
-                    DefaultText = args.NewDate.ToString("yyyy-MM-dd");
-                    parent.Children.Remove(datePicker);
-                };
-            }
-        };
-
-        this.GestureRecognizers.Add(tapGestureRecognizer);
-    }
+    
     
     public static readonly BindableProperty DefaultTextProperty =
         BindableProperty.Create(nameof(DefaultText), typeof(string), typeof(Entry), string.Empty);
@@ -174,24 +146,24 @@ public partial class Entry : ContentView
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.Email && !IsValidEmail(DefaultText))
+        else if (InputType == EntryInputType.Email && !EntryValidation.IsValidEmail(DefaultText))
         {
             IsValid = false;
-            ValidationMessage = "vul alsjeblieft een geldig emailadres in.";
+            ValidationMessage = "Emailadres is ongeldig.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.PhoneNumber && !IsNumeric(DefaultText) && !string.IsNullOrWhiteSpace(DefaultText))
+        else if (InputType == EntryInputType.PhoneNumber && !EntryValidation.IsNumeric(DefaultText) && !string.IsNullOrWhiteSpace(DefaultText))
         {
             IsValid = false;
             ValidationMessage = "Telefoonnummer is ongeldig.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
-        else if (InputType == EntryInputType.DateOfBirth && !IsNumeric(DefaultText))
+        else if (InputType == EntryInputType.Date && !EntryValidation.IsNumeric(DefaultText))
         {
             IsValid = false;
-            ValidationMessage = "geboorte datum is ongeldig.";
+            ValidationMessage = "Geboorte datum is ongeldig.";
             inputNotCorrect.Text = ValidationMessage;
             showLabel();
         }
@@ -203,15 +175,8 @@ public partial class Entry : ContentView
         }
     }
 
-    private bool IsValidEmail(string email)
-    {
-        return System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
-    }
-
-    private bool IsNumeric(string text)
-    {
-        return System.Text.RegularExpressions.Regex.IsMatch(text, @"^[\d/]+$");
-    }
+    
+    
     public static readonly BindableProperty IsLabelVisibleProperty =
         BindableProperty.Create(nameof(IsLabelVisible), typeof(bool), typeof(Entry), false);
 
