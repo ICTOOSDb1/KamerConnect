@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.Repositories;
 using KamerConnect.Services;
+using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
 
