@@ -1,5 +1,6 @@
 using KamerConnect.DataAccess.Postgres.Repositys;
 using KamerConnect.Exceptions;
+using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Services;
 
@@ -13,7 +14,8 @@ public partial class LoginPage : ContentPage
     {
         this.authService = authService;
     
-
+        //authService.Register(new Person("niek2004@icloud.com", "Niek", null, "van den Berg", null, new DateTime(2004, 6 ,23), Gender.Male, Role.Seeking, null), "wachtwoord");
+        
         InitializeComponent();
     }
     
