@@ -25,4 +25,9 @@ public class PersonService
     { 
         return _repository.CreatePerson(person);
     }
+    
+    public Guid CreateHousePreferences(HousePreferences housePreferences)
+    {
+        return _repository.CreateHousePreferences(housePreferences);
+    }
 }

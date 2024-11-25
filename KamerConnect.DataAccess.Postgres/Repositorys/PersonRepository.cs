@@ -11,9 +11,9 @@ public class PersonRepository : IPersonRepository
     private readonly string connectionString;
 
     public PersonRepository()
-   {
-       connectionString = GetConnectionString();
-   }
+    {
+        connectionString = GetConnectionString();
+    }
     public Person GetPersonById(string id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -65,7 +65,7 @@ public class PersonRepository : IPersonRepository
                 }
             }
         }
-        
+
         return null;
     }
     public string CreatePerson(Person person)
@@ -77,29 +77,31 @@ public class PersonRepository : IPersonRepository
             using (var command =
                    new NpgsqlCommand($"""
                                       INSERT INTO person (    
-                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
-                                        VALUES (@email,
-                                        @firstName,
-                                        @middleName,
-                                        @surname,
-                                        @phoneNumber,
-                                        @birthDate,
-                                        @gender::gender,
-                                        @role::user_role,
-                                        @profilePicturePath
+                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path, house_preferences_id)
+                                        VALUES (@Email,
+                                        @FirstName,
+                                        @MiddleName,
+                                        @Surname,
+                                        @PhoneNumber,
+                                        @BirthDate,
+                                        @Gender::gender,
+                                        @Role::user_role,
+                                        @ProfilePicturePath,
+                                        @housePreferences_id::uuid
                                       ) RETURNING id;
                                       """,
                        connection))
             {
                 command.Parameters.AddWithValue("@Email", person.Email);
                 command.Parameters.AddWithValue("@FirstName", person.FirstName);
-                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Surname", person.Surname);
                 command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
                 command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
                 command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@housePreferences_id", person.HousePreferencesId ?? (object)DBNull.Value);
 
                 var results = command.ExecuteScalar().ToString() ?? throw new InvalidOperationException();
                 return results?.ToString();
@@ -113,14 +115,14 @@ public class PersonRepository : IPersonRepository
         var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
         var username = Environment.GetEnvironmentVariable("POSTGRES_USER");
         var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-    
+
         if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(port) ||
             string.IsNullOrEmpty(database) || string.IsNullOrEmpty(username) ||
             string.IsNullOrEmpty(password))
         {
             throw new("Database environment variables are missing. Please check your .env file.");
         }
-    
+
         return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
     }
     private Person ReadToPerson(DbDataReader reader)
@@ -158,5 +160,29 @@ public class PersonRepository : IPersonRepository
         }
 
         throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
+    }
+
+    public Guid CreateHousePreferences(HousePreferences housePreferences)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            
+            using (var command = new NpgsqlCommand(
+                       """
+                       INSERT INTO house_preferences (type, price, surface, residents)
+                       VALUES (@Type::house_type, @Price, @Surface, @Residents)
+                       RETURNING id;
+                      """, connection))
+            {
+                command.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
+                command.Parameters.AddWithValue("@Price", housePreferences.Budget);
+                command.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea);
+                command.Parameters.AddWithValue("@Residents", housePreferences.Residents);
+                
+                
+                return Guid.Parse(command.ExecuteScalar()?.ToString() ?? throw new InvalidOperationException());
+            }
+        }
     }
 }

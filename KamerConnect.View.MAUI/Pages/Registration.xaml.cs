@@ -6,6 +6,7 @@ using KamerConnect.Models;
 using KamerConnect.Services;
 using Microsoft.Extensions.DependencyInjection;
 using KamerConnect.View.MAUI.Pages;
+
 namespace KamerConnect.View.MAUI;
 
 
@@ -14,6 +15,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 
 	public Person newPerson {  get; set; }
 	private readonly IServiceProvider _serviceProvider;
+
 	public enum Tab
 	{
 		SearchingHouse,
@@ -72,11 +74,13 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	private void OnHavingClicked(object sender, EventArgs e)
 	{
 		SelectTab(Tab.HavingHouse);
+
         Submit.Text = "registreren";
 
     }
 
     private string _huisButtonColor = "#EF626C";
+
 	public string HuisButtonColor
 	{
 		get => _huisButtonColor;
@@ -103,7 +107,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			}
 		}
 	}
-	
+
 	private void SelectTab(Tab tab)
 	{
 		SelectedTab = tab;
@@ -140,28 +144,32 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			null
 		);
 	}
-	
+
 	private async void submit(object? sender, EventArgs e)
 	{
-        if (personalInformationForm.ValidateAll())
-        {
-            CreatePerson();
-            if (Application.Current.MainPage is NavigationPage navigationPage)
-            {
-                if (SelectedTab == Tab.SearchingHouse)
-                {
 
-                   // RegisterHomePreference moet toegevoegd worden aan service provider en er moet hiernaartoe genavigeerd worden
-                }
-                else
-                {
-					PersonService personService = new PersonService(new PersonRepository());
-                    personService.CreatePerson(newPerson);
+		
+		PersonService personService = new PersonService(new PersonRepository());
+		AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
+		
+		if (personalInformationForm.ValidateAll())
+		{
+			CreatePerson();
+			if (Application.Current.MainPage is NavigationPage navigationPage)
+			{
+				if (SelectedTab == Tab.SearchingHouse)
+				{
 
-                    await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+				}
+				else
+				{
+					authentication.Register(newPerson, personalInformationForm.Password);
+          await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+          
+				}
+			}
+		}
+	}
 
-                }
-            }
-        }
-    }
 }

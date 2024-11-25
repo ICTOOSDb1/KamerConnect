@@ -20,7 +20,7 @@ namespace KamerConnect.View.MAUI
 
         private void HomePreferences(object sender, EventArgs e)
         {
-            FormsContainer.Content = new HomePreferencesForm();
+            FormsContainer.Content = new RegisterHomePreferencesForm();
         }
 
         private void Interests(object sender, EventArgs e)

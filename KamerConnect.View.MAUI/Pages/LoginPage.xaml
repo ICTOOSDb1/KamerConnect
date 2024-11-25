@@ -3,12 +3,12 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KamerConnect.View.MAUI.Pages.LoginPage">
-   <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <BoxView Grid.Column="0" BackgroundColor="White" />
         <BoxView Grid.Column="1" BackgroundColor="{StaticResource Primary}" />
         <Grid>
@@ -18,14 +18,14 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Column="1" Spacing="10">
-            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
-                <Label Text="Kamer" 
+                <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
+                    <Label Text="Kamer" 
                        FontSize="32" 
                        FontFamily="InterLight"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
-                <Label Text="Connect" 
+                    <Label Text="Connect" 
                        FontSize="32"
                        FontFamily="InterMedium"
                        FontAttributes="Bold"
@@ -33,44 +33,44 @@
                        VerticalOptions="Start"
                        TextColor="Black"
                        />
-            </HorizontalStackLayout>
-            
-           <VerticalStackLayout Margin="0,0,0,21" >
-                <Label Text="Welkom terug"
+                </HorizontalStackLayout>
+
+                <VerticalStackLayout Margin="0,0,0,21" >
+                    <Label Text="Welkom terug"
                        FontSize="24"
                        FontFamily="InterBold"
                        FontAttributes="Bold"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
-                <Label Text="Voer je gegevens in om in te loggen"
+                    <Label Text="Voer je gegevens in om in te loggen"
                        FontSize="14"
                        FontFamily="InterLight"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
-           </VerticalStackLayout>
-            <!--<Components:Entry LabelText="Email adres" InputType="Email"/> -->
-            <Entry x:Name="emailEntry"/>
-            <Entry x:Name="passwordEntry"/>
-            <!--<Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/> -->
-            <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <Label Text="Nog geen account?"
+                </VerticalStackLayout>
+                <!--<Components:Entry LabelText="Email adres" InputType="Email"/> -->
+                <Entry x:Name="emailEntry"/>
+                <Entry x:Name="passwordEntry"/>
+                <!--<Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/> -->
+                <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Nog geen account?"
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
-                <Label Text="Maak "
+                    <Label Text="Maak "
                        TextColor="{StaticResource Primary}">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="NavigateToRegister" />
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label Text=" er een aan"
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="NavigateToRegister" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text=" er een aan"
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
-            </HorizontalStackLayout>
-           
-        </StackLayout>
+                </HorizontalStackLayout>
+
+            </StackLayout>
         </Grid>
 
         <!-- Right side: Image -->
