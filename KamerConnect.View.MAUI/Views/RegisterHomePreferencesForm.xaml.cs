@@ -16,8 +16,6 @@ public partial class RegisterHomePreferencesForm : ContentView
 	{
 		InitializeComponent();
 	}
-
-   
 	
 	private async void HouseTypeChanged(object sender, EventArgs e)
 	{        
