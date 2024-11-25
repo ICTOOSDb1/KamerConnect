@@ -49,6 +49,7 @@
             <!--<Components:Entry LabelText="Email adres" InputType="Email"/> -->
             <Entry x:Name="emailEntry"/>
             <Entry x:Name="passwordEntry"/>
+            <Label x:Name="label2"></Label>
             <!--<Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/> -->
             <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
             <HorizontalStackLayout HorizontalOptions="Center">

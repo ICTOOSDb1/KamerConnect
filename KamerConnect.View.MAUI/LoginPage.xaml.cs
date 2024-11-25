@@ -17,21 +17,22 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
     }
     
-    public void LoginButton_Clicked(object sender, System.EventArgs e)
+    private async void LoginButton_Clicked(object sender, System.EventArgs e)
     {
         string email = emailEntry.Text;
         string password = passwordEntry.Text;
         
-        try
+        string? token = await authService.Authenticate(email, password);
+
+        if (token != null)
         {
-            authService.Authenticate(email, password);
+            await DisplayAlert("Succes", "Logged in", "OK");
         }
-        catch (InvalidCredentialsException ex)
+        else
         {
-            Console.WriteLine(e);
-            emailEntry.Placeholder = ex.Message;
-            throw;
+            await DisplayAlert("Error", "Invalid credentials, please try again.", "OK");
         }
+       
      
     }
 }
