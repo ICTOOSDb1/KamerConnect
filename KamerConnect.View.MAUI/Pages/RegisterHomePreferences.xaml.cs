@@ -24,7 +24,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
     private async void Submit(object sender, EventArgs e)
     {
         HousePreferences preferences = new HousePreferences(homePreferencesForm.Budget, homePreferencesForm.Area, homePreferencesForm.Type);
-        AuthenticationService authentication = new AuthenticationService(new PersonRepository());
+        AuthenticationService authentication = new AuthenticationService(new PersonService(new PersonRepository()), new AuthenticationRepository());
         authentication.Register(newPerson, "password123");
         DisplayAlert("test", "Succes!", "Ok.");
     }

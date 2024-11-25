@@ -225,4 +225,19 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
+
+    public Person GetPersonByEmail(string email)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string CreatePerson(Person person)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddHousePreference(Person person)
+    {
+        throw new NotImplementedException();
+    }
 }
