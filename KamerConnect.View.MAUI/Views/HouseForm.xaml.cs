@@ -60,7 +60,7 @@ public partial class HouseForm : ContentView
     {
         if (_person.HouseId != null)
         {
-            // House = _houseService.Get((Guid)_person.HouseId);
+            House = _houseService.Get((Guid)_person.HouseId);
         }
     }
 
