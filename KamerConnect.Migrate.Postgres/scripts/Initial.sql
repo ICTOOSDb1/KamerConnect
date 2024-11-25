@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS house_preferences (
     id UUID PRIMARY KEY default gen_random_uuid(),
 	type house_type,
 	price DECIMAL(10, 2),
-    surface DECIMAL(10, 2)
+    surface DECIMAL(10, 2),
+    residents INT
 );
 CREATE TABLE IF NOT EXISTS person (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

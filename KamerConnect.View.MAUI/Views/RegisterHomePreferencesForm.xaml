@@ -13,6 +13,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                   
                 </Grid.RowDefinitions>
 
@@ -60,9 +61,14 @@
 
 
             </Picker>
-            
-            
-            </Grid>
+            <Components:Entry LabelText="Hoeveelheid kamergenoten"
+                   x:Name="ResidentsInput"
+                   
+                   Grid.Row="4" 
+                   Grid.Column="0" />
+
+
+        </Grid>
         </Components:FormCard>
     
 </ContentView>

@@ -19,10 +19,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
         {
             await Navigation.PopAsync();
         }
-        else
-        {
-            
-        }
+        
     }
     private async void Submit(object sender, EventArgs e)
     {

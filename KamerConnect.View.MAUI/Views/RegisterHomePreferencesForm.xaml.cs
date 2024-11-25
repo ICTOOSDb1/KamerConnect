@@ -8,7 +8,7 @@ public partial class RegisterHomePreferencesForm : ContentView
     public string Budget => BudgetInput.DefaultText ?? string.Empty;
     public string Area => AreaInput.DefaultText ?? string.Empty;
     public HouseType Type;
- 
+    public string Residents => ResidentsInput.DefaultText ?? string.Empty;
 
 
 
@@ -17,10 +17,7 @@ public partial class RegisterHomePreferencesForm : ContentView
 		InitializeComponent();
 	}
 
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-
-    }
+   
 	
 	private async void HouseTypeChanged(object sender, EventArgs e)
 	{        

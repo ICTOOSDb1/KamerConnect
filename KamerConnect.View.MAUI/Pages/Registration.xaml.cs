@@ -32,9 +32,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		{
 			await Navigation.PopAsync();
 		}
-		else
-		{
-		}
+		
 	}
 
 	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
