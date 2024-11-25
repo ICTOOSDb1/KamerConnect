@@ -28,7 +28,7 @@ namespace KamerConnect.View.MAUI
         {
             var session = await _authenticationService.GetSession();
             if (session != null)
-                _person = _personService.GetPersonById(session.);
+                _person = _personService.GetPersonById(session.personId);
         }
 
         private void AccountDetails(object sender, EventArgs e)

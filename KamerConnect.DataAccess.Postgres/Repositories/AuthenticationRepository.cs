@@ -55,7 +55,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                         return new Session(
                             reader.GetString(0),
                             reader.GetDateTime(1),
-                            reader.GetString(2)
+                            reader.GetGuid(2)
                         );
                     }
                 }
@@ -88,7 +88,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                         return new Session(
                             reader.GetString(0),
                             reader.GetDateTime(1),
-                            reader.GetGuid(2).ToString()
+                            reader.GetGuid(2)
                         );
                     }
                 }
