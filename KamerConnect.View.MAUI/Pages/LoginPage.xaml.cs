@@ -1,6 +1,6 @@
 using KamerConnect.Exceptions;
 
-namespace KamerConnect.View.MAUI;
+namespace KamerConnect.View.MAUI.Pages;
 
 public partial class LoginPage : ContentPage
 {
@@ -9,17 +9,19 @@ public partial class LoginPage : ContentPage
     public LoginPage(AuthenticationService authService)
     {
         this.authService = authService;
+
+
         InitializeComponent();
     }
 
-    public void LoginButton_Clicked(object sender, System.EventArgs e)
+    public async void LoginButton_Clicked(object sender, System.EventArgs e)
     {
         string email = emailEntry.Text;
         string password = passwordEntry.Text;
 
         try
         {
-            authService.Authenticate(email, password);
+            await authService.Authenticate(email, password);
         }
         catch (InvalidCredentialsException ex)
         {
@@ -28,5 +30,12 @@ public partial class LoginPage : ContentPage
             throw;
         }
 
+    }
+    private void NavigateToRegister(object sender, TappedEventArgs e)
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            navigationPage.Navigation.PushAsync(new Registration());
+        }
     }
 }

@@ -5,6 +5,7 @@ using KamerConnect.Services;
 using KamerConnect.DataAccess.Minio;
 using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.View.MAUI.Views;
+using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
 
