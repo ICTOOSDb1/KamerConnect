@@ -20,7 +20,7 @@ namespace KamerConnect.View.MAUI
             _houseService = houseService;
             _authenticationService = authenticationService;
             _personService = personService;
-
+            
             GetCurrentPerson();
         }
 

@@ -21,7 +21,7 @@
                        BackgroundColor="#F9FBFD"
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
-                       FontFamily="Inter"
+                       FontFamily="Inter-Regular"
                        FontSize="36"
                        FontAttributes="Bold"/>
                 <Label Grid.Row="1"
@@ -52,7 +52,6 @@
                 <ContentView x:Name="FormsContainer"
                              Grid.Row="1"
                              Grid.Column="1"
-                             Style="{StaticResource PrimaryButton}"
                              BackgroundColor="#F9FBFD"
                              HorizontalOptions="FillAndExpand"
                              VerticalOptions="FillAndExpand"/>
