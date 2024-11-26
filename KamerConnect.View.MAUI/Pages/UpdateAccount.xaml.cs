@@ -1,8 +1,8 @@
-using KamerConnect.Models;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Views;
+using KamerConnect.Models;
 
-namespace KamerConnect.View.MAUI
+namespace KamerConnect.View.MAUI.Pages
 {
     public partial class UpdateAccount : ContentPage
     {
@@ -16,14 +16,19 @@ namespace KamerConnect.View.MAUI
         AuthenticationService authenticationService, PersonService personService)
         {
             NavigationPage.SetHasNavigationBar(this, false);
-            
+
             InitializeComponent();
             _fileService = fileService;
             _houseService = houseService;
             _authenticationService = authenticationService;
             _personService = personService;
-            
+
             GetCurrentPerson();
+            if (_person.Role == Role.Offering)
+            {
+                HomePreferencesButton.IsVisible = false;
+            }
+            FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
         }
 
         private async void GetCurrentPerson()
@@ -35,17 +40,37 @@ namespace KamerConnect.View.MAUI
 
         private void AccountDetails(object sender, EventArgs e)
         {
-            FormsContainer.Content = new UpdateAccountsForm(_fileService);
+            FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
+            SetButtonStyles(AccountDetailsButton);
+        }
+        private void Interests(object sender, EventArgs e)
+        {
+            FormsContainer.Content = new InterestsForm(_personService, _person);
+            SetButtonStyles(InterestsButton);
         }
 
         private void HomePreferences(object sender, EventArgs e)
         {
+            FormsContainer.Content = new HomePreferencesForm(_personService, _person);
+            SetButtonStyles(HomePreferencesButton);
+        }
+
+        private void SocialMedia(object sender, EventArgs e)
+        {
+            FormsContainer.Content = new SocialMediaForm(_personService, _person);
+            SetButtonStyles(SocialMediaButton);
             FormsContainer.Content = new RegisterHomePreferencesForm();
         }
 
-        private void Interests(object sender, EventArgs e)
+
+        private void SetButtonStyles(Button buttonSource)
         {
-            FormsContainer.Content = new InterestsForm();
+            InterestsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            AccountDetailsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            HomePreferencesButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            SocialMediaButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+
+            buttonSource.Style = (Style)Application.Current.Resources["PrimaryButton"];
         }
 
         private void House(object sender, EventArgs e)

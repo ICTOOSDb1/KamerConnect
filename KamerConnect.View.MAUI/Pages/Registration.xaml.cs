@@ -7,7 +7,7 @@ using KamerConnect.Services;
 using Microsoft.Extensions.DependencyInjection;
 using KamerConnect.View.MAUI.Pages;
 
-namespace KamerConnect.View.MAUI;
+namespace KamerConnect.View.MAUI.Pages;
 
 
 public partial class Registration : ContentPage, INotifyPropertyChanged

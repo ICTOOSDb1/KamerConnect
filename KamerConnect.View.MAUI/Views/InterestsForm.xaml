@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Views.InterestsForm">
-    <VerticalStackLayout>
-        <Label
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center"
-            BackgroundColor="Blue"
-            HorizontalOptions="Center"/>
-    </VerticalStackLayout>
+    <ScrollView>
+		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+			<VerticalStackLayout Padding="10">
+				
+				<Components:Entry InputType="Text" LabelText="School" Text="{Binding School, Mode=TwoWay}" x:Name = "schoolEntry"/>
+                <Components:Entry InputType="Text" LabelText="Studie" Text="{Binding Study, Mode=TwoWay}" x:Name = "studyEntry"/>
+                <Components:Entry LabelText="Omschrijving van jezelf" Text="{Binding Description, Mode=TwoWay}" x:Name = "descriptionEntry"/>
+
+				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_update_interests"/>
+
+			</VerticalStackLayout>
+		</Components:FormCard>
+	</ScrollView>
 </ContentView>

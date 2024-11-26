@@ -1,5 +1,5 @@
 ﻿
-namespace KamerConnect.View.MAUI;
+namespace KamerConnect.View.MAUI.Pages;
 
 public partial class MainPage : ContentPage
 {

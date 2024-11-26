@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
-using KamerConnect.Services;
 using KamerConnect.DataAccess.Minio;
 using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.View.MAUI.Views;
+using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
@@ -45,11 +45,10 @@ public static class MauiProgram
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();
 		builder.Services.AddTransient<UpdateAccount>();
-
+		builder.Services.AddTransient<RegisterHomePreferencesPage>();
 		builder.Services.AddTransient<UpdateAccountsForm>();
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
-		builder.Services.AddTransient<RegisterHomePreferencesPage>();
 		builder.Services.AddTransient<Registration>();
 
 		builder.Services.AddFilePicker();

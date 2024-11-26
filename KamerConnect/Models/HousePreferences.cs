@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace KamerConnect.Models
 {
     public class HousePreferences
@@ -21,6 +15,4 @@ namespace KamerConnect.Models
             Residents = residents;
         }
     }
-    
-    
 }

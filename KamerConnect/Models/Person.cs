@@ -14,8 +14,10 @@ public class Person
     public string? ProfilePicturePath { get; set; }
     public Guid? HouseId { get; set; }
     public Personality? Personality { get; set; }
-    
+    public HousePreferences? HousePreferences { get; set; }
     public Guid? HousePreferencesId { get; set; }
+    public Social? Social { get; set; }
+
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
         DateTime birthDate, Gender gender, Role role, string? profilePicturePath, Guid? id,
         Guid? houseId)

@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-             x:Class="KamerConnect.View.MAUI.UpdateAccount"
+             x:Class="KamerConnect.View.MAUI.Pages.UpdateAccount"
              Title="UpdateAccount">
         <Grid>
                 <Grid.RowDefinitions>
@@ -37,11 +37,18 @@
                                 Style="{StaticResource PrimaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                         <Button Text="Woningvoorkeuren"
+                                x:Name="HomePreferencesButton"
                                 Clicked="HomePreferences"
                                 Style="{StaticResource PrimaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                         <Button Text="Interesses"
+                                x:Name="InterestsButton"
                                 Clicked="Interests"
+                                Style="{StaticResource PrimaryButton}"
+                                HorizontalOptions="FillAndExpand"/>
+                        <Button Text="Social Media"
+                                x:Name="SocialMediaButton"
+                                Clicked="SocialMedia"
                                 Style="{StaticResource PrimaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                         <Button Text="House"
