@@ -167,7 +167,7 @@ public class PersonRepository : IPersonRepository
                        WHERE id = @Id;
                        """, connection))
             {
-                command.Parameters.AddWithValue("@Id", Guid.Parse(person.Id));
+                command.Parameters.AddWithValue("@Id", person.Id);
                 command.Parameters.AddWithValue("@Email", person.Email);
                 command.Parameters.AddWithValue("@FirstName", person.FirstName);
                 command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? string.Empty);

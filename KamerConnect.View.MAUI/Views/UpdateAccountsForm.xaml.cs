@@ -46,7 +46,7 @@ public partial class UpdateAccountsForm : ContentView
             string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetFileName(filePath);
             string contentType = FileUtils.GetContentType(fileName);
 
-            await _fileService.UploadFileAsync(BucketName, fileName, fileBytes, contentType);
+            await _fileService.UploadFileAsync(BucketName, fileName, filePath, contentType);
             string localhost = Env.GetString("MINIO_ENDPOINT");
             _currentPerson.ProfilePicturePath = $"{localhost}/{BucketName}/{fileName}";
             profile_picture.Source = _currentPerson.ProfilePicturePath;
@@ -57,7 +57,7 @@ public partial class UpdateAccountsForm : ContentView
         if (!ValidateForm()) return;
         _personService.UpdatePerson(_currentPerson);
     }
-}
+
 
     private string GetContentType(string fileName)
     {

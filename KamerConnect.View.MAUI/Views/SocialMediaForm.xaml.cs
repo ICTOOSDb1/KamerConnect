@@ -15,7 +15,7 @@ public partial class SocialMediaForm : ContentView
         _currentPerson = person;
         if (person.Social == null)
         {
-            person.Social = new Social(null, null);
+            person.Social = new Models.Social(null, null);
         }
         BindingContext = person.Social;
         InitializeComponent();
@@ -24,7 +24,7 @@ public partial class SocialMediaForm : ContentView
     private void Button_Update_social_media(object sender, EventArgs e)
     {
         CheckIfSocialsArePicked(_currentPerson);
-        _personService.UpdateSocial(Guid.Parse(_currentPerson.Id), _currentPerson.Social);
+        if (_currentPerson.Id != null) _personService.UpdateSocial((Guid)_currentPerson.Id, _currentPerson.Social);
     }
     
     public void CheckIfSocialsArePicked(Person person)

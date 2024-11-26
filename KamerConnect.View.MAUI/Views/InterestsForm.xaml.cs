@@ -24,7 +24,7 @@ public partial class InterestsForm : ContentView
 	private void Button_update_interests(object? sender, EventArgs e)
 	{
 		if (!ValidateForm()) return;
-		_personService.UpdatePersonality(Guid.Parse(_currentPerson.Id), _currentPerson.Personality);
+		if (_currentPerson.Id != null) _personService.UpdatePersonality((Guid)_currentPerson.Id, _currentPerson.Personality);
 	}
 	
 	public bool ValidateForm()

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.DataAccess.Minio;
-using KamerConnect.Repositories;
+using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
