@@ -1,12 +1,21 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.Models;
+using KamerConnect.Services;
+using Microsoft.Extensions.DependencyInjection;
+using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI.Pages;
 
+
 public partial class Registration : ContentPage, INotifyPropertyChanged
 {
+
+	public Person newPerson {  get; set; }
+	private readonly IServiceProvider _serviceProvider;
+
 	public enum Tab
 	{
 		SearchingHouse,
@@ -22,7 +31,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			OnPropertyChanged();
 		}
 	}
-	public Registration()
+	public Registration(IServiceProvider serviceProvider)
 	{
 		NavigationPage.SetHasNavigationBar(this, false);
 		
@@ -32,6 +41,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		BindingContext = this;
 		SelectedTab = Tab.SearchingHouse;
 		UpdateButtonColors();
+		_serviceProvider = serviceProvider;
 	}
 	public event PropertyChangedEventHandler PropertyChanged;
 
@@ -63,6 +73,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		SearchingButton.TextColor = Colors.White;
 		HavingButton.TextColor = Colors.Black;
 		SelectTab(Tab.SearchingHouse);
+		Submit.Text = "verder";
 	}
 
 	private void OnHavingClicked(object sender, EventArgs e)
@@ -70,9 +81,13 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		HavingButton.TextColor = Colors.White;
 		SearchingButton.TextColor = Colors.Black;
 		SelectTab(Tab.HavingHouse);
-	}
-	
-	private string _huisButtonColor = "#EF626C";
+
+        Submit.Text = "registreren";
+
+    }
+
+    private string _huisButtonColor = "#EF626C";
+
 	public string HuisButtonColor
 	{
 		get => _huisButtonColor;
@@ -99,7 +114,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			}
 		}
 	}
-	
+
 	private void SelectTab(Tab tab)
 	{
 		SelectedTab = tab;
@@ -124,7 +139,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	{
 		Role role = SelectedTab == Tab.SearchingHouse ? Role.Seeking : Role.Offering;
 
-		var newPerson = new Person(
+		newPerson = new Person(
 			personalInformationForm.Email,
 			personalInformationForm.FirstName,
 			personalInformationForm.MiddleName,
@@ -138,17 +153,35 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			null
 		);
 	}
-	
+
 	private async void submit(object? sender, EventArgs e)
 	{
+
+		
+		PersonService personService = new PersonService(new PersonRepository());
+		AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
+		
 		if (personalInformationForm.ValidateAll())
 		{
 			CreatePerson();
-			if (Navigation.NavigationStack.Count > 1)
+			if (Application.Current.MainPage is NavigationPage navigationPage)
 			{
-				await Navigation.PopAsync();
+				if (SelectedTab == Tab.SearchingHouse)
+				{
+                   
+
+                    await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(_serviceProvider, newPerson, personalInformationForm.Password));
+				}
+				else
+				{
+					authentication.Register(newPerson, personalInformationForm.Password);
+
+          			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+          
+				}
 			}
-			
+
 		}
 	}
+
 }

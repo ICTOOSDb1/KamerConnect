@@ -1,9 +1,6 @@
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Views;
 using KamerConnect.Models;
-using Microsoft.Extensions.DependencyInjection;
-
-using Microsoft.Maui.Controls;
 
 namespace KamerConnect.View.MAUI.Pages
 {
@@ -19,13 +16,13 @@ namespace KamerConnect.View.MAUI.Pages
         AuthenticationService authenticationService, PersonService personService)
         {
             NavigationPage.SetHasNavigationBar(this, false);
-            
+
             InitializeComponent();
             _fileService = fileService;
             _houseService = houseService;
             _authenticationService = authenticationService;
             _personService = personService;
-            
+
             GetCurrentPerson();
             if (_person.Role == Role.Offering)
             {
@@ -57,11 +54,12 @@ namespace KamerConnect.View.MAUI.Pages
             FormsContainer.Content = new HomePreferencesForm(_personService, _person);
             SetButtonStyles(HomePreferencesButton);
         }
-        
+
         private void SocialMedia(object sender, EventArgs e)
         {
             FormsContainer.Content = new SocialMediaForm(_personService, _person);
             SetButtonStyles(SocialMediaButton);
+            FormsContainer.Content = new RegisterHomePreferencesForm();
         }
 
 
@@ -71,7 +69,7 @@ namespace KamerConnect.View.MAUI.Pages
             AccountDetailsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             HomePreferencesButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             SocialMediaButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
-            
+
             buttonSource.Style = (Style)Application.Current.Resources["PrimaryButton"];
         }
 

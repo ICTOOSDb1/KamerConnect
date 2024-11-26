@@ -11,5 +11,6 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("UpdateAccount", typeof(UpdateAccount));
 		Routing.RegisterRoute("Registration", typeof(Registration));
 		Routing.RegisterRoute("MainPage", typeof(MainPage));
+		Routing.RegisterRoute("HomePreferencesPage", typeof(RegisterHomePreferencesPage));
 	}
 }

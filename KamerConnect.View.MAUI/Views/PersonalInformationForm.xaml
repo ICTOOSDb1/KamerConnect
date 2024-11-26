@@ -40,18 +40,28 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout Grid.Column="0">
+            <VerticalStackLayout Grid.Column="0" Spacing="10">
                 <components:Entry x:Name="emailEntry"
                                   InputType="Email"
                                   LabelText="E-mail*"
                                   Keyboard="Email"/>
+
+                <components:Entry x:Name="passwordEntry"
+                                  InputType="Password"
+                                  LabelText="Wachtwoord*"
+                                  />
             </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Column="1">
+            <VerticalStackLayout Grid.Column="1" Spacing="10">
                 <components:Entry x:Name="phoneNumberEntry"
                                   InputType="PhoneNumber"
                                   LabelText="Telefoonnummer"
                                   Keyboard="Telephone"/>
+                
+                <components:Entry x:Name="confirmPasswordEntry"
+                                  InputType="ConfirmPassword"
+                                  LabelText="Wachtwoord bevestigen*"
+                 />
             </VerticalStackLayout>
         </Grid>
 

@@ -1,12 +1,13 @@
-﻿namespace KamerConnect.Models
+namespace KamerConnect.Models
 {
     public class HousePreferences
     {
-        public string Budget { get; set; }
-        public string SurfaceArea { get; set; }
-        public HouseType? Type { get; set; }
-        public string Residents { get; set; }
-        public HousePreferences(string budget, string surfaceArea, HouseType? type, string residents)
+        public double Budget { get; set; }
+        public double SurfaceArea { get; set; }
+        public HouseType Type { get; set; }
+        public int Residents { get; set; }
+
+        public HousePreferences(double budget, double surfaceArea, HouseType type, int residents)
         {
             Budget = budget;
             SurfaceArea = surfaceArea;

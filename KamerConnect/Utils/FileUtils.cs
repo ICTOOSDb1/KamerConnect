@@ -1,5 +1,3 @@
-using System;
-
 namespace KamerConnect.Utils;
 
 public class FileUtils
