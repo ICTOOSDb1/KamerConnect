@@ -86,7 +86,27 @@ public class HouseRepository : IHouseRepository
         }
     }
 
-    public Guid Create(House house)
+    public void AddHouseToPerson(Guid houseId, Guid personId, NpgsqlConnection connection)
+    {
+        using (var command = new NpgsqlCommand($"""
+                                                    UPDATE person
+                                                    SET house_id = @houseId::uuid
+                                                    WHERE id = @personId::uuid;
+                                                """, connection))
+        {
+            command.Parameters.AddWithValue("@houseId", houseId);
+            command.Parameters.AddWithValue("@personId", personId);
+
+            var rowsAffected = command.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new InvalidOperationException("Failed to update house ID for the person. Ensure the person exists.");
+            }
+        }
+    }
+
+    public Guid Create(House house, Guid personId)
     {
         try
         {
@@ -99,9 +119,9 @@ public class HouseRepository : IHouseRepository
                     try
                     {
                         Guid houseId = CreateHouseRecord(house, connection);
-
+                    
                         CreateHouseImages(houseId, house.HouseImages, connection);
-
+                        AddHouseToPerson(houseId, personId, connection);
                         transaction.Commit();
 
                         return houseId;
