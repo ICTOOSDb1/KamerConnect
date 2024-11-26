@@ -12,7 +12,7 @@ public class PersonService
         _repository = repository;
     }
 
-    public Person GetPersonById(string id)
+    public Person GetPersonById(Guid id)
     {
         return _repository.GetPersonById(id);
     }
@@ -20,9 +20,9 @@ public class PersonService
     {
         return _repository.GetPersonByEmail(email);
     }
-    
-    public string CreatePerson(Person person)
-    { 
+
+    public Guid CreatePerson(Person person)
+    {
         return _repository.CreatePerson(person);
     }
     

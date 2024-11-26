@@ -59,9 +59,14 @@ public partial class Entry : ContentView
                 case EntryInputType.Date:
                     entry.Keyboard = Keyboard.Numeric;
                     break;
+
                 case EntryInputType.PhoneNumber:
                     entry.Keyboard = Keyboard.Numeric;
                     entry.LabelText = "Telefoon nummer";
+                    break;
+
+                case EntryInputType.Number:
+                    entry.Keyboard = Keyboard.Numeric;
                     break;
 
                 default:
@@ -106,7 +111,6 @@ public partial class Entry : ContentView
         get => (bool)GetValue(IsPasswordProperty);
         set => SetValue(IsPasswordProperty, value);
     }
-
 
     public static readonly BindableProperty LabelTextProperty =
         BindableProperty.Create(nameof(LabelText), typeof(string), typeof(Entry), default(string));

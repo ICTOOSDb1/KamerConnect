@@ -1,8 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KamerConnect.Exceptions;
 
 namespace KamerConnect.View.MAUI.Pages;
@@ -17,18 +12,20 @@ public partial class LoginPage : ContentPage
         this.authService = authService;
         _serviceProvider = serviceProvider;
 
+    
+        NavigationPage.SetHasNavigationBar(this, false);
+        
         InitializeComponent();
     }
-    
-    public void LoginButton_Clicked(object sender, System.EventArgs e)
+
+    public async void LoginButton_Clicked(object sender, System.EventArgs e)
     {
         string email = emailEntry.Text;
         string password = passwordEntry.Text;
-        
+
         try
         {
-            authService.Authenticate(email, password);
-            
+            await authService.Authenticate(email, password);
         }
         catch (InvalidCredentialsException ex)
         {
@@ -36,7 +33,7 @@ public partial class LoginPage : ContentPage
             emailEntry.Placeholder = ex.Message;
             throw;
         }
-     
+
     }
     private void NavigateToRegister(object sender, TappedEventArgs e)
     {
@@ -45,7 +42,4 @@ public partial class LoginPage : ContentPage
             navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<Registration>());
         }
     }
-
-
-    
 }

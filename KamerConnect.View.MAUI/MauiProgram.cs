@@ -1,13 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
-
-using KamerConnect.DataAccess.Minio;
-using KamerConnect.DataAccess.Postgres.Repositys;
-using KamerConnect.View.MAUI.Views;
-
-using KamerConnect.Repositories;
-
 using KamerConnect.Services;
+using KamerConnect.DataAccess.Minio;
+using KamerConnect.DataAccess.Postgres.Repositories;
+using KamerConnect.View.MAUI.Views;
 using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
@@ -44,15 +40,19 @@ public static class MauiProgram
 		builder.Services.AddSingleton<PersonService>(sp => new PersonService(new PersonRepository()));
 		builder.Services.AddSingleton<AuthenticationService>(sp => new AuthenticationService(sp.GetRequiredService<PersonService>(), new AuthenticationRepository()));
 		builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
+		builder.Services.AddSingleton<HouseService>(sp => new HouseService(new HouseRepository()));
+
+		builder.Services.AddTransient<LoginPage>();
+		builder.Services.AddTransient<MainPage>();
 		builder.Services.AddTransient<UpdateAccount>();
+
 		builder.Services.AddTransient<UpdateAccountsForm>();
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
-		builder.Services.AddTransient<LoginPage>();
-		builder.Services.AddTransient<MainPage>();
-		builder.Services.AddTransient<Registration>();
 		builder.Services.AddTransient<RegisterHomePreferencesPage>();
+		builder.Services.AddTransient<Registration>();
 
+		builder.Services.AddFilePicker();
 
 		return builder.Build();
 	}

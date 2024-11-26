@@ -2,14 +2,14 @@ using KamerConnect.Models;
 
 namespace KamerConnect.Repositories;
 
-public interface IAuthenticationRepository 
+public interface IAuthenticationRepository
 {
-    void AddPassword(string personId, string password, string salt);
+    void AddPassword(Guid personId, string password, string salt);
     byte[] GetSaltFromPerson(string email);
-    void SaveSession(string personId, DateTime startingDate, string sessionToken);
+    void SaveSession(Guid personId, DateTime startingDate, string sessionToken);
     void UpdateSessionDate(string sessionToken);
     void RemoveSession(string sessionToken);
-    Session GetSession(string personId);
-    Session? GetSessionWithLocalToken(string localSessionToken);
-    string GetPassword(string person_id);
+    Session GetSession(Guid personId);
+    Session GetSessionWithLocalToken(string localSessionToken);
+    string GetPassword(Guid person_id);
 }
