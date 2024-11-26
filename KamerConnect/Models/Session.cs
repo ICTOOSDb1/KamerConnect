@@ -2,7 +2,7 @@
 
 public class Session
 {
-    public Session(string sessionToken, DateTime startingDate, string personId)
+    public Session(string sessionToken, DateTime startingDate, Guid personId)
     {
         this.sessionToken = sessionToken;
         this.startingDate = startingDate;
@@ -11,5 +11,5 @@ public class Session
 
     public string sessionToken { get; set; }
     public DateTime startingDate { get; set; }
-    public string personId { get; set; }
+    public Guid personId { get; set; }
 }

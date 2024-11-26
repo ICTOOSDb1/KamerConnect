@@ -24,7 +24,10 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	}
 	public Registration()
 	{
+		NavigationPage.SetHasNavigationBar(this, false);
+		
 		InitializeComponent();
+			
 		SelectTabAction = SelectTab;
 		BindingContext = this;
 		SelectedTab = Tab.SearchingHouse;
@@ -57,11 +60,15 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 
 	private void OnSearchingClicked(object sender, EventArgs e)
 	{
+		SearchingButton.TextColor = Colors.White;
+		HavingButton.TextColor = Colors.Black;
 		SelectTab(Tab.SearchingHouse);
 	}
 
 	private void OnHavingClicked(object sender, EventArgs e)
 	{
+		HavingButton.TextColor = Colors.White;
+		SearchingButton.TextColor = Colors.Black;
 		SelectTab(Tab.HavingHouse);
 	}
 	
@@ -126,6 +133,8 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			personalInformationForm.BirthDate.Value,
 			Enum.Parse<Gender>(personalInformationForm.Gender ?? "Other"),
 			role,
+			null,
+			null,
 			null
 		);
 	}

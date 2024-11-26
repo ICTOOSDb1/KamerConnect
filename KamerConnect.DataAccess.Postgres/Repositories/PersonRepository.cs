@@ -2,6 +2,7 @@ using System.Data.Common;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
+using KamerConnect.Utils;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -13,9 +14,9 @@ public class PersonRepository : IPersonRepository
 
     public PersonRepository()
     {
-        connectionString = GetConnectionString();
+        connectionString = EnvironmentUtils.GetConnectionString();
     }
-    public Person GetPersonById(string id)
+    public Person GetPersonById(Guid id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -66,10 +67,10 @@ public class PersonRepository : IPersonRepository
                 }
             }
         }
-        
+
         return null;
     }
-    public string CreatePerson(Person person)
+    public Guid CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -102,28 +103,12 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
                 command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
 
-                var results = command.ExecuteScalar().ToString() ?? throw new InvalidOperationException();
-                return results?.ToString();
+                var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                return (Guid)result;
             }
         }
     }
-    private string GetConnectionString()
-    {
-        var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
-        var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
-        var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
-        var username = Environment.GetEnvironmentVariable("POSTGRES_USER");
-        var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-    
-        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(port) ||
-            string.IsNullOrEmpty(database) || string.IsNullOrEmpty(username) ||
-            string.IsNullOrEmpty(password))
-        {
-            throw new("Database environment variables are missing. Please check your .env file.");
-        }
-    
-        return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
-    }
+
     private Person ReadToPerson(DbDataReader reader)
     {
         var person = new Person
@@ -134,10 +119,11 @@ public class PersonRepository : IPersonRepository
             reader.GetString(4),
             reader.IsDBNull(5) ? null : reader.GetString(5),
             reader.GetDateTime(6),
-            ValidateEnum<Gender>(reader.GetString(7)),
-            ValidateEnum<Role>(reader.GetString(8)),
+            EnumUtils.Validate<Gender>(reader.GetString(7)),
+            EnumUtils.Validate<Role>(reader.GetString(8)),
             reader.IsDBNull(9) ? null : reader.GetString(9),
-            reader.GetGuid(0).ToString()
+            reader.GetGuid(0),
+            reader.IsDBNull(10) ? null : reader.GetGuid(10)
         );
 
 

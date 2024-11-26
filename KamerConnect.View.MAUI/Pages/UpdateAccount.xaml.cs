@@ -9,55 +9,58 @@ namespace KamerConnect.View.MAUI.Pages
 {
     public partial class UpdateAccount : ContentPage
     {
-        private FileService _fileService;
-        private PersonService _personService;
-        private Person _currentPerson;
-        
-        public Person mockPerson = new Person(
-            email: "john.doe@example.com",
-            firstName: "John",
-            middleName: "A",
-            surname: "Doe",
-            phoneNumber: "+1234567890",
-            birthDate: new DateTime(1990, 5, 15),
-            gender: Gender.Male,
-            role: Role.Seeking,
-            profilePicturePath: "http://localhost:9000/profilepictures/klassendiagram.png",
-            id: "3483a37c-f810-4d82-90e3-8d78d372f4ad"
-        );
-        public UpdateAccount(FileService fileService, PersonService personService)
+        private readonly FileService _fileService;
+        private readonly HouseService _houseService;
+        private readonly PersonService _personService;
+        private readonly AuthenticationService _authenticationService;
+        private Person _person;
+
+        public UpdateAccount(FileService fileService, HouseService houseService,
+        AuthenticationService authenticationService, PersonService personService)
         {
-            _fileService = fileService;
-            _personService = personService;
-            _currentPerson = mockPerson;
+            NavigationPage.SetHasNavigationBar(this, false);
+            
             InitializeComponent();
-            if (_currentPerson.Role == Role.Offering)
+            _fileService = fileService;
+            _houseService = houseService;
+            _authenticationService = authenticationService;
+            _personService = personService;
+            
+            GetCurrentPerson();
+            if (_person.Role == Role.Offering)
             {
                 HomePreferencesButton.IsVisible = false;
             }
-            FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, mockPerson);
+            FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
+        }
+
+        private async void GetCurrentPerson()
+        {
+            var session = await _authenticationService.GetSession();
+            if (session != null)
+                _person = _personService.GetPersonById(session.personId);
         }
 
         private void AccountDetails(object sender, EventArgs e)
         {
-            FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, mockPerson);
+            FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
             SetButtonStyles(AccountDetailsButton);
         }
         private void Interests(object sender, EventArgs e)
         {
-            FormsContainer.Content = new InterestsForm(_personService, _currentPerson);
+            FormsContainer.Content = new InterestsForm(_personService, _person);
             SetButtonStyles(InterestsButton);
         }
 
         private void HomePreferences(object sender, EventArgs e)
         {
-            FormsContainer.Content = new HomePreferencesForm(_personService, _currentPerson);
+            FormsContainer.Content = new HomePreferencesForm(_personService, _person);
             SetButtonStyles(HomePreferencesButton);
         }
         
         private void SocialMedia(object sender, EventArgs e)
         {
-            FormsContainer.Content = new SocialMediaForm(_personService, _currentPerson);
+            FormsContainer.Content = new SocialMediaForm(_personService, _person);
             SetButtonStyles(SocialMediaButton);
         }
 
@@ -70,6 +73,11 @@ namespace KamerConnect.View.MAUI.Pages
             SocialMediaButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             
             buttonSource.Style = (Style)Application.Current.Resources["PrimaryButton"];
+        }
+
+        private void House(object sender, EventArgs e)
+        {
+            FormsContainer.Content = new HouseForm(_fileService, _houseService, _person);
         }
     }
 }

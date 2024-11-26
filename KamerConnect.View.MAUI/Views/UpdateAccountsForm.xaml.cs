@@ -4,6 +4,9 @@ using DotNetEnv;
 using KamerConnect.EnvironmentVariables;
 using Microsoft.Maui.Storage;
 using KamerConnect.Services;
+using KamerConnect.Utils;
+using KamerConnect.View.MAUI.Utils;
+using LukeMauiFilePicker;
 using KamerConnect.Models;
 using Npgsql;
 
@@ -28,20 +31,20 @@ public partial class UpdateAccountsForm : ContentView
         firstNameEntry.Text = _currentPerson.FirstName;
     }
 
-    private async void Image_tapped(object sender, TappedEventArgs e)
+    private async void Image_tapped(object sender, EventArgs e)
     {
-        var result = await FilePicker.Default.PickAsync(new PickOptions
-        {
-            PickerTitle = "Selecteer een foto",
-            FileTypes = FilePickerFileType.Images
-        });
+        IFilePickerService picker = new FilePickerService();
 
-        if (result != null)
+        var result = await picker.PickFileAsync(
+            "Selecteer foto's",
+            MauiFileUtils.ImageFileTypes
+        );
+
+        if (result?.FileResult != null)
         {
-            string filePath = result.FullPath;
-            var fileBytes = await File.ReadAllBytesAsync(filePath);
-            string fileName = Path.GetFileName(filePath) + DateTime.Now.ToString("yyyyMMddHHmmss");
-            string contentType = GetContentType(fileName);
+            string filePath = result.FileResult.FullPath;
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetFileName(filePath);
+            string contentType = FileUtils.GetContentType(fileName);
 
             await _fileService.UploadFileAsync(BucketName, fileName, fileBytes, contentType);
             string localhost = Env.GetString("MINIO_ENDPOINT");
@@ -54,7 +57,7 @@ public partial class UpdateAccountsForm : ContentView
         if (!ValidateForm()) return;
         _personService.UpdatePerson(_currentPerson);
     }
-
+}
 
     private string GetContentType(string fileName)
     {
