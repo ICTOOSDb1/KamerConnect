@@ -43,7 +43,7 @@
             <Picker x:Name="HousetypePicker"
                     Title="Type woning"
                     SelectedIndex="0"
-
+                    
                     Margin="0,5,0,10"
                     Grid.Row="3"
                     Grid.Column="0"
@@ -52,7 +52,6 @@
                     >
                 
                 <Picker.Items>
-                    <x:String>Geen voorkeur</x:String>
                     <x:String>Huis</x:String>
                     <x:String>Appartement</x:String>
                     <x:String>Studio</x:String>
