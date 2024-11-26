@@ -28,6 +28,10 @@ namespace KamerConnect.View.MAUI.Pages
             {
                 HomePreferencesButton.IsVisible = false;
             }
+            else if (_person.Role == Role.Seeking)
+            {
+                HouseButton.IsVisible = false;
+            }
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
         }
 
@@ -59,9 +63,13 @@ namespace KamerConnect.View.MAUI.Pages
         {
             FormsContainer.Content = new SocialMediaForm(_personService, _person);
             SetButtonStyles(SocialMediaButton);
-            FormsContainer.Content = new RegisterHomePreferencesForm();
         }
 
+        private void House(object sender, EventArgs e)
+        {
+            SetButtonStyles(SocialMediaButton);
+            FormsContainer.Content = new HouseForm(_fileService, _houseService, _person);
+        }
 
         private void SetButtonStyles(Button buttonSource)
         {
@@ -69,13 +77,9 @@ namespace KamerConnect.View.MAUI.Pages
             AccountDetailsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             HomePreferencesButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
             SocialMediaButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
+            HouseButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
 
             buttonSource.Style = (Style)Application.Current.Resources["PrimaryButton"];
-        }
-
-        private void House(object sender, EventArgs e)
-        {
-            FormsContainer.Content = new HouseForm(_fileService, _houseService, _person);
         }
     }
 }
