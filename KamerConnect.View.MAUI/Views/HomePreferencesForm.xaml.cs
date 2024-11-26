@@ -23,8 +23,10 @@ public partial class HomePreferencesForm : ContentView
 
 	private void Button_Update_house_preferences(object sender, EventArgs e)
 	{
+		if (!ValidateForm()) return;
+		
 		CheckIfHomeTypeIsPicked(_currentPerson);
-		_personService.UpdateHousePreferences(_currentPerson.HousePreferencesId, _currentPerson.HousePreferences);
+		_personService.UpdateHousePreferences(Guid.Parse(_currentPerson.Id), _currentPerson.HousePreferences);
 	}
 	
     
@@ -36,5 +38,14 @@ public partial class HomePreferencesForm : ContentView
 			    person.HousePreferences.Type = houseType;
 		    
 	    }
+    }
+
+    public bool ValidateForm()
+    {
+	    priceEntry.Validate();
+	    surfaceEntry.Validate();
+
+	    return priceEntry.IsValid &&
+	           surfaceEntry.IsValid;
     }
 }

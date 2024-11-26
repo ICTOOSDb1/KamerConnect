@@ -12,6 +12,11 @@ public class PersonService
     {
         _repository = repository;
     }
+
+    public Person GetPersonById(string id)
+    {
+        return _repository.GetPersonById(id);
+    }
     
     public Person GetPersonByEmail(string email)
     {
@@ -29,17 +34,17 @@ public class PersonService
         _repository.UpdatePerson(person);
     }
     
-    public void UpdatePersonality(string personId, Personality personality)
+    public void UpdatePersonality(Guid personId, Personality personality)
     {
         _repository.UpdatePersonality(personId, personality);
     }
 
-    public void UpdateSocial(string personId, Social social)
+    public void UpdateSocial(Guid personId, Social social)
     {
         _repository.UpdateSocial(personId, social);
     }
 
-    public void UpdateHousePreferences(string housePreferencesId, HousePreferences housePreferences)
+    public void UpdateHousePreferences(Guid housePreferencesId, HousePreferences housePreferences)
     {
         _repository.UpdateHousePreferences(housePreferencesId, housePreferences);
     }

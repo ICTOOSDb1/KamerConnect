@@ -23,6 +23,16 @@ public partial class InterestsForm : ContentView
 
 	private void Button_update_interests(object? sender, EventArgs e)
 	{
-		_personService.UpdatePersonality(_currentPerson.Id, _currentPerson.Personality);
+		if (!ValidateForm()) return;
+		_personService.UpdatePersonality(Guid.Parse(_currentPerson.Id), _currentPerson.Personality);
+	}
+	
+	public bool ValidateForm()
+	{
+		schoolEntry.Validate();
+		studyEntry.Validate();
+
+		return schoolEntry.IsValid &&
+		       studyEntry.IsValid;
 	}
 }

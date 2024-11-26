@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
-             x:Class="KamerConnect.View.MAUI.MainPage"
+             x:Class="KamerConnect.View.MAUI.Pages.MainPage"
              BackgroundColor="{StaticResource BackgroundColor}">
 
     <Components:FormCard Style="{StaticResource ContainerFrameStyle}">

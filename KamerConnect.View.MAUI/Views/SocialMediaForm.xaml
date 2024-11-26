@@ -20,7 +20,7 @@
                     </Picker.Items>
                 </Picker>
                 <Components:Entry LabelText="Social Media URL"
-                                  DefaultText="{Binding Url, Mode=TwoWay}"
+                                  Text="{Binding Url, Mode=TwoWay}"
                                   x:Name="socialUrlEntry"/>
                 
                 <Button HorizontalOptions="End"

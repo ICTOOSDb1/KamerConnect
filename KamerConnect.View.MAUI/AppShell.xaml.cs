@@ -1,4 +1,6 @@
-﻿namespace KamerConnect.View.MAUI;
+﻿using KamerConnect.View.MAUI.Pages;
+
+namespace KamerConnect.View.MAUI;
 
 public partial class AppShell : Shell
 {

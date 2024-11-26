@@ -7,9 +7,9 @@
 		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
 			<VerticalStackLayout Padding="10">
 				
-				<Components:Entry LabelText="School" DefaultText="{Binding School, Mode=TwoWay}" x:Name = "schoolEntry"/>
-                <Components:Entry LabelText="Studie" DefaultText="{Binding Study, Mode=TwoWay}" x:Name = "studyEntry"/>
-                <Components:Entry LabelText="Omschrijving van jezelf" DefaultText="{Binding Description, Mode=TwoWay}" x:Name = "descriptionEntry"/>
+				<Components:Entry InputType="Text" LabelText="School" Text="{Binding School, Mode=TwoWay}" x:Name = "schoolEntry"/>
+                <Components:Entry InputType="Text" LabelText="Studie" Text="{Binding Study, Mode=TwoWay}" x:Name = "studyEntry"/>
+                <Components:Entry LabelText="Omschrijving van jezelf" Text="{Binding Description, Mode=TwoWay}" x:Name = "descriptionEntry"/>
 
 				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_update_interests"/>
 

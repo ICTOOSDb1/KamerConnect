@@ -22,7 +22,6 @@ public partial class Entry : ContentView
     public Entry()
     {
         InitializeComponent();
-        BindingContext = this;
     }
 
     
@@ -69,12 +68,12 @@ public partial class Entry : ContentView
     }
     
     
-    public static readonly BindableProperty DefaultTextProperty =
+    public static readonly BindableProperty TextProperty =
         BindableProperty.Create(nameof(Text), typeof(string), typeof(Entry), string.Empty);
     public string Text
     {
-        get => (string)GetValue(DefaultTextProperty);
-        set => SetValue(DefaultTextProperty, value);
+        get => (string)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
     }
 
     

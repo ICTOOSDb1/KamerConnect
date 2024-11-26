@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security.Cryptography;
 using DotNetEnv;
 using KamerConnect.EnvironmentVariables;
@@ -22,8 +23,9 @@ public partial class UpdateAccountsForm : ContentView
         _fileService = fileService;
         _personService = personService;
         _currentPerson = person;
-        BindingContext = _currentPerson;
         InitializeComponent();
+        BindingContext = _currentPerson;
+        firstNameEntry.Text = _currentPerson.FirstName;
     }
 
     private async void Image_tapped(object sender, TappedEventArgs e)
@@ -49,6 +51,7 @@ public partial class UpdateAccountsForm : ContentView
     }
     private void Button_Update_Account(object sender, EventArgs e)
     {
+        if (!ValidateForm()) return;
         _personService.UpdatePerson(_currentPerson);
     }
 
@@ -66,5 +69,20 @@ public partial class UpdateAccountsForm : ContentView
             ".tiff" => "image/tiff",
             _ => "application/octet-stream"
         };
+    }
+    
+    public bool ValidateForm()
+    {
+        firstNameEntry.Validate();
+        surNameEntry.Validate();
+        middleNameEntry.Validate();
+        emailEntry.Validate();
+        phoneNumberEntry.Validate();
+
+        return firstNameEntry.IsValid &&
+               surNameEntry.IsValid &&
+               middleNameEntry.IsValid &&
+               emailEntry.IsValid &&
+               phoneNumberEntry.IsValid;
     }
 }

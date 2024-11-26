@@ -12,9 +12,9 @@ public class PersonRepository : IPersonRepository
     private readonly string connectionString;
 
     public PersonRepository()
-   {
-       connectionString = GetConnectionString();
-   }
+    {
+        connectionString = GetConnectionString();
+    }
     public Person GetPersonById(string id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -197,7 +197,7 @@ public class PersonRepository : IPersonRepository
         }
     }
     
-    public void UpdatePersonality(string personId, Personality personality)
+    public void UpdatePersonality(Guid personId, Personality personality)
 {
     using (var connection = new NpgsqlConnection(connectionString))
     {
@@ -244,7 +244,7 @@ public class PersonRepository : IPersonRepository
 }
 
 
-    public void UpdateSocial(string personId, Social social)
+    public void UpdateSocial(Guid personId, Social social)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -276,7 +276,7 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
-    public void UpdateHousePreferences(string housePreferencesId, HousePreferences housePreferences)
+    public void UpdateHousePreferences(Guid housePreferencesId, HousePreferences housePreferences)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {

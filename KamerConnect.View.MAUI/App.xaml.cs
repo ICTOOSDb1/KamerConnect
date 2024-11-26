@@ -33,7 +33,7 @@ public partial class App : Application
 		}
 		else
 		{
-			MainPage = new NavigationPage(serviceProvider.GetRequiredService<LoginPage>());
+			MainPage = new NavigationPage(serviceProvider.GetRequiredService<UpdateAccount>());
 		}
 	}
 
