@@ -33,7 +33,8 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public Session GetSession(Guid personId)
+
+    public Session? GetSession(Guid personId)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -66,7 +67,8 @@ public class AuthenticationRepository : IAuthenticationRepository
         return null;
     }
 
-    public Session? GetSessionWithLocalToken(string localSessionToken)
+
+    public Session? GetSessionWithLocalToken(string? localSessionToken)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -116,7 +118,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public void RemoveSession(string sessionToken)
+    public void RemoveSession(string? sessionToken)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -132,7 +134,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public byte[] GetSaltFromPerson(string email)
+    public byte[]? GetSaltFromPerson(string email)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -146,7 +148,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                 command.Parameters.AddWithValue("@email", email);
                 try
                 {
-                    byte[] salt = Convert.FromBase64String(command.ExecuteScalar().ToString());
+                    byte[]? salt = Convert.FromBase64String(command.ExecuteScalar().ToString());
                     return salt;
                 }
                 catch (NullReferenceException ex)
@@ -160,7 +162,8 @@ public class AuthenticationRepository : IAuthenticationRepository
         return null;
     }
 
-    public void AddPassword(Guid personId, string password, string salt)
+
+    public void AddPassword(Guid? personId, string password, string salt)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -180,7 +183,8 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public string GetPassword(Guid person_id)
+
+    public string? GetPassword(Guid personId)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -190,7 +194,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                    new NpgsqlCommand($"SELECT * FROM password WHERE person_id = @personId::uuid",
                        connection))
             {
-                command.Parameters.AddWithValue("@personId", person_id);
+                command.Parameters.AddWithValue("@personId", personId);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -202,6 +206,6 @@ public class AuthenticationRepository : IAuthenticationRepository
             }
         }
 
-        return "";
+        return null;
     }
 }

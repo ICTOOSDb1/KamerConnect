@@ -13,10 +13,11 @@ public class PersonRepository : IPersonRepository
     private readonly string connectionString;
 
     public PersonRepository()
-    {
-        connectionString = EnvironmentUtils.GetConnectionString();
-    }
-    public Person GetPersonById(Guid id)
+   {
+       connectionString = EnvironmentUtils.GetConnectionString();
+   }
+
+    public Person? GetPersonById(Guid id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -42,7 +43,7 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
-    public Person GetPersonByEmail(string email)
+    public Person? GetPersonByEmail(string email)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -70,7 +71,8 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
-    public Guid CreatePerson(Person person)
+
+    public Guid? CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {

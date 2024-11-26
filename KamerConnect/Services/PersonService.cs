@@ -12,17 +12,18 @@ public class PersonService
         _repository = repository;
     }
 
-    public Person GetPersonById(Guid id)
+    public Person? GetPersonById(Guid id)
+
     {
         return _repository.GetPersonById(id);
     }
-    public Person GetPersonByEmail(string email)
+    public Person? GetPersonByEmail(string email)
     {
         return _repository.GetPersonByEmail(email);
     }
-
-    public Guid CreatePerson(Person person)
-    {
+    
+    public Guid? CreatePerson(Person person)
+    { 
         return _repository.CreatePerson(person);
     }
     
