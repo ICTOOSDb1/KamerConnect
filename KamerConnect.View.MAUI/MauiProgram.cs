@@ -1,5 +1,4 @@
-﻿using KamerConnect.DataAccess.Postgres.Repositys;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.Services;
 using KamerConnect.DataAccess.Minio;
@@ -32,12 +31,12 @@ public static class MauiProgram
 				fonts.AddFont("Inter-Regular.ttf", "InterRegular");
 				fonts.AddFont("Inter-SemiBold.ttf", "InterSemiBold");
 				fonts.AddFont("Inter-Thin.ttf", "InterThin");
-			})
-			.ConfigureEssentials();
+			});
 
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+
 		builder.Services.AddSingleton<PersonService>(sp => new PersonService(new PersonRepository()));
 		builder.Services.AddSingleton<AuthenticationService>(sp => new AuthenticationService(sp.GetRequiredService<PersonService>(), new AuthenticationRepository()));
 		builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
@@ -48,8 +47,10 @@ public static class MauiProgram
 		builder.Services.AddTransient<UpdateAccount>();
 
 		builder.Services.AddTransient<UpdateAccountsForm>();
-		builder.Services.AddTransient<HomePreferencesForm>();
+		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
+		builder.Services.AddTransient<RegisterHomePreferencesPage>();
+		builder.Services.AddTransient<Registration>();
 
 		builder.Services.AddFilePicker();
 

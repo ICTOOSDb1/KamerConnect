@@ -39,5 +39,4 @@ public partial class App : Application
 			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
 		}
 	}
-
 }

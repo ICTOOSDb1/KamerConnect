@@ -482,3 +482,4 @@ $RECYCLE.BIN/
 
 # Local postgres data
 /data
+KamerConnect.EnvironmentVariables/local.env

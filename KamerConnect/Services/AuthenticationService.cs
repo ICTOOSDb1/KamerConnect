@@ -65,7 +65,10 @@ public class AuthenticationService
 
         Guid? personId = _personService.CreatePerson(person);
 
-        _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
+        if (personId != null)
+        {
+            _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
+        }
     }
 
     public async Task<Session?> GetSession()

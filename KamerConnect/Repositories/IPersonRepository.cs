@@ -8,4 +8,5 @@ public interface IPersonRepository
     Person? GetPersonById(Guid id);
     Person? GetPersonByEmail(string email);
     Guid? CreatePerson(Person person);
+    Guid CreateHousePreferences(HousePreferences housePreferences);
 }

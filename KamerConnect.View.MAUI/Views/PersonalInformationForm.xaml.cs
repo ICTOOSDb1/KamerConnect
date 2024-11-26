@@ -11,6 +11,8 @@ public partial class PersonalInformationForm : ContentView
     public string? MiddleName => middleNameEntry.Text;
     public string? Surname => surnameEntry.Text;
     public string? PhoneNumber => phoneNumberEntry.Text;
+    public string Password => passwordEntry.Text;
+    public string ConfirmPassword => confirmPasswordEntry.Text;
     public DateTime? BirthDate => birthDateEntry.Text != null ? DateTime.Parse(birthDateEntry.Text) : null;
     public string Gender
     {
@@ -30,7 +32,7 @@ public partial class PersonalInformationForm : ContentView
         surnameEntry?.Validate();
         phoneNumberEntry?.Validate();
         birthDateEntry?.Validate();
-
+        passwordEntry?.Validate();
         bool isGenderValid = maleRadioButton.IsChecked || femaleRadioButton.IsChecked || otherRadioButton.IsChecked;
         if (!isGenderValid)
         {
@@ -40,11 +42,18 @@ public partial class PersonalInformationForm : ContentView
         {
             radiobuttonNotSelected.IsVisible = false;
         }
-
+        
+        if (!string.IsNullOrEmpty(ConfirmPassword) && Password != ConfirmPassword)
+        {
+            confirmPasswordEntry.SetValidation("Wachtwoord komt niet overeen."); 
+        }
+        
         return (emailEntry?.IsValid ?? true) &&
                (firstNameEntry?.IsValid ?? true) &&
                (surnameEntry?.IsValid ?? true) &&
                (phoneNumberEntry?.IsValid ?? true) &&
+               (passwordEntry?.IsValid ?? true) &&
+               (Password == ConfirmPassword) &&
                (birthDateEntry?.IsValid ?? true);
     }
 }

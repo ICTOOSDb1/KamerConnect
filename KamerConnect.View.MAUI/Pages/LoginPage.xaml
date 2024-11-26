@@ -5,12 +5,12 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              xmlns:maui="using:KamerConnect.View.MAUI"
              x:Class="KamerConnect.View.MAUI.Pages.LoginPage">
-   <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
+
         <BoxView Grid.Column="0" BackgroundColor="White" />
         <BoxView Grid.Column="1" BackgroundColor="{StaticResource Primary}" />
         <Grid Grid.Column="0">
@@ -20,14 +20,14 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Column="1" Spacing="10">
-            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
-                <Label Text="Kamer" 
+                <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
+                    <Label Text="Kamer" 
                        FontSize="32" 
                        FontFamily="InterLight"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
-                <Label Text="Connect" 
+                    <Label Text="Connect" 
                        FontSize="32"
                        FontFamily="InterMedium"
                        FontAttributes="Bold"
@@ -35,17 +35,17 @@
                        VerticalOptions="Start"
                        TextColor="Black"
                        />
-            </HorizontalStackLayout>
-            
-           <VerticalStackLayout Margin="0,0,0,21" >
-                <Label Text="Welkom terug"
+                </HorizontalStackLayout>
+
+                <VerticalStackLayout Margin="0,0,0,21" >
+                    <Label Text="Welkom terug"
                        FontSize="24"
                        FontFamily="InterBold"
                        FontAttributes="Bold"
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
-                <Label Text="Voer je gegevens in om in te loggen"
+                    <Label Text="Voer je gegevens in om in te loggen"
                        FontSize="14"
                        FontFamily="InterLight"
                        HorizontalOptions="Center" 
@@ -59,15 +59,15 @@
                 <Label Text="Nog geen account? "
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
-                <Label Text="Maak "
+                    <Label Text="Maak "
                        TextColor="{StaticResource Primary}"
                        FontFamily="InterLight">
-                   
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="NavigateToRegister" />
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label Text="er een aan"
+
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="NavigateToRegister" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="er een aan"
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
             </HorizontalStackLayout>
@@ -79,7 +79,10 @@
                      Aspect="Center"
                      VerticalOptions="Center"
                      HorizontalOptions="Center"/>
+           
+
           
      
    </Grid>
+
 </ContentPage>
