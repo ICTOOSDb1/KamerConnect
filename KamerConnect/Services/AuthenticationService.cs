@@ -58,12 +58,13 @@ public class AuthenticationService
 
         if (!ValidationUtils.IsValidPerson(person))
             throw new InvalidOperationException("Some required values are null or empty");
-
-        string person_id = _personService.CreatePerson(person);
-
+        
         string personId = _personService.CreatePerson(person);
 
-        _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
+        if (personId != null)
+        {
+            _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
+        }
     }
 
     public async Task<bool> CheckSession()

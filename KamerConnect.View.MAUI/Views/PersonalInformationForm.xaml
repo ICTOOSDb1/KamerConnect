@@ -47,8 +47,9 @@
                                   Keyboard="Email"/>
 
                 <components:Entry x:Name="passwordEntry"
-                                  LabelText="Wachtwoord"
-                                  InputType="Password"/>
+                                  InputType="Password"
+                                  LabelText="Wachtwoord*"
+                                  />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1" Spacing="10">
@@ -58,8 +59,9 @@
                                   Keyboard="Telephone"/>
                 
                 <components:Entry x:Name="confirmPasswordEntry"
-                  LabelText="Wachtwoord bevestigen"
-                  InputType="Password"/>
+                                  InputType="ConfirmPassword"
+                                  LabelText="Wachtwoord bevestigen*"
+                 />
             </VerticalStackLayout>
         </Grid>
 

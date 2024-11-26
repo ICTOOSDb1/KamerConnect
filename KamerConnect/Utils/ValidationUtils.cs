@@ -11,6 +11,11 @@ public static class ValidationUtils
         return Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     }
 
+    public static bool IsValidPassword(string password)
+    {
+        return password.Length > 8;
+    }
+
     public static bool IsInteger(string text)
     {
         return int.TryParse(text, out _);

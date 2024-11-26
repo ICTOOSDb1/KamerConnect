@@ -8,6 +8,7 @@ public partial class Entry : ContentView
     {
         Email,
         Password,
+        ConfirmPassword,
         Date,
         PhoneNumber,
         Text,
@@ -47,6 +48,12 @@ public partial class Entry : ContentView
                     entry.Keyboard = Keyboard.Text;
                     entry.IsPassword = true;
                     entry.LabelText = "Wachtwoord";
+                    break;
+                
+                case EntryInputType.ConfirmPassword:
+                    entry.Keyboard = Keyboard.Text;
+                    entry.IsPassword = true;
+                    entry.LabelText = "Wachtwoord bevestigen";
                     break;
 
                 case EntryInputType.Date:
@@ -132,52 +139,35 @@ public partial class Entry : ContentView
     {
         if (string.IsNullOrWhiteSpace(Text) && InputType != EntryInputType.PhoneNumber)
         {
-            IsValid = false;
-            ValidationMessage = $"{LabelText} mag niet leeg zijn.";
-            inputNotCorrect.Text = ValidationMessage;
-            showLabel();
+            SetValidation($"{LabelText} mag niet leeg zijn.");
         }
         else if (InputType == EntryInputType.Email && !ValidationUtils.IsValidEmail(Text))
         {
-            IsValid = false;
-            ValidationMessage = "Emailadres is ongeldig.";
-            inputNotCorrect.Text = ValidationMessage;
-            showLabel();
+            SetValidation("Emailadres is ongeldig.");
         }
         else if (InputType == EntryInputType.PhoneNumber && !ValidationUtils.IsValidPhoneNumber(Text))
         {
-            IsValid = false;
-            ValidationMessage = "Telefoonnummer is ongeldig.";
-            inputNotCorrect.Text = ValidationMessage;
-            showLabel();
+            SetValidation("Telefoonnummer is ongeldig.");
         }
         else if (InputType == EntryInputType.Date && !ValidationUtils.IsValidDate(Text))
         {
-            IsValid = false;
-            ValidationMessage = "Geboorte datum is ongeldig.";
-            inputNotCorrect.Text = ValidationMessage;
-            showLabel();
+            SetValidation("Geboorte datum is ongeldig.");
         }
         else if (InputType == EntryInputType.PostalCode && !ValidationUtils.IsValidPostalCode(Text))
         {
-            IsValid = false;
-            ValidationMessage = "Postcode is ongeldig.";
-            inputNotCorrect.Text = ValidationMessage;
-            showLabel();
+            SetValidation("Postcode is ongeldig.");
         }
         else if (InputType == EntryInputType.Number && !ValidationUtils.IsInteger(Text))
         {
-            IsValid = false;
-            ValidationMessage = "Geen geldig heel nummer.";
-            inputNotCorrect.Text = ValidationMessage;
-            showLabel();
+            SetValidation("Geen geldig nummer.");
         }
         else if (InputType == EntryInputType.Decimal && !ValidationUtils.IsDouble(Text))
         {
-            IsValid = false;
-            ValidationMessage = "Geen geldig nummer.";
-            inputNotCorrect.Text = ValidationMessage;
-            showLabel();
+            SetValidation("Geen geldig nummer.");
+        }
+        else if (InputType == EntryInputType.Password && !ValidationUtils.IsValidPassword(Text))
+        {
+            SetValidation("Wachtwoord moet minimaar 8 tekens hebben.");
         }
         else
         {
@@ -194,6 +184,14 @@ public partial class Entry : ContentView
     {
         get => (bool)GetValue(IsLabelVisibleProperty);
         set => SetValue(IsLabelVisibleProperty, value);
+    }
+
+    public void SetValidation(string message)
+    {
+        IsValid = false;
+        ValidationMessage = message;
+        inputNotCorrect.Text = ValidationMessage;
+        showLabel();
     }
     public void showLabel()
     {
