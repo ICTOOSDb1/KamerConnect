@@ -122,7 +122,7 @@ public class PersonRepository : IPersonRepository
             EnumUtils.Validate<Role>(reader.GetString(8)),
             reader.IsDBNull(9) ? null : reader.GetString(9),
             reader.GetGuid(0),
-            reader.GetGuid(10)
+            reader.IsDBNull(10) ? null : reader.GetGuid(10)
         );
 
 

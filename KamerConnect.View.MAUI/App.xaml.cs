@@ -26,7 +26,7 @@ public partial class App : Application
 
 		if (await authService.CheckSession())
 		{
-			MainPage = new NavigationPage(new MainPage());
+			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
 		}
 		else
 		{
