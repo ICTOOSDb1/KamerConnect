@@ -30,12 +30,14 @@
                                   Placeholder="Budget in €" 
                                   Grid.Row="1" 
                                   Grid.Column="0" 
+                                  InputType="Decimal"
                                  />
                 <Components:Entry LabelText="Oppervlak in vierkante meter"
                                   x:Name="AreaInput"
                                   Placeholder="m²" 
                                   Grid.Row="2" 
-                                  Grid.Column="0" />
+                                  Grid.Column="0" 
+                                  InputType="Number"/>
                
 
             <Picker x:Name="HousetypePicker"
@@ -63,7 +65,8 @@
                    x:Name="ResidentsInput"
                    
                    Grid.Row="4" 
-                   Grid.Column="0" />
+                   Grid.Column="0" 
+                    InputType="Number"/>
 
 
         </Grid>

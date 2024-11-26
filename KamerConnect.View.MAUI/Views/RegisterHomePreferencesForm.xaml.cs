@@ -30,4 +30,17 @@ public partial class RegisterHomePreferencesForm : ContentView
                 break;
             }
     }
+    public bool ValidateAll()
+    {
+        BudgetInput?.Validate();
+        AreaInput?.Validate();
+        ResidentsInput?.Validate();
+
+
+
+
+        return (BudgetInput?.IsValid ?? true) &&
+               (AreaInput?.IsValid ?? true) &&
+               (ResidentsInput?.IsValid ?? true);
+    }
 }

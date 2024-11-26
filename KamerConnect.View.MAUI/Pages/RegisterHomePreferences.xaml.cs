@@ -29,22 +29,24 @@ public partial class RegisterHomePreferencesPage : ContentPage
             await Navigation.PopAsync();
         }
     }
-
+    
     private async void Submit(object sender, EventArgs e)
     {
-        HousePreferences preferences = new HousePreferences(Convert.ToDouble(homePreferencesForm.Budget), double.Parse(homePreferencesForm.Area), homePreferencesForm.Type, int.Parse(homePreferencesForm.Residents));
-        PersonService personService = new PersonService(new PersonRepository());
-        AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
-
-        Guid preferencesId = personService.CreateHousePreferences(preferences);
-        _person.HousePreferencesId = preferencesId;
-
-        authentication.Register(_person, _password);
-        if (Application.Current.MainPage is NavigationPage navigationPage)
+        if (homePreferencesForm.ValidateAll())
         {
-            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
-        }
+            HousePreferences preferences = new HousePreferences(Convert.ToDouble(homePreferencesForm.Budget), double.Parse(homePreferencesForm.Area), homePreferencesForm.Type, int.Parse(homePreferencesForm.Residents));
+            PersonService personService = new PersonService(new PersonRepository());
+            AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
 
+            Guid preferencesId = personService.CreateHousePreferences(preferences);
+            _person.HousePreferencesId = preferencesId;
+
+            authentication.Register(_person, _password);
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+            }
+        }
 
     }
 }
