@@ -4,6 +4,7 @@
              x:Class="KamerConnect.View.MAUI.Registration"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              xmlns:maui="using:KamerConnect.View.MAUI"
+
              BackgroundColor="{StaticResource BackgroundColor}"
              Title="Aanmeldingsformulier">
      <ScrollView>
@@ -60,6 +61,7 @@
 
                         <Button Text="verder"
                                 Style="{StaticResource PrimaryButton}"
+                                x:Name="Submit"
                                 Grid.Column="2"
                                 Clicked="submit"
                                 HorizontalOptions="End" />
