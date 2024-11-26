@@ -9,8 +9,9 @@ public partial class LoginPage : ContentPage
     public LoginPage(AuthenticationService authService)
     {
         this.authService = authService;
-
-
+    
+        NavigationPage.SetHasNavigationBar(this, false);
+        
         InitializeComponent();
     }
 

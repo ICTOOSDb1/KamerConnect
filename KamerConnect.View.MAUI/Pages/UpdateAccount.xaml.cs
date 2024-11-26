@@ -15,6 +15,8 @@ namespace KamerConnect.View.MAUI
         public UpdateAccount(FileService fileService, HouseService houseService,
         AuthenticationService authenticationService, PersonService personService)
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+            
             InitializeComponent();
             _fileService = fileService;
             _houseService = houseService;
