@@ -22,7 +22,7 @@ public static class ValidationUtils
 
     public static bool IsValidPostalCode(string postalCode)
     {
-        return Regex.IsMatch(postalCode, @"^\d{4}\s?[A-Z]{2}$");
+        return Regex.IsMatch(postalCode, @"^\d{4}\s?[A-Z]{2}$", RegexOptions.IgnoreCase);
     }
 
     public static bool IsValidPhoneNumber(string phoneNumber)

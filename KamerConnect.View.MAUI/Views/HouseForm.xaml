@@ -54,7 +54,7 @@
 						<ColumnDefinition Width="*"/>
 					</Grid.ColumnDefinitions>
 
-					<Components:Entry LabelText="Prijs"
+					<Components:Entry LabelText="Prijs per maand"
 									  InputType="Decimal"
 									  Grid.Column="0"
 									  x:Name="priceEntry"

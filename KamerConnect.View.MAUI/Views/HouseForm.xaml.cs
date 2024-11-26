@@ -82,7 +82,7 @@ public partial class HouseForm : ContentView
                     ImageResults.Add(result);
 
                     string filePath = result.FileResult!.FullPath;
-                    string fileName = Path.GetFileName(filePath);
+                    string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetFileName(filePath);
                     string contentType = FileUtils.GetContentType(fileName);
 
                     houseImages.Add(new HouseImage(fileName, bucketName));
@@ -107,7 +107,6 @@ public partial class HouseForm : ContentView
     {
         streetEntry.Validate();
         houseNumberEntry.Validate();
-        additionEntry.Validate();
         cityEntry.Validate();
         postalCodeEntry.Validate();
         priceEntry.Validate();
