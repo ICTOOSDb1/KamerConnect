@@ -152,8 +152,10 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 				else
 				{
 					authentication.Register(newPerson, personalInformationForm.Password);
-				}
-			}
+                    
+
+                }
+            }
 		}
 	}
 }
