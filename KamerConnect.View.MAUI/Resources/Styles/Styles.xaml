@@ -387,7 +387,7 @@
 
         <Style TargetType="RadioButton">
                 <Setter Property="BackgroundColor"
-                        Value="Gray"/>
+                        Value="Transparent"/>
                 <Setter Property="BorderColor"
                         Value="Transparent"/>
                 <Setter Property="TextColor"
