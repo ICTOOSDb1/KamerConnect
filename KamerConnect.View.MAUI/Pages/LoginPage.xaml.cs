@@ -10,11 +10,12 @@ namespace KamerConnect.View.MAUI.Pages;
 public partial class LoginPage : ContentPage
 {
     private readonly AuthenticationService authService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public LoginPage(AuthenticationService authService)
+    public LoginPage(IServiceProvider serviceProvider, AuthenticationService authService)
     {
         this.authService = authService;
-    
+        _serviceProvider = serviceProvider;
 
         InitializeComponent();
     }
@@ -41,7 +42,7 @@ public partial class LoginPage : ContentPage
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
-            navigationPage.Navigation.PushAsync(new Registration());
+            navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<Registration>());
         }
     }
 
