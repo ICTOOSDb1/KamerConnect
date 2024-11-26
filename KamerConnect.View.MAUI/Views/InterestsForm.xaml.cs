@@ -25,5 +25,4 @@ public partial class InterestsForm : ContentView
 	{
 		_personService.UpdatePersonality(_currentPerson.Id, _currentPerson.Personality);
 	}
-
 }

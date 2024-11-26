@@ -1,4 +1,6 @@
 using System.Security.Cryptography;
+using DotNetEnv;
+using KamerConnect.EnvironmentVariables;
 using Microsoft.Maui.Storage;
 using KamerConnect.Services;
 using KamerConnect.Models;
@@ -14,14 +16,12 @@ public partial class UpdateAccountsForm : ContentView
     private readonly FileService _fileService;
     private readonly PersonService _personService;
     private Person? _currentPerson;
-    private string? _minioURL;
 
     public UpdateAccountsForm(FileService fileService, PersonService personService, Person person)
     {
         _fileService = fileService;
         _personService = personService;
         _currentPerson = person;
-        _minioURL = person.ProfilePicturePath;
         BindingContext = _currentPerson;
         InitializeComponent();
     }
@@ -42,9 +42,9 @@ public partial class UpdateAccountsForm : ContentView
             string contentType = GetContentType(fileName);
 
             await _fileService.UploadFileAsync(BucketName, fileName, fileBytes, contentType);
-            string localhost = LoadLocalEnv();
-            _minioURL = $"{localhost}/{BucketName}/{fileName}";
-            profile_picture.Source = _minioURL;
+            string localhost = Env.GetString("MINIO_ENDPOINT");
+            _currentPerson.ProfilePicturePath = $"{localhost}/{BucketName}/{fileName}";
+            profile_picture.Source = _currentPerson.ProfilePicturePath;
         }
     }
     private void Button_Update_Account(object sender, EventArgs e)
@@ -66,20 +66,5 @@ public partial class UpdateAccountsForm : ContentView
             ".tiff" => "image/tiff",
             _ => "application/octet-stream"
         };
-    }
-    
-    public string LoadLocalEnv()
-    {
-        try
-        {
-            string envFilePath = "KamerConnect.EnvironmentVariables/local.env";
-            DotNetEnv.Env.Load(envFilePath);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Local.env doesn't load: {ex.Message}");
-        }
-        string localhost = Environment.GetEnvironmentVariable("MINIO_ENDPOINT") ?? "http://localhost:9000";
-        return localhost;
     }
 }
