@@ -42,14 +42,14 @@ namespace KamerConnect.UnitTests
             // Arrange
             var newHouse = TestModels.HouseModel;
             var newHouseId = Guid.NewGuid();
-            _mockRepository.Setup(r => r.Create(newHouse)).Returns(newHouseId);
+            _mockRepository.Setup(r => r.Create(newHouse, Guid.NewGuid())).Returns(newHouseId);
 
             // Act
-            var result = _houseService.Create(newHouse);
+            var result = _houseService.Create(newHouse, Guid.NewGuid());
 
             // Assert
             Assert.That(newHouseId, Is.EqualTo(result));
-            _mockRepository.Verify(r => r.Create(newHouse), Times.Once);
+            _mockRepository.Verify(r => r.Create(newHouse, Guid.NewGuid()), Times.Once);
         }
 
         [Test]

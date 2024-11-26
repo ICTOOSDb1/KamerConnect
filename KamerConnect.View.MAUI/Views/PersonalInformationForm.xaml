@@ -76,7 +76,7 @@
             <RadioButton Content="Anders"
                          GroupName="GenderGroup"
                          x:Name="otherRadioButton"/>
-            <Label x:Name="radiobuttonNotSelected" IsVisible="False" TextColor="Red " Text="vul een geslacht in"></Label>
+            <Label x:Name="radiobuttonNotSelected" IsVisible="False" TextColor="Red " Text="Vul een geslacht in"></Label>
         </StackLayout>
     </StackLayout>
 </ContentView>

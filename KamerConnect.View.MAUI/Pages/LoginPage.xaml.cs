@@ -27,7 +27,7 @@ public partial class LoginPage : ContentPage
         catch (InvalidCredentialsException ex)
         {
             Console.WriteLine(e);
-            emailEntry.Placeholder = ex.Message;
+            
             throw;
         }
 
