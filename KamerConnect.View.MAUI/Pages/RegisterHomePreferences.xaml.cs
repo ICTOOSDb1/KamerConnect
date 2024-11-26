@@ -1,4 +1,5 @@
-using KamerConnect.DataAccess.Postgres.Repositys;
+using KamerConnect.DataAccess.Postgres.Repositories;
+
 using KamerConnect.Models;
 using KamerConnect.Services;
 using Microsoft.Extensions.DependencyInjection;

@@ -357,37 +357,7 @@
                         Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}"/>
         </Style>
 
-        <Style TargetType="Picker">
-                <Setter Property="TextColor"
-                        Value="{StaticResource TextColor}"/>
-                <Setter Property="TitleColor"
-                        Value="{StaticResource TextColor}"/>
-                <Setter Property="BackgroundColor"
-                        Value="Transparent"/>
-                <Setter Property="FontFamily"
-                        Value="OpenSansRegular"/>
-                <Setter Property="FontSize"
-                        Value="14"/>
-                <Setter Property="MinimumHeightRequest"
-                        Value="44"/>
-                <Setter Property="MinimumWidthRequest"
-                        Value="44"/>
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                        <VisualStateGroupList>
-                                <VisualStateGroup x:Name="CommonStates">
-                                        <VisualState x:Name="Normal"/>
-                                        <VisualState x:Name="Disabled">
-                                                <VisualState.Setters>
-                                                        <Setter Property="TextColor"
-                                                                Value="{StaticResource Gray600}"/>
-                                                        <Setter Property="TitleColor"
-                                                                Value="{StaticResource Gray600}"/>
-                                                </VisualState.Setters>
-                                        </VisualState>
-                                </VisualStateGroup>
-                        </VisualStateGroupList>
-                </Setter>
-        </Style>
+       
 
         <Style TargetType="ProgressBar">
                 <Setter Property="ProgressColor"

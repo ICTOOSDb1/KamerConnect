@@ -49,34 +49,37 @@
                        HorizontalOptions="Center" 
                        VerticalOptions="Start"
                        TextColor="Black"/>
-           </VerticalStackLayout>
-            <!--<Components:Entry LabelText="Email adres" InputType="Email"/> -->
-            <Entry x:Name="emailEntry"/>
-            <Entry x:Name="passwordEntry"/>
-            <!--<Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/> -->
-            <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <Label Text="Nog geen account? "
+                </VerticalStackLayout>
+                <!--<Components:Entry LabelText="Email adres" InputType="Email"/> -->
+                <Entry x:Name="emailEntry"/>
+                <Entry x:Name="passwordEntry"/>
+                <!--<Components:Entry x:Name="passwordEntry" LabelText="wachtwoord" InputType="Password"/> -->
+                <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Nog geen account? "
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
-                <Label Text="Maak "
+                    <Label Text="Maak "
                        TextColor="{StaticResource Primary}"
                        FontFamily="InterLight">
-                   
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="NavigateToRegister" />
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label Text="er een aan"
+
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="NavigateToRegister" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="er een aan"
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
-            </HorizontalStackLayout>
-
-              <!-- Right side: Image -->
-              <Image Grid.Column="1"
+                </HorizontalStackLayout>
+            </StackLayout>
+        </Grid>
+        <!-- Right side: Image -->
+                <Image Grid.Column="1"
                      Source="login_image.png"
                      Aspect="Center"
                      VerticalOptions="Center"
                      HorizontalOptions="Center"/>
-       </Grid>
+           
+        
+    </Grid>
 </ContentPage>

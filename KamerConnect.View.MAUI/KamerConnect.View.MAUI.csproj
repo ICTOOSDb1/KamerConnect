@@ -57,8 +57,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="../KamerConnect.EnvironmentVariables/KamerConnect.EnvironmentVariables.csproj" />
-		<ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
 		<ProjectReference Include="..\KamerConnect.DataAccess.Postgres\KamerConnect.DataAccess.Postgres.csproj" />
 		<ProjectReference Include="..\KamerConnect.DataAccess.Minio\KamerConnect.DataAccess.Minio.csproj" />
 

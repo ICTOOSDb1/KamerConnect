@@ -5,7 +5,8 @@ using KamerConnect.Repositories;
 using KamerConnect.Utils;
 using Npgsql;
 
-namespace KamerConnect.DataAccess.Postgres.Repositys;
+namespace KamerConnect.DataAccess.Postgres.Repositories;
+
 
 public class PersonRepository : IPersonRepository
 {
