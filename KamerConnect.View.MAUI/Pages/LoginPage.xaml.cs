@@ -15,12 +15,12 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
     }
 
-    
+
     private async void LoginButton_Clicked(object sender, System.EventArgs e)
     {
         string email = emailEntry.Text;
         string password = passwordEntry.Text;
-        
+
         string? token = await authService.Authenticate(email, password);
 
         if (token != null)
@@ -29,13 +29,12 @@ public partial class LoginPage : ContentPage
         }
         else
         {
-
-            Console.WriteLine(e);
             
-            throw;
+            Console.WriteLine(e);
         }
+    }
 
-    private void NavigateToRegister(object sender, TappedEventArgs e)
+    public async void NavigateToRegister(object sender, TappedEventArgs e)
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
@@ -43,7 +42,4 @@ public partial class LoginPage : ContentPage
         }
             await DisplayAlert("Error", "Invalid credentials, please try again.", "OK");
         }
-       
-     
-    }
 }

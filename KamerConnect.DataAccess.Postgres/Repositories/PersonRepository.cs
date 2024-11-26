@@ -13,7 +13,7 @@ public class PersonRepository : IPersonRepository
 
     public PersonRepository()
    {
-       connectionString = GetConnectionString();
+       connectionString = EnvironmentUtils.GetConnectionString();
    }
 
     public Person? GetPersonById(Guid id)

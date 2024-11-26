@@ -33,14 +33,14 @@ public class AuthenticationService
         try
         {
             Person person = _personService.GetPersonByEmail(email) ?? throw new InvalidCredentialsException();
-            string? personPassword = _repository.GetPassword(person.Id);
+            string? personPassword = _repository.GetPassword((Guid)person.Id);
             
             if (ValidatePassword(HashPassword(passwordAttempt, 
                     out byte[]? salt, 
                     _repository.GetSaltFromPerson(email)), personPassword))
             {
                 string sessionToken = GenerateSessionToken();
-                await SaveSession(person.Id, DateTime.Now, sessionToken);
+                await SaveSession((Guid)person.Id, DateTime.Now, sessionToken);
                 return sessionToken;
             }
         }
@@ -56,14 +56,6 @@ public class AuthenticationService
     public void Register(Person person, string password)
     {
         byte[]? salt;
-        
-        if (!Validations.IsValidEmail(person.Email))
-            throw new InvalidOperationException("Email in person is invalid.");
-        
-        if (!Validations.IsValidPerson(person))
-            throw new InvalidOperationException("Some required values are null or empty");
-        
-        string? person_id = _personService.CreatePerson(person);
 
         if (!ValidationUtils.IsValidEmail(person.Email))
             throw new InvalidOperationException("Email in person is invalid.");
@@ -71,7 +63,7 @@ public class AuthenticationService
         if (!ValidationUtils.IsValidPerson(person))
             throw new InvalidOperationException("Some required values are null or empty");
 
-        Guid personId = _personService.CreatePerson(person);
+        Guid? personId = _personService.CreatePerson(person);
 
         _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
     }
