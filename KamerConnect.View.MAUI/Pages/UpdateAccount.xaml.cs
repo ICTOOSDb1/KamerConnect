@@ -9,6 +9,8 @@ namespace KamerConnect.View.MAUI
 
         public UpdateAccount(FileService fileService)
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+            
             InitializeComponent();
             _fileService = fileService;
         }

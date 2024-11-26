@@ -14,6 +14,12 @@ public partial class App : Application
 		_serviceProvider = serviceProvider;
 		InitializeComponent();
 		InitializeAppAsync().GetAwaiter().GetResult();
+		
+		
+			
+		
+
+		
 	}
 
 	private async Task InitializeAppAsync()
