@@ -5,14 +5,14 @@
              xmlns:local="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Components.Entry">
     <StackLayout>
-        <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:Entry}}}" />
+        <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:Entry}}}"/>
         <Frame Style="{StaticResource EntryFrameStyle}">
             <Entry Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    Keyboard="{Binding Keyboard, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    IsPassword="{Binding IsPassword, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
-                   Text="{Binding Text, Source={RelativeSource AncestorType={x:Type local:Entry}}}" />
+                   Text="{Binding Text, Source={RelativeSource AncestorType={x:Type local:Entry}}}"/>
         </Frame>
-        <Label 
+        <Label
             x:Name="inputNotCorrect"
             TextColor="red"
             IsVisible="{Binding IsLabelVisible}"/>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KamerConnect.View.MAUI.Components;
+﻿namespace KamerConnect.View.MAUI.Components;
 
 public partial class CustomCheckbox : ContentView
 {
@@ -12,7 +6,7 @@ public partial class CustomCheckbox : ContentView
     {
         InitializeComponent();
     }
-    public static readonly BindableProperty LabelTextProperty = 
+    public static readonly BindableProperty LabelTextProperty =
         BindableProperty.Create(nameof(LabelText), typeof(string), typeof(CustomCheckbox), default(string));
 
     public string LabelText
@@ -22,7 +16,7 @@ public partial class CustomCheckbox : ContentView
     }
 
     // Bindable property for the checkbox state
-    public static readonly BindableProperty IsCheckedProperty = 
+    public static readonly BindableProperty IsCheckedProperty =
         BindableProperty.Create(nameof(IsChecked), typeof(bool), typeof(CustomCheckbox), default(bool), BindingMode.TwoWay);
 
     public bool IsChecked

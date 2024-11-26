@@ -30,7 +30,7 @@ public partial class PersonalInformationForm : ContentView
         surnameEntry?.Validate();
         phoneNumberEntry?.Validate();
         birthDateEntry?.Validate();
-        
+
         bool isGenderValid = maleRadioButton.IsChecked || femaleRadioButton.IsChecked || otherRadioButton.IsChecked;
         if (!isGenderValid)
         {
@@ -40,7 +40,7 @@ public partial class PersonalInformationForm : ContentView
         {
             radiobuttonNotSelected.IsVisible = false;
         }
-        
+
         return (emailEntry?.IsValid ?? true) &&
                (firstNameEntry?.IsValid ?? true) &&
                (surnameEntry?.IsValid ?? true) &&

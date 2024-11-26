@@ -2,6 +2,7 @@ using System.Data.Common;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
+using KamerConnect.Utils;
 using Npgsql;
 
 namespace KamerConnect.DataAccess.Postgres.Repositys;
@@ -11,10 +12,10 @@ public class PersonRepository : IPersonRepository
     private readonly string connectionString;
 
     public PersonRepository()
-   {
-       connectionString = GetConnectionString();
-   }
-    public Person GetPersonById(string id)
+    {
+        connectionString = EnvironmentUtils.GetConnectionString();
+    }
+    public Person GetPersonById(Guid id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -65,10 +66,10 @@ public class PersonRepository : IPersonRepository
                 }
             }
         }
-        
+
         return null;
     }
-    public string CreatePerson(Person person)
+    public Guid CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -93,7 +94,7 @@ public class PersonRepository : IPersonRepository
             {
                 command.Parameters.AddWithValue("@Email", person.Email);
                 command.Parameters.AddWithValue("@FirstName", person.FirstName);
-                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value); 
+                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@Surname", person.Surname);
                 command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
@@ -101,28 +102,12 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
                 command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
 
-                var results = command.ExecuteScalar().ToString() ?? throw new InvalidOperationException();
-                return results?.ToString();
+                var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                return (Guid)result;
             }
         }
     }
-    private string GetConnectionString()
-    {
-        var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
-        var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
-        var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
-        var username = Environment.GetEnvironmentVariable("POSTGRES_USER");
-        var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-    
-        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(port) ||
-            string.IsNullOrEmpty(database) || string.IsNullOrEmpty(username) ||
-            string.IsNullOrEmpty(password))
-        {
-            throw new("Database environment variables are missing. Please check your .env file.");
-        }
-    
-        return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
-    }
+
     private Person ReadToPerson(DbDataReader reader)
     {
         var person = new Person
@@ -133,10 +118,11 @@ public class PersonRepository : IPersonRepository
             reader.GetString(4),
             reader.IsDBNull(5) ? null : reader.GetString(5),
             reader.GetDateTime(6),
-            ValidateEnum<Gender>(reader.GetString(7)),
-            ValidateEnum<Role>(reader.GetString(8)),
+            EnumUtils.Validate<Gender>(reader.GetString(7)),
+            EnumUtils.Validate<Role>(reader.GetString(8)),
             reader.IsDBNull(9) ? null : reader.GetString(9),
-            reader.GetGuid(0).ToString()
+            reader.GetGuid(0),
+            reader.IsDBNull(10) ? null : reader.GetGuid(10)
         );
 
 
@@ -149,14 +135,5 @@ public class PersonRepository : IPersonRepository
         );
 
         return person;
-    }
-    private static T ValidateEnum<T>(string value) where T : struct
-    {
-        if (Enum.TryParse(value, out T result) && Enum.IsDefined(typeof(T), result))
-        {
-            return result;
-        }
-
-        throw new ArgumentException($"Invalid value '{value}' for enum {typeof(T).Name}");
     }
 }

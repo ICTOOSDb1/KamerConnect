@@ -66,9 +66,13 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="LukeMauiFilePicker" Version="1.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Views\HouseForm.xaml.cs">
+	    <DependentUpon>HouseForm.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\HomePreferencesForm.xaml.cs">
 	    <DependentUpon>HomePreferencesForm.xaml</DependentUpon>
 	  </Compile>

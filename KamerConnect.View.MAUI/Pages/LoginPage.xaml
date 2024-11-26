@@ -71,15 +71,12 @@
                        TextColor="Black"
                        FontFamily="InterLight"></Label>
             </HorizontalStackLayout>
-           
-        </StackLayout>
-        </Grid>
 
-        <!-- Right side: Image -->
-        <Image Grid.Column="1" 
-               Source="login_image.png" 
-               Aspect="Center" 
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" />
-    </Grid>
+              <!-- Right side: Image -->
+              <Image Grid.Column="1"
+                     Source="login_image.png"
+                     Aspect="Center"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"/>
+       </Grid>
 </ContentPage>

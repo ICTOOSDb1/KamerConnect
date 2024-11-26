@@ -4,16 +4,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Components.FormCard">
-    
+
     <ScrollView>
 
-            <Frame>
-                <StackLayout Spacing="20">
-                    
-                    <ContentPresenter />
-                    
-                </StackLayout>
-            </Frame>
+        <Frame>
+            <StackLayout Spacing="20">
+
+                <ContentPresenter/>
+
+            </StackLayout>
+        </Frame>
     </ScrollView>
-       
+
 </ContentView>
