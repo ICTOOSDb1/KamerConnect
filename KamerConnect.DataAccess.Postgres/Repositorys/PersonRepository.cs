@@ -14,7 +14,7 @@ public class PersonRepository : IPersonRepository
    {
        connectionString = GetConnectionString();
    }
-    public Person GetPersonById(string id)
+    public Person? GetPersonById(string id)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -40,7 +40,7 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
-    public Person GetPersonByEmail(string email)
+    public Person? GetPersonByEmail(string email)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -68,7 +68,7 @@ public class PersonRepository : IPersonRepository
         
         return null;
     }
-    public string CreatePerson(Person person)
+    public string? CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -123,7 +123,7 @@ public class PersonRepository : IPersonRepository
     
         return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
     }
-    private Person ReadToPerson(DbDataReader reader)
+    private Person? ReadToPerson(DbDataReader reader)
     {
         var person = new Person
         (
