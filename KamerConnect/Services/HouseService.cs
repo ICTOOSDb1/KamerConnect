@@ -17,9 +17,9 @@ public class HouseService
         return _repository.Get(id);
     }
 
-    public Guid Create(House house)
+    public Guid Create(House house, Guid personId)
     {
-        return _repository.Create(house);
+        return _repository.Create(house, personId);
     }
 
     public void Update(House house)

@@ -6,5 +6,5 @@ public interface IHouseRepository
 {
     void Update(House house);
     House Get(Guid id);
-    Guid Create(House house);
+    Guid Create(House house, Guid personId);
 }
