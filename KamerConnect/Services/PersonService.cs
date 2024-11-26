@@ -13,7 +13,6 @@ public class PersonService
     }
 
     public Person? GetPersonById(Guid id)
-
     {
         return _repository.GetPersonById(id);
     }

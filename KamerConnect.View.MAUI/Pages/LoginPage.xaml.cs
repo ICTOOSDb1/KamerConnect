@@ -26,23 +26,25 @@ public partial class LoginPage : ContentPage
 
         string? token = await authService.Authenticate(email, password);
 
-        if (token != null)
+        if (Application.Current.MainPage is NavigationPage navigationPage)
         {
-            App.Current.MainPage = new MainPage();
-        }
-        else
-        {
-            
-            Console.WriteLine(e);
+            if (token != null)
+            {
+                var page = _serviceProvider.GetRequiredService<UpdateAccount>();
+                await navigationPage.Navigation.PushAsync(page);
+            }
+            else
+            {
+                passwordEntry.SetValidation("Email of wachtwoord klopt niet!");
+            }
         }
     }
 
-    public async void NavigateToRegister(object sender, TappedEventArgs e)
+    public void NavigateToRegister(object sender, TappedEventArgs e)
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
             navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<Registration>());
         }
-            await DisplayAlert("Error", "Invalid credentials, please try again.", "OK");
-        }
+    }
 }

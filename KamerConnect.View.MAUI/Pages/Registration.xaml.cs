@@ -60,14 +60,6 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-	private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
-	{
-		if (sender is RadioButton radioButton && e.Value)
-		{
-
-		}
-	}
-
 	private void OnSearchingClicked(object sender, EventArgs e)
 	{
 		SearchingButton.TextColor = Colors.White;
@@ -156,8 +148,6 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 
 	private async void submit(object? sender, EventArgs e)
 	{
-
-		
 		PersonService personService = new PersonService(new PersonRepository());
 		AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
 		
@@ -168,16 +158,12 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			{
 				if (SelectedTab == Tab.SearchingHouse)
 				{
-                   
-
                     await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(_serviceProvider, newPerson, personalInformationForm.Password));
 				}
 				else
 				{
 					authentication.Register(newPerson, personalInformationForm.Password);
-
           			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
-          
 				}
 			}
 
