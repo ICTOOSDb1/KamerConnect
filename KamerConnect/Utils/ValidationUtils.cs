@@ -13,7 +13,7 @@ public static class ValidationUtils
 
     public static bool IsValidPassword(string password)
     {
-        return password.Length > 8;
+        return password.Length >= 8;
     }
 
     public static bool IsInteger(string text)
