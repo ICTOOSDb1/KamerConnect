@@ -1,17 +1,25 @@
 using KamerConnect.DataAccess.Postgres.Repositys;
 using KamerConnect.Models;
 using KamerConnect.Services;
+using Microsoft.Extensions.DependencyInjection;
+using KamerConnect.View.MAUI.Pages;
+
+
 
 namespace KamerConnect.View.MAUI;
 
 public partial class RegisterHomePreferencesPage : ContentPage
 {
     private Person _person;
-
-    public RegisterHomePreferencesPage(Person person)
+    private string _password;
+    private readonly IServiceProvider _serviceProvider;
+  
+    public RegisterHomePreferencesPage(IServiceProvider serviceProvider, Person person, string password)
     {
         InitializeComponent();
         _person = person;
+        _password = password;
+        _serviceProvider =  serviceProvider;
     }
 
     private async void Back(object sender, EventArgs e)
@@ -31,6 +39,12 @@ public partial class RegisterHomePreferencesPage : ContentPage
         Guid preferencesId = personService.CreateHousePreferences(preferences);
         _person.HousePreferencesId = preferencesId;
 
-        authentication.Register(_person, "password123");
+        authentication.Register(_person, _password);
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+        }
+
+
     }
 }

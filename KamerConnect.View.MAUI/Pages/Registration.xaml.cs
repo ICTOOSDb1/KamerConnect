@@ -4,12 +4,18 @@ using System.Windows.Input;
 using KamerConnect.DataAccess.Postgres.Repositys;
 using KamerConnect.Models;
 using KamerConnect.Services;
+using Microsoft.Extensions.DependencyInjection;
+using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
 
+
 public partial class Registration : ContentPage, INotifyPropertyChanged
 {
-	public Person newPerson { get; set; }
+
+	public Person newPerson {  get; set; }
+	private readonly IServiceProvider _serviceProvider;
+
 	public enum Tab
 	{
 		SearchingHouse,
@@ -25,13 +31,14 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			OnPropertyChanged();
 		}
 	}
-	public Registration()
+	public Registration(IServiceProvider serviceProvider)
 	{
 		InitializeComponent();
 		SelectTabAction = SelectTab;
 		BindingContext = this;
 		SelectedTab = Tab.SearchingHouse;
 		UpdateButtonColors();
+		_serviceProvider = serviceProvider;
 	}
 	public event PropertyChangedEventHandler PropertyChanged;
 
@@ -61,14 +68,19 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	private void OnSearchingClicked(object sender, EventArgs e)
 	{
 		SelectTab(Tab.SearchingHouse);
+		Submit.Text = "verder";
 	}
 
 	private void OnHavingClicked(object sender, EventArgs e)
 	{
 		SelectTab(Tab.HavingHouse);
-	}
 
-	private string _huisButtonColor = "#EF626C";
+        Submit.Text = "registreren";
+
+    }
+
+    private string _huisButtonColor = "#EF626C";
+
 	public string HuisButtonColor
 	{
 		get => _huisButtonColor;
@@ -135,6 +147,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 
 	private async void submit(object? sender, EventArgs e)
 	{
+
 		
 		PersonService personService = new PersonService(new PersonRepository());
 		AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
@@ -146,14 +159,20 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			{
 				if (SelectedTab == Tab.SearchingHouse)
 				{
+                   
 
-					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+                    await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(_serviceProvider, newPerson, personalInformationForm.Password));
 				}
 				else
 				{
 					authentication.Register(newPerson, personalInformationForm.Password);
+
+          			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+          
 				}
 			}
+
 		}
 	}
+
 }

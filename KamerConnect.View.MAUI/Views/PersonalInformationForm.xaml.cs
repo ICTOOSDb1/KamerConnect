@@ -33,7 +33,6 @@ public partial class PersonalInformationForm : ContentView
         phoneNumberEntry?.Validate();
         birthDateEntry?.Validate();
         passwordEntry?.Validate();
-        
         bool isGenderValid = maleRadioButton.IsChecked || femaleRadioButton.IsChecked || otherRadioButton.IsChecked;
         if (!isGenderValid)
         {

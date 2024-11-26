@@ -50,6 +50,8 @@ public static class MauiProgram
 		builder.Services.AddTransient<InterestsForm>();
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();
+		builder.Services.AddTransient<Registration>();
+		builder.Services.AddTransient<RegisterHomePreferencesPage>();
 
 
 		return builder.Build();
