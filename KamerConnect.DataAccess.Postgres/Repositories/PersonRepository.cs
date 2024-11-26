@@ -44,6 +44,7 @@ public class PersonRepository : IPersonRepository
 
         return null;
     }
+
     public Person? GetPersonByEmail(string email)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -233,7 +234,6 @@ public class PersonRepository : IPersonRepository
         }
     }
 
-
     public void UpdateSocial(Guid personId, Social social)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -266,6 +266,7 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
+
     public void UpdateHousePreferences(Guid housePreferencesId, HousePreferences housePreferences)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -275,7 +276,7 @@ public class PersonRepository : IPersonRepository
             using (var updateCommand = new NpgsqlCommand(
                        """
                        UPDATE house_preferences
-                       SET type = @Type,
+                       SET type = @Type::house_type,
                            price = @Price,
                            surface = @Surface
                        WHERE id = @HousePreferencesId;
@@ -289,6 +290,40 @@ public class PersonRepository : IPersonRepository
                 updateCommand.ExecuteNonQuery();
             }
         }
+    }
+
+    public HousePreferences? GetHousePreferences(Guid personId)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand(
+                       """
+                   SELECT hp.type, hp.price, hp.surface, hp.residents
+                   FROM house_preferences hp
+                   INNER JOIN person p ON p.house_preferences_id = hp.id
+                   WHERE p.id = @PersonId;
+                   """, connection))
+            {
+                command.Parameters.AddWithValue("@PersonId", personId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new HousePreferences(
+                            reader.GetDouble(1),
+                            reader.GetDouble(2),
+                            EnumUtils.Validate<HouseType>(reader.GetString(0)),
+                            reader.GetInt32(3)
+                        );
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public Guid CreateHousePreferences(HousePreferences housePreferences)

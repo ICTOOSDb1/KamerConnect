@@ -20,7 +20,6 @@ public partial class Entry : ContentView
     public Entry()
     {
         InitializeComponent();
-        BindingContext = this;
     }
 
 
