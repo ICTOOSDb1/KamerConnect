@@ -6,21 +6,27 @@
 
     <ScrollView>
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
-            <VerticalStackLayout Padding="10">
+            <VerticalStackLayout Padding="10" Spacing="10">
+            
+                <Components:Entry InputType="Text" LabelText="Aantal vierkante meter" Text="{Binding SurfaceArea, Mode=TwoWay}" x:Name="surfaceEntry"/>
+                <Components:Entry InputType="Text" LabelText="Prijs" Text="{Binding Budget, Mode=TwoWay}" x:Name="priceEntry"/>
 
-                <Components:Entry LabelText="Aantal vierkante meter"
-                                  Placeholder="VierkanteMeter"/>
-                <Components:Entry LabelText="Aantal slaapkamers"
-                                  Placeholder="Bedrooms"/>
-                <Components:Entry LabelText="Woningtype"
-                                  Placeholder="Woningtype"/>
-
-                <Button HorizontalOptions="End"
-                        Text="Update account"
-                        Style="{StaticResource PrimaryButton}"
-                        Clicked="Button_Clicked"/>
+                <Picker x:Name="HometypePicker"
+                        Title="Woning type"
+                        SelectedIndex="0">
+                    <Picker.Items>
+                        <x:String>Maak een keuze</x:String>
+                        <x:String>Apartment</x:String>
+                        <x:String>House</x:String>
+                        <x:String>Studio</x:String>
+                        <x:String>X</x:String>
+                    </Picker.Items>
+                </Picker>
+                
+                <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Update_house_preferences"/>
 
             </VerticalStackLayout>
         </Components:FormCard>
     </ScrollView>
+
 </ContentView>

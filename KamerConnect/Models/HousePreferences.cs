@@ -1,4 +1,4 @@
-namespace KamerConnect.Models
+﻿namespace KamerConnect.Models
 {
     public class HousePreferences
     {
