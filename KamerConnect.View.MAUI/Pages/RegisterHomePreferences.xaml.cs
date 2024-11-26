@@ -7,11 +7,12 @@ namespace KamerConnect.View.MAUI;
 public partial class RegisterHomePreferencesPage : ContentPage
 {
     private Person _person;
-
-    public RegisterHomePreferencesPage(Person person)
+    private string _password;
+    public RegisterHomePreferencesPage(Person person, string password)
     {
         InitializeComponent();
         _person = person;
+        _password = password;
     }
 
     private async void Back(object sender, EventArgs e)
@@ -31,6 +32,6 @@ public partial class RegisterHomePreferencesPage : ContentPage
         Guid preferencesId = personService.CreateHousePreferences(preferences);
         _person.HousePreferencesId = preferencesId;
 
-        authentication.Register(_person, "password123");
+        authentication.Register(_person, _password);
     }
 }

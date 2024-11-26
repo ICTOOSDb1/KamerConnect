@@ -147,7 +147,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 				if (SelectedTab == Tab.SearchingHouse)
 				{
 
-					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson));
+					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(newPerson, personalInformationForm.Password));
 				}
 				else
 				{
