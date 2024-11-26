@@ -35,7 +35,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
     {
         if (homePreferencesForm.ValidateAll())
         {
-            HousePreferences preferences = new HousePreferences(Convert.ToDouble(homePreferencesForm.Budget), double.Parse(homePreferencesForm.Area), homePreferencesForm.Type, int.Parse(homePreferencesForm.Residents));
+            HousePreferences preferences = new HousePreferences(Convert.ToDouble(homePreferencesForm.Budget), double.Parse(homePreferencesForm.Area), homePreferencesForm.Type, int.Parse(homePreferencesForm.Residents), null);
             PersonService personService = new PersonService(new PersonRepository());
             AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
 

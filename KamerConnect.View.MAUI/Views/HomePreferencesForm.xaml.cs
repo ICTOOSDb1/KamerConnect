@@ -26,7 +26,7 @@ public partial class HomePreferencesForm : ContentView
         if (!ValidateForm()) return;
 		
         CheckIfHomeTypeIsPicked(_currentPerson);
-        _personService.UpdateHousePreferences((Guid)_currentPerson.Id, _currentPerson.HousePreferences);
+        _personService.UpdateHousePreferences(_currentPerson.HousePreferences);
     }
 	
     

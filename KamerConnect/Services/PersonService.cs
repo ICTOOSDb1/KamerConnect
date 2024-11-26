@@ -42,9 +42,9 @@ public class PersonService
         _repository.UpdateSocial(personId, social);
     }
 
-    public void UpdateHousePreferences(Guid housePreferencesId, HousePreferences housePreferences)
+    public void UpdateHousePreferences(HousePreferences housePreferences)
     {
-        _repository.UpdateHousePreferences(housePreferencesId, housePreferences);
+        _repository.UpdateHousePreferences(housePreferences);
     }
 
     public Guid CreateHousePreferences(HousePreferences housePreferences)

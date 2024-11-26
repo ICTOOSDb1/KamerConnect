@@ -10,7 +10,7 @@ public interface IPersonRepository
     void UpdatePerson(Person person);
     void UpdatePersonality(Guid personId, Personality personality);
     void UpdateSocial(Guid personId, Social social);
-    public void UpdateHousePreferences(Guid housePreferencesId, HousePreferences housePreferences);
+    public void UpdateHousePreferences(HousePreferences housePreferences);
     Guid CreateHousePreferences(HousePreferences housePreferences);
     HousePreferences? GetHousePreferences(Guid personId);
 }

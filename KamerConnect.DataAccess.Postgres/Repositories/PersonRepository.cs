@@ -267,22 +267,21 @@ public class PersonRepository : IPersonRepository
         }
     }
 
-    public void UpdateHousePreferences(Guid housePreferencesId, HousePreferences housePreferences)
+    public void UpdateHousePreferences(HousePreferences housePreferences)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
-
             using (var updateCommand = new NpgsqlCommand(
-                       """
-                       UPDATE house_preferences
-                       SET type = @Type::house_type,
-                           price = @Price,
-                           surface = @Surface
-                       WHERE id = @HousePreferencesId;
-                       """, connection))
+                        """
+                    UPDATE house_preferences
+                    SET type = @Type::house_type,
+                        price = @Price,
+                        surface = @Surface
+                    WHERE id = @HousePreferencesId::uuid;
+                    """, connection))
             {
-                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferencesId);
+                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferences.Id);
                 updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
                 updateCommand.Parameters.AddWithValue("@Price", housePreferences.Budget);
                 updateCommand.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea);
@@ -300,7 +299,7 @@ public class PersonRepository : IPersonRepository
 
             using (var command = new NpgsqlCommand(
                        """
-                   SELECT hp.type, hp.price, hp.surface, hp.residents
+                   SELECT hp.id, hp.type, hp.price, hp.surface, hp.residents
                    FROM house_preferences hp
                    INNER JOIN person p ON p.house_preferences_id = hp.id
                    WHERE p.id = @PersonId;
@@ -313,10 +312,11 @@ public class PersonRepository : IPersonRepository
                     if (reader.Read())
                     {
                         return new HousePreferences(
-                            reader.GetDouble(1),
                             reader.GetDouble(2),
-                            EnumUtils.Validate<HouseType>(reader.GetString(0)),
-                            reader.GetInt32(3)
+                            reader.GetDouble(3),
+                            EnumUtils.Validate<HouseType>(reader.GetString(1)),
+                            reader.GetInt32(4),
+                            reader.GetGuid(0)
                         );
                     }
                 }
