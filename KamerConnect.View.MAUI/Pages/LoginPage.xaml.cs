@@ -30,7 +30,7 @@ public partial class LoginPage : ContentPage
         {
             if (token != null)
             {
-                var page = _serviceProvider.GetRequiredService<UpdateAccount>();
+                var page = _serviceProvider.GetRequiredService<MainPage>();
                 await navigationPage.Navigation.PushAsync(page);
             }
             else

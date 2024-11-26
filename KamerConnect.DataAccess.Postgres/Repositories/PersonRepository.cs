@@ -1,3 +1,4 @@
+using System;
 using System.Data.Common;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.Models;
@@ -25,9 +26,28 @@ public class PersonRepository : IPersonRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT * FROM person " +
-                                     $"LEFT JOIN personality ON person.id = personality.person_id " +
-                                     $"WHERE person.id = @id::uuid",
+                   new NpgsqlCommand("""
+                                     SELECT 
+                                         person.id,                        
+                                         person.email,                     
+                                         person.first_name,                
+                                         person.middle_name,               
+                                         person.surname,                   
+                                         person.phone_number,              
+                                         person.birth_date,                
+                                         person.gender,                    
+                                         person.role,                      
+                                         person.profile_picture_path,      
+                                         person.house_preferences_id,      
+                                         personality.id,            
+                                         personality.school,               
+                                         personality.study,                
+                                         personality.description           
+                                     FROM person
+                                     LEFT JOIN personality ON person.id = personality.person_id
+                                     WHERE person.id = @id::uuid;
+
+                                     """,
                        connection))
             {
                 command.Parameters.AddWithValue("@id", id);
@@ -53,9 +73,26 @@ public class PersonRepository : IPersonRepository
 
             using (var command =
                    new NpgsqlCommand("""
-                                     SELECT * FROM person
+                                     SELECT 
+                                         person.id,                        
+                                         person.email,                     
+                                         person.first_name,                
+                                         person.middle_name,               
+                                         person.surname,                   
+                                         person.phone_number,              
+                                         person.birth_date,                
+                                         person.gender,                    
+                                         person.role,                      
+                                         person.profile_picture_path,      
+                                         person.house_preferences_id,      
+                                         personality.id,            
+                                         personality.school,               
+                                         personality.study,                
+                                         personality.description           
+                                     FROM person
                                      LEFT JOIN personality ON person.id = personality.person_id
-                                        WHERE person.email = @email
+                                     WHERE person.email = @email;
+                                     
                                      """,
                        connection))
             {
@@ -132,12 +169,12 @@ public class PersonRepository : IPersonRepository
         );
 
 
-        if (reader.IsDBNull(11)) return person; //If personality is not present with user
+        if (reader.IsDBNull(11)) return person;
 
         person.Personality = new Personality(
+            reader.IsDBNull(12) ? null : reader.GetString(12),
             reader.IsDBNull(13) ? null : reader.GetString(13),
-            reader.IsDBNull(14) ? null : reader.GetString(14),
-            reader.IsDBNull(15) ? null : reader.GetString(15)
+            reader.IsDBNull(14) ? null : reader.GetString(14)
         );
 
         return person;

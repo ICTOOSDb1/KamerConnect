@@ -73,7 +73,8 @@ public class AuthenticationService
 
     public async Task<Session?> GetSession()
     {
-        var sessionToken = await GetSessionToken();
+        var sessionToken = await GetSessionToken().ConfigureAwait(false);
+
         if (sessionToken != null)
             return _repository.GetSessionWithLocalToken(sessionToken);
 
@@ -105,13 +106,23 @@ public class AuthenticationService
         if (_repository.GetSession(personId) == null)
         {
             _repository.SaveSession(personId, currentDate, sessionToken);
+            SecureStorage.Default.RemoveAll();
             await SecureStorage.Default.SetAsync("session_token", sessionToken);
+
         }
     }
 
     public async Task<string?> GetSessionToken()
     {
-        return await SecureStorage.Default.GetAsync("session_token");
+        try
+        {
+            var token = await SecureStorage.Default.GetAsync("session_token");
+            return token;
+        } catch(Exception e)
+        {
+            throw;
+        }
+
     }
     
     private void RemoveSession(string? currentToken)

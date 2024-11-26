@@ -46,11 +46,6 @@
                                 Clicked="Interests"
                                 Style="{StaticResource PrimaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
-                        <Button Text="Social Media"
-                                x:Name="SocialMediaButton"
-                                Clicked="SocialMedia"
-                                Style="{StaticResource PrimaryButton}"
-                                HorizontalOptions="FillAndExpand"/>
                         <Button Text="House"
                                 x:Name="HouseButton"
                                 Clicked="House"

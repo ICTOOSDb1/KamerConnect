@@ -1,4 +1,5 @@
-﻿using KamerConnect.EnvironmentVariables;
+﻿
+using KamerConnect.EnvironmentVariables;
 using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
@@ -10,8 +11,9 @@ public partial class App : Application
 	public App(IServiceProvider serviceProvider)
 	{
 		EnvVariables.Load();
+        SecureStorage.Default.RemoveAll();
 
-		_serviceProvider = serviceProvider;
+        _serviceProvider = serviceProvider;
 		InitializeComponent();
 		InitializeAppAsync().GetAwaiter().GetResult();
 	}
@@ -26,7 +28,7 @@ public partial class App : Application
 
 		if (await authService.CheckSession())
 		{
-			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
+			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
 		}
 		else
 		{

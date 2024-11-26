@@ -3,8 +3,10 @@ namespace KamerConnect.View.MAUI.Pages;
 
 public partial class MainPage : ContentPage
 {
-    public MainPage()
+    private IServiceProvider _serviceProvider;
+    public MainPage(IServiceProvider serviceProvider)
     {
+        _serviceProvider = serviceProvider;
         NavigationPage.SetHasNavigationBar(this, false);
         
         InitializeComponent();
@@ -15,9 +17,12 @@ public partial class MainPage : ContentPage
         await Shell.Current.GoToAsync("UpdateAccount");
     }
 
-    private async void ToRegistration(object sender, EventArgs e)
+    private async void ToAccount(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("Registration");
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<UpdateAccount>());
+        }
     }
 }
 
