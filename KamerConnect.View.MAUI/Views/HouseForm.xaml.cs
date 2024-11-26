@@ -163,20 +163,23 @@ public partial class HouseForm : ContentView
 
         if (House == null)
         {
-            _houseService.Create(new House(
-                null,
-                houseType,
-                price,
-                description,
-                surface,
-                residents,
-                city,
-                street,
-                postalCode,
-                houseNumber,
-                addition,
-                houseImages
-            ));
+
+                _houseService.Create(new House(
+                        null,
+                        houseType,
+                        price,
+                        description,
+                        surface,
+                        residents,
+                        city,
+                        street,
+                        postalCode,
+                        houseNumber,
+                        addition,
+                        houseImages
+                    ),
+                    (Guid)_person.Id
+                );
         }
         else
         {
