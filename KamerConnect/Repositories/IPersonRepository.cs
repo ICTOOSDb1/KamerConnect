@@ -12,5 +12,5 @@ public interface IPersonRepository
     void UpdateSocial(Guid personId, Social social);
     public void UpdateHousePreferences(Guid housePreferencesId, HousePreferences housePreferences);
     Guid CreateHousePreferences(HousePreferences housePreferences);
-
+    HousePreferences? GetHousePreferences(Guid personId);
 }

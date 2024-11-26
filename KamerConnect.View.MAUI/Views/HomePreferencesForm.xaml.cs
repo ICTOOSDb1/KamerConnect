@@ -15,7 +15,7 @@ public partial class HomePreferencesForm : ContentView
         _currentPerson = person;
         if (person.HousePreferences == null)
         {
-            person.HousePreferences = new HousePreferences(0, 0, HouseType.Apartment, 0);
+            person.HousePreferences = _personService.GetHousePreferences((Guid)person.Id);
         }
         BindingContext = _currentPerson.HousePreferences;
         InitializeComponent();

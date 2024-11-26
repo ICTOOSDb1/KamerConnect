@@ -23,23 +23,26 @@ namespace KamerConnect.View.MAUI.Pages
             _authenticationService = authenticationService;
             _personService = personService;
 
-            GetCurrentPerson();
-            if (_person.Role == Role.Offering)
-            {
-                HomePreferencesButton.IsVisible = false;
-            }
-            else if (_person.Role == Role.Seeking)
-            {
-                HouseButton.IsVisible = false;
-            }
+            GetCurrentPerson().GetAwaiter().GetResult();
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
         }
 
-        private async void GetCurrentPerson()
+        private async Task GetCurrentPerson()
         {
             var session = await _authenticationService.GetSession();
             if (session != null)
+            {
                 _person = _personService.GetPersonById(session.personId);
+
+                if (_person.Role == Role.Offering)
+                {
+                    HomePreferencesButton.IsVisible = false;
+                }
+                else if (_person.Role == Role.Seeking)
+                {
+                    HouseButton.IsVisible = false;
+                }
+            }
         }
 
         private void AccountDetails(object sender, EventArgs e)

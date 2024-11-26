@@ -28,7 +28,6 @@ public partial class UpdateAccountsForm : ContentView
         _currentPerson = person;
         InitializeComponent();
         BindingContext = _currentPerson;
-        firstNameEntry.Text = _currentPerson.FirstName;
     }
 
     private async void Image_tapped(object sender, EventArgs e)
