@@ -106,29 +106,22 @@ public class AuthenticationService
         if (_repository.GetSession(personId) == null)
         {
             _repository.SaveSession(personId, currentDate, sessionToken);
-            SecureStorage.Default.RemoveAll();
-            await SecureStorage.Default.SetAsync("session_token", sessionToken);
+            
+            Preferences.Set("session_token", sessionToken);
 
         }
     }
 
     public async Task<string?> GetSessionToken()
     {
-        try
-        {
-            var token = await SecureStorage.Default.GetAsync("session_token");
-            return token;
-        } catch(Exception e)
-        {
-            throw;
-        }
-
+        var token = Preferences.Get("session_token", defaultValue: string.Empty);
+        return token;
     }
     
     private void RemoveSession(string? currentToken)
     {
         _repository.RemoveSession(currentToken);
-        SecureStorage.Default.Remove("session_token");
+       Preferences.Remove("session_token");
     }
     private bool ValidatePassword(string passwordAttempt, string? personPassword)
     {

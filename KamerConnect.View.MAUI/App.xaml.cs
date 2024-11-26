@@ -11,7 +11,6 @@ public partial class App : Application
 	public App(IServiceProvider serviceProvider)
 	{
 		EnvVariables.Load();
-        SecureStorage.Default.RemoveAll();
 
         _serviceProvider = serviceProvider;
 		InitializeComponent();
