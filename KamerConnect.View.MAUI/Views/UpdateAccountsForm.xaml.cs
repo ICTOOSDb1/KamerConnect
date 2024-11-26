@@ -51,23 +51,22 @@ public partial class UpdateAccountsForm : ContentView
             profile_picture.Source = _currentPerson.ProfilePicturePath;
         }
     }
-    private void Button_Update_Account(object sender, EventArgs e)
+    private async void Button_Update_Account(object sender, EventArgs e)
     {
         if (!ValidateForm()) return;
         _personService.UpdatePerson(_currentPerson);
+        await Application.Current?.MainPage?.DisplayAlert("Opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
 
     public bool ValidateForm()
     {
         firstNameEntry.Validate();
         surNameEntry.Validate();
-        middleNameEntry.Validate();
         emailEntry.Validate();
         phoneNumberEntry.Validate();
 
         return firstNameEntry.IsValid &&
                surNameEntry.IsValid &&
-               middleNameEntry.IsValid &&
                emailEntry.IsValid &&
                phoneNumberEntry.IsValid;
     }

@@ -39,17 +39,17 @@
                         <Button Text="Woningvoorkeuren"
                                 x:Name="HomePreferencesButton"
                                 Clicked="HomePreferences"
-                                Style="{StaticResource PrimaryButton}"
+                                Style="{StaticResource SecondaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                         <Button Text="Interesses"
                                 x:Name="InterestsButton"
                                 Clicked="Interests"
-                                Style="{StaticResource PrimaryButton}"
+                                Style="{StaticResource SecondaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                         <Button Text="House"
                                 x:Name="HouseButton"
                                 Clicked="House"
-                                Style="{StaticResource PrimaryButton}"
+                                Style="{StaticResource SecondaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                 </StackLayout>
                 <ContentView x:Name="FormsContainer"

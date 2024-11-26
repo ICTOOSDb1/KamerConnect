@@ -21,22 +21,22 @@ public partial class HomePreferencesForm : ContentView
         InitializeComponent();
     }
 
-    private void Button_Update_house_preferences(object sender, EventArgs e)
+    private async void Button_Update_house_preferences(object sender, EventArgs e)
     {
         if (!ValidateForm()) return;
-		
+
         CheckIfHomeTypeIsPicked(_currentPerson);
         _personService.UpdateHousePreferences(_currentPerson.HousePreferences);
+        await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
-	
-    
+
     public void CheckIfHomeTypeIsPicked(Person person)
     {
         var selectedOption = HometypePicker.SelectedItem?.ToString();
         if (Enum.TryParse(selectedOption, true, out HouseType houseType))
         {
             person.HousePreferences.Type = houseType;
-		    
+
         }
     }
 

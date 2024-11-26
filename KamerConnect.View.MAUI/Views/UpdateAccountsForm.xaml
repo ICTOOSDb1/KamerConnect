@@ -7,31 +7,51 @@
 		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
 			<VerticalStackLayout Padding="10">
 
-                <Border WidthRequest="100"
-		                HeightRequest="100"
-		                Stroke="Black"
-		                StrokeThickness="1"
-		                StrokeShape="RoundRectangle 50">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="Image_tapped"/>
-                    </Border.GestureRecognizers>
-                    <Image Source="{Binding ProfilePicturePath}"
-		                   x:Name="profile_picture"
-		                   WidthRequest="98"
-		                   HeightRequest="98" 
-		                   Aspect="AspectFill" />
-                </Border>
+				<Border WidthRequest="100"
+						HeightRequest="100"
+						Stroke="Black"
+						StrokeThickness="1"
+						StrokeShape="RoundRectangle 50">
+					<Border.GestureRecognizers>
+						<TapGestureRecognizer Tapped="Image_tapped"/>
+					</Border.GestureRecognizers>
+					<Image Source="{Binding ProfilePicturePath}"
+						   x:Name="profile_picture"
+						   WidthRequest="98"
+						   HeightRequest="98"
+						   Aspect="AspectFill"/>
+				</Border>
 
-                <Components:Entry InputType="Text" LabelText="Voornaam" Text="{Binding FirstName, Mode=TwoWay}" x:Name = "firstNameEntry"/>
-                <Grid ColumnDefinitions="*,3*">
-                    <Components:Entry InputType="Text" LabelText="Tussenvoegsel" Grid.Column="0"  Text="{Binding MiddleName, Mode=TwoWay}" x:Name = "middleNameEntry"/>
-                    <Components:Entry InputType="Text" LabelText="Achternaam" Grid.Column="1"  Text="{Binding Surname, Mode=TwoWay}" x:Name = "surNameEntry"/>
+				<Components:Entry InputType="Text"
+								  LabelText="Voornaam"
+								  Text="{Binding FirstName, Mode=TwoWay}"
+								  x:Name="firstNameEntry"/>
+				<Grid ColumnDefinitions="*,3*">
+					<Components:Entry
+						LabelText="Tussenvoegsel"
+						Grid.Column="0"
+						Text="{Binding MiddleName, Mode=TwoWay}"
+						x:Name="middleNameEntry"/>
+					<Components:Entry InputType="Text"
+									  LabelText="Achternaam"
+									  Grid.Column="1"
+									  Text="{Binding Surname, Mode=TwoWay}"
+									  x:Name="surNameEntry"/>
 				</Grid>
 
-                <Components:Entry InputType="Email" LabelText="Email" Text="{Binding Email, Mode=TwoWay}" x:Name = "emailEntry"/>
-                <Components:Entry InputType="PhoneNumber" LabelText="Telefoonnummer" Text="{Binding PhoneNumber, Mode=TwoWay}" x:Name = "phoneNumberEntry"/>
-                
-				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Update_Account"/>
+				<Components:Entry InputType="Email"
+								  LabelText="Email"
+								  Text="{Binding Email, Mode=TwoWay}"
+								  x:Name="emailEntry"/>
+				<Components:Entry InputType="PhoneNumber"
+								  LabelText="Telefoonnummer"
+								  Text="{Binding PhoneNumber, Mode=TwoWay}"
+								  x:Name="phoneNumberEntry"/>
+
+				<Button HorizontalOptions="End"
+						Text="Update account"
+						Style="{StaticResource PrimaryButton}"
+						Clicked="Button_Update_Account"/>
 
 			</VerticalStackLayout>
 		</Components:FormCard>
