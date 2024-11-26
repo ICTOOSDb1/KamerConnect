@@ -11,4 +11,8 @@ public class FileService
         _fileRepository = fileRepository;
     }
 
+    public async Task UploadFileAsync(string bucketName, string objectName, string filePath, string contentType)
+    {
+        await _fileRepository.UploadFileAsync(bucketName, objectName, filePath, contentType);
+    }
 }
