@@ -3,7 +3,7 @@ using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
 using Npgsql;
-
+using KamerConnect.Services;
 namespace KamerConnect.DataAccess.Postgres.Repositories;
 
 public class HouseRepository : IHouseRepository
