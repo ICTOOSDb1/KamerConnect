@@ -14,7 +14,10 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                  
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -25,7 +28,7 @@
                        FontSize="18" 
                        FontAttributes="Bold"></Label>
 
-                <Components:Entry LabelText="Beschikbaar budget" 
+                <Components:Entry LabelText="Maximaal beschikbaar budget per maand" 
                                   x:Name="BudgetInput"
                                   Placeholder="Budget in €" 
                                   Grid.Row="1" 
@@ -57,15 +60,79 @@
                     <x:String>Studio</x:String>
 
                 </Picker.Items>
-
-
             </Picker>
             <Components:Entry LabelText="Hoeveelheid kamergenoten"
                    x:Name="ResidentsInput"
-                   
                    Grid.Row="4" 
                    Grid.Column="0" 
                     InputType="Number"/>
+                    
+                <Picker x:Name="SmokersPicker"
+                        Title="Roken in huis?"
+                        SelectedIndex="0"
+                    
+                        Margin="0,5,0,10"
+                        Grid.Row="5"
+                        Grid.Column="0">
+                
+                    <Picker.Items>
+                        <x:String>Ja</x:String>
+                        <x:String>Nee</x:String>
+                        <x:String>Geen voorkeur</x:String>
+                    </Picker.Items>
+                </Picker>
+                
+                <Picker x:Name="PetPicker"
+                        Title="Huisdieren in huis?"
+                        SelectedIndex="0"
+                    
+                        Margin="0,5,0,10"
+                        Grid.Row="6"
+                        Grid.Column="0"
+                >
+                
+                    <Picker.Items>
+                        <x:String>Ja</x:String>
+                        <x:String>Nee</x:String>
+                        <x:String>Geen voorkeur</x:String>
+                    </Picker.Items>
+                </Picker>
+                
+                <Picker x:Name="ParkingPicker"
+                        Title="Moet er een parkeerplek in de buurt zijn?"
+                        SelectedIndex="0"
+                    
+                        Margin="0,5,0,10"
+                        Grid.Row="7"
+                        Grid.Column="0"
+                >
+                
+                    <Picker.Items>
+                        <x:String>Ja</x:String>
+                        <x:String>Nee</x:String>
+                        <x:String>Geen voorkeur</x:String>
+                    </Picker.Items>
+                </Picker>
+                
+                <Picker x:Name="InteriorPicker"
+                        Title="Wilt u een kamer die al ingericht is?"
+                        SelectedIndex="0"
+                    
+                        Margin="0,5,0,10"
+                        Grid.Row="8"
+                        Grid.Column="0"
+                >
+                
+                    <Picker.Items>
+                        <x:String>Ja</x:String>
+                        <x:String>Nee</x:String>
+                        <x:String>Geen voorkeur</x:String>
+                    </Picker.Items>
+                </Picker>
+                
+                
+                
+                
 
 
         </Grid>

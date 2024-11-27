@@ -14,8 +14,7 @@
            
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
                 <StackLayout Spacing="20">
-                    <Label Style="{StaticResource TitleTextStyle}" Text="Aanmeldingsformulier: Huis zoekend" HorizontalOptions="Start"></Label>
-                    <Label x:Name="PersoonLatenZien" Text="niks"></Label>
+                    <Label Style="{StaticResource TitleTextStyle}" Text="Aanmeldingsformulier Huis zoekend" HorizontalOptions="Start"></Label>
                     <BoxView HeightRequest="0.5" 
                              BackgroundColor="{StaticResource Gray100}" 
                              HorizontalOptions="FillAndExpand" />
@@ -28,7 +27,6 @@
                              HorizontalOptions="FillAndExpand" />
 
                     
-
                     <!-- Navigation Buttons -->
                     <Grid ColumnSpacing="20" Margin="0,20,0,0">
                         <Grid.ColumnDefinitions>
