@@ -11,16 +11,14 @@ namespace KamerConnect.View.MAUI.Pages
         private readonly PersonService _personService;
         private readonly AuthenticationService _authenticationService;
         private readonly HousePreferenceService _housePreferenceService;
-        private readonly IServiceProvider _serviceProvider;
         private Person _person;
 
         public UpdateAccount(FileService fileService, HouseService houseService, HousePreferenceService housePreferenceService,
-        AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider)
+            AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider)
         {
             NavigationPage.SetHasNavigationBar(this, false);
 
             InitializeComponent();
-            _serviceProvider = serviceProvider;
 
             _fileService = fileService;
             _houseService = houseService;
@@ -28,14 +26,12 @@ namespace KamerConnect.View.MAUI.Pages
             _personService = personService;
             _housePreferenceService = housePreferenceService;
 
-
             GetCurrentPerson().GetAwaiter().GetResult();
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
         }
 
         private async Task GetCurrentPerson()
         {
-
             var session = await _authenticationService.GetSession();
             if (session != null)
             {

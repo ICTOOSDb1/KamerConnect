@@ -197,6 +197,7 @@ public class HouseRepository : IHouseRepository
                 }
             }
         }
+        return null;
     }
 
     private House ReadToHouse(DbDataReader reader)
