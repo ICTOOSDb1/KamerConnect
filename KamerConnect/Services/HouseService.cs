@@ -17,6 +17,11 @@ public class HouseService
         return _repository.Get(id);
     }
 
+    public House GetByPersonId(Guid personId)
+    {
+        return _repository.GetByPersonId(personId);
+    }
+
     public Guid Create(House house, Guid personId)
     {
         return _repository.Create(house, personId);

@@ -2,7 +2,7 @@ namespace KamerConnect.Models;
 
 public class Person
 {
-    public Guid? Id { get; set; }
+    public Guid Id { get; set; }
     public string Email { get; set; }
     public string FirstName { get; set; }
     public string? MiddleName { get; set; }
@@ -12,15 +12,10 @@ public class Person
     public Gender Gender { get; set; }
     public Role Role { get; set; }
     public string? ProfilePicturePath { get; set; }
-    public Guid? HouseId { get; set; }
     public Personality? Personality { get; set; }
-    public HousePreferences? HousePreferences { get; set; }
-    public Guid? HousePreferencesId { get; set; }
-    public Social? Social { get; set; }
 
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
-        DateTime birthDate, Gender gender, Role role, string? profilePicturePath, Guid? id,
-        Guid? houseId)
+        DateTime birthDate, Gender gender, Role role, string? profilePicturePath, Guid id)
     {
         Id = id;
         Email = email;
@@ -32,22 +27,6 @@ public class Person
         Gender = gender;
         Role = role;
         ProfilePicturePath = profilePicturePath;
-        HouseId = houseId;
-    }
-
-    public override string ToString()
-    {
-        return $@"Id: {Id}
-        Email: {Email}
-        First Name: {FirstName}
-        Middle Name: {MiddleName ?? "N/A"}
-        Surname: {Surname}
-        Phone Number: {PhoneNumber ?? "N/A"}
-        Birth Date: {BirthDate.ToShortDateString()}
-        Gender: {Gender}
-        Role: {Role}
-        Profile Picture Path: {ProfilePicturePath ?? "N/A"}
-        {Personality}";
     }
 }
 
@@ -61,12 +40,4 @@ public enum Gender
     Male,
     Female,
     Other
-}
-
-public enum SocialType
-{
-    LinkedIn,
-    X,
-    Instagram,
-    Facebook
 }

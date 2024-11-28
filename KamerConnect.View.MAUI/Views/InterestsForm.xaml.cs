@@ -26,7 +26,7 @@ public partial class InterestsForm : ContentView
 		if (!ValidateForm()) return;
 		if (_currentPerson.Id != null)
 		{
-			_personService.UpdatePersonality((Guid)_currentPerson.Id, _currentPerson.Personality);
+			_personService.UpdatePersonality(_currentPerson.Id, _currentPerson.Personality);
 			await Application.Current?.MainPage?.DisplayAlert("Opgeslagen", "Succesvol opgeslagen!", "Ga verder");
 		};
 	}

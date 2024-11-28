@@ -41,6 +41,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<AuthenticationService>(sp => new AuthenticationService(sp.GetRequiredService<PersonService>(), new AuthenticationRepository()));
 		builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
 		builder.Services.AddSingleton<HouseService>(sp => new HouseService(new HouseRepository()));
+		builder.Services.AddSingleton<HousePreferenceService>(sp => new HousePreferenceService(new HousePreferenceRepository()));
 
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();

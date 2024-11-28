@@ -158,12 +158,10 @@ public class AuthenticationRepository : IAuthenticationRepository
                 }
             }
         }
-
-        return null;
     }
 
 
-    public void AddPassword(Guid? personId, string password, string salt)
+    public void AddPassword(Guid personId, string password, string salt)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {

@@ -3,7 +3,6 @@ using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
 using Npgsql;
-using KamerConnect.Services;
 namespace KamerConnect.DataAccess.Postgres.Repositories;
 
 public class HouseRepository : IHouseRepository
@@ -119,7 +118,7 @@ public class HouseRepository : IHouseRepository
                     try
                     {
                         Guid houseId = CreateHouseRecord(house, connection);
-                    
+
                         CreateHouseImages(houseId, house.HouseImages, connection);
                         AddHouseToPerson(houseId, personId, connection);
                         transaction.Commit();
@@ -146,7 +145,7 @@ public class HouseRepository : IHouseRepository
         }
     }
 
-    public House Get(Guid id)
+    public House? Get(Guid id)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
         {
@@ -172,6 +171,35 @@ public class HouseRepository : IHouseRepository
         return null;
     }
 
+    public House? GetByPersonId(Guid personId)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand($"SELECT h.id, h.type, h.price, h.description, h.surface, " +
+                                     $"h.residents, h.city, h.street, h.postalCode, " +
+                                     $"h.house_number, h.house_number_addition " +
+                                     $"FROM house h " +
+                                     $"INNER JOIN person p ON p.house_id = h.id " +
+                                     $"WHERE p.id = @PersonId",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@PersonId", personId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return ReadToHouse(reader);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
     private House ReadToHouse(DbDataReader reader)
     {
@@ -237,7 +265,7 @@ public class HouseRepository : IHouseRepository
                             command.ExecuteNonQuery();
                         }
 
-                        UpdateHouseImages((Guid)house.Id, house.HouseImages, connection);
+                        UpdateHouseImages(house.Id, house.HouseImages, connection);
 
                         transaction.Commit();
                     }
@@ -265,6 +293,4 @@ public class HouseRepository : IHouseRepository
     {
         // Moet nog geimplementeerd worden
     }
-
-
 }
