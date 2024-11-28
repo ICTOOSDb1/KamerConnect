@@ -114,7 +114,7 @@ public class PersonRepository : IPersonRepository
             using (var command =
                    new NpgsqlCommand($"""
                                       INSERT INTO person (    
-                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path, house_preferences_id)
+                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
                                         VALUES (@Email,
                                         @FirstName,
                                         @MiddleName,
@@ -123,7 +123,7 @@ public class PersonRepository : IPersonRepository
                                         @BirthDate,
                                         @Gender::gender,
                                         @Role::user_role,
-                                        @ProfilePicturePath,
+                                        @ProfilePicturePath
                                       ) RETURNING id;
                                       """,
                        connection))
@@ -143,6 +143,7 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
+
     private Person ReadToPerson(DbDataReader reader)
     {
         var person = new Person

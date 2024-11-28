@@ -1,6 +1,7 @@
 CREATE TYPE user_role AS ENUM ('Seeking', 'Offering');
 CREATE TYPE gender AS ENUM ('Male', 'Female', 'Other');
 CREATE TYPE house_type AS ENUM ('Apartment', 'House', 'Studio');
+CREATE TYPE preference_choice AS ENUM ('Yes', 'No', 'No_preference');
 
 CREATE TABLE IF NOT EXISTS house (
 	id UUID PRIMARY KEY default gen_random_uuid(),
@@ -18,9 +19,14 @@ CREATE TABLE IF NOT EXISTS house (
 CREATE TABLE IF NOT EXISTS house_preferences (
     id UUID PRIMARY KEY default gen_random_uuid(),
 	type house_type,
-	price DECIMAL(10, 2),
+    min_price DECIMAL(10, 2),
+	max_price DECIMAL(10, 2),
     surface DECIMAL(10, 2),
-    residents INT
+    residents INT,
+    smoking preference_choice,
+    pet preference_choice,
+    interior preference_choice,
+    parking preference_choice
 );
 CREATE TABLE IF NOT EXISTS person (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

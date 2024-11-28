@@ -64,11 +64,7 @@ public class AuthenticationService
             throw new InvalidOperationException("Some required values are null or empty");
 
         Guid personId = _personService.CreatePerson(person);
-
-        if (personId != null)
-        {
-            _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
-        }
+        _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
     }
 
     public async Task<Session?> GetSession()

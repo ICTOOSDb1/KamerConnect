@@ -179,7 +179,7 @@ public class HouseRepository : IHouseRepository
 
             using (var command =
                    new NpgsqlCommand($"SELECT h.id, h.type, h.price, h.description, h.surface, " +
-                                     $"h.residents, h.city, h.street, h.postalCode, " +
+                                     $"h.residents, h.city, h.street, h.postal_code, " +
                                      $"h.house_number, h.house_number_addition " +
                                      $"FROM house h " +
                                      $"INNER JOIN person p ON p.house_id = h.id " +
@@ -197,8 +197,6 @@ public class HouseRepository : IHouseRepository
                 }
             }
         }
-
-        return null;
     }
 
     private House ReadToHouse(DbDataReader reader)

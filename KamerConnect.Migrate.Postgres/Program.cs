@@ -5,9 +5,8 @@ using KamerConnect.EnvironmentVariables;
 
 class Program
 {
-    static async Task<int> Main()
+    static int Main()
     {
-
         EnvVariables.Load();
 
         var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");

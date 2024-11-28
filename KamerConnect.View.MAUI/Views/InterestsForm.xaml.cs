@@ -7,7 +7,7 @@ namespace KamerConnect.View.MAUI.Views;
 public partial class InterestsForm : ContentView
 {
 	private readonly PersonService _personService;
-	private Person? _currentPerson;
+	private Person _currentPerson;
 
 	public InterestsForm(PersonService personService, Person person)
 	{
@@ -24,11 +24,9 @@ public partial class InterestsForm : ContentView
 	private async void Button_update_interests(object? sender, EventArgs e)
 	{
 		if (!ValidateForm()) return;
-		if (_currentPerson.Id != null)
-		{
-			_personService.UpdatePersonality(_currentPerson.Id, _currentPerson.Personality);
-			await Application.Current?.MainPage?.DisplayAlert("Opgeslagen", "Succesvol opgeslagen!", "Ga verder");
-		};
+
+		_personService.UpdatePersonality(_currentPerson.Id, _currentPerson.Personality);
+		await Application.Current?.MainPage?.DisplayAlert("Opgeslagen", "Succesvol opgeslagen!", "Ga verder");
 	}
 
 	public bool ValidateForm()
