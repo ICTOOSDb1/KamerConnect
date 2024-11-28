@@ -2,6 +2,7 @@ using KamerConnect.DataAccess.Postgres.Repositories;
 
 using KamerConnect.Models;
 using KamerConnect.Services;
+using KamerConnect.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using KamerConnect.View.MAUI.Pages;
 
@@ -35,7 +36,18 @@ public partial class RegisterHomePreferencesPage : ContentPage
     {
         if (homePreferencesForm.ValidateAll())
         {
-            HousePreferences preferences = new HousePreferences(Convert.ToDouble(homePreferencesForm.Budget), double.Parse(homePreferencesForm.Area), homePreferencesForm.Type, int.Parse(homePreferencesForm.Residents), null);
+            HousePreferences preferences = new HousePreferences(
+                double.Parse(homePreferencesForm.MaxBudget), 
+                double.Parse(homePreferencesForm.MaxBudget), 
+                double.Parse(homePreferencesForm.Area), 
+                homePreferencesForm.Type,
+                int.Parse(homePreferencesForm.Residents),
+                homePreferencesForm.SmokingPreference,
+                homePreferencesForm.PetPreference,
+                homePreferencesForm.InteriorPreference,
+                homePreferencesForm.ParkingPreference
+                
+                );
             PersonService personService = new PersonService(new PersonRepository());
             AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
 
