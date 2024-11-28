@@ -270,40 +270,7 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
-
-    public void UpdateSocial(Guid personId, Social social)
-    {
-        using (var connection = new NpgsqlConnection(connectionString))
-        {
-            connection.Open();
-
-            using (var transaction = connection.BeginTransaction())
-            {
-                using (var updateCommand = new NpgsqlCommand(
-                           "UPDATE social SET type = @Type::social_type, url = @Url WHERE person_id = @PersonalityId", connection))
-                {
-                    updateCommand.Parameters.AddWithValue("@PersonalityId", personId);
-                    updateCommand.Parameters.AddWithValue("@Type", social.Type.ToString() ?? null);
-                    updateCommand.Parameters.AddWithValue("@Url", social.Url ?? null);
-                    var rowsAffected = updateCommand.ExecuteNonQuery();
-
-                    if (rowsAffected == 0)
-                    {
-                        using (var insertCommand = new NpgsqlCommand(
-                                   "INSERT INTO social (person_id, type, url) VALUES (@PersonalityId, @Type::social_type, @Url)", connection))
-                        {
-                            insertCommand.Parameters.AddWithValue("@PersonalityId", personId);
-                            insertCommand.Parameters.AddWithValue("@Type", social.Type.ToString() ?? null);
-                            insertCommand.Parameters.AddWithValue("@Url", social.Url ?? null);
-                            insertCommand.ExecuteNonQuery();
-                        }
-                    }
-                }
-                transaction.Commit();
-            }
-        }
-    }
-
+    
     public void UpdateHousePreferences(HousePreferences housePreferences)
     {
         using (var connection = new NpgsqlConnection(connectionString))

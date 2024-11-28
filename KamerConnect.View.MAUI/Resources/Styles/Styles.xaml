@@ -137,7 +137,7 @@
 
         <Style TargetType="DatePicker">
                 <Setter Property="TextColor"
-                        Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}"/>
+                        Value="{StaticResource TextColor}"/>
                 <Setter Property="BackgroundColor"
                         Value="Transparent"/>
                 <Setter Property="FontFamily"
@@ -302,10 +302,11 @@
     <Style TargetType="Picker">
         <Setter Property="TextColor" Value="{StaticResource TextColor}" />
         <Setter Property="TitleColor" Value="{StaticResource TextColor}" />
-        <Setter Property="BackgroundColor" Value="#F0F0F0" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="MinimumHeightRequest" Value="80"/>
+        <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>

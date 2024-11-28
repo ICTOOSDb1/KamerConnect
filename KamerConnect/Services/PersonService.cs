@@ -36,12 +36,7 @@ public class PersonService
     {
         _repository.UpdatePersonality(personId, personality);
     }
-
-    public void UpdateSocial(Guid personId, Social social)
-    {
-        _repository.UpdateSocial(personId, social);
-    }
-
+    
     public void UpdateHousePreferences(HousePreferences housePreferences)
     {
         _repository.UpdateHousePreferences(housePreferences);
