@@ -58,10 +58,7 @@ public partial class HouseForm : ContentView
 
     private void GetCurrentHouse()
     {
-        if (_person.HouseId != null)
-        {
-            House = _houseService.Get((Guid)_person.HouseId);
-        }
+        House = _houseService.GetByPersonId(_person.Id);
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
@@ -163,8 +160,8 @@ public partial class HouseForm : ContentView
 
         if (House == null)
         {
-            var houseId = _houseService.Create(new House(
-                    null,
+            _houseService.Create(new House(
+                    Guid.NewGuid(),
                     houseType,
                     price,
                     description,
@@ -177,10 +174,8 @@ public partial class HouseForm : ContentView
                     addition,
                     houseImages
                 ),
-                (Guid)_person.Id
+                _person.Id
             );
-
-            _person.HouseId = houseId;
         }
         else
         {

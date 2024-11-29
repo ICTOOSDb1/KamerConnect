@@ -33,14 +33,14 @@ public class AuthenticationService
         try
         {
             Person person = _personService.GetPersonByEmail(email) ?? throw new InvalidCredentialsException();
-            string? personPassword = _repository.GetPassword((Guid)person.Id);
-            
-            if (ValidatePassword(HashPassword(passwordAttempt, 
-                    out byte[]? salt, 
+            string? personPassword = _repository.GetPassword(person.Id);
+
+            if (ValidatePassword(HashPassword(passwordAttempt,
+                    out byte[]? salt,
                     _repository.GetSaltFromPerson(email)), personPassword))
             {
                 string sessionToken = GenerateSessionToken();
-                await SaveSession((Guid)person.Id, DateTime.Now, sessionToken);
+                await SaveSession(person.Id, DateTime.Now, sessionToken);
                 return sessionToken;
             }
         }
@@ -63,12 +63,8 @@ public class AuthenticationService
         if (!ValidationUtils.IsValidPerson(person))
             throw new InvalidOperationException("Some required values are null or empty");
 
-        Guid? personId = _personService.CreatePerson(person);
-
-        if (personId != null)
-        {
-            _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
-        }
+        Guid personId = _personService.CreatePerson(person);
+        _repository.AddPassword(personId, HashPassword(password, out salt), Convert.ToBase64String(salt));
     }
 
     public async Task<Session?> GetSession()
@@ -106,7 +102,7 @@ public class AuthenticationService
         if (_repository.GetSession(personId) == null)
         {
             _repository.SaveSession(personId, currentDate, sessionToken);
-            
+
             Preferences.Set("session_token", sessionToken);
 
         }
@@ -117,12 +113,13 @@ public class AuthenticationService
         var token = Preferences.Get("session_token", defaultValue: string.Empty);
         return token;
     }
-    
+
     private void RemoveSession(string? currentToken)
     {
         _repository.RemoveSession(currentToken);
-       Preferences.Remove("session_token");
+        Preferences.Remove("session_token");
     }
+
     private bool ValidatePassword(string passwordAttempt, string? personPassword)
     {
         if (passwordAttempt == personPassword)

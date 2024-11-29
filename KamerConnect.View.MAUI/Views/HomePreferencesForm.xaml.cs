@@ -6,18 +6,16 @@ namespace KamerConnect.View.MAUI.Views;
 
 public partial class HomePreferencesForm : ContentView
 {
-    private readonly PersonService _personService;
+    private readonly HousePreferenceService _housePreferenceService;
     private Person? _currentPerson;
+    private HousePreferences? _housePreferences;
 
-    public HomePreferencesForm(PersonService personService, Person person)
+    public HomePreferencesForm(HousePreferenceService housePreferenceService, Person person)
     {
-        _personService = personService;
         _currentPerson = person;
-        if (person.HousePreferences == null)
-        {
-            person.HousePreferences = _personService.GetHousePreferences((Guid)person.Id);
-        }
-        BindingContext = _currentPerson.HousePreferences;
+        _housePreferenceService = housePreferenceService;
+        _housePreferences = _housePreferenceService.GetHousePreferences(person.Id);
+        BindingContext = _housePreferences;
         InitializeComponent();
     }
 
@@ -26,7 +24,7 @@ public partial class HomePreferencesForm : ContentView
         if (!ValidateForm()) return;
 
         CheckIfHomeTypeIsPicked(_currentPerson);
-        _personService.UpdateHousePreferences(_currentPerson.HousePreferences);
+        _housePreferenceService.UpdateHousePreferences(_housePreferences);
         await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
 
@@ -35,8 +33,7 @@ public partial class HomePreferencesForm : ContentView
         var selectedOption = HometypePicker.SelectedItem?.ToString();
         if (Enum.TryParse(selectedOption, true, out HouseType houseType))
         {
-            person.HousePreferences.Type = houseType;
-
+            _housePreferences.Type = houseType;
         }
     }
 

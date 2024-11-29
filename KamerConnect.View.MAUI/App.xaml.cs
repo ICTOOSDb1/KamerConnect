@@ -10,9 +10,7 @@ public partial class App : Application
 
 	public App(IServiceProvider serviceProvider)
 	{
-		EnvVariables.Load();
-
-        _serviceProvider = serviceProvider;
+		_serviceProvider = serviceProvider;
 		InitializeComponent();
 		InitializeAppAsync().GetAwaiter().GetResult();
 	}

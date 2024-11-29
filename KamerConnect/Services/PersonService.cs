@@ -21,11 +21,10 @@ public class PersonService
         return _repository.GetPersonByEmail(email);
     }
 
-    public Guid? CreatePerson(Person person)
+    public Guid CreatePerson(Person person)
     {
         return _repository.CreatePerson(person);
     }
-
 
     public void UpdatePerson(Person person)
     {

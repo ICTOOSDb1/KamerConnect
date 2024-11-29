@@ -67,6 +67,26 @@ public class FileRepository : IFileRepository
                 await _minioClient.MakeBucketAsync(
                     new MakeBucketArgs().WithBucket(bucketName)
                 );
+
+                string publicPolicy = @$"
+                    {{
+                        ""Version"": ""2012-10-17"",
+                        ""Statement"": [
+                            {{
+                                ""Effect"": ""Allow"",
+                                ""Principal"": ""*"",
+                                ""Action"": ""s3:GetObject"",
+                                ""Resource"": ""arn:aws:s3:::{bucketName}/*""
+                            }}
+                        ]
+                    }}";
+
+                await _minioClient.SetPolicyAsync(
+                    new SetPolicyArgs()
+                        .WithBucket(bucketName)
+                        .WithPolicy(publicPolicy)
+                );
+
                 Console.WriteLine($"Bucket '{bucketName}' created successfully.");
             }
         }
@@ -76,6 +96,4 @@ public class FileRepository : IFileRepository
             throw;
         }
     }
-    
-    //TO DO: toevoegen dat de bucket automatisch op public gezet nadat hij gemaakt is
 }

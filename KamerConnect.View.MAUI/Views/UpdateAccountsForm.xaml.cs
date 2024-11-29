@@ -14,8 +14,7 @@ namespace KamerConnect.View.MAUI.Views;
 
 public partial class UpdateAccountsForm : ContentView
 {
-
-    private const string BucketName = "profilepictures";
+    private const string _bucketName = "profilepictures";
 
     private readonly FileService _fileService;
     private readonly PersonService _personService;
@@ -45,9 +44,9 @@ public partial class UpdateAccountsForm : ContentView
             string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetFileName(filePath);
             string contentType = FileUtils.GetContentType(fileName);
 
-            await _fileService.UploadFileAsync(BucketName, fileName, filePath, contentType);
-            string localhost = Env.GetString("MINIO_ENDPOINT");
-            _currentPerson.ProfilePicturePath = $"{localhost}/{BucketName}/{fileName}";
+            await _fileService.UploadFileAsync(_bucketName, fileName, filePath, contentType);
+
+            _currentPerson.ProfilePicturePath = _fileService.GetFilePath(_bucketName, fileName);
             profile_picture.Source = _currentPerson.ProfilePicturePath;
         }
     }

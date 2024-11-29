@@ -1,14 +1,10 @@
-using System;
 using System.Data.Common;
-using KamerConnect.EnvironmentVariables;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
 using Npgsql;
-using NpgsqlTypes;
 
 namespace KamerConnect.DataAccess.Postgres.Repositories;
-
 
 public class PersonRepository : IPersonRepository
 {
@@ -38,7 +34,6 @@ public class PersonRepository : IPersonRepository
                                          person.gender,                    
                                          person.role,                      
                                          person.profile_picture_path,      
-                                         person.house_preferences_id,      
                                          personality.id,            
                                          personality.school,               
                                          personality.study,                
@@ -84,7 +79,6 @@ public class PersonRepository : IPersonRepository
                                          person.gender,                    
                                          person.role,                      
                                          person.profile_picture_path,      
-                                         person.house_preferences_id,      
                                          personality.id,            
                                          personality.school,               
                                          personality.study,                
@@ -111,7 +105,7 @@ public class PersonRepository : IPersonRepository
         return null;
     }
 
-    public Guid? CreatePerson(Person person)
+    public Guid CreatePerson(Person person)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -120,7 +114,7 @@ public class PersonRepository : IPersonRepository
             using (var command =
                    new NpgsqlCommand($"""
                                       INSERT INTO person (    
-                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path, house_preferences_id)
+                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
                                         VALUES (@Email,
                                         @FirstName,
                                         @MiddleName,
@@ -129,8 +123,7 @@ public class PersonRepository : IPersonRepository
                                         @BirthDate,
                                         @Gender::gender,
                                         @Role::user_role,
-                                        @ProfilePicturePath,
-                                        @housePreferences_id::uuid
+                                        @ProfilePicturePath
                                       ) RETURNING id;
                                       """,
                        connection))
@@ -144,13 +137,13 @@ public class PersonRepository : IPersonRepository
                 command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
                 command.Parameters.AddWithValue("@Role", person.Role.ToString());
                 command.Parameters.AddWithValue("@ProfilePicturePath", person.ProfilePicturePath ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@housePreferences_id", person.HousePreferencesId ?? (object)DBNull.Value);
 
                 var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
                 return (Guid)result;
             }
         }
     }
+
     private Person ReadToPerson(DbDataReader reader)
     {
         var person = new Person
@@ -164,17 +157,16 @@ public class PersonRepository : IPersonRepository
             EnumUtils.Validate<Gender>(reader.GetString(7)),
             EnumUtils.Validate<Role>(reader.GetString(8)),
             reader.IsDBNull(9) ? null : reader.GetString(9),
-            reader.GetGuid(0),
-            reader.IsDBNull(10) ? null : reader.GetGuid(10)
+            reader.GetGuid(0)
         );
 
 
-        if (reader.IsDBNull(11)) return person;
+        if (reader.IsDBNull(10)) return person;
 
         person.Personality = new Personality(
+            reader.IsDBNull(11) ? null : reader.GetString(11),
             reader.IsDBNull(12) ? null : reader.GetString(12),
-            reader.IsDBNull(13) ? null : reader.GetString(13),
-            reader.IsDBNull(14) ? null : reader.GetString(14)
+            reader.IsDBNull(13) ? null : reader.GetString(13)
         );
 
         return person;

@@ -7,82 +7,91 @@
              x:Class="KamerConnect.View.MAUI.Pages.LoginPage">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <BoxView Grid.Column="0" BackgroundColor="White" />
-        <BoxView Grid.Column="1" BackgroundColor="{StaticResource Primary}" />
+        <BoxView Grid.Column="0"
+                 BackgroundColor="White"/>
+        <BoxView Grid.Column="1"
+                 BackgroundColor="{StaticResource Primary}"/>
         <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="400"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <StackLayout Grid.Column="1" Spacing="10">
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0,33,0, 180">
-                    <Label Text="Kamer" 
-                       FontSize="32" 
-                       FontFamily="InterLight"
-                       HorizontalOptions="Center" 
-                       VerticalOptions="Start"
-                       TextColor="Black"/>
-                    <Label Text="Connect" 
-                       FontSize="32"
-                       FontFamily="InterMedium"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center" 
-                       VerticalOptions="Start"
-                       TextColor="Black"
-                       />
+            <StackLayout Grid.Column="1"
+                         Spacing="10">
+                <HorizontalStackLayout HorizontalOptions="Center"
+                                       Margin="0,33,0, 180">
+                    <Label Text="Kamer"
+                           FontSize="32"
+                           FontFamily="InterLight"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Start"
+                           TextColor="Black"/>
+                    <Label Text="Connect"
+                           FontSize="32"
+                           FontFamily="InterMedium"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Start"
+                           TextColor="Black"/>
                 </HorizontalStackLayout>
 
-                <VerticalStackLayout Margin="0,0,0,21" >
+                <VerticalStackLayout Margin="0,0,0,21">
                     <Label Text="Welkom terug"
-                       FontSize="24"
-                       FontFamily="InterBold"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center" 
-                       VerticalOptions="Start"
-                       TextColor="Black"/>
+                           FontSize="24"
+                           FontFamily="InterBold"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Start"
+                           TextColor="Black"/>
                     <Label Text="Voer je gegevens in om in te loggen"
-                       FontSize="14"
-                       FontFamily="InterLight"
-                       HorizontalOptions="Center" 
-                       VerticalOptions="Start"
-                       TextColor="Black"/>
-           </VerticalStackLayout>
-            <Components:Entry x:Name="emailEntry" LabelText="Email adres" InputType="Email" />
-            <Components:Entry x:Name="passwordEntry" LabelText="Wachtwoord" InputType="Password"/>
-            <Button Style="{StaticResource PrimaryButton}" Text="Inloggen" Clicked="LoginButton_Clicked" />
-            <HorizontalStackLayout HorizontalOptions="Center">
-                <Label Text="Nog geen account? "
-                       TextColor="Black"
-                       FontFamily="InterLight"></Label>
+                           FontSize="14"
+                           FontFamily="InterLight"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Start"
+                           TextColor="Black"/>
+                </VerticalStackLayout>
+                <Components:Entry x:Name="emailEntry"
+                                  LabelText="Email adres"
+                                  InputType="Email"/>
+                <Components:Entry x:Name="passwordEntry"
+                                  LabelText="Wachtwoord"
+                                  InputType="Password"/>
+                <Button Style="{StaticResource PrimaryButton}"
+                        Text="Inloggen"
+                        Clicked="LoginButton_Clicked"/>
+                <HorizontalStackLayout HorizontalOptions="Center">
+                    <Label Text="Nog geen account? "
+                           TextColor="Black"
+                           FontFamily="InterLight"></Label>
                     <Label Text="Maak "
-                       TextColor="{StaticResource Primary}"
-                       FontFamily="InterLight">
+                           TextColor="{StaticResource Primary}"
+                           FontFamily="InterLight">
 
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="NavigateToRegister" />
+                            <TapGestureRecognizer Tapped="NavigateToRegister"/>
                         </Label.GestureRecognizers>
                     </Label>
                     <Label Text="er een aan"
-                       TextColor="Black"
-                       FontFamily="InterLight"></Label>
-            </HorizontalStackLayout>
+                           TextColor="Black"
+                           FontFamily="InterLight"></Label>
+                </HorizontalStackLayout>
             </StackLayout>
         </Grid>
-              <!-- Right side: Image -->
-              <Image Grid.Column="1"
-                     Source="login_image.png"
-                     Aspect="Center"
-                     VerticalOptions="Center"
-                     HorizontalOptions="Center"/>
-           
+        <!-- Right side: Image -->
+        <Image Grid.Column="1"
+               Source="login_image.png"
+               Aspect="Center"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"/>
 
-          
-     
-   </Grid>
+
+
+
+    </Grid>
 
 </ContentPage>

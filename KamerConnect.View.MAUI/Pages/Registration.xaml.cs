@@ -1,28 +1,16 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.Models;
-using KamerConnect.Services;
-using Microsoft.Extensions.DependencyInjection;
-using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI.Pages;
 
-
 public partial class Registration : ContentPage, INotifyPropertyChanged
 {
-
-	public Person newPerson {  get; set; }
 	private readonly IServiceProvider _serviceProvider;
+	private readonly AuthenticationService _authenticationService;
 
-	public enum Tab
-	{
-		SearchingHouse,
-		HavingHouse
-	}
-	private Tab _selectedTab;
-	public Tab SelectedTab
+	private Role _selectedTab;
+	public Role SelectedTab
 	{
 		get => _selectedTab;
 		set
@@ -31,17 +19,20 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			OnPropertyChanged();
 		}
 	}
-	public Registration(IServiceProvider serviceProvider)
+
+	public Registration(IServiceProvider serviceProvider, AuthenticationService authenticationService)
 	{
-		NavigationPage.SetHasNavigationBar(this, false);
-		
-		InitializeComponent();
-			
-		SelectTabAction = SelectTab;
-		BindingContext = this;
-		SelectedTab = Tab.SearchingHouse;
-		UpdateButtonColors();
 		_serviceProvider = serviceProvider;
+		_authenticationService = authenticationService;
+		SelectTabAction = SelectTab;
+		SelectedTab = Role.Seeking;
+
+		NavigationPage.SetHasNavigationBar(this, false);
+
+		InitializeComponent();
+
+		UpdateButtonColors();
+		BindingContext = this;
 	}
 	public event PropertyChangedEventHandler PropertyChanged;
 
@@ -50,9 +41,9 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 	}
 
-	public Action<Tab> SelectTabAction { get; set; }
+	public Action<Role> SelectTabAction { get; set; }
 
-	private async void Terug(object sender, EventArgs e)
+	private async void Back(object sender, EventArgs e)
 	{
 		if (Navigation.NavigationStack.Count > 1)
 		{
@@ -64,21 +55,20 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 	{
 		SearchingButton.TextColor = Colors.White;
 		HavingButton.TextColor = Colors.Black;
-		SelectTab(Tab.SearchingHouse);
-		Submit.Text = "verder";
+		SelectTab(Role.Seeking);
+		Submit.Text = "Verder";
 	}
 
 	private void OnHavingClicked(object sender, EventArgs e)
 	{
 		HavingButton.TextColor = Colors.White;
 		SearchingButton.TextColor = Colors.Black;
-		SelectTab(Tab.HavingHouse);
+		SelectTab(Role.Offering);
 
-        Submit.Text = "registreren";
+		Submit.Text = "Registreren";
+	}
 
-    }
-
-    private string _huisButtonColor = "#EF626C";
+	private string _huisButtonColor = "#EF626C";
 
 	public string HuisButtonColor
 	{
@@ -107,15 +97,15 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-	private void SelectTab(Tab tab)
+	private void SelectTab(Role role)
 	{
-		SelectedTab = tab;
+		SelectedTab = role;
 		UpdateButtonColors();
 	}
 
 	private void UpdateButtonColors()
 	{
-		if (SelectedTab == Tab.SearchingHouse)
+		if (SelectedTab == Role.Seeking)
 		{
 			HuisButtonColor = "#EF626C";
 			HuisgenootButtonColor = "#FFFFFF";
@@ -127,11 +117,9 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-	private void CreatePerson()
+	private Person CreatePerson()
 	{
-		Role role = SelectedTab == Tab.SearchingHouse ? Role.Seeking : Role.Offering;
-
-		newPerson = new Person(
+		return new Person(
 			personalInformationForm.Email,
 			personalInformationForm.FirstName,
 			personalInformationForm.MiddleName,
@@ -139,31 +127,27 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			personalInformationForm.PhoneNumber,
 			personalInformationForm.BirthDate.Value,
 			Enum.Parse<Gender>(personalInformationForm.Gender ?? "Other"),
-			role,
+			SelectedTab,
 			null,
-			null,
-			null
+			Guid.NewGuid()
 		);
 	}
 
-	private async void submit(object? sender, EventArgs e)
+	private async void OnSubmit(object? sender, EventArgs e)
 	{
-		PersonService personService = new PersonService(new PersonRepository());
-		AuthenticationService authentication = new AuthenticationService(personService, new AuthenticationRepository());
-		
 		if (personalInformationForm.ValidateAll())
 		{
-			CreatePerson();
+			var person = CreatePerson();
 			if (Application.Current.MainPage is NavigationPage navigationPage)
 			{
-				if (SelectedTab == Tab.SearchingHouse)
+				if (SelectedTab == Role.Seeking)
 				{
-                    await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(_serviceProvider, newPerson, personalInformationForm.Password));
+					await navigationPage.Navigation.PushAsync(new RegisterHomePreferencesPage(_serviceProvider, person, personalInformationForm.Password));
 				}
 				else
 				{
-					authentication.Register(newPerson, personalInformationForm.Password);
-          			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
+					_authenticationService.Register(person, personalInformationForm.Password);
+					await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());
 				}
 			}
 
