@@ -132,7 +132,7 @@ public partial class HouseForm : ContentView
                isHouseTypeValid;
     }
 
-    private async void OnPublish(object sender, EventArgs e)
+    public async void OnPublish()
     {
         if (!ValidateForm()) return;
 

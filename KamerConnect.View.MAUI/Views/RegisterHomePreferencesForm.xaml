@@ -4,7 +4,7 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm">
 
-    
+    <ScrollView>
         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
             <Grid RowSpacing="10" ColumnSpacing="10" Padding="10">
                 <Grid.RowDefinitions>
@@ -29,13 +29,15 @@
                 <HorizontalStackLayout Grid.Row="1" Grid.Column="0" Spacing="40" >
                 <Components:Entry LabelText="Minimale beschikbaar budget per maand" 
                                   x:Name="MinBudgetInput"
-                                  Placeholder="MaxBudget in €" 
+                                  Placeholder="MaxBudget in €"
+                                  Text="{Binding MinBudget, Mode=TwoWay}"
                                   InputType="Decimal"
                                   HorizontalOptions="FillAndExpand"
                 />
                 <Components:Entry LabelText="Maximaal beschikbaar budget per maand" 
                                   x:Name="MaxBudgetInput"
                                   Placeholder="MaxBudget in €" 
+                                  Text="{Binding MaxBudget, Mode=TwoWay}"
                                   InputType="Decimal"
                                   HorizontalOptions="FillAndExpand"
                                  />
@@ -43,6 +45,7 @@
                 <Components:Entry LabelText="Oppervlak in vierkante meter"
                                   x:Name="AreaInput"
                                   Placeholder="m²" 
+                                  Text="{Binding SurfaceArea, Mode=TwoWay}"
                                   Grid.Row="2" 
                                   Grid.Column="0" 
                                   InputType="Number"/>
@@ -64,6 +67,7 @@
                 
             <Components:Entry LabelText="Hoeveelheid kamergenoten"
                    x:Name="ResidentsInput"
+                   Text="{Binding Residents, Mode=TwoWay}"
                    Grid.Row="4" 
                    Grid.Column="0" 
                     InputType="Number"/>
@@ -126,4 +130,5 @@
                 </Picker>
         </Grid>
         </Components:FormCard>
+    </ScrollView>
 </ContentView>

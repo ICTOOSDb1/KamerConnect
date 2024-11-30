@@ -21,7 +21,7 @@ public partial class InterestsForm : ContentView
 		InitializeComponent();
 	}
 
-	private async void Button_update_interests(object? sender, EventArgs e)
+	public async void Button_update_interests()
 	{
 		if (!ValidateForm()) return;
 

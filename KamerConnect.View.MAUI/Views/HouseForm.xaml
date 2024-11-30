@@ -117,11 +117,7 @@
 					</CollectionView.ItemTemplate>
 				</CollectionView>
 
-				<Button HorizontalOptions="End"
-						Text="Publiceer"
-						Style="{StaticResource PrimaryButton}"
-						Clicked="OnPublish"/>
-
+				
 			</VerticalStackLayout>
 		</Components:FormCard>
 	</ScrollView>

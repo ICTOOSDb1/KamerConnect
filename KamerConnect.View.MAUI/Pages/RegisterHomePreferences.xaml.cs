@@ -36,7 +36,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
         if (homePreferencesForm.ValidateAll())
         {
             HousePreferences preferences = new HousePreferences(
-                double.Parse(homePreferencesForm.MaxBudget),
+                double.Parse(homePreferencesForm.MinBudget),
                 double.Parse(homePreferencesForm.MaxBudget),
                 double.Parse(homePreferencesForm.Area),
                 homePreferencesForm.Type,
@@ -47,11 +47,12 @@ public partial class RegisterHomePreferencesPage : ContentPage
                 homePreferencesForm.ParkingPreference,
                 Guid.NewGuid()
             );
-
-            _housePreferenceService.CreateHousePreferences(preferences);
-
+            
             _authenticationService.Register(_person, _password);
 
+            _housePreferenceService.CreateHousePreferences(preferences);
+            _housePreferenceService.AddHousePreferences(_person.Id, preferences.Id);
+            
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {
                 await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());

@@ -23,8 +23,7 @@
                     </Picker.Items>
                 </Picker>
                 
-                <Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_Update_house_preferences"/>
-
+                
             </VerticalStackLayout>
         </Components:FormCard>
     </ScrollView>

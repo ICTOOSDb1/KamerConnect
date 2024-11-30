@@ -29,13 +29,13 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                         surface = @Surface,
                         residents = @Residents,
                         smoking = @Smoking::preference_choice,
-                        smoking = @Pet::preference_choice,
-                        smoking = @Interior::preference_choice,
-                        smoking = @Parking::preference_choice,
+                        pet = @Pet::preference_choice,
+                        interior = @Interior::preference_choice,
+                        parking = @Parking::preference_choice,
                     WHERE id = @HousePreferencesId::uuid;
                     """, connection))
             {
-                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferences.Id);
+                updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type);
                 updateCommand.Parameters.AddWithValue("@MinPrice", housePreferences.MinBudget);
                 updateCommand.Parameters.AddWithValue("@MaxPrice", housePreferences.MaxBudget);
                 updateCommand.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea);
@@ -44,6 +44,8 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                 updateCommand.Parameters.AddWithValue("@Pet", housePreferences.Pet.ToString());
                 updateCommand.Parameters.AddWithValue("@Interior", housePreferences.Interior.ToString());
                 updateCommand.Parameters.AddWithValue("@Parking", housePreferences.Parking.ToString());
+
+                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferences.Id);
 
                 updateCommand.ExecuteNonQuery();
             }
@@ -92,16 +94,19 @@ public class HousePreferenceRepository : IHousePreferenceRepository
 
     public Guid CreateHousePreferences(HousePreferences housePreferences)
     {
+       
         using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
             using (var command = new NpgsqlCommand(
                        """
-                       INSERT INTO house_preferences (type, min_price, max_price, surface, residents, smoking, pet, interior, parking)
-                       VALUES (@Type::house_type, @MinPrice, @MaxPrice, @Surface, @Residents, @Smoking::Preference_choice, @Pet::Preference_choice, @Interior::Preference_choice, @Parking::Preference_choice)
-                       RETURNING id;
-                      """, connection))
+                        INSERT INTO house_preferences (id, type, min_price, max_price, surface, residents, smoking, pet, interior, parking)
+                        VALUES (@Id::uuid, @Type::house_type, @MinPrice, @MaxPrice, @Surface, @Residents, @Smoking::Preference_choice, @Pet::Preference_choice, @Interior::Preference_choice, @Parking::Preference_choice)
+                        RETURNING id;
+                       """, connection))
             {
+                
+                command.Parameters.AddWithValue("@Id", housePreferences.Id);
                 command.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
                 command.Parameters.AddWithValue("@MinPrice", housePreferences.MinBudget);
                 command.Parameters.AddWithValue("@MaxPrice", housePreferences.MaxBudget);
@@ -111,8 +116,29 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                 command.Parameters.AddWithValue("@Pet", housePreferences.Pet.ToString());
                 command.Parameters.AddWithValue("@Interior", housePreferences.Interior.ToString());
                 command.Parameters.AddWithValue("@Parking", housePreferences.Parking.ToString());
+                var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                return (Guid)result;
+            }
+        }
+    }
 
-                return Guid.Parse(command.ExecuteScalar()?.ToString() ?? throw new InvalidOperationException());
+    public void AddHousePreferences(Guid personId, Guid housePreferencesId)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var updateCommand = new NpgsqlCommand(
+                       """
+                       UPDATE person
+                       SET house_preferences_id = @HousePreferencesId::uuid
+                       WHERE id = @PersonId::uuid;
+                       """, connection))
+            {
+                
+                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferencesId);
+                updateCommand.Parameters.AddWithValue("@PersonId", personId);
+                
+                updateCommand.ExecuteNonQuery();
             }
         }
     }

@@ -22,6 +22,11 @@ public class HousePreferenceService
         return _repository.CreateHousePreferences(housePreferences);
     }
 
+    public void AddHousePreferences(Guid personId, Guid housePreferencesId)
+    {
+        _repository.AddHousePreferences(personId, housePreferencesId);
+    }
+
     public HousePreferences? GetHousePreferences(Guid personId)
     {
         return _repository.GetHousePreferences(personId);

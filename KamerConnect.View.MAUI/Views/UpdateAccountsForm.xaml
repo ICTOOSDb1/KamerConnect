@@ -48,10 +48,7 @@
 								  Text="{Binding PhoneNumber, Mode=TwoWay}"
 								  x:Name="phoneNumberEntry"/>
 
-				<Button HorizontalOptions="End"
-						Text="Update account"
-						Style="{StaticResource PrimaryButton}"
-						Clicked="Button_Update_Account"/>
+				
 
 			</VerticalStackLayout>
 		</Components:FormCard>

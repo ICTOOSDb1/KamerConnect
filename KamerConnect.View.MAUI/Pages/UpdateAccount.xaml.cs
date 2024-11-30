@@ -61,7 +61,7 @@ namespace KamerConnect.View.MAUI.Pages
 
         private void HomePreferences(object sender, EventArgs e)
         {
-            FormsContainer.Content = new HomePreferencesForm(_housePreferenceService, _person);
+            FormsContainer.Content = new RegisterHomePreferencesForm(_housePreferenceService, _person);
             SetButtonStyles(HomePreferencesButton);
         }
 
@@ -71,6 +71,40 @@ namespace KamerConnect.View.MAUI.Pages
             FormsContainer.Content = new HouseForm(_fileService, _houseService, _person);
         }
 
+        private void Button_Update(object sender, EventArgs e)
+        {
+            switch (FormsContainer.Content){
+                case RegisterHomePreferencesForm form:
+                    UpdateHousePreferences(form);
+                    break;
+                case InterestsForm form:
+                    UpdateInterests(form);
+                    break;
+                case HouseForm form:
+                    UpdateHouse(form);
+                    break;
+                case UpdateAccountsForm form:
+                    UpdatePersonalInformation(form);
+                    break;
+            }
+        }
+
+        private async void UpdateHousePreferences(RegisterHomePreferencesForm form)
+        {
+            form.Button_Update_house_preferences();
+        }
+        private async void UpdateInterests(InterestsForm form)
+        {
+            form.Button_update_interests();
+        }
+        private void UpdateHouse(HouseForm form)
+        {
+            form.OnPublish();
+        }
+        private void UpdatePersonalInformation(UpdateAccountsForm form)
+        {
+            form.Button_Update_Account();
+        }
         private void SetButtonStyles(Button buttonSource)
         {
             InterestsButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
