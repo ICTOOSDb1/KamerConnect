@@ -11,7 +11,7 @@
                 <Components:Entry InputType="Text" LabelText="Studie" Text="{Binding Study, Mode=TwoWay}" x:Name = "studyEntry"/>
                 <Components:Entry LabelText="Omschrijving van jezelf" Text="{Binding Description, Mode=TwoWay}" x:Name = "descriptionEntry"/>
 
-				<Button HorizontalOptions="End" Text="Update account" Style="{StaticResource PrimaryButton}" Clicked="Button_update_interests"/>
+				
 
 			</VerticalStackLayout>
 		</Components:FormCard>

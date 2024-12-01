@@ -51,7 +51,7 @@ public partial class UpdateAccountsForm : ContentView
             profile_picture.Source = _currentPerson.ProfilePicturePath;
         }
     }
-    private async void Button_Update_Account(object sender, EventArgs e)
+    public async void Button_Update_Account()
     {
         if (!ValidateForm()) return;
         _personService.UpdatePerson(_currentPerson);

@@ -4,7 +4,7 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Pages.UpdateAccount"
              Title="UpdateAccount">
-        <Grid>
+        <Grid BackgroundColor="#F9FBFD">
                 <Grid.RowDefinitions>
                         <RowDefinition Height="100"/>
                         <RowDefinition Height="*"/>
@@ -18,7 +18,7 @@
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
                        TextColor="Black"
-                       BackgroundColor="#F9FBFD"
+                       
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
                        FontFamily="Inter-Regular"
@@ -26,7 +26,7 @@
                        FontAttributes="Bold"/>
                 <Label Grid.Row="1"
                        Grid.Column="0"
-                       BackgroundColor="#F9FBFD"></Label>
+                       ></Label>
                 <StackLayout Grid.Row="1"
                              Grid.Column="0"
                              Padding="10"
@@ -52,12 +52,37 @@
                                 Style="{StaticResource SecondaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                 </StackLayout>
-                <ContentView x:Name="FormsContainer"
-                             Grid.Row="1"
-                             Grid.Column="1"
-                             BackgroundColor="#F9FBFD"
-                             HorizontalOptions="FillAndExpand"
-                             VerticalOptions="FillAndExpand"/>
-
+                <ScrollView Grid.Row="1"
+                            Grid.Column="1">
+                        <Grid BackgroundColor="Transparent">
+                                
+                                <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <ContentView x:Name="FormsContainer"
+                                             HorizontalOptions="FillAndExpand"
+                                             VerticalOptions="FillAndExpand" 
+                                             Grid.Row="0"/>
+                        
+                                <Grid Grid.Row="1" 
+                                      BackgroundColor="Transparent">
+                                        <Grid.ColumnDefinitions>
+                        
+                                        <ColumnDefinition Width="500"/>
+                                        <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                        
+                                        <Button Text="Update account"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Clicked="Button_Update"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Start"
+                                                Margin="10, 0, 0, 0" 
+                                                Grid.Column="1"/>
+                                </Grid>
+                        </Grid>
+                </ScrollView>
         </Grid>
 </ContentPage>

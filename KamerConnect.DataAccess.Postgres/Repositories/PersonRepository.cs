@@ -4,6 +4,7 @@ using KamerConnect.Repositories;
 using KamerConnect.Utils;
 using Npgsql;
 
+
 namespace KamerConnect.DataAccess.Postgres.Repositories;
 
 public class PersonRepository : IPersonRepository
@@ -114,8 +115,8 @@ public class PersonRepository : IPersonRepository
             using (var command =
                    new NpgsqlCommand($"""
                                       INSERT INTO person (    
-                                        email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
-                                        VALUES (@Email,
+                                        id, email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
+                                        VALUES (@Id, @Email,
                                         @FirstName,
                                         @MiddleName,
                                         @Surname,
@@ -128,6 +129,8 @@ public class PersonRepository : IPersonRepository
                                       """,
                        connection))
             {
+                
+                command.Parameters.AddWithValue("@Id", person.Id);
                 command.Parameters.AddWithValue("@Email", person.Email);
                 command.Parameters.AddWithValue("@FirstName", person.FirstName);
                 command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);

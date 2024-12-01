@@ -1,11 +1,14 @@
 using KamerConnect.Models;
+using KamerConnect.Services;
 using KamerConnect.Utils;
 
 namespace KamerConnect.View.MAUI;
 
 public partial class RegisterHomePreferencesForm : ContentView
 {
-
+    private Person _currentPerson;
+    private HousePreferenceService _housePreferenceService;
+    private HousePreferences? _housePreferences; 
     public string MinBudget => MinBudgetInput.Text ?? string.Empty;
     public string MaxBudget => MaxBudgetInput.Text ?? string.Empty;
     public string Area => AreaInput.Text ?? string.Empty;
@@ -20,6 +23,15 @@ public partial class RegisterHomePreferencesForm : ContentView
 	{
 		InitializeComponent();
 	}
+    public RegisterHomePreferencesForm(HousePreferenceService housePreferenceService, Person person)
+    {
+        _currentPerson = person;
+        _housePreferenceService = housePreferenceService;
+        _housePreferences = _housePreferenceService.GetHousePreferences(person.Id);
+        BindingContext = _housePreferences;
+        InitializeComponent();
+
+    }
 	
 	/*private async void HouseTypeChanged(object sender, EventArgs e)
 	{        
@@ -34,6 +46,11 @@ public partial class RegisterHomePreferencesForm : ContentView
             case "Studio":
                 Type = HouseType.Studio; 
                 break;
+        }
+        
+            if (_housePreferences != null)
+            {
+                _housePreferences.Type = Type;
             }
     }*/
     
@@ -50,6 +67,13 @@ public partial class RegisterHomePreferencesForm : ContentView
         }
 
         return PreferenceChoice.No;
+    }
+    public async void Button_Update_house_preferences()
+    {
+        if (!ValidateAll()) return;
+        _housePreferenceService.UpdateHousePreferences(_housePreferences);
+        await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
+
     }
     public bool ValidateAll()
     {
