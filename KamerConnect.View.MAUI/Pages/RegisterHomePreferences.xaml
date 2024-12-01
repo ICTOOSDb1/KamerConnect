@@ -8,25 +8,26 @@
              Title="Aanmeldingsformulier">
     <ScrollView>
         <StackLayout>
-     
-            
-
-           
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
                 <StackLayout Spacing="20">
+                    
+
                     <Label Style="{StaticResource TitleTextStyle}" Text="Aanmeldingsformulier Huis zoekend" HorizontalOptions="Start"></Label>
+                    
                     <BoxView HeightRequest="0.5" 
                              BackgroundColor="{StaticResource Gray100}" 
                              HorizontalOptions="FillAndExpand" />
-
-                    <maui:RegisterHomePreferencesForm x:Name="homePreferencesForm"/>
+                    
+                    <maui:RegisterHomePreferencesForm x:Name="homePreferencesForm" Margin="-50, -30, 0, 0"/>
+                    
                     
                     <!-- BoxView Separator -->
                     <BoxView HeightRequest="0.5" 
                              BackgroundColor="{StaticResource Gray100}" 
                              HorizontalOptions="FillAndExpand" />
-
                     
+                    
+
                     <!-- Navigation Buttons -->
                     <Grid ColumnSpacing="20" Margin="0,20,0,0">
                         <Grid.ColumnDefinitions>
@@ -48,8 +49,11 @@
                                 Clicked="Submit"
                                 HorizontalOptions="End" />
                     </Grid>
+                    
+
                 </StackLayout>
             </Components:FormCard>
         </StackLayout>
+        
     </ScrollView>
 </ContentPage>

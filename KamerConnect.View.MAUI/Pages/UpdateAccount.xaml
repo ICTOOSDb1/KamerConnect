@@ -52,23 +52,37 @@
                                 Style="{StaticResource SecondaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
                 </StackLayout>
-                
-                <Grid Grid.Row="1"
-                      Grid.Column="1">
+                <ScrollView Grid.Row="1"
+                            Grid.Column="1">
+                        <Grid BackgroundColor="Transparent">
+                                
+                                <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <ContentView x:Name="FormsContainer"
+                                             HorizontalOptions="FillAndExpand"
+                                             VerticalOptions="FillAndExpand" 
+                                             Grid.Row="0"/>
                         
-                        <ContentView x:Name="FormsContainer"
-                                     HorizontalOptions="FillAndExpand"
-                                     VerticalOptions="FillAndExpand" />
-
+                                <Grid Grid.Row="1" 
+                                      BackgroundColor="Transparent">
+                                        <Grid.ColumnDefinitions>
                         
-                        <Button Text="Update account"
-                                Style="{StaticResource PrimaryButton}"
-                                Clicked="Button_Update"
-                                HorizontalOptions="End"
-                                VerticalOptions="End"
-                                Margin="10" />
-                </Grid>
-
-
+                                        <ColumnDefinition Width="500"/>
+                                        <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                        
+                                        <Button Text="Update account"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Clicked="Button_Update"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Start"
+                                                Margin="10, 0, 0, 0" 
+                                                Grid.Column="1"/>
+                                </Grid>
+                        </Grid>
+                </ScrollView>
         </Grid>
 </ContentPage>

@@ -26,7 +26,7 @@
 								  LabelText="Voornaam"
 								  Text="{Binding FirstName, Mode=TwoWay}"
 								  x:Name="firstNameEntry"/>
-				<Grid ColumnDefinitions="*,3*">
+				<Grid ColumnDefinitions="*,3*" ColumnSpacing=" 35">
 					<Components:Entry
 						LabelText="Tussenvoegsel"
 						Grid.Column="0"

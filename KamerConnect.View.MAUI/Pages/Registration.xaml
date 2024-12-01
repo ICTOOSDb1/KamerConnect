@@ -65,8 +65,8 @@
 
                         <Button Text="Terug"
                                 Style="{StaticResource SecondaryButton}"
-                                Grid.Column="0"
-                                HorizontalOptions="Start"
+                                Grid.Column="1"
+                                HorizontalOptions="End"
                                 Clicked="Back"/>
 
                         <Button Text="Verder"
