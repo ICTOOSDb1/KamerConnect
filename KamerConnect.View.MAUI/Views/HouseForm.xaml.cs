@@ -24,6 +24,7 @@ public partial class HouseForm : ContentView
     }
     public ObservableCollection<IPickFile> ImageResults { get; set; } = new ObservableCollection<IPickFile>();
     private List<HouseImage> houseImages = new List<HouseImage>();
+    public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
 
     public HouseForm(FileService fileService, HouseService houseService,
         Person person)
@@ -34,11 +35,11 @@ public partial class HouseForm : ContentView
 
         GetCurrentHouse();
         InitializeComponent();
-        SetDefaultHouseType();
+        /*SetDefaultHouseType();*/
         BindingContext = this;
     }
 
-    private void SetDefaultHouseType()
+    /*private void SetDefaultHouseType()
     {
         switch (House?.Type)
         {
@@ -54,7 +55,7 @@ public partial class HouseForm : ContentView
                 studioEntry.IsChecked = true;
                 break;
         }
-    }
+    }*/
 
     private void GetCurrentHouse()
     {
@@ -110,6 +111,7 @@ public partial class HouseForm : ContentView
         surfaceEntry.Validate();
         residentsEntry.Validate();
 
+        /*
         bool isHouseTypeValid = apartmentEntry.IsChecked || houseEntry.IsChecked || studioEntry.IsChecked;
         if (!isHouseTypeValid)
         {
@@ -119,6 +121,7 @@ public partial class HouseForm : ContentView
         {
             radiobuttonNotSelected.IsVisible = false;
         }
+        */
 
         return streetEntry.IsValid &&
                houseNumberEntry.IsValid &&
@@ -128,8 +131,7 @@ public partial class HouseForm : ContentView
                priceEntry.IsValid &&
                houseNumberEntry.IsValid &&
                surfaceEntry.IsValid &&
-               residentsEntry.IsValid &&
-               isHouseTypeValid;
+               residentsEntry.IsValid;
     }
 
     private async void OnPublish(object sender, EventArgs e)
@@ -147,7 +149,7 @@ public partial class HouseForm : ContentView
         string description = descriptionEntry.Text;
 
         HouseType houseType;
-        if (apartmentEntry.IsChecked)
+        /*if (apartmentEntry.IsChecked)
             houseType = HouseType.Apartment;
         else if (houseEntry.IsChecked)
             houseType = HouseType.House;
@@ -156,7 +158,8 @@ public partial class HouseForm : ContentView
         else
         {
             houseType = HouseType.House;
-        }
+        }*/
+        houseType = PickerOptions.TranslateHouseType(Type);
 
         if (House == null)
         {

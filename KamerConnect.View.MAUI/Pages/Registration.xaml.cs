@@ -126,7 +126,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 			personalInformationForm.Surname,
 			personalInformationForm.PhoneNumber,
 			personalInformationForm.BirthDate.Value,
-			Enum.Parse<Gender>(personalInformationForm.Gender ?? "Other"),
+			Models.PickerOptions.TranslateGender(personalInformationForm.Gender),
 			SelectedTab,
 			null,
 			Guid.NewGuid()

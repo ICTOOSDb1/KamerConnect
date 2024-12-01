@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
              x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm">
 
     
@@ -47,7 +48,7 @@
                                   Grid.Column="0" 
                                   InputType="Number"/>
                 
-            <Picker x:Name="HousetypePicker"
+            <!--<Picker x:Name="HousetypePicker"
                     Title="Type woning"
                     SelectedIndex="0"
                     Margin="0,5,0,10"
@@ -60,11 +61,18 @@
                     <x:String>Appartement</x:String>
                     <x:String>Studio</x:String>
                 </Picker.Items>
-            </Picker>
+            </Picker>-->
+                
+                <Components:EnumPicker 
+                    x:Name="housetypePicker"
+                    Title="Type woning*" 
+                    EnumType="{x:Type models:PickerOptions+DutchHouseType}"
+                    Grid.Row="4"
+                    Grid.Column="0"/>
                 
             <Components:Entry LabelText="Hoeveelheid kamergenoten"
                    x:Name="ResidentsInput"
-                   Grid.Row="4" 
+                   Grid.Row="5" 
                    Grid.Column="0" 
                     InputType="Number"/>
                 
@@ -72,7 +80,7 @@
                         Title="Roken in huis?"
                         SelectedIndex="0"
                         Margin="0,5,0,10"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="0">
                 
                     <Picker.Items>

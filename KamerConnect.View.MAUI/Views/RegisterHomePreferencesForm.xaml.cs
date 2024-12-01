@@ -9,7 +9,7 @@ public partial class RegisterHomePreferencesForm : ContentView
     public string MinBudget => MinBudgetInput.Text ?? string.Empty;
     public string MaxBudget => MaxBudgetInput.Text ?? string.Empty;
     public string Area => AreaInput.Text ?? string.Empty;
-    public HouseType Type;
+    public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
     public string Residents => ResidentsInput.Text ?? string.Empty;
     public PreferenceChoice SmokingPreference => PreferenceChoiceTypeChanged(SmokersPicker);
     public PreferenceChoice PetPreference => PreferenceChoiceTypeChanged(PetPicker);
@@ -21,7 +21,7 @@ public partial class RegisterHomePreferencesForm : ContentView
 		InitializeComponent();
 	}
 	
-	private async void HouseTypeChanged(object sender, EventArgs e)
+	/*private async void HouseTypeChanged(object sender, EventArgs e)
 	{        
         switch ($"{HousetypePicker.SelectedItem}")
         {
@@ -35,7 +35,7 @@ public partial class RegisterHomePreferencesForm : ContentView
                 Type = HouseType.Studio; 
                 break;
             }
-    }
+    }*/
     
     private PreferenceChoice PreferenceChoiceTypeChanged(Picker picker)
     {        

@@ -5,12 +5,10 @@
              x:Class="KamerConnect.View.MAUI.Components.EnumPicker">
     
     <VerticalStackLayout Spacing="5">
-        <!-- Title Label -->
         <Label Text="{Binding Title}" 
                FontSize="14"
                VerticalOptions="Center" />
-
-        <!-- Picker with Downward Arrow -->
+        
         <Frame Style="{StaticResource EntryFrameStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>

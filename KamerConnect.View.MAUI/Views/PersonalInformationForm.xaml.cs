@@ -1,10 +1,14 @@
-﻿namespace KamerConnect.View.MAUI;
+﻿using KamerConnect.Models;
+using KamerConnect.View.MAUI.Components;
+
+namespace KamerConnect.View.MAUI;
 
 public partial class PersonalInformationForm : ContentView
 {
     public PersonalInformationForm()
     {
         InitializeComponent();
+        BindingContext = this;
     }
     public string? Email => emailEntry.Text;
     public string? FirstName => firstNameEntry.Text;
@@ -14,16 +18,8 @@ public partial class PersonalInformationForm : ContentView
     public string Password => passwordEntry.Text;
     public string ConfirmPassword => confirmPasswordEntry.Text;
     public DateTime? BirthDate => birthDateEntry.Text != null ? DateTime.Parse(birthDateEntry.Text) : null;
-    public string Gender
-    {
-        get
-        {
-            if (maleRadioButton.IsChecked) return "Male";
-            if (femaleRadioButton.IsChecked) return "Female";
-            if (otherRadioButton.IsChecked) return "Other";
-            return "Other";
-        }
-    }
+    public PickerOptions.DutchGender Gender => (PickerOptions.DutchGender)genderPicker.SelectedValue;
+    
 
     public bool ValidateAll()
     {
@@ -33,15 +29,6 @@ public partial class PersonalInformationForm : ContentView
         phoneNumberEntry?.Validate();
         birthDateEntry?.Validate();
         passwordEntry?.Validate();
-        bool isGenderValid = maleRadioButton.IsChecked || femaleRadioButton.IsChecked || otherRadioButton.IsChecked;
-        if (!isGenderValid)
-        {
-            radiobuttonNotSelected.IsVisible = true;
-        }
-        else
-        {
-            radiobuttonNotSelected.IsVisible = false;
-        }
         
         if (!string.IsNullOrEmpty(ConfirmPassword) && Password != ConfirmPassword)
         {

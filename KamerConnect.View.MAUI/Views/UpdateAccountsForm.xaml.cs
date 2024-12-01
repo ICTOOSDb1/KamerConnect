@@ -19,6 +19,7 @@ public partial class UpdateAccountsForm : ContentView
     private readonly FileService _fileService;
     private readonly PersonService _personService;
     private Person? _currentPerson;
+    
 
     public UpdateAccountsForm(FileService fileService, PersonService personService, Person person)
     {

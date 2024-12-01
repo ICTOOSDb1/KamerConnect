@@ -39,7 +39,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
                 double.Parse(homePreferencesForm.MaxBudget),
                 double.Parse(homePreferencesForm.MaxBudget),
                 double.Parse(homePreferencesForm.Area),
-                homePreferencesForm.Type,
+                PickerOptions.TranslateHouseType(homePreferencesForm.Type),
                 int.Parse(homePreferencesForm.Residents),
                 homePreferencesForm.SmokingPreference,
                 homePreferencesForm.PetPreference,
