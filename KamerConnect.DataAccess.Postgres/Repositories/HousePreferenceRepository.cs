@@ -31,11 +31,11 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                         smoking = @Smoking::preference_choice,
                         pet = @Pet::preference_choice,
                         interior = @Interior::preference_choice,
-                        parking = @Parking::preference_choice,
-                    WHERE id = @HousePreferencesId::uuid;
+                        parking = @Parking::preference_choice
+                    WHERE id = @Id::uuid;
                     """, connection))
             {
-                updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type);
+                updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
                 updateCommand.Parameters.AddWithValue("@MinPrice", housePreferences.MinBudget);
                 updateCommand.Parameters.AddWithValue("@MaxPrice", housePreferences.MaxBudget);
                 updateCommand.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea);
@@ -45,7 +45,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                 updateCommand.Parameters.AddWithValue("@Interior", housePreferences.Interior.ToString());
                 updateCommand.Parameters.AddWithValue("@Parking", housePreferences.Parking.ToString());
 
-                updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferences.Id);
+                updateCommand.Parameters.AddWithValue("@Id", housePreferences.Id);
 
                 updateCommand.ExecuteNonQuery();
             }
@@ -101,7 +101,16 @@ public class HousePreferenceRepository : IHousePreferenceRepository
             using (var command = new NpgsqlCommand(
                        """
                         INSERT INTO house_preferences (id, type, min_price, max_price, surface, residents, smoking, pet, interior, parking)
-                        VALUES (@Id::uuid, @Type::house_type, @MinPrice, @MaxPrice, @Surface, @Residents, @Smoking::Preference_choice, @Pet::Preference_choice, @Interior::Preference_choice, @Parking::Preference_choice)
+                        VALUES (@Id::uuid, 
+                                @Type::house_type, 
+                                @MinPrice, 
+                                @MaxPrice, 
+                                @Surface, 
+                                @Residents, 
+                                @Smoking::Preference_choice,
+                                @Pet::Preference_choice,
+                                @Interior::Preference_choice, 
+                                @Parking::Preference_choice)
                         RETURNING id;
                        """, connection))
             {
