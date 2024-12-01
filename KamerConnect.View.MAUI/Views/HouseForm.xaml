@@ -80,23 +80,7 @@
 					<Label Text="Type*"
 						   FontSize="14"
 						   FontAttributes="Bold"/>
-					<!--
-					<Label x:Name="radiobuttonNotSelected"
-						   IsVisible="False"
-						   TextColor="Red"
-						   Text="Vul een soort huis in."></Label>
 
-					<RadioButton Content="Appartement"
-								 GroupName="HouseType"
-								 x:Name="apartmentEntry"/>
-					<RadioButton Content="Huis"
-								 GroupName="HouseType"
-								 x:Name="houseEntry"/>
-					<RadioButton Content="Studio"
-								 GroupName="HouseType"
-								 x:Name="studioEntry"/>
-								 -->
-					
 					<Components:EnumPicker 
 						x:Name="housetypePicker"
 						Title="Type woning*" 

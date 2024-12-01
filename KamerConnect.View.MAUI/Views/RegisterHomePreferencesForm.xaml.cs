@@ -32,28 +32,7 @@ public partial class RegisterHomePreferencesForm : ContentView
         InitializeComponent();
 
     }
-	
-	/*private async void HouseTypeChanged(object sender, EventArgs e)
-	{        
-        switch ($"{HousetypePicker.SelectedItem}")
-        {
-            case "Huis":
-                Type = HouseType.House; 
-                break;
-            case "Appartement":
-                Type = HouseType.Apartment; 
-                break;
-            case "Studio":
-                Type = HouseType.Studio; 
-                break;
-        }
-        
-            if (_housePreferences != null)
-            {
-                _housePreferences.Type = Type;
-            }
-    }*/
-    
+
     private PreferenceChoice PreferenceChoiceTypeChanged(Picker picker)
     {        
         switch ($"{picker.SelectedItem}")

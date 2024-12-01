@@ -9,12 +9,26 @@ public partial class HomePreferencesForm : ContentView
     private readonly HousePreferenceService _housePreferenceService;
     private Person? _currentPerson;
     private HousePreferences? _housePreferences;
+    private PickerOptions.DutchHouseType houseTypePreference;
+    public PickerOptions.DutchHouseType HouseTypePreference
+    {
+        get => houseTypePreference;
+        set
+        {
+            houseTypePreference = value;
+            OnPropertyChanged();
+        }
+    }
 
     public HomePreferencesForm(HousePreferenceService housePreferenceService, Person person)
     {
         _currentPerson = person;
         _housePreferenceService = housePreferenceService;
         _housePreferences = _housePreferenceService.GetHousePreferences(person.Id);
+        if (_housePreferences != null)
+        {
+            HouseTypePreference = PickerOptions.TranslateHouseType(_housePreferences.Type);
+        }
         BindingContext = _housePreferences;
         InitializeComponent();
     }

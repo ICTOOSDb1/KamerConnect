@@ -3,7 +3,13 @@ namespace KamerConnect.Models;
 public class Person
 {
     public Guid Id { get; set; }
-    public string Email { get; set; }
+    private string email;
+
+    public string Email
+    {
+        get => email;
+        set => email = value.ToLowerInvariant();
+    }
     public string FirstName { get; set; }
     public string? MiddleName { get; set; }
     public string Surname { get; set; }

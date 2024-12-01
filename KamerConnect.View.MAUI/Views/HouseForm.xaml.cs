@@ -35,27 +35,8 @@ public partial class HouseForm : ContentView
 
         GetCurrentHouse();
         InitializeComponent();
-        /*SetDefaultHouseType();*/
         BindingContext = this;
     }
-
-    /*private void SetDefaultHouseType()
-    {
-        switch (House?.Type)
-        {
-            case HouseType.Apartment:
-                apartmentEntry.IsChecked = true;
-                break;
-
-            case HouseType.House:
-                houseEntry.IsChecked = true;
-                break;
-
-            case HouseType.Studio:
-                studioEntry.IsChecked = true;
-                break;
-        }
-    }*/
 
     private void GetCurrentHouse()
     {
@@ -110,19 +91,7 @@ public partial class HouseForm : ContentView
         priceEntry.Validate();
         surfaceEntry.Validate();
         residentsEntry.Validate();
-
-        /*
-        bool isHouseTypeValid = apartmentEntry.IsChecked || houseEntry.IsChecked || studioEntry.IsChecked;
-        if (!isHouseTypeValid)
-        {
-            radiobuttonNotSelected.IsVisible = true;
-        }
-        else
-        {
-            radiobuttonNotSelected.IsVisible = false;
-        }
-        */
-
+        
         return streetEntry.IsValid &&
                houseNumberEntry.IsValid &&
                additionEntry.IsValid &&
@@ -149,16 +118,6 @@ public partial class HouseForm : ContentView
         string description = descriptionEntry.Text;
 
         HouseType houseType;
-        /*if (apartmentEntry.IsChecked)
-            houseType = HouseType.Apartment;
-        else if (houseEntry.IsChecked)
-            houseType = HouseType.House;
-        else if (studioEntry.IsChecked)
-            houseType = HouseType.Studio;
-        else
-        {
-            houseType = HouseType.House;
-        }*/
         houseType = PickerOptions.TranslateHouseType(Type);
 
         if (House == null)
