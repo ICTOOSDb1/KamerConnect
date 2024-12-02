@@ -35,7 +35,8 @@
 								  LabelText="Voornaam"
 								  Text="{Binding FirstName, Mode=TwoWay}"
 								  x:Name="firstNameEntry"
-								  Grid.Row="1"/>
+								  Grid.Row="1"
+								  IsRequired="True"/>
 				<Grid ColumnDefinitions="*,3*" ColumnSpacing="20" Grid.Row="2">
 					<Components:Entry
 						LabelText="Tussenvoegsel"
@@ -46,7 +47,8 @@
 									  LabelText="Achternaam"
 									  Grid.Column="1"
 									  Text="{Binding Surname, Mode=TwoWay}"
-									  x:Name="surNameEntry"/>
+									  x:Name="surNameEntry"
+									  IsRequired="True" />
 				</Grid>
 
 				<Components:Entry InputType="Email"
@@ -54,6 +56,7 @@
 								  Text="{Binding Email, Mode=TwoWay}"
 								  x:Name="emailEntry"
 								  Grid.Row="3"
+								  IsRequired="True"
 								  />
 				<Components:Entry InputType="PhoneNumber"
 								  LabelText="Telefoonnummer"

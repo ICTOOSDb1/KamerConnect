@@ -30,11 +30,13 @@
 					<Components:Entry LabelText="Straat"
 									  Grid.Column="0"
 									  x:Name="streetEntry"
-									  Text="{Binding House.Street}"/>
+									  Text="{Binding House.Street}"
+									  IsRequired="True"/>
 					<Components:Entry LabelText="Huisnummer"
 									  Grid.Column="1"
 									  x:Name="houseNumberEntry"
-									  Text="{Binding House.HouseNumber}"/>
+									  Text="{Binding House.HouseNumber}"
+									  IsRequired="True"/>
 					<Components:Entry LabelText="Toevoeging"
 									  Grid.Column="2"
 									  x:Name="additionEntry"
@@ -51,12 +53,14 @@
 					<Components:Entry LabelText="Stad"
 									  Grid.Column="0"
 									  x:Name="cityEntry"
-									  Text="{Binding House.City}"/>
+									  Text="{Binding House.City}"
+									  IsRequired="True"/>
 					<Components:Entry LabelText="Postcode"
 									  Grid.Column="1"
 									  x:Name="postalCodeEntry"
 									  InputType="PostalCode"
-									  Text="{Binding House.PostalCode}"/>
+									  Text="{Binding House.PostalCode}"
+									  IsRequired="True"/>
 				</Grid>
 
 				<Grid ColumnSpacing="20"  
@@ -71,17 +75,20 @@
 									  InputType="Decimal"
 									  Grid.Column="0"
 									  x:Name="priceEntry"
-									  Text="{Binding House.Price}"/>
+									  Text="{Binding House.Price}"
+									  IsRequired="True"/>
 					<Components:Entry LabelText="Oppervlak"
 									  InputType="Number"
 									  Grid.Column="1"
 									  x:Name="surfaceEntry"
-									  Text="{Binding House.Surface}"/>
+									  Text="{Binding House.Surface}"
+									  IsRequired="True"/>
 					<Components:Entry LabelText="Bewoners"
 									  InputType="Number"
 									  Grid.Column="2"
 									  x:Name="residentsEntry"
-									  Text="{Binding House.Residents}"/>
+									  Text="{Binding House.Residents}"
+									  IsRequired="True"/>
 				</Grid>
 
 				<Components:TextEditor LabelText="Beschrijving"

@@ -30,28 +30,31 @@
                
               
                 <Grid  ColumnDefinitions="*,*" Grid.Row="1" Grid.Column="1" ColumnSpacing="20">
-                    <Components:Entry LabelText="Minimale beschikbaar budget per maand*" 
+                    <Components:Entry LabelText="Minimale beschikbaar budget per maand" 
                                       x:Name="MinBudgetInput"
                                       Placeholder="€"
                                       Text="{Binding MinBudget, Mode=TwoWay}"
                                       InputType="Decimal"
                                       Grid.Column="0"
+                                      IsRequired="True"
                     />
-                    <Components:Entry LabelText="Maximaal beschikbaar budget per maand*" 
+                    <Components:Entry LabelText="Maximaal beschikbaar budget per maand" 
                                       x:Name="MaxBudgetInput"
                                       Placeholder="€" 
                                       Text="{Binding MaxBudget, Mode=TwoWay}"
                                       InputType="Decimal"
                                       Grid.Column="1"
+                                      IsRequired="True"
                                       />
                 </Grid>
-                <Components:Entry LabelText="Oppervlak in vierkante meter*"
+                <Components:Entry LabelText="Oppervlak in vierkante meter"
                                   x:Name="AreaInput"
                                   Placeholder="m²" 
                                   Text="{Binding SurfaceArea, Mode=TwoWay}"
                                   Grid.Row="2" 
                                   Grid.Column="1" 
-                                  InputType="Number"/>
+                                  InputType="Number"
+                                  IsRequired="True"/>
                 
                 
                 <Components:EnumPicker 
@@ -67,7 +70,9 @@
                    Text="{Binding Residents, Mode=TwoWay}"
                    Grid.Row="4" 
                    Grid.Column="1" 
-                    InputType="Number"/>
+                    InputType="Number"
+                   IsRequired="True"
+                   />
                 
                 <Picker x:Name="SmokersPicker"
                         Title="Roken in huis?"

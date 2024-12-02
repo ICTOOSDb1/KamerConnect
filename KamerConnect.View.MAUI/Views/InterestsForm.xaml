@@ -12,9 +12,9 @@
 					<RowDefinition/>
 				</Grid.RowDefinitions>
 				
-				<Components:Entry Grid.Row="0" InputType="Text" LabelText="School" Text="{Binding School, Mode=TwoWay}" x:Name = "schoolEntry"/>
-                <Components:Entry Grid.Row="1" InputType="Text" LabelText="Studie" Text="{Binding Study, Mode=TwoWay}" x:Name = "studyEntry"/>
-                <Components:Entry Grid.Row="2" LabelText="Omschrijving van jezelf" Text="{Binding Description, Mode=TwoWay}" x:Name = "descriptionEntry"/>
+				<Components:Entry Grid.Row="0" InputType="Text" LabelText="School" Text="{Binding School, Mode=TwoWay}" x:Name = "schoolEntry" IsRequired="True"/>
+                <Components:Entry Grid.Row="1" InputType="Text" LabelText="Studie" Text="{Binding Study, Mode=TwoWay}" x:Name = "studyEntry" IsRequired="True"/>
+                <Components:Entry Grid.Row="2" LabelText="Omschrijving van jezelf" Text="{Binding Description, Mode=TwoWay}" x:Name = "descriptionEntry" IsRequired="True"/>
 
 				
 

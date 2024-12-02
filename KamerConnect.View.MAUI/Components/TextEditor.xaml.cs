@@ -32,4 +32,5 @@ public partial class TextEditor : ContentView
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
+    
 }
