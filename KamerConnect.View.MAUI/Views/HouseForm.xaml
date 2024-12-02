@@ -7,10 +7,20 @@
 			 x:Class="KamerConnect.View.MAUI.Views.HouseForm">
 	<ScrollView>
 		
-			<VerticalStackLayout Padding="10"
-								 Spacing="10">
-
-				<Grid ColumnSpacing="10">
+			<Grid RowSpacing="20">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				<RowDefinition />
+				
+			</Grid.RowDefinitions>
+				<Grid ColumnSpacing="20" 
+				      Grid.Row="0">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="150"/>
@@ -31,7 +41,8 @@
 									  Text="{Binding House.HouseNumberAddition}"/>
 				</Grid>
 
-				<Grid ColumnSpacing="10">
+				<Grid ColumnSpacing="20" 
+				      Grid.Row="1">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="250"/>
@@ -48,7 +59,8 @@
 									  Text="{Binding House.PostalCode}"/>
 				</Grid>
 
-				<Grid ColumnSpacing="10">
+				<Grid ColumnSpacing="20"  
+				      Grid.Row="2">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*"/>
 						<ColumnDefinition Width="*"/>
@@ -74,9 +86,12 @@
 
 				<Components:TextEditor LabelText="Beschrijving"
 									   x:Name="descriptionEntry"
-									   Text="{Binding House.Description}"/>
+									   Text="{Binding House.Description}"
+									   Grid.Row="3"
+									   />
 
-				<StackLayout Spacing="10">
+				<StackLayout Spacing="10"  
+				             Grid.Row="4">
 					<Components:EnumPicker
 						x:Name="housetypePicker"
 						Title="Type woning*"
@@ -85,9 +100,11 @@
 
 				<Button Text="Kies foto's"
 						Style="{StaticResource SecondaryButton}"
-						Clicked="OnPickFilesClicked"/>
+						Clicked="OnPickFilesClicked"
+						Grid.Row="5"/>
 
-				<CollectionView ItemsSource="{Binding houseImages}">
+				<CollectionView ItemsSource="{Binding houseImages}"
+				                Grid.Row="6">
 					<CollectionView.ItemTemplate>
 						<DataTemplate>
 							<StackLayout Orientation="Vertical"
@@ -106,7 +123,7 @@
 				</CollectionView>
 
 
-			</VerticalStackLayout>
+			</Grid>
 		
 	</ScrollView>
 </ContentView>

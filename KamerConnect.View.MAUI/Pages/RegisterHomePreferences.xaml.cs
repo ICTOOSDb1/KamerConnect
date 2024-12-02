@@ -15,6 +15,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
     public RegisterHomePreferencesPage(IServiceProvider serviceProvider, Person person, string password)
     {
         InitializeComponent();
+        NavigationPage.SetHasNavigationBar(this, false);
 
         _person = person;
         _password = password;

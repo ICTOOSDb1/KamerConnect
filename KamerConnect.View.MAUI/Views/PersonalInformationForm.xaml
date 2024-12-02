@@ -5,7 +5,7 @@
              xmlns:components="using:KamerConnect.View.MAUI.Components"
              xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
              x:Class="KamerConnect.View.MAUI.PersonalInformationForm">
-    <Grid RowSpacing="15">
+    <Grid RowSpacing="20">
 
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -14,13 +14,10 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Text="Persoonlijke gegevens"
-               FontSize="18"
-               FontAttributes="Bold"
-               Grid.Row="0"/>
+        
 
 
-        <Grid ColumnSpacing="10" Grid.Row="1">
+        <Grid ColumnSpacing="20" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="150"/>
@@ -43,7 +40,7 @@
             </VerticalStackLayout>
         </Grid>
         
-        <Grid ColumnSpacing="10" Grid.Row="2">
+        <Grid ColumnSpacing="20" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

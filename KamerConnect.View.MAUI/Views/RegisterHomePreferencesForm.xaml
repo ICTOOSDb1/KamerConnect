@@ -7,7 +7,7 @@
 
     
         
-            <Grid RowSpacing="10">
+            <Grid RowSpacing="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -27,28 +27,25 @@
                     <ColumnDefinition Width="10"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Text="Wat zoekt u in een woning?" 
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       Grid.Column="1"></Label>
+               
               
-                <Grid  ColumnDefinitions="*,*" Grid.Row="1" Grid.Column="1" ColumnSpacing="10">
-                    <Components:Entry LabelText="Minimale beschikbaar budget per maand" 
+                <Grid  ColumnDefinitions="*,*" Grid.Row="1" Grid.Column="1" ColumnSpacing="20">
+                    <Components:Entry LabelText="Minimale beschikbaar budget per maand*" 
                                       x:Name="MinBudgetInput"
-                                      Placeholder="MinBudget in €"
+                                      Placeholder="€"
                                       Text="{Binding MinBudget, Mode=TwoWay}"
                                       InputType="Decimal"
                                       Grid.Column="0"
                     />
-                    <Components:Entry LabelText="Maximaal beschikbaar budget per maand" 
+                    <Components:Entry LabelText="Maximaal beschikbaar budget per maand*" 
                                       x:Name="MaxBudgetInput"
-                                      Placeholder="MaxBudget in €" 
+                                      Placeholder="€" 
                                       Text="{Binding MaxBudget, Mode=TwoWay}"
                                       InputType="Decimal"
                                       Grid.Column="1"
                                       />
                 </Grid>
-                <Components:Entry LabelText="Oppervlak in vierkante meter"
+                <Components:Entry LabelText="Oppervlak in vierkante meter*"
                                   x:Name="AreaInput"
                                   Placeholder="m²" 
                                   Text="{Binding SurfaceArea, Mode=TwoWay}"
