@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+		<PackageReference Include="AWSSDK.S3" Version="3.7.408.1" />
 		<ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
-
-    <PackageReference Include="Minio" Version="6.0.3" />
   </ItemGroup>
 
 </Project>

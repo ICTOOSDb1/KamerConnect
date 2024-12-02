@@ -2,8 +2,14 @@ namespace KamerConnect.Models;
 
 public class Person
 {
-    public string? Id { get; set; }
-    public string Email { get; set; }
+    public Guid Id { get; set; }
+    private string email;
+
+    public string Email
+    {
+        get => email;
+        set => email = value.ToLowerInvariant();
+    }
     public string FirstName { get; set; }
     public string? MiddleName { get; set; }
     public string Surname { get; set; }
@@ -12,12 +18,10 @@ public class Person
     public Gender Gender { get; set; }
     public Role Role { get; set; }
     public string? ProfilePicturePath { get; set; }
-
-    public House? House { get; set; }
     public Personality? Personality { get; set; }
 
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
-        DateTime birthDate, Gender gender, Role role, string? profilePicturePath, string id = "")
+        DateTime birthDate, Gender gender, Role role, string? profilePicturePath, Guid id)
     {
         Id = id;
         Email = email;
@@ -29,21 +33,6 @@ public class Person
         Gender = gender;
         Role = role;
         ProfilePicturePath = profilePicturePath;
-    }
-
-    public override string ToString()
-    {
-        return $@"Id: {Id}
-        Email: {Email}
-        First Name: {FirstName}
-        Middle Name: {MiddleName ?? "N/A"}
-        Surname: {Surname}
-        Phone Number: {PhoneNumber ?? "N/A"}
-        Birth Date: {BirthDate.ToShortDateString()}
-        Gender: {Gender}
-        Role: {Role}
-        Profile Picture Path: {ProfilePicturePath ?? "N/A"}
-        {Personality}";
     }
 }
 
@@ -57,12 +46,4 @@ public enum Gender
     Male,
     Female,
     Other
-}
-
-public enum SocialType
-{
-    LinkedIn,
-    X,
-    Instagram,
-    Facebook
 }

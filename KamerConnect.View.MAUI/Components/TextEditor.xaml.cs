@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KamerConnect.View.MAUI.Components;
+﻿namespace KamerConnect.View.MAUI.Components;
 
 public partial class TextEditor : ContentView
 {
@@ -12,7 +6,7 @@ public partial class TextEditor : ContentView
     {
         InitializeComponent();
     }
-    public static readonly BindableProperty LabelTextProperty = 
+    public static readonly BindableProperty LabelTextProperty =
         BindableProperty.Create(nameof(LabelText), typeof(string), typeof(TextEditor), default(string));
 
     public string LabelText
@@ -21,7 +15,7 @@ public partial class TextEditor : ContentView
         set => SetValue(LabelTextProperty, value);
     }
 
-    public static readonly BindableProperty PlaceholderProperty = 
+    public static readonly BindableProperty PlaceholderProperty =
         BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(TextEditor), "Enter text here");
 
     public string Placeholder
@@ -30,7 +24,7 @@ public partial class TextEditor : ContentView
         set => SetValue(PlaceholderProperty, value);
     }
 
-    public static readonly BindableProperty TextProperty = 
+    public static readonly BindableProperty TextProperty =
         BindableProperty.Create(nameof(Text), typeof(string), typeof(TextEditor), default(string), BindingMode.TwoWay);
 
     public string Text
@@ -38,4 +32,5 @@ public partial class TextEditor : ContentView
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
+    
 }

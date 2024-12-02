@@ -5,6 +5,7 @@
 
 # dotenv files
 local.env
+.env
 
 # User-specific files
 *.rsuser
@@ -481,3 +482,4 @@ $RECYCLE.BIN/
 
 # Local postgres data
 /data
+KamerConnect.EnvironmentVariables/local.env
