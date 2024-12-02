@@ -86,7 +86,6 @@
 				<Button Text="Kies foto's"
 						Style="{StaticResource SecondaryButton}"
 						Clicked="OnPickFilesClicked"/>
-				<Label Text="{Binding houseImages}"/>
 
 				<CollectionView ItemsSource="{Binding houseImages}">
 					<CollectionView.ItemTemplate>
