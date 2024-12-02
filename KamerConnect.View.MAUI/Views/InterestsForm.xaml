@@ -5,7 +5,7 @@
              x:Class="KamerConnect.View.MAUI.Views.InterestsForm">
     <ScrollView>
 		
-			<Grid RowSpacing="10">
+			<Grid RowSpacing="20">
 				<Grid.RowDefinitions>
 					<RowDefinition/>
 					<RowDefinition/>

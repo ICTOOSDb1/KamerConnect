@@ -28,6 +28,12 @@
                              Grid.Column="0"
                              Padding="10"
                              Spacing="20">
+                        <Image Scale="0.3"
+                               Source="logo.png"
+                               Aspect="Center"
+                               VerticalOptions="End"
+                               HorizontalOptions="Center"
+                               Margin = "10, 0, 0, -100"/>
                         <Button Text="Account gegevens"
                                 x:Name="AccountDetailsButton"
                                 Clicked="AccountDetails"
@@ -48,7 +54,9 @@
                                 Clicked="House"
                                 Style="{StaticResource SecondaryButton}"
                                 HorizontalOptions="FillAndExpand"/>
+                        
                 </StackLayout>
+                
                 <ScrollView Grid.Row="1"
                             Grid.Column="1">
                         <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
