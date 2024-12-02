@@ -5,14 +5,22 @@
 			 xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
 			 x:Class="KamerConnect.View.MAUI.Views.UpdateAccountsForm">
 	<ScrollView>
-		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
-			<VerticalStackLayout Padding="10">
-
+		
+			
+			<Grid RowSpacing="10">
+				<Grid.RowDefinitions>
+					<RowDefinition></RowDefinition>
+					<RowDefinition></RowDefinition>
+					<RowDefinition></RowDefinition>
+					<RowDefinition></RowDefinition>
+					<RowDefinition></RowDefinition>
+				</Grid.RowDefinitions>
 				<Border WidthRequest="100"
-						HeightRequest="100"
-						Stroke="Black"
-						StrokeThickness="1"
-						StrokeShape="RoundRectangle 50">
+				        HeightRequest="100"
+				        Stroke="Black"
+				        StrokeThickness="1"
+				        StrokeShape="RoundRectangle 50"
+				        Grid.Row="0">
 					<Border.GestureRecognizers>
 						<TapGestureRecognizer Tapped="Image_tapped"/>
 					</Border.GestureRecognizers>
@@ -26,8 +34,9 @@
 				<Components:Entry InputType="Text"
 								  LabelText="Voornaam"
 								  Text="{Binding FirstName, Mode=TwoWay}"
-								  x:Name="firstNameEntry"/>
-				<Grid ColumnDefinitions="*,3*" ColumnSpacing=" 35">
+								  x:Name="firstNameEntry"
+								  Grid.Row="1"/>
+				<Grid ColumnDefinitions="*,3*" ColumnSpacing=" 35" Grid.Row="2">
 					<Components:Entry
 						LabelText="Tussenvoegsel"
 						Grid.Column="0"
@@ -43,15 +52,17 @@
 				<Components:Entry InputType="Email"
 								  LabelText="Email"
 								  Text="{Binding Email, Mode=TwoWay}"
-								  x:Name="emailEntry"/>
+								  x:Name="emailEntry"
+								  Grid.Row="3"
+								  />
 				<Components:Entry InputType="PhoneNumber"
 								  LabelText="Telefoonnummer"
 								  Text="{Binding PhoneNumber, Mode=TwoWay}"
-								  x:Name="phoneNumberEntry"/>
+								  x:Name="phoneNumberEntry"
+								  Grid.Row="4"/>
 
 				
-
-			</VerticalStackLayout>
-		</Components:FormCard>
+			</Grid>
+			
 	</ScrollView>
 </ContentView>

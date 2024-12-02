@@ -6,7 +6,7 @@
 			 xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
 			 x:Class="KamerConnect.View.MAUI.Views.HouseForm">
 	<ScrollView>
-		<Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+		
 			<VerticalStackLayout Padding="10"
 								 Spacing="10">
 
@@ -107,6 +107,6 @@
 
 
 			</VerticalStackLayout>
-		</Components:FormCard>
+		
 	</ScrollView>
 </ContentView>

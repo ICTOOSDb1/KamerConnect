@@ -5,14 +5,22 @@
              xmlns:components="using:KamerConnect.View.MAUI.Components"
              xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
              x:Class="KamerConnect.View.MAUI.PersonalInformationForm">
-    <StackLayout Spacing="15">
+    <Grid RowSpacing="15">
 
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
         <Label Text="Persoonlijke gegevens"
                FontSize="18"
-               FontAttributes="Bold"/>
+               FontAttributes="Bold"
+               Grid.Row="0"/>
 
 
-        <Grid ColumnSpacing="10">
+        <Grid ColumnSpacing="10" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="150"/>
@@ -35,7 +43,7 @@
             </VerticalStackLayout>
         </Grid>
         
-        <Grid ColumnSpacing="10">
+        <Grid ColumnSpacing="10" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -66,7 +74,7 @@
             </VerticalStackLayout>
         </Grid>
 
-        <VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="3">
             <components:Entry x:Name="birthDateEntry"
                               InputType="Date"
                               LabelText="Geboortedatum*"
@@ -74,12 +82,12 @@
                               Keyboard="Numeric"/>
         </VerticalStackLayout>
 
-        <StackLayout Spacing="10">
+        <StackLayout Spacing="10" Grid.Row="4">
             <components:EnumPicker 
                 x:Name="genderPicker"
                 Title="Geslacht*" 
                 EnumType="{x:Type models:PickerOptions+DutchGender}"/>
 
         </StackLayout>
-    </StackLayout>
+    </Grid>
 </ContentView>

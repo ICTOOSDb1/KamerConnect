@@ -5,7 +5,7 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              xmlns:maui="using:KamerConnect.View.MAUI"
              BackgroundColor="{StaticResource BackgroundColor}"
-             Title="Aanmeldingsformulier">
+             >
     <ScrollView>
         <StackLayout>
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
@@ -18,7 +18,7 @@
                              BackgroundColor="{StaticResource Gray100}" 
                              HorizontalOptions="FillAndExpand" />
                     
-                    <maui:RegisterHomePreferencesForm x:Name="homePreferencesForm" Margin="-50, -30, 0, 0"/>
+                    <maui:RegisterHomePreferencesForm x:Name="homePreferencesForm" Margin="-10, 0, 0, 0"/>
                     
                     
                     <!-- BoxView Separator -->
@@ -29,7 +29,7 @@
                     
 
                     <!-- Navigation Buttons -->
-                    <Grid ColumnSpacing="20" Margin="0,20,0,0">
+                    <Grid ColumnSpacing="20" Margin="0,20,0,20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />

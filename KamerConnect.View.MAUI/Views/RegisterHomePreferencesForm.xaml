@@ -6,7 +6,7 @@
              x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm">
 
     
-        <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+        
             <Grid RowSpacing="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -62,7 +62,8 @@
                     Title="Type woning*" 
                     EnumType="{x:Type models:PickerOptions+DutchHouseType}"
                     Grid.Row="3"
-                    Grid.Column="1"/>
+                    Grid.Column="1"
+                    />
                 
             <Components:Entry LabelText="Hoeveelheid kamergenoten"
                    x:Name="ResidentsInput"
@@ -128,5 +129,5 @@
                     </Picker.Items>
                 </Picker>
         </Grid>
-        </Components:FormCard>
+     
 </ContentView>

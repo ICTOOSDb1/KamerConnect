@@ -5,7 +5,7 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              xmlns:maui="using:KamerConnect.View.MAUI"
              BackgroundColor="{StaticResource BackgroundColor}"
-             Title="Aanmeldingsformulier">
+             >
     <ScrollView>
         <StackLayout>
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
