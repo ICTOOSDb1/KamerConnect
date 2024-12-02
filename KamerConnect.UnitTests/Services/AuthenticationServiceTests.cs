@@ -48,7 +48,7 @@ namespace KamerConnect.UnitTests
         public void Register_InvalidEmail_ThrowsInvalidOperationException()
         {
             // Arrange
-            var person = new Person("invalid-email", "John", "Middle", "Doe", "123456789", DateTime.Now, Gender.Male, Role.Seeking, "path/to/profile.jpg", null, null);
+            var person = new Person("invalid-email", "John", "Middle", "Doe", "123456789", DateTime.Now, Gender.Male, Role.Seeking, "path/to/profile.jpg", Guid.NewGuid());
             string password = "validpassword";
 
             // Act & Assert
