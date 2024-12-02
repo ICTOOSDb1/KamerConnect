@@ -142,7 +142,7 @@ public partial class Entry : ContentView
     {
         if (string.IsNullOrWhiteSpace(Text) && InputType != EntryInputType.PhoneNumber)
         {
-            SetValidation($"{LabelText} mag niet leeg zijn.");
+            SetValidation("dit veld is verplicht");
         }
         else if (InputType == EntryInputType.Email && !ValidationUtils.IsValidEmail(Text))
         {
