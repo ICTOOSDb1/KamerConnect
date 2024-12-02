@@ -10,7 +10,7 @@
                         <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="500"/>
                         <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -18,19 +18,16 @@
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
                        TextColor="Black"
-                       
                        HorizontalTextAlignment="Start"
                        VerticalTextAlignment="Center"
                        FontFamily="Inter-Regular"
                        FontSize="36"
                        FontAttributes="Bold"/>
-                <Label Grid.Row="1"
-                       Grid.Column="0"
-                       ></Label>
+
                 <StackLayout Grid.Row="1"
                              Grid.Column="0"
                              Padding="10"
-                             VerticalOptions="CenterAndExpand">
+                             Spacing="20">
                         <Button Text="Account gegevens"
                                 x:Name="AccountDetailsButton"
                                 Clicked="AccountDetails"
@@ -55,7 +52,7 @@
                 <ScrollView Grid.Row="1"
                             Grid.Column="1">
                         <Grid BackgroundColor="Transparent">
-                                
+
                                 <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
@@ -63,23 +60,22 @@
                                 </Grid.RowDefinitions>
                                 <ContentView x:Name="FormsContainer"
                                              HorizontalOptions="FillAndExpand"
-                                             VerticalOptions="FillAndExpand" 
+                                             VerticalOptions="FillAndExpand"
                                              Grid.Row="0"/>
-                        
-                                <Grid Grid.Row="1" 
+
+                                <Grid Grid.Row="1"
                                       BackgroundColor="Transparent">
                                         <Grid.ColumnDefinitions>
-                        
-                                        <ColumnDefinition Width="500"/>
-                                        <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="500"/>
+                                                <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                        
+
                                         <Button Text="Update account"
                                                 Style="{StaticResource PrimaryButton}"
                                                 Clicked="Button_Update"
                                                 HorizontalOptions="Center"
                                                 VerticalOptions="Start"
-                                                Margin="10, 0, 0, 0" 
+                                                Margin="10, 0, 0, 0"
                                                 Grid.Column="1"/>
                                 </Grid>
                         </Grid>
