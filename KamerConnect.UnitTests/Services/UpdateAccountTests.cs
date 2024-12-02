@@ -3,6 +3,7 @@ using KamerConnect.Repositories;
 using KamerConnect.Services;
 using Moq;
 using Npgsql;
+using KamerConnect.DataAccess.Postgres.Repositories;
 
 namespace KamerConnect.UnitTests;
 
@@ -29,19 +30,19 @@ public class UpdateAccountTests
     public void UpdatePerson_ValidPerson_ExecutesUpdateQuery()
     {
         // Arrange
-        var person = new Person
-        {
-            Id = Guid.NewGuid(),
-            Email = "test@example.com",
-            FirstName = "John",
-            MiddleName = null, // Null to test default handling
-            Surname = "Doe",
-            PhoneNumber = null, // Null to test default handling
-            BirthDate = new DateTime(1990, 1, 1),
-            Gender = Gender.Male,
-            Role = UserRole.User,
-            ProfilePicturePath = null // Null to test default handling
-        };
+        var person = new Person(
+            "test@example.com",
+            "John",
+            null,
+            "Doe",
+            null,
+            new DateTime(1990, 1, 1),
+            Gender.Male,
+            Role.Offering,
+            null,
+            Guid.NewGuid()
+        );
+
 
         // Mocking NpgsqlCommand.ExecuteNonQuery
         _mockCommand.Setup(cmd => cmd.ExecuteNonQuery()).Verifiable();
@@ -53,7 +54,7 @@ public class UpdateAccountTests
             .Returns(_mockCommand.Object);
 
         // Act
-        var personRepository = new PersonRepository(_mockConnection.Object);
+        var personRepository = new PersonRepository();
         personRepository.UpdatePerson(person);
 
         // Assert
@@ -77,7 +78,7 @@ public class UpdateAccountTests
         // Arrange
         Person nullPerson = null;
 
-        var personRepository = new PersonRepository(_mockConnection.Object);
+        var personRepository = new PersonRepository();
 
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() => personRepository.UpdatePerson(nullPerson));
@@ -87,17 +88,22 @@ public class UpdateAccountTests
     public void UpdatePerson_InvalidConnection_ThrowsException()
     {
         // Arrange
-        var person = new Person
-        {
-            Id = Guid.NewGuid(),
-            Email = "test@example.com",
-            FirstName = "John",
-            Surname = "Doe"
-        };
+        var person = new Person(
+            "test@example.com",
+            "John",
+            null,
+            "Doe",
+            null,
+            new DateTime(1990, 1, 1),
+            Gender.Male,
+            Role.Offering,
+            null,
+            Guid.NewGuid()
+        );
 
         _mockConnection.Setup(conn => conn.Open()).Throws(new InvalidOperationException("Cannot open connection"));
 
-        var personRepository = new PersonRepository(_mockConnection.Object);
+        var personRepository = new PersonRepository();
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => personRepository.UpdatePerson(person));

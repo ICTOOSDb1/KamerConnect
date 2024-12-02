@@ -80,9 +80,7 @@
 					<Components:EnumPicker
 						x:Name="housetypePicker"
 						Title="Type woning*"
-						EnumType="{x:Type models:PickerOptions+DutchHouseType}"
-						Grid.Row="4"
-						Grid.Column="0"/>
+						EnumType="{x:Type models:PickerOptions+DutchHouseType}"/>
 				</StackLayout>
 
 				<Button Text="Kies foto's"
