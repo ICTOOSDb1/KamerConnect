@@ -33,7 +33,7 @@ public partial class HouseForm : ContentView
         }
     }
 
-    public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
+    public HouseType Type => HouseType.Apartment;
 
     public HouseForm(FileService fileService, HouseService houseService,
         Person person)
@@ -126,8 +126,7 @@ public partial class HouseForm : ContentView
         int residents = int.Parse(residentsEntry.Text);
         string description = descriptionEntry.Text;
 
-        HouseType houseType;
-        houseType = PickerOptions.TranslateHouseType(Type);
+        HouseType houseType = Type;
 
         if (House == null)
         {

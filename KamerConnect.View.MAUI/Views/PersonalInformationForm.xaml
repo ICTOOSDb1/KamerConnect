@@ -84,9 +84,10 @@
 
         <StackLayout Spacing="10" Grid.Row="4">
             <components:EnumPicker 
-                x:Name="genderPicker"
+                x:Name="enumPicker"
                 Title="Geslacht*" 
-                EnumType="{x:Type models:PickerOptions+DutchGender}"/>
+                SelectedEnumValue="{Binding SelectedStatus}"
+               />
 
         </StackLayout>
     </Grid>

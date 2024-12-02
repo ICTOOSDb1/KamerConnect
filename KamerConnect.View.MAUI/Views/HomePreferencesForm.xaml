@@ -23,11 +23,10 @@
                         <x:String>X</x:String>
                     </Picker.Items>
                 </Picker>
-                <Components:EnumPicker 
-                    x:Name="housetypePicker"
-                    Title="Type woning*" 
-                    EnumType="{x:Type models:PickerOptions+DutchHouseType}"
-                    SelectedValue="{Binding HouseTypePreference}"/>
+                <!-- <Components:EnumPicker  -->
+                <!--     x:Name="housetypePicker" -->
+                <!--     Title="Type woning*"  -->
+                <!--     SelectedValue="{Binding HouseTypePreference}"/> -->
                 
             </VerticalStackLayout>
         </Components:FormCard>

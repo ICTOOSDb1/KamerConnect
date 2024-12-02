@@ -12,7 +12,7 @@ public partial class RegisterHomePreferencesForm : ContentView
     public string MinBudget => MinBudgetInput.Text ?? string.Empty;
     public string MaxBudget => MaxBudgetInput.Text ?? string.Empty;
     public string Area => AreaInput.Text ?? string.Empty;
-    public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
+    public HouseType Type => HouseType.Apartment;
     public string Residents => ResidentsInput.Text ?? string.Empty;
     public PreferenceChoice SmokingPreference => PreferenceChoiceTypeChanged(SmokersPicker);
     public PreferenceChoice PetPreference => PreferenceChoiceTypeChanged(PetPicker);

@@ -22,60 +22,37 @@ public partial class EnumPicker : ContentView
         get => (string)GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
     }
+    
+    public static readonly BindableProperty SelectedEnumValueProperty =
+        BindableProperty.Create(nameof(SelectedEnumValue), typeof(Enum), typeof(EnumPicker), null, propertyChanged: OnSelectedEnumValueChanged);
 
-    public static readonly BindableProperty SelectedIndexProperty =
-        BindableProperty.Create(nameof(SelectedIndex), typeof(int), typeof(EnumPicker), -1, BindingMode.TwoWay);
-
-    public int SelectedIndex
+    public Enum SelectedEnumValue
     {
-        get => (int)GetValue(SelectedIndexProperty);
-        set => SetValue(SelectedIndexProperty, value);
+        get { return (Enum)GetValue(SelectedEnumValueProperty); }
+        set { SetValue(SelectedEnumValueProperty, value); }
     }
     
-    public static readonly BindableProperty EnumTypeProperty =
-        BindableProperty.Create(nameof(EnumType), typeof(Type), typeof(EnumPicker), null, propertyChanged: OnEnumTypeChanged);
-
-    public Type EnumType
+    public List<KeyValuePair<Enum, string>> EnumOptions { get; set; }
+    
+    public void SetEnumType(Type enumType, Dictionary<Enum, string> translations)
     {
-        get => (Type)GetValue(EnumTypeProperty);
-        set => SetValue(EnumTypeProperty, value);
+        if (enumType == null || !enumType.IsEnum)
+            throw new ArgumentException("Provided type is not an enum");
+        
+        EnumOptions = Enum.GetValues(enumType).Cast<Enum>()
+            .Select(e => new KeyValuePair<Enum, string>(e, translations.ContainsKey(e) ? translations[e] : e.ToString()))
+            .ToList();
+        
+        enumPicker.ItemsSource = EnumOptions;
     }
     
-    public static readonly BindableProperty SelectedValueProperty =
-        BindableProperty.Create(nameof(SelectedValue), typeof(object), typeof(EnumPicker), null, BindingMode.TwoWay);
-
-    public object SelectedValue
+    private static void OnSelectedEnumValueChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        get => GetValue(SelectedValueProperty);
-        set => SetValue(SelectedValueProperty, value);
-    }
-
-    public List<string> EnumValues { get; private set; } = new();
-
-    private static void OnEnumTypeChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is EnumPicker picker && newValue is Type enumType && enumType.IsEnum)
+        var picker = (EnumPicker)bindable;
+        if (newValue != null)
         {
-            picker.EnumValues = Enum.GetNames(enumType).ToList();
-            picker.OnPropertyChanged(nameof(EnumValues));
-            
-            if (picker.EnumValues.Any())
-            {
-                picker.SelectedIndex = 0;
-                picker.SelectedValue = Enum.Parse(enumType, picker.EnumValues[0]);
-            }
-        }
-    }
-
-    private void OnPickerSelectionChanged(object sender, EventArgs e)
-    {
-        if (sender is Picker picker && EnumType != null)
-        {
-            var selectedIndex = picker.SelectedIndex;
-            if (selectedIndex >= 0 && selectedIndex < EnumValues.Count)
-            {
-                SelectedValue = Enum.Parse(EnumType, EnumValues[selectedIndex]);
-            }
+            picker.SelectedEnumValue = (Enum)newValue;
         }
     }
 }
+

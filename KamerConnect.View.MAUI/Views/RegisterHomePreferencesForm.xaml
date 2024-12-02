@@ -60,7 +60,6 @@
                 <Components:EnumPicker 
                     x:Name="housetypePicker"
                     Title="Type woning*" 
-                    EnumType="{x:Type models:PickerOptions+DutchHouseType}"
                     Grid.Row="3"
                     Grid.Column="1"
                     />

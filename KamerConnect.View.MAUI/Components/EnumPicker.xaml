@@ -15,10 +15,9 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="25" />
                 </Grid.ColumnDefinitions>
-                <Picker x:Name="EnumPickerControl"
-                        ItemsSource="{Binding EnumValues}"
-                        SelectedIndex="{Binding SelectedIndex}"
-                        SelectedIndexChanged="OnPickerSelectionChanged"
+                <Picker x:Name="enumPicker"
+                        SelectedItem="{Binding SelectedEnumValue}"
+                        ItemDisplayBinding="{Binding Value}"
                         HorizontalOptions="FillAndExpand"
                         BackgroundColor="Transparent"
                         TextColor="Black" />
