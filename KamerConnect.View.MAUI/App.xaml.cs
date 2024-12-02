@@ -17,7 +17,7 @@ public partial class App : Application
 
 	private async Task InitializeAppAsync()
 	{
-		/*var authService = _serviceProvider.GetService<AuthenticationService>();
+		var authService = _serviceProvider.GetService<AuthenticationService>();
 		if (authService == null)
 		{
 			return;
@@ -28,8 +28,8 @@ public partial class App : Application
 			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
 		}
 		else
-		{*/
+		{
 			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
-		/*}*/
+		}
 	}
 }
