@@ -5,7 +5,13 @@
              xmlns:local="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Components.Entry">
     <StackLayout>
+        <HorizontalStackLayout>
         <Label Text="{Binding LabelText, Source={RelativeSource AncestorType={x:Type local:Entry}}}"/>
+        <Label x:Name="RequiredIndicator"
+               Text="*"
+               TextColor="Red"
+               IsVisible="{Binding IsRequired, Source={RelativeSource AncestorType={x:Type local:Entry}}}" />
+        </HorizontalStackLayout>
         <Frame Style="{StaticResource EntryFrameStyle}">
             <Entry Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:Entry}}}"
                    Keyboard="{Binding Keyboard, Source={RelativeSource AncestorType={x:Type local:Entry}}}"

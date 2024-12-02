@@ -137,47 +137,57 @@ public partial class Entry : ContentView
         set => SetValue(IsValidProperty, value);
     }
 
+    public static readonly BindableProperty IsRequiredProperty =
+        BindableProperty.Create(nameof(IsRequired), typeof(bool), typeof(Entry), false);
+
+    public bool IsRequired
+    {
+        get => (bool)GetValue(IsRequiredProperty);
+        set => SetValue(IsRequiredProperty, value);
+    }
+
+        
 
     public void Validate()
-    {
-        if (string.IsNullOrWhiteSpace(Text) && InputType != EntryInputType.PhoneNumber)
-        {
-            SetValidation("dit veld is verplicht");
-        }
-        else if (InputType == EntryInputType.Email && !ValidationUtils.IsValidEmail(Text))
-        {
-            SetValidation("Emailadres is ongeldig.");
-        }
-        else if (InputType == EntryInputType.PhoneNumber && !ValidationUtils.IsValidPhoneNumber(Text))
-        {
-            SetValidation("Telefoonnummer is ongeldig.");
-        }
-        else if (InputType == EntryInputType.Date && !ValidationUtils.IsValidDate(Text))
-        {
-            SetValidation("Geboorte datum is ongeldig.");
-        }
-        else if (InputType == EntryInputType.PostalCode && !ValidationUtils.IsValidPostalCode(Text))
-        {
-            SetValidation("Postcode is ongeldig.");
-        }
-        else if (InputType == EntryInputType.Number && !ValidationUtils.IsInteger(Text))
-        {
-            SetValidation("Geen geldig nummer.");
-        }
-        else if (InputType == EntryInputType.Decimal && !ValidationUtils.IsDouble(Text))
-        {
-            SetValidation("Geen geldig nummer.");
-        }
-        else if (InputType == EntryInputType.Password && !ValidationUtils.IsValidPassword(Text))
-        {
-            SetValidation("Wachtwoord moet minimaar 8 tekens hebben.");
-        }
+    { 
+        if (string.IsNullOrWhiteSpace(Text) && InputType != EntryInputType.PhoneNumber && IsRequired)
+            {
+                SetValidation("dit veld is verplicht");
+            }
+        else if (InputType == EntryInputType.Email && !string.IsNullOrEmpty(Text) && !ValidationUtils.IsValidEmail(Text))
+            {
+                SetValidation("Emailadres is ongeldig.");
+            }
+        else if (InputType == EntryInputType.PhoneNumber && !string.IsNullOrEmpty(Text) && !ValidationUtils.IsValidPhoneNumber(Text))
+            {
+                SetValidation("Telefoonnummer is ongeldig.");
+            }
+        else if (InputType == EntryInputType.Date && !string.IsNullOrEmpty(Text) && !ValidationUtils.IsValidDate(Text))
+            {
+                SetValidation("Geboorte datum is ongeldig.");
+            }
+        else if (InputType == EntryInputType.PostalCode && !string.IsNullOrEmpty(Text) && !ValidationUtils.IsValidPostalCode(Text))
+            {
+                SetValidation("Postcode is ongeldig.");
+            }
+        else if (InputType == EntryInputType.Number && !string.IsNullOrEmpty(Text) && !ValidationUtils.IsInteger(Text))
+            {
+                SetValidation("Geen geldig nummer.");
+            }
+        else if (InputType == EntryInputType.Decimal &&!string.IsNullOrEmpty(Text) && !ValidationUtils.IsDouble(Text))
+            {
+                SetValidation("Geen geldig nummer.");
+            }
+        else if (InputType == EntryInputType.Password && !string.IsNullOrEmpty(Text) && !ValidationUtils.IsValidPassword(Text))
+            {
+                SetValidation("Wachtwoord moet minimaar 8 tekens hebben.");
+            }
         else
-        {
-            IsValid = true;
-            hideLabel();
-            ValidationMessage = string.Empty;
-        }
+            {
+                IsValid = true;
+                hideLabel();
+                ValidationMessage = string.Empty;
+            }
     }
 
     public static readonly BindableProperty IsLabelVisibleProperty =

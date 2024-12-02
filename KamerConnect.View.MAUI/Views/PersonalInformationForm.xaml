@@ -29,17 +29,20 @@
 
             <VerticalStackLayout Grid.Column="0">
                 <components:Entry x:Name="firstNameEntry"
-                                  LabelText="Voornaam*"/>
+                                  LabelText="Voornaam*"
+                                  IsRequired="True"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1">
                 <components:Entry x:Name="middleNameEntry"
-                                  LabelText="Tussenvoegsel"/>
+                                  LabelText="Tussenvoegsel"
+                                  IsRequired="False"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="2">
                 <components:Entry x:Name="surnameEntry"
-                                  LabelText="Achternaam*"/>
+                                  LabelText="Achternaam*"
+                                  IsRequired="True"/>
             </VerticalStackLayout>
         </Grid>
         
@@ -53,11 +56,13 @@
                 <components:Entry x:Name="emailEntry"
                                   InputType="Email"
                                   LabelText="E-mail*"
-                                  Keyboard="Email"/>
+                                  Keyboard="Email"
+                                  IsRequired="True"/>
 
                 <components:Entry x:Name="passwordEntry"
                                   InputType="Password"
                                   LabelText="Wachtwoord*"
+                                  IsRequired="True"
                                   />
             </VerticalStackLayout>
 
@@ -65,7 +70,8 @@
                 <components:Entry x:Name="phoneNumberEntry"
                                   InputType="PhoneNumber"
                                   LabelText="Telefoonnummer"
-                                  Keyboard="Telephone"/>
+                                  Keyboard="Telephone"
+                                  IsRequired="False"/>
                 
                 <components:Entry x:Name="confirmPasswordEntry"
                                   InputType="ConfirmPassword"
