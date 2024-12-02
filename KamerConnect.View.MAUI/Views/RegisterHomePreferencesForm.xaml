@@ -32,7 +32,7 @@
                        FontAttributes="Bold"
                        Grid.Column="1"></Label>
               
-                <Grid  ColumnDefinitions="*,*" Grid.Row="1" Grid.Column="1" ColumnSpacing=" 35">
+                <Grid  ColumnDefinitions="*,*" Grid.Row="1" Grid.Column="1" ColumnSpacing="10">
                     <Components:Entry LabelText="Minimale beschikbaar budget per maand" 
                                       x:Name="MinBudgetInput"
                                       Placeholder="MinBudget in €"
