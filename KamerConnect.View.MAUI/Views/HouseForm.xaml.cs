@@ -22,8 +22,17 @@ public partial class HouseForm : ContentView
             OnPropertyChanged(nameof(House));
         }
     }
-    public ObservableCollection<IPickFile> ImageResults { get; set; } = new ObservableCollection<IPickFile>();
-    private List<HouseImage> houseImages = new List<HouseImage>();
+    private ObservableCollection<HouseImage> _houseImages;
+    public ObservableCollection<HouseImage> houseImages
+    {
+        get => _houseImages;
+        set
+        {
+            _houseImages = value;
+            OnPropertyChanged();
+        }
+    }
+
     public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
 
     public HouseForm(FileService fileService, HouseService houseService,
@@ -32,6 +41,7 @@ public partial class HouseForm : ContentView
         _fileService = fileService;
         _houseService = houseService;
         _person = person;
+        houseImages = new ObservableCollection<HouseImage>();
 
         GetCurrentHouse();
         InitializeComponent();
@@ -41,6 +51,8 @@ public partial class HouseForm : ContentView
     private void GetCurrentHouse()
     {
         House = _houseService.GetByPersonId(_person.Id);
+
+        House.HouseImages.ForEach(houseImages.Add);
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
@@ -58,15 +70,12 @@ public partial class HouseForm : ContentView
             {
                 if (result?.FileResult != null)
                 {
-                    ImageResults.Add(result);
-
                     string filePath = result.FileResult!.FullPath;
                     string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetFileName(filePath);
                     string contentType = FileUtils.GetContentType(fileName);
 
-                    houseImages.Add(new HouseImage(fileName, bucketName));
-
                     await _fileService.UploadFileAsync(bucketName, fileName, filePath, contentType);
+                    houseImages.Add(new HouseImage(fileName, bucketName));
                 }
             }
     }
@@ -74,11 +83,11 @@ public partial class HouseForm : ContentView
     private void OnRemoveFileClicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
-        var file = (IPickFile)button.CommandParameter;
+        var file = (HouseImage)button.CommandParameter;
 
-        if (ImageResults.Contains(file))
+        if (houseImages.Contains(file))
         {
-            ImageResults.Remove(file);
+            houseImages.Remove(file);
         }
     }
 
@@ -91,16 +100,16 @@ public partial class HouseForm : ContentView
         priceEntry.Validate();
         surfaceEntry.Validate();
         residentsEntry.Validate();
-        
+
         return streetEntry.IsValid &&
-               houseNumberEntry.IsValid &&
-               additionEntry.IsValid &&
-               cityEntry.IsValid &&
-               postalCodeEntry.IsValid &&
-               priceEntry.IsValid &&
-               houseNumberEntry.IsValid &&
-               surfaceEntry.IsValid &&
-               residentsEntry.IsValid;
+                houseNumberEntry.IsValid &&
+                additionEntry.IsValid &&
+                cityEntry.IsValid &&
+                postalCodeEntry.IsValid &&
+                priceEntry.IsValid &&
+                houseNumberEntry.IsValid &&
+                surfaceEntry.IsValid &&
+                residentsEntry.IsValid;
     }
 
     public async void OnPublish()
@@ -134,7 +143,7 @@ public partial class HouseForm : ContentView
                     postalCode,
                     houseNumber,
                     addition,
-                    houseImages
+                    houseImages.ToList()
                 ),
                 _person.Id
             );
@@ -153,7 +162,7 @@ public partial class HouseForm : ContentView
                 postalCode,
                 houseNumber,
                 addition,
-                houseImages
+                houseImages.ToList()
             ));
         }
 

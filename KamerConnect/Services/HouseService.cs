@@ -12,12 +12,12 @@ public class HouseService
         _repository = repository;
     }
 
-    public House Get(Guid id)
+    public House? Get(Guid id)
     {
         return _repository.Get(id);
     }
 
-    public House GetByPersonId(Guid personId)
+    public House? GetByPersonId(Guid personId)
     {
         return _repository.GetByPersonId(personId);
     }

@@ -1,14 +1,8 @@
-using System.Diagnostics;
-using System.Security.Cryptography;
-using DotNetEnv;
-using KamerConnect.EnvironmentVariables;
-using Microsoft.Maui.Storage;
 using KamerConnect.Services;
 using KamerConnect.Utils;
 using KamerConnect.View.MAUI.Utils;
 using LukeMauiFilePicker;
 using KamerConnect.Models;
-using Npgsql;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -19,7 +13,7 @@ public partial class UpdateAccountsForm : ContentView
     private readonly FileService _fileService;
     private readonly PersonService _personService;
     private Person? _currentPerson;
-    
+
 
     public UpdateAccountsForm(FileService fileService, PersonService personService, Person person)
     {
@@ -47,10 +41,11 @@ public partial class UpdateAccountsForm : ContentView
 
             await _fileService.UploadFileAsync(_bucketName, fileName, filePath, contentType);
 
-            _currentPerson.ProfilePicturePath = _fileService.GetFilePath(_bucketName, fileName);
-            profile_picture.Source = _currentPerson.ProfilePicturePath;
+            _currentPerson.ProfilePicturePath = fileName;
+            profile_picture.Source = _fileService.GetFilePath(_bucketName, fileName);
         }
     }
+
     public async void Button_Update_Account()
     {
         if (!ValidateForm()) return;

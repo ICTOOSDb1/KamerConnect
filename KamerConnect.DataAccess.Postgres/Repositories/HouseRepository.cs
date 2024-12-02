@@ -160,9 +160,12 @@ public class HouseRepository : IHouseRepository
 
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
+                    if (reader.Read())
                     {
-                        return ReadToHouse(reader);
+                        var house = ReadToHouse(reader);
+                        house.HouseImages = GetHouseImages(house.Id, connection);
+
+                        return house;
                     }
                 }
             }
@@ -171,6 +174,35 @@ public class HouseRepository : IHouseRepository
         return null;
     }
 
+
+    private List<HouseImage> GetHouseImages(Guid houseId, NpgsqlConnection connection)
+    {
+        var houseImages = new List<HouseImage>();
+
+        using (var command = new NpgsqlCommand($"""
+    SELECT path, bucket
+    FROM house_image
+    WHERE house_id = @houseId::uuid;
+    """, connection))
+        {
+            command.Parameters.AddWithValue("@houseId", houseId);
+
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var path = reader.GetString(0);
+                    var bucket = reader.GetString(1);
+
+                    houseImages.Add(new HouseImage(path, bucket));
+                }
+            }
+        }
+
+        return houseImages;
+    }
+
+
     public House? GetByPersonId(Guid personId)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
@@ -178,21 +210,27 @@ public class HouseRepository : IHouseRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT h.id, h.type, h.price, h.description, h.surface, " +
-                                     $"h.residents, h.city, h.street, h.postal_code, " +
-                                     $"h.house_number, h.house_number_addition " +
-                                     $"FROM house h " +
-                                     $"INNER JOIN person p ON p.house_id = h.id " +
-                                     $"WHERE p.id = @PersonId",
-                       connection))
+                   new NpgsqlCommand($"""
+               SELECT h.id, h.type, h.price, h.description, h.surface, 
+                      h.residents, h.city, h.street, h.postal_code, 
+                      h.house_number, h.house_number_addition 
+               FROM house h 
+               INNER JOIN person p ON p.house_id = h.id 
+               WHERE p.id = @PersonId;
+               """, connection))
             {
                 command.Parameters.AddWithValue("@PersonId", personId);
 
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
+                    if (reader.Read())
                     {
-                        return ReadToHouse(reader);
+                        var house = ReadToHouse(reader);
+                        reader.Close();
+
+                        house.HouseImages = GetHouseImages(house.Id, connection);
+
+                        return house;
                     }
                 }
             }
@@ -290,6 +328,40 @@ public class HouseRepository : IHouseRepository
 
     private void UpdateHouseImages(Guid houseId, List<HouseImage> houseImages, NpgsqlConnection connection)
     {
-        // Moet nog geimplementeerd worden
+        using (var deleteCommand = new NpgsqlCommand("""
+        DELETE FROM house_image 
+        WHERE house_id = @houseId::uuid;
+    """, connection))
+        {
+            deleteCommand.Parameters.AddWithValue("@houseId", houseId);
+            deleteCommand.ExecuteNonQuery();
+        }
+
+        if (houseImages != null && houseImages.Any())
+        {
+            foreach (var image in houseImages)
+            {
+                using (var insertCommand = new NpgsqlCommand("""
+                INSERT INTO house_image (
+                    house_id,
+                    path,
+                    bucket
+                ) 
+                VALUES (
+                    @houseId::uuid,
+                    @path,
+                    @bucket
+                );
+            """, connection))
+                {
+                    insertCommand.Parameters.AddWithValue("@houseId", houseId);
+                    insertCommand.Parameters.AddWithValue("@path", image.Path);
+                    insertCommand.Parameters.AddWithValue("@bucket", image.Bucket);
+
+                    insertCommand.ExecuteNonQuery();
+                }
+            }
+        }
     }
+
 }

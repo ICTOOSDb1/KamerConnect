@@ -77,13 +77,9 @@
 									   Text="{Binding House.Description}"/>
 
 				<StackLayout Spacing="10">
-					<Label Text="Type*"
-						   FontSize="14"
-						   FontAttributes="Bold"/>
-
-					<Components:EnumPicker 
+					<Components:EnumPicker
 						x:Name="housetypePicker"
-						Title="Type woning*" 
+						Title="Type woning*"
 						EnumType="{x:Type models:PickerOptions+DutchHouseType}"
 						Grid.Row="4"
 						Grid.Column="0"/>
@@ -92,13 +88,14 @@
 				<Button Text="Kies foto's"
 						Style="{StaticResource SecondaryButton}"
 						Clicked="OnPickFilesClicked"/>
+				<Label Text="{Binding houseImages}"/>
 
-				<CollectionView ItemsSource="{Binding ImageResults}">
+				<CollectionView ItemsSource="{Binding houseImages}">
 					<CollectionView.ItemTemplate>
 						<DataTemplate>
 							<StackLayout Orientation="Vertical"
 										 Spacing="10">
-								<Image Source="{Binding FileResult.FullPath}"
+								<Image Source="{Binding FullPath}"
 									   WidthRequest="300"
 									   HeightRequest="300"
 									   Aspect="AspectFill"/>
@@ -111,7 +108,7 @@
 					</CollectionView.ItemTemplate>
 				</CollectionView>
 
-				
+
 			</VerticalStackLayout>
 		</Components:FormCard>
 	</ScrollView>
