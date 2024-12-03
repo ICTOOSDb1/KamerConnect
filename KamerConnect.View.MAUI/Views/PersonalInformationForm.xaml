@@ -20,7 +20,8 @@
                Grid.Row="0"/>
 
 
-        <Grid ColumnSpacing="10" Grid.Row="1">
+        <Grid ColumnSpacing="10"
+              Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="150"/>
@@ -42,14 +43,16 @@
                                   LabelText="Achternaam*"/>
             </VerticalStackLayout>
         </Grid>
-        
-        <Grid ColumnSpacing="10" Grid.Row="2">
+
+        <Grid ColumnSpacing="10"
+              Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout Grid.Column="0" Spacing="10">
+            <VerticalStackLayout Grid.Column="0"
+                                 Spacing="10">
                 <components:Entry x:Name="emailEntry"
                                   InputType="Email"
                                   LabelText="E-mail*"
@@ -57,20 +60,19 @@
 
                 <components:Entry x:Name="passwordEntry"
                                   InputType="Password"
-                                  LabelText="Wachtwoord*"
-                                  />
+                                  LabelText="Wachtwoord*"/>
             </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Column="1" Spacing="10">
+            <VerticalStackLayout Grid.Column="1"
+                                 Spacing="10">
                 <components:Entry x:Name="phoneNumberEntry"
                                   InputType="PhoneNumber"
                                   LabelText="Telefoonnummer"
                                   Keyboard="Telephone"/>
-                
+
                 <components:Entry x:Name="confirmPasswordEntry"
                                   InputType="ConfirmPassword"
-                                  LabelText="Wachtwoord bevestigen*"
-                 />
+                                  LabelText="Wachtwoord bevestigen*"/>
             </VerticalStackLayout>
         </Grid>
 
@@ -82,10 +84,11 @@
                               Keyboard="Numeric"/>
         </VerticalStackLayout>
 
-        <StackLayout Spacing="10" Grid.Row="4">
-            <components:EnumPicker 
+        <StackLayout Spacing="10"
+                     Grid.Row="4">
+            <components:EnumPicker
                 x:Name="genderPicker"
-                Title="Geslacht*" 
+                Title="Geslacht*"
                 EnumType="{x:Type models:PickerOptions+DutchGender}"/>
 
         </StackLayout>

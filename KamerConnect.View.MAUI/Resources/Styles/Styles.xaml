@@ -299,29 +299,38 @@
                 </Setter>
         </Style>
 
-    <Style TargetType="Picker">
-        <Setter Property="TextColor" Value="{StaticResource TextColor}" />
-        <Setter Property="TitleColor" Value="{StaticResource TextColor}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
-        
-        <Setter Property="FontFamily" Value="OpenSansRegular"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
-                    <VisualState x:Name="Disabled">
-                        <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{StaticResource Gray600}" />
-                            <Setter Property="TitleColor" Value="{StaticResource Gray600}" />
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
-    </Style>
+        <Style TargetType="Picker">
+                <Setter Property="TextColor"
+                        Value="{StaticResource TextColor}"/>
+                <Setter Property="TitleColor"
+                        Value="{StaticResource TextColor}"/>
+                <Setter Property="BackgroundColor"
+                        Value="Transparent"/>
+
+                <Setter Property="FontFamily"
+                        Value="OpenSansRegular"/>
+                <Setter Property="FontSize"
+                        Value="14"/>
+                <Setter Property="MinimumHeightRequest"
+                        Value="44"/>
+                <Setter Property="MinimumWidthRequest"
+                        Value="44"/>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                        <VisualStateGroupList>
+                                <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="Disabled">
+                                                <VisualState.Setters>
+                                                        <Setter Property="TextColor"
+                                                                Value="{StaticResource Gray600}"/>
+                                                        <Setter Property="TitleColor"
+                                                                Value="{StaticResource Gray600}"/>
+                                                </VisualState.Setters>
+                                        </VisualState>
+                                </VisualStateGroup>
+                        </VisualStateGroupList>
+                </Setter>
+        </Style>
         <Style TargetType="Span">
                 <Setter Property="TextColor"
                         Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
@@ -358,7 +367,7 @@
                         Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}"/>
         </Style>
 
-       
+
 
         <Style TargetType="ProgressBar">
                 <Setter Property="ProgressColor"
@@ -670,6 +679,8 @@
                 <Setter Property="TextColor"
                         Value="{StaticResource TextColor}"/>
         </Style>
+
+
 
         <!-- Subtitle Label Style -->
         <Style x:Key="SubtitleTextStyle"
