@@ -20,7 +20,7 @@
 					StrokeShape="RoundRectangle 50"
 					Grid.Row="0">
 				<Border.GestureRecognizers>
-					<TapGestureRecognizer Tapped="Image_tapped"/>
+					<TapGestureRecognizer Tapped="ImageTapped"/>
 				</Border.GestureRecognizers>
 				<Image Source="{Binding ProfilePicturePath}"
 					   x:Name="profile_picture"

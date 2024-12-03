@@ -106,7 +106,7 @@ namespace KamerConnect.View.MAUI.Pages
         }
         private void UpdatePersonalInformation(UpdateAccountsForm form)
         {
-            form.Button_Update_Account();
+            form.ButtonUpdateAccount();
         }
         private void SetButtonStyles(Button buttonSource)
         {
