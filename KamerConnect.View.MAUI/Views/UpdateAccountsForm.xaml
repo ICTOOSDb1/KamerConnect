@@ -35,7 +35,7 @@
 							  x:Name="firstNameEntry"
 							  Grid.Row="1"/>
 			<Grid ColumnDefinitions="*,3*"
-				  ColumnSpacing="10"
+				  ColumnSpacing="20"
 				  Grid.Row="2">
 				<Components:Entry
 					LabelText="Tussenvoegsel"
