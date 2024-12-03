@@ -103,7 +103,6 @@
                     </Grid.ColumnDefinitions>
                     <Picker x:Name="HousetypePicker"
                             SelectedIndexChanged="GenderTypeChanged"
-                            SelectedIndex="0"
                             HorizontalOptions="FillAndExpand"
                             BackgroundColor="Transparent"
                             TextColor="Black">

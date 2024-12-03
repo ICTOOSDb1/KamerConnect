@@ -64,7 +64,6 @@
                                 <ColumnDefinition Width="25" />
                             </Grid.ColumnDefinitions>
                             <Picker x:Name="HouseTypePicker"
-                                    SelectedIndexChanged="HouseTypeChanged"
                                     SelectedIndex="0"
                                     HorizontalOptions="FillAndExpand"
                                     BackgroundColor="Transparent"
@@ -110,7 +109,7 @@
                                     SelectedIndex="0"
                                     HorizontalOptions="FillAndExpand"
                                     BackgroundColor="Transparent"
-                                    TextColor="Black" >
+                                    TextColor="Black">
                                 <Picker.Items>
                                     <x:String>Ja</x:String>
                                     <x:String>Nee</x:String>
@@ -143,7 +142,7 @@
                                     SelectedIndex="0"
                                     HorizontalOptions="FillAndExpand"
                                     BackgroundColor="Transparent"
-                                    TextColor="Black" >
+                                    TextColor="Black">
                                 <Picker.Items>
                                     <x:String>Ja</x:String>
                                     <x:String>Nee</x:String>

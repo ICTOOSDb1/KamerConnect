@@ -9,6 +9,7 @@ public partial class PersonalInformationForm : ContentView
     {
         InitializeComponent();
         BindingContext = this;
+        HousetypePicker.SelectedItem = "Anders";
     }
     
     public string? Email => emailEntry.Text;

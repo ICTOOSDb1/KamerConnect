@@ -22,6 +22,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
         _serviceProvider = serviceProvider;
         _housePreferenceService = _serviceProvider.GetRequiredService<HousePreferenceService>();
         _authenticationService = _serviceProvider.GetRequiredService<AuthenticationService>();
+        
     }
 
     private async void Back(object sender, EventArgs e)

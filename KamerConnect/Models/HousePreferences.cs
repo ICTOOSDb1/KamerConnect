@@ -1,4 +1,6 @@
-﻿namespace KamerConnect.Models
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+namespace KamerConnect.Models
 {
     public class HousePreferences
     {
@@ -33,7 +35,10 @@
 
 public enum PreferenceChoice
 {
+    [Display(Name = "Ja")]
     Yes,
+    [Display(Name = "Nee")]
     No,
+    [Display(Name = "Geen voorkeur")]
     No_preference
 }

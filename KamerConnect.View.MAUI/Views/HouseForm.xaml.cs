@@ -42,10 +42,13 @@ public partial class HouseForm : ContentView
         _houseService = houseService;
         _person = person;
         houseImages = new ObservableCollection<HouseImage>();
-
+        
+      
         GetCurrentHouse();
         InitializeComponent();
         BindingContext = this;
+        
+        HouseTypePicker.SelectedItem = _house?.Type.GetDisplayName() ?? "Huis";
     }
 
     private void GetCurrentHouse()
@@ -53,7 +56,6 @@ public partial class HouseForm : ContentView
         House = _houseService.GetByPersonId(_person.Id);
 
         House?.HouseImages?.ForEach(houseImages.Add);
-
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
