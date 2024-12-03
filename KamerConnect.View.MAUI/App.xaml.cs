@@ -22,14 +22,16 @@ public partial class App : Application
 		{
 			return;
 		}
-
+		
 		if (await authService.CheckSession())
 		{
-			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
+			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<HousePage>());
 		}
 		else
 		{
-			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
+			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<HousePage>());
 		}
+		
+		
 	}
 }
