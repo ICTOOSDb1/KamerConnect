@@ -61,7 +61,6 @@ namespace KamerConnect.View.MAUI.Pages
             FormsContainer.Content = new InterestsForm(_personService, _person);
             SetButtonStyles(InterestsButton);
         }
-
         private void HomePreferences(object sender, EventArgs e)
         {
             FormsContainer.Content = new RegisterHomePreferencesForm(_housePreferenceService, _person);

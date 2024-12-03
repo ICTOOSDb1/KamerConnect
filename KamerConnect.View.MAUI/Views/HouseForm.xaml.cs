@@ -52,7 +52,8 @@ public partial class HouseForm : ContentView
     {
         House = _houseService.GetByPersonId(_person.Id);
 
-        House.HouseImages.ForEach(houseImages.Add);
+        House?.HouseImages?.ForEach(houseImages.Add);
+
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
