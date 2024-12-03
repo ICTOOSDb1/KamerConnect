@@ -19,12 +19,21 @@ public partial class MatchRequestsView : ContentView
     {
         for (int i = 1; i < 6; i++)
         {
-            var label = new Label { Text = $"Label {i} 1" };
+            var image = new Image
+            {
+                Scale = 0.3,
+                Source = "logo.png",
+                Aspect = Aspect.Center,
+                VerticalOptions = LayoutOptions.End,
+                HorizontalOptions = LayoutOptions.Center,
+                Margin = new Thickness(-100)
+            };
+
             var label1 = new Label { Text = $"Label {i} 2"};
             var label2 = new Label { Text = $"Label {i} 3"};
             var label3 = new Label { Text = $"Label {i} 4"};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
-            MatchRequests.Add(label, 0, i);
+            MatchRequests.Add(image, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
