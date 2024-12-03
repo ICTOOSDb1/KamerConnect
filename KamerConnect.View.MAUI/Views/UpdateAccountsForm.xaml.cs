@@ -22,6 +22,10 @@ public partial class UpdateAccountsForm : ContentView
         _currentPerson = person;
         InitializeComponent();
         BindingContext = _currentPerson;
+
+        profile_picture.Source = _currentPerson.ProfilePicturePath != null
+                                    ? _fileService.GetFilePath(_bucketName, _currentPerson.ProfilePicturePath)
+                                    : "camera.jpg";
     }
 
     private async void Image_tapped(object sender, EventArgs e)
