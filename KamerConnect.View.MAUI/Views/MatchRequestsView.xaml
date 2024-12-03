@@ -5,10 +5,7 @@
              x:Class="KamerConnect.View.MAUI.Views.MatchRequestsView">
     
     <Grid x:Name="MatchRequests">
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
+       
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" ></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>

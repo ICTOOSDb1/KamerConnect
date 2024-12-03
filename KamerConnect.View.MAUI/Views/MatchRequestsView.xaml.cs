@@ -24,10 +24,10 @@ public partial class MatchRequestsView : ContentView
             var label2 = new Label { Text = $"Label {i} 3"};
             var label3 = new Label { Text = $"Label {i} 4"};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
-            MatchRequests.Add(label, i, 0);
-            MatchRequests.Add(label1, i, 1);
-            MatchRequests.Add(label2, i, 2);
-            MatchRequests.Add(label3, i, 3);
+            MatchRequests.Add(label, 0, i);
+            MatchRequests.Add(label1, 1, i);
+            MatchRequests.Add(label2, 2, i);
+            MatchRequests.Add(label3, 3, i);
         }
     }
 }
