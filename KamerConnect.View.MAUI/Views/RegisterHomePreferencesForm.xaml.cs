@@ -12,12 +12,12 @@ public partial class RegisterHomePreferencesForm : ContentView
     public string MinBudget => MinBudgetInput.Text ?? string.Empty;
     public string MaxBudget => MaxBudgetInput.Text ?? string.Empty;
     public string Area => AreaInput.Text ?? string.Empty;
-    public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
+    public HouseType Type;
     public string Residents => ResidentsInput.Text ?? string.Empty;
-    public PreferenceChoice SmokingPreference => PreferenceChoiceTypeChanged(SmokersPicker);
-    public PreferenceChoice PetPreference => PreferenceChoiceTypeChanged(PetPicker);
-    public PreferenceChoice InteriorPreference => PreferenceChoiceTypeChanged(InteriorPicker);
-    public PreferenceChoice ParkingPreference => PreferenceChoiceTypeChanged(ParkingPicker);
+    public PreferenceChoice SmokingPreference => PreferenceChoiceTypeChanged(SmokingTypePicker);
+    public PreferenceChoice PetPreference => PreferenceChoiceTypeChanged(PetTypePicker);
+    public PreferenceChoice InteriorPreference => PreferenceChoiceTypeChanged(InteriorTypePicker);
+    public PreferenceChoice ParkingPreference => PreferenceChoiceTypeChanged(ParkingTypePicker);
 
     public RegisterHomePreferencesForm()
 	{
@@ -42,7 +42,7 @@ public partial class RegisterHomePreferencesForm : ContentView
             case "Nee":
                 return PreferenceChoice.No; 
             case "Geen voorkeur":
-                return PreferenceChoice.No_Preferences; 
+                return PreferenceChoice.No_preference; 
         }
 
         return PreferenceChoice.No;
@@ -65,5 +65,21 @@ public partial class RegisterHomePreferencesForm : ContentView
                (MaxBudgetInput?.IsValid ?? true) &&
                (AreaInput?.IsValid ?? true) &&
                (ResidentsInput?.IsValid ?? true);
+    }
+    
+    private async void HouseTypeChanged(object sender, EventArgs e)
+    {
+        switch ($"{HouseTypePicker.SelectedItem}")
+        {
+            case "Appartement":
+                Type = HouseType.Apartment;
+                break;
+            case "Huis":
+                Type = HouseType.House;
+                break;
+            case "Studio":
+                Type = HouseType.Studio;
+                break;
+        }
     }
 }

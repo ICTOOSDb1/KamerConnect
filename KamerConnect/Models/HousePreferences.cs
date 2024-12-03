@@ -35,5 +35,5 @@ public enum PreferenceChoice
 {
     Yes,
     No,
-    No_Preferences
+    No_preference
 }

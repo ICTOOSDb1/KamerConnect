@@ -97,13 +97,39 @@
 									   Grid.Row="3"
 									   />
 
-				<StackLayout Spacing="10"  
-				             Grid.Row="4">
-					<Components:EnumPicker
-						x:Name="housetypePicker"
-						Title="Type woning*"
-						EnumType="{x:Type models:PickerOptions+DutchHouseType}"/>
-				</StackLayout>
+				<VerticalStackLayout Grid.Row="4" Spacing="5">
+					<Label Text="Type woning" 
+					       FontSize="14"
+					       VerticalOptions="Center" />
+        
+					<Frame Style="{StaticResource EntryFrameStyle}">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="25" />
+							</Grid.ColumnDefinitions>
+							<Picker x:Name="HouseTypePicker"
+							        SelectedIndexChanged="HouseTypeChanged"
+							        SelectedIndex="0"
+							        HorizontalOptions="FillAndExpand"
+							        BackgroundColor="Transparent"
+							        TextColor="Black" >
+								<Picker.Items>
+									<x:String>Appartement</x:String>
+									<x:String>Huis</x:String>
+									<x:String>Studio</x:String>
+								</Picker.Items>
+							</Picker>
+							<Image Source="sort_down.png"
+							       Grid.Column="1"
+							       VerticalOptions="Center"
+							       HorizontalOptions="End"
+							       Margin="0,0,10,0"
+							       WidthRequest="20"
+							       HeightRequest="20" />
+						</Grid>
+					</Frame>
+				</VerticalStackLayout>
 
 				<Button Text="Kies foto's"
 						Style="{StaticResource SecondaryButton}"

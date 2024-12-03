@@ -84,13 +84,41 @@
                               Placeholder="dd/mm/jjjj"
                               Keyboard="Numeric"/>
         </VerticalStackLayout>
+        
+        <VerticalStackLayout Grid.Row="4" Spacing="5">
+            <Label Text="Wat is je geslacht?" 
+                   FontSize="14"
+                   VerticalOptions="Center" />
+        
+            <Frame Style="{StaticResource EntryFrameStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="25" />
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="HousetypePicker"
+                            SelectedIndexChanged="GenderTypeChanged"
+                            SelectedIndex="0"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Transparent"
+                            TextColor="Black" >
+                        <Picker.Items>
+                            <x:String>Man</x:String>
+                            <x:String>Vrouw</x:String>
+                            <x:String>Anders</x:String>
 
-        <StackLayout Spacing="10" Grid.Row="4">
-            <components:EnumPicker 
-                x:Name="genderPicker"
-                Title="Geslacht*" 
-                EnumType="{x:Type models:PickerOptions+DutchGender}"/>
-
-        </StackLayout>
+                        </Picker.Items>
+                    </Picker>
+                    <Image Source="sort_down.png"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0"
+                           WidthRequest="20"
+                           HeightRequest="20" />
+                </Grid>
+            </Frame>
+        
+        </VerticalStackLayout>
     </Grid>
 </ContentView>
