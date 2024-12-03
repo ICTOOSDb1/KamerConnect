@@ -24,14 +24,14 @@ public partial class MatchRequestsView : ContentView
                 Scale = 0.3,
                 Source = "logo.png",
                 Aspect = Aspect.Center,
-                VerticalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
                 Margin = new Thickness(-100)
             };
 
-            var label1 = new Label { Text = $"Label {i} 2"};
-            var label2 = new Label { Text = $"Label {i} 3"};
-            var label3 = new Label { Text = $"Label {i} 4"};
+            var label1 = new Label { Text = $"Label {i} 2", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label2 = new Label { Text = $"Label {i} 3", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label3 = new Label { Text = $"Label {i} 4", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(image, 0, i);
             MatchRequests.Add(label1, 1, i);
