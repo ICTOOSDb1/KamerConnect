@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KamerConnect.View.MAUI.Components.EnumPicker">
+    
+    <VerticalStackLayout Spacing="5">
+        <Label Text="{Binding Title}" 
+               FontSize="14"
+               VerticalOptions="Center" />
+        
+        <Frame Style="{StaticResource EntryFrameStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Picker x:Name="EnumPickerControl"
+                        ItemsSource="{Binding EnumValues}"
+                        SelectedIndex="{Binding SelectedIndex}"
+                        SelectedIndexChanged="OnPickerSelectionChanged"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="Transparent"
+                        TextColor="Black" />
+                <Image Source="sort_down.png"
+                       Grid.Column="1"
+                       VerticalOptions="Center"
+                       HorizontalOptions="End"
+                       Margin="0,0,10,0"
+                       WidthRequest="20"
+                       HeightRequest="20" />
+                
+            </Grid>
+        </Frame>
+        
+    </VerticalStackLayout>
+</ContentView>

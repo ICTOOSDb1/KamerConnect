@@ -57,14 +57,47 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="../KamerConnect.EnvironmentVariables/KamerConnect.EnvironmentVariables.csproj" />
-		<ProjectReference Include="..\KamerConnect\KamerConnect.csproj" />
 		<ProjectReference Include="..\KamerConnect.DataAccess.Postgres\KamerConnect.DataAccess.Postgres.csproj" />
 		<ProjectReference Include="..\KamerConnect.DataAccess.Minio\KamerConnect.DataAccess.Minio.csproj" />
 
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="LukeMauiFilePicker" Version="1.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Pages\RegisterHomePreferences.xaml.cs">
+	    <DependentUpon>RegisterHomePreferences.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\RegisterHomePreferencesForm.xaml.cs">
+	    <DependentUpon>RegisterHomePreferencesForm.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\InterestsForm.xaml.cs">
+	    <DependentUpon>InterestsForm.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\UpdateAccountsForm.xaml.cs">
+	    <DependentUpon>UpdateAccountsForm.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\RegisterHomePreferences.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UpdateAccount.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\RegisterHomePreferencesForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\InterestsForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\UpdateAccountsForm.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

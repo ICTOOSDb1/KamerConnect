@@ -1,7 +1,7 @@
 CREATE TYPE user_role AS ENUM ('Seeking', 'Offering');
 CREATE TYPE gender AS ENUM ('Male', 'Female', 'Other');
 CREATE TYPE house_type AS ENUM ('Apartment', 'House', 'Studio');
-CREATE TYPE social_type AS ENUM ('LinkedIn', 'X', 'Instagram', 'Facebook');
+CREATE TYPE preference_choice AS ENUM ('Yes', 'No', 'No_preference');
 
 CREATE TABLE IF NOT EXISTS house (
 	id UUID PRIMARY KEY default gen_random_uuid(),
@@ -16,7 +16,18 @@ CREATE TABLE IF NOT EXISTS house (
     house_number int NOT NULL,
     house_number_addition text NOT NULL
 );
-
+CREATE TABLE IF NOT EXISTS house_preferences (
+    id UUID PRIMARY KEY default gen_random_uuid(),
+	type house_type,
+    min_price DECIMAL(10, 2),
+	max_price DECIMAL(10, 2),
+    surface DECIMAL(10, 2),
+    residents INT,
+    smoking preference_choice,
+    pet preference_choice,
+    interior preference_choice,
+    parking preference_choice
+);
 CREATE TABLE IF NOT EXISTS person (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT NOT NULL UNIQUE,
@@ -29,8 +40,9 @@ CREATE TABLE IF NOT EXISTS person (
     role user_role NOT NULL,
     profile_picture_path TEXT,
     house_id uuid,
-    
-    CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id)
+    house_preferences_id uuid,
+    CONSTRAINT fk_house FOREIGN KEY(house_id) REFERENCES house(id),
+    CONSTRAINT fk_house_preferences FOREIGN KEY(house_preferences_id) REFERENCES house_preferences(id)
 );
 
 CREATE TABLE IF NOT EXISTS password (
@@ -75,15 +87,6 @@ CREATE TABLE IF NOT EXISTS personality_interest (
     PRIMARY KEY (personality_id, interest_id),
     CONSTRAINT fk_personality FOREIGN KEY (personality_id) REFERENCES personality(id) ON DELETE CASCADE,
     CONSTRAINT fk_interest FOREIGN KEY (interest_id) REFERENCES interest(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS social (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    person_id UUID NOT NULL,
-    type social_type NOT NULL,
-    url TEXT NOT NULL,
-    
-    CONSTRAINT fk_person_social FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS house_image (

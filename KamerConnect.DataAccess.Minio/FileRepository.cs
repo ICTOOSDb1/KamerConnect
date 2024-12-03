@@ -1,67 +1,119 @@
-﻿using KamerConnect.Repositories;
-using Minio;
-using Minio.DataModel.Args;
-using Minio.Exceptions;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using KamerConnect.Repositories;
 
 namespace KamerConnect.DataAccess.Minio;
 
 public class FileRepository : IFileRepository
 {
-    private readonly IMinioClient _minioClient;
+    private readonly AmazonS3Client _s3Client;
 
     public FileRepository()
     {
-        var accessKey = Environment.GetEnvironmentVariable("MINIO_KEY");
-        var secretKey = Environment.GetEnvironmentVariable("MINIO_SECRET");
+        var accessKey = Environment.GetEnvironmentVariable("MINIO_ROOT_USER");
+        var secretKey = Environment.GetEnvironmentVariable("MINIO_ROOT_PASSWORD");
         var endpoint = Environment.GetEnvironmentVariable("MINIO_ENDPOINT");
 
-        if (string.IsNullOrEmpty(accessKey) || string.IsNullOrEmpty(secretKey) ||
-            string.IsNullOrEmpty(endpoint)
-        )
+
+        if (string.IsNullOrEmpty(accessKey) || string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(endpoint))
         {
             throw new InvalidOperationException("Minio environment variables are missing. Please check your .env file.");
         }
 
-        _minioClient = new MinioClient()
-                .WithEndpoint(endpoint)
-                .WithCredentials(accessKey, secretKey)
-                .Build();
+        _s3Client = new AmazonS3Client(accessKey, secretKey, new AmazonS3Config
+        {
+            ServiceURL = $"http://{endpoint}",
+            ForcePathStyle = true,
+            UseHttp = true
+        });
     }
 
-    public async Task UploadFileAsync(string bucketName, string objectName, byte[] fileBytes, string contentType)
+    public async Task UploadFileAsync(string bucketName, string objectName, string filePath, string contentType)
     {
         try
         {
             await CreateBucketIfNotExists(bucketName);
 
-            using (var stream = new MemoryStream(fileBytes))
+            var putRequest = new PutObjectRequest
             {
-                await _minioClient.PutObjectAsync(new PutObjectArgs()
-                    .WithBucket(bucketName)
-                    .WithObject(objectName)
-                    .WithObjectSize(fileBytes.Length)
-                    .WithStreamData(stream)
-                    .WithContentType(contentType));
-            }
+                BucketName = bucketName,
+                Key = objectName,
+                FilePath = filePath,
+                ContentType = contentType
+            };
+
+            await _s3Client.PutObjectAsync(putRequest).ConfigureAwait(false);
+
+            Console.WriteLine($"File '{objectName}' uploaded successfully to bucket '{bucketName}'.");
         }
-        catch (MinioException ex)
+        catch (AmazonS3Exception ex)
         {
-            Console.WriteLine($"Error uploading file: {ex.Message}");
+            Console.WriteLine($"AWS S3 error while uploading file: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error occurred while uploading file: {ex.Message}");
             throw;
         }
     }
 
     private async Task CreateBucketIfNotExists(string bucketName)
     {
-        var bucketExists = await _minioClient.BucketExistsAsync(
-            new BucketExistsArgs().WithBucket(bucketName)
-        );
-
-        if (!bucketExists)
+        try
         {
-            await _minioClient.MakeBucketAsync(
-                new MakeBucketArgs().WithBucket(bucketName)
-            );
+            var bucketExists = await DoesBucketExistAsync(bucketName);
+
+            if (!bucketExists)
+            {
+                await _s3Client.PutBucketAsync(new PutBucketRequest
+                {
+                    BucketName = bucketName
+                });
+
+                string bucketPolicy = @$"
+                    {{
+                        ""Version"": ""2012-10-17"",
+                        ""Statement"": [
+                            {{
+                                ""Effect"": ""Allow"",
+                                ""Principal"": ""*"",
+                                ""Action"": ""s3:GetObject"",
+                                ""Resource"": ""arn:aws:s3:::{bucketName}/*""
+                            }}
+                        ]
+                    }}";
+
+                var policyRequest = new PutBucketPolicyRequest
+                {
+                    BucketName = bucketName,
+                    Policy = bucketPolicy
+                };
+
+                await _s3Client.PutBucketPolicyAsync(policyRequest);
+
+                Console.WriteLine($"Bucket '{bucketName}' created successfully.");
+            }
+        }
+        catch (AmazonS3Exception ex)
+        {
+            Console.WriteLine($"AWS S3 error while checking/creating bucket: {ex.Message}");
+            throw;
+        }
+    }
+
+    private async Task<bool> DoesBucketExistAsync(string bucketName)
+    {
+        try
+        {
+            var listResponse = await _s3Client.ListBucketsAsync();
+
+            return listResponse.Buckets.Any(b => b.BucketName == bucketName);
+        }
+        catch (AmazonS3Exception ex)
+        {
+            Console.WriteLine($"AWS S3 error while checking bucket existence: {ex.Message}");
+            throw;
         }
     }
 }

@@ -1,8 +1,10 @@
 using KamerConnect.Models;
 using KamerConnect.Repositories;
+using KamerConnect.Utils;
 using Npgsql;
 
-namespace KamerConnect.DataAccess.Postgres.Repositys;
+namespace KamerConnect.DataAccess.Postgres.Repositories;
+
 
 public class AuthenticationRepository : IAuthenticationRepository
 {
@@ -10,10 +12,10 @@ public class AuthenticationRepository : IAuthenticationRepository
 
     public AuthenticationRepository()
     {
-        connectionString = GetConnectionString();
+        connectionString = EnvironmentUtils.GetConnectionString();
     }
 
-    public void SaveSession(string personId, DateTime startingDate, string sessionToken)
+    public void SaveSession(Guid personId, DateTime startingDate, string sessionToken)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -31,7 +33,8 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public Session? GetSession(string personId)
+
+    public Session? GetSession(Guid personId)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -54,7 +57,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                         return new Session(
                             reader.GetString(0),
                             reader.GetDateTime(1),
-                            reader.GetString(2)
+                            reader.GetGuid(2)
                         );
                     }
                 }
@@ -63,6 +66,7 @@ public class AuthenticationRepository : IAuthenticationRepository
 
         return null;
     }
+
 
     public Session? GetSessionWithLocalToken(string? localSessionToken)
     {
@@ -87,7 +91,7 @@ public class AuthenticationRepository : IAuthenticationRepository
                         return new Session(
                             reader.GetString(0),
                             reader.GetDateTime(1),
-                            reader.GetGuid(2).ToString()
+                            reader.GetGuid(2)
                         );
                     }
                 }
@@ -154,11 +158,10 @@ public class AuthenticationRepository : IAuthenticationRepository
                 }
             }
         }
-
-        return null;
     }
 
-    public void AddPassword(string? personId, string password, string salt)
+
+    public void AddPassword(Guid personId, string password, string salt)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -178,7 +181,8 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
     }
 
-    public string? GetPassword(string personId)
+
+    public string? GetPassword(Guid personId)
     {
         using (var connection = new NpgsqlConnection(connectionString))
         {
@@ -201,23 +205,5 @@ public class AuthenticationRepository : IAuthenticationRepository
         }
 
         return null;
-    }
-
-    private string GetConnectionString()
-    {
-        var host = Environment.GetEnvironmentVariable("POSTGRES_HOST");
-        var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
-        var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
-        var username = Environment.GetEnvironmentVariable("POSTGRES_USER");
-        var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
-
-        if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(port) ||
-            string.IsNullOrEmpty(database) || string.IsNullOrEmpty(username) ||
-            string.IsNullOrEmpty(password))
-        {
-            throw new("Database environment variables are missing. Please check your .env file.");
-        }
-
-        return $"Host={host};Port={port};Database={database};Username={username};Password={password};";
     }
 }
