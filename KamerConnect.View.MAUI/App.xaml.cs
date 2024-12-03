@@ -1,37 +1,35 @@
-﻿using KamerConnect.DataAccess.Postgres.Repositys;
+﻿
 using KamerConnect.EnvironmentVariables;
-using KamerConnect.Repositories;
-using KamerConnect.Services;
+using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
 
 public partial class App : Application
 {
-	private IServiceProvider serviceProvider;
+	private IServiceProvider _serviceProvider;
+
 	public App(IServiceProvider serviceProvider)
 	{
-		EnvVariables.Load();
-		
-		this.serviceProvider = serviceProvider;
-		
+		_serviceProvider = serviceProvider;
 		InitializeComponent();
 		InitializeAppAsync().GetAwaiter().GetResult();
 	}
-	
+
 	private async Task InitializeAppAsync()
 	{
-		if (serviceProvider.GetService<AuthenticationService>() == null)
+		var authService = _serviceProvider.GetService<AuthenticationService>();
+		if (authService == null)
 		{
 			return;
 		}
-		
-		if (await serviceProvider.GetService<AuthenticationService>()?.CheckSession())
+
+		if (await authService.CheckSession())
 		{
-			MainPage = new MainPage();
+			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
 		}
 		else
 		{
-			MainPage = serviceProvider.GetRequiredService<LoginPage>();
+			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
 		}
 	}
 }

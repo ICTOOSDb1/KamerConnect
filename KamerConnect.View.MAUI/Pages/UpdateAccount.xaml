@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:Views="clr-namespace:KamerConnect.View.MAUI.Views"
+             x:Class="KamerConnect.View.MAUI.Pages.UpdateAccount"
+             Title="UpdateAccount"
+             BackgroundColor="{StaticResource BackgroundColor}">
+
+        <Grid RowDefinitions="Auto,*">
+                <ContentView x:Name="NavbarContainer"
+                             Grid.Row="0"/>
+
+                <ScrollView Grid.Row="1"
+                            BackgroundColor="Transparent"
+                            VerticalScrollBarVisibility="Never"
+                            HorizontalScrollBarVisibility="Never">
+
+                        <Grid BackgroundColor="#F9FBFD">
+                                <Grid.RowDefinitions>
+                                        <RowDefinition Height="100"/>
+                                        <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="500"/>
+                                        <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="Update account"
+                                       Grid.Row="0"
+                                       Grid.ColumnSpan="2"
+                                       TextColor="Black"
+                                       HorizontalTextAlignment="Start"
+                                       VerticalTextAlignment="Center"
+                                       FontFamily="Inter-Regular"
+                                       FontSize="36"
+                                       FontAttributes="Bold"/>
+                                <StackLayout Grid.Row="1"
+                                             Grid.Column="0"
+                                             Padding="10"
+                                             Spacing="20">
+                                        <Button Text="Account gegevens"
+                                                x:Name="AccountDetailsButton"
+                                                Clicked="AccountDetails"
+                                                Style="{StaticResource PrimaryButton}"
+                                                HorizontalOptions="FillAndExpand"/>
+                                        <Button Text="Woningvoorkeuren"
+                                                x:Name="HomePreferencesButton"
+                                                Clicked="HomePreferences"
+                                                Style="{StaticResource SecondaryButton}"
+                                                HorizontalOptions="FillAndExpand"/>
+                                        <Button Text="Interesses"
+                                                x:Name="InterestsButton"
+                                                Clicked="Interests"
+                                                Style="{StaticResource SecondaryButton}"
+                                                HorizontalOptions="FillAndExpand"/>
+                                        <Button Text="House"
+                                                x:Name="HouseButton"
+                                                Clicked="House"
+                                                Style="{StaticResource SecondaryButton}"
+                                                HorizontalOptions="FillAndExpand"/>
+                                </StackLayout>
+                                <ScrollView Grid.Row="1"
+                                            Grid.Column="1">
+                                        <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+
+                                                <Grid BackgroundColor="Transparent">
+
+
+                                                        <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+                                                        <ContentView x:Name="FormsContainer"
+                                                                     HorizontalOptions="FillAndExpand"
+                                                                     VerticalOptions="FillAndExpand"
+                                                                     Grid.Row="0"/>
+
+                                                        <Grid Grid.Row="1"
+                                                              BackgroundColor="Transparent">
+                                                                <Grid.ColumnDefinitions>
+
+                                                                        <ColumnDefinition Width="500"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Label Text="*= verplicht om in te vullen"
+                                                                       FontSize="12"
+                                                                       TextColor="Gray"
+                                                                       HorizontalOptions="Start"
+                                                                       Margin="0,20,0,0"
+                                                                       Grid.Column="0"/>
+                                                                <Button Text="Update account"
+                                                                        Style="{StaticResource PrimaryButton}"
+                                                                        Clicked="Button_Update"
+                                                                        HorizontalOptions="Center"
+                                                                        VerticalOptions="Start"
+                                                                        Margin="10, 0, 0, 0"
+                                                                        Grid.Column="1"/>
+                                                        </Grid>
+                                                </Grid>
+                                        </Components:FormCard>
+
+                                </ScrollView>
+                        </Grid>
+                </ScrollView>
+        </Grid>
+
+</ContentPage>

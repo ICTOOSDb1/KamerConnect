@@ -28,5 +28,7 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>NSOpenPanelUsageDescription</key>
+	<string>Geef toestemming om een bestand te selecteren.</string>
 </dict>
 </plist>

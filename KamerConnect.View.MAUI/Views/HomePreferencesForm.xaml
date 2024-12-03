@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
+             x:Class="KamerConnect.View.MAUI.Views.HomePreferencesForm">
+
+    <ScrollView>
+        <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+            <VerticalStackLayout Padding="10" Spacing="10">
+            
+                <Components:Entry InputType="Text" LabelText="Aantal vierkante meter" Text="{Binding SurfaceArea, Mode=TwoWay}" x:Name="surfaceEntry" IsRequired="True"/>
+                <Components:Entry InputType="Text" LabelText="Prijs" Text="{Binding MaxBudget, Mode=TwoWay}" x:Name="priceEntry" IsRequired="True"/>
+                
+                
+            </VerticalStackLayout>
+        </Components:FormCard>
+    </ScrollView>
+
+</ContentView>

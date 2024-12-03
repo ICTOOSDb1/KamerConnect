@@ -1,22 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace KamerConnect.Models;
 
 public class House
 {
-    public string? Id { get; set; }
+    public Guid Id { get; set; }
     public HouseType Type { get; set; }
     public double Price { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public int Surface { get; set; }
     public int Residents { get; set; }
     public string City { get; set; }
-    public string Steet { get; set; }
+    public string Street { get; set; }
     public string PostalCode { get; set; }
     public int HouseNumber { get; set; }
     public string HouseNumberAddition { get; set; }
     public List<HouseImage> HouseImages { get; set; }
 
     public House(
-        string? id, HouseType type, double price, string description, int surface, int residents,
+        Guid id, HouseType type, double price, string? description, int surface, int residents,
         string city, string street, string postalCode, int houseNumber, string houseNumberAddition,
         List<HouseImage> houseImages)
     {
@@ -27,7 +29,7 @@ public class House
         Surface = surface;
         Residents = residents;
         City = city;
-        Steet = street;
+        Street = street;
         PostalCode = postalCode;
         HouseNumber = houseNumber;
         HouseNumberAddition = houseNumberAddition;
@@ -37,8 +39,10 @@ public class House
 
 public enum HouseType
 {
+    [Display(Name = "Appartement")]
     Apartment,
+    [Display(Name = "Huis")]
     House,
+    [Display(Name = "Studio")]
     Studio
 }
-
