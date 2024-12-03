@@ -245,7 +245,7 @@
                 <Setter Property="BorderColor"
                         Value="{StaticResource Gray100}"/>
         </Style>
-
+        
         <Style TargetType="ImageButton">
                 <Setter Property="Opacity"
                         Value="1"/>

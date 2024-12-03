@@ -7,10 +7,20 @@
 			 x:Class="KamerConnect.View.MAUI.Views.HouseForm">
 	<ScrollView>
 
-		<VerticalStackLayout Padding="10"
-							 Spacing="10">
+		<Grid RowSpacing="20">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
 
-			<Grid ColumnSpacing="10">
+			</Grid.RowDefinitions>
+			<Grid ColumnSpacing="20"
+				  Grid.Row="0">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="150"/>
@@ -20,18 +30,21 @@
 				<Components:Entry LabelText="Straat"
 								  Grid.Column="0"
 								  x:Name="streetEntry"
-								  Text="{Binding House.Street}"/>
+								  Text="{Binding House.Street}"
+								  IsRequired="True"/>
 				<Components:Entry LabelText="Huisnummer"
 								  Grid.Column="1"
 								  x:Name="houseNumberEntry"
-								  Text="{Binding House.HouseNumber}"/>
+								  Text="{Binding House.HouseNumber}"
+								  IsRequired="True"/>
 				<Components:Entry LabelText="Toevoeging"
 								  Grid.Column="2"
 								  x:Name="additionEntry"
 								  Text="{Binding House.HouseNumberAddition}"/>
 			</Grid>
 
-			<Grid ColumnSpacing="10">
+			<Grid ColumnSpacing="20"
+				  Grid.Row="1">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="250"/>
@@ -40,15 +53,18 @@
 				<Components:Entry LabelText="Stad"
 								  Grid.Column="0"
 								  x:Name="cityEntry"
-								  Text="{Binding House.City}"/>
+								  Text="{Binding House.City}"
+								  IsRequired="True"/>
 				<Components:Entry LabelText="Postcode"
 								  Grid.Column="1"
 								  x:Name="postalCodeEntry"
 								  InputType="PostalCode"
-								  Text="{Binding House.PostalCode}"/>
+								  Text="{Binding House.PostalCode}"
+								  IsRequired="True"/>
 			</Grid>
 
-			<Grid ColumnSpacing="10">
+			<Grid ColumnSpacing="20"
+				  Grid.Row="2">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
@@ -59,24 +75,29 @@
 								  InputType="Decimal"
 								  Grid.Column="0"
 								  x:Name="priceEntry"
-								  Text="{Binding House.Price}"/>
+								  Text="{Binding House.Price}"
+								  IsRequired="True"/>
 				<Components:Entry LabelText="Oppervlak"
 								  InputType="Number"
 								  Grid.Column="1"
 								  x:Name="surfaceEntry"
-								  Text="{Binding House.Surface}"/>
+								  Text="{Binding House.Surface}"
+								  IsRequired="True"/>
 				<Components:Entry LabelText="Bewoners"
 								  InputType="Number"
 								  Grid.Column="2"
 								  x:Name="residentsEntry"
-								  Text="{Binding House.Residents}"/>
+								  Text="{Binding House.Residents}"
+								  IsRequired="True"/>
 			</Grid>
 
 			<Components:TextEditor LabelText="Beschrijving"
 								   x:Name="descriptionEntry"
-								   Text="{Binding House.Description}"/>
+								   Text="{Binding House.Description}"
+								   Grid.Row="3"/>
 
-			<StackLayout Spacing="10">
+			<StackLayout Spacing="10"
+						 Grid.Row="4">
 				<Components:EnumPicker
 					x:Name="housetypePicker"
 					Title="Type woning*"
@@ -85,9 +106,11 @@
 
 			<Button Text="Kies foto's"
 					Style="{StaticResource SecondaryButton}"
-					Clicked="OnPickFilesClicked"/>
+					Clicked="OnPickFilesClicked"
+					Grid.Row="5"/>
 
-			<CollectionView ItemsSource="{Binding houseImages}">
+			<CollectionView ItemsSource="{Binding houseImages}"
+							Grid.Row="6">
 				<CollectionView.ItemTemplate>
 					<DataTemplate>
 						<StackLayout Orientation="Vertical"
@@ -104,9 +127,6 @@
 					</DataTemplate>
 				</CollectionView.ItemTemplate>
 			</CollectionView>
-
-
-		</VerticalStackLayout>
-
+		</Grid>
 	</ScrollView>
 </ContentView>

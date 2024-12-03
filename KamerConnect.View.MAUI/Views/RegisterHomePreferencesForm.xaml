@@ -4,10 +4,7 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
              x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm">
-
-
-
-    <Grid RowSpacing="10">
+    <Grid RowSpacing="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -20,34 +17,30 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
-        <Label Text="Wat zoekt u in een woning?"
-               FontSize="18"
-               FontAttributes="Bold"
-               Grid.Column="1"></Label>
-
         <Grid  ColumnDefinitions="*,*"
                Grid.Row="1"
                Grid.Column="1"
-               ColumnSpacing="10">
+               ColumnSpacing="20">
             <Components:Entry LabelText="Minimale beschikbaar budget per maand"
                               x:Name="MinBudgetInput"
-                              Placeholder="MinBudget in €"
+                              Placeholder="€"
                               Text="{Binding MinBudget, Mode=TwoWay}"
                               InputType="Decimal"
-                              Grid.Column="0"/>
+                              Grid.Column="0"
+                              IsRequired="True"/>
             <Components:Entry LabelText="Maximaal beschikbaar budget per maand"
                               x:Name="MaxBudgetInput"
-                              Placeholder="MaxBudget in €"
+                              Placeholder="€"
                               Text="{Binding MaxBudget, Mode=TwoWay}"
                               InputType="Decimal"
-                              Grid.Column="1"/>
+                              Grid.Column="1"
+                              IsRequired="True"/>
         </Grid>
         <Components:Entry LabelText="Oppervlak in vierkante meter"
                           x:Name="AreaInput"
@@ -55,8 +48,8 @@
                           Text="{Binding SurfaceArea, Mode=TwoWay}"
                           Grid.Row="2"
                           Grid.Column="1"
-                          InputType="Number"/>
-
+                          InputType="Number"
+                          IsRequired="True"/>
 
         <Components:EnumPicker
             x:Name="housetypePicker"
@@ -70,7 +63,8 @@
                           Text="{Binding Residents, Mode=TwoWay}"
                           Grid.Row="4"
                           Grid.Column="1"
-                          InputType="Number"/>
+                          InputType="Number"
+                          IsRequired="True"/>
 
         <Picker x:Name="SmokersPicker"
                 Title="Roken in huis?"

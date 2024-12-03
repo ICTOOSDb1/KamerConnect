@@ -5,8 +5,6 @@
 			 xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
 			 x:Class="KamerConnect.View.MAUI.Views.UpdateAccountsForm">
 	<ScrollView>
-
-
 		<Grid RowSpacing="10">
 			<Grid.RowDefinitions>
 				<RowDefinition></RowDefinition>
@@ -61,8 +59,6 @@
 							  Text="{Binding PhoneNumber, Mode=TwoWay}"
 							  x:Name="phoneNumberEntry"
 							  Grid.Row="4"/>
-
-
 		</Grid>
 
 	</ScrollView>

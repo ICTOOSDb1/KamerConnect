@@ -35,7 +35,6 @@
                                        FontFamily="Inter-Regular"
                                        FontSize="36"
                                        FontAttributes="Bold"/>
-
                                 <StackLayout Grid.Row="1"
                                              Grid.Column="0"
                                              Padding="10"
@@ -85,7 +84,12 @@
                                                                         <ColumnDefinition Width="500"/>
                                                                         <ColumnDefinition Width="*"/>
                                                                 </Grid.ColumnDefinitions>
-
+                                                                <Label Text="*= verplicht om in te vullen"
+                                                                       FontSize="12"
+                                                                       TextColor="Gray"
+                                                                       HorizontalOptions="Start"
+                                                                       Margin="0,20,0,0"
+                                                                       Grid.Column="0"/>
                                                                 <Button Text="Update account"
                                                                         Style="{StaticResource PrimaryButton}"
                                                                         Clicked="Button_Update"
