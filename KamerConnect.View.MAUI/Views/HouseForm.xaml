@@ -71,7 +71,7 @@
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 
-<<<<<<< HEAD
+
 				<VerticalStackLayout Grid.Row="4" Spacing="5">
 					<Label Text="Type woning" 
 					       FontSize="14"
@@ -105,7 +105,7 @@
 						</Grid>
 					</Frame>
 				</VerticalStackLayout>
-=======
+				
 				<Components:Entry LabelText="Prijs per maand"
 								  InputType="Decimal"
 								  Grid.Column="0"
@@ -125,20 +125,13 @@
 								  Text="{Binding House.Residents}"
 								  IsRequired="True"/>
 			</Grid>
->>>>>>> 490f8ab8ade6648543d5e7d256251698ef9cb114
+
 
 			<Components:TextEditor LabelText="Beschrijving"
 								   x:Name="descriptionEntry"
 								   Text="{Binding House.Description}"
 								   Grid.Row="3"/>
-
-			<StackLayout Spacing="10"
-						 Grid.Row="4">
-				<Components:EnumPicker
-					x:Name="housetypePicker"
-					Title="Type woning*"
-					EnumType="{x:Type models:PickerOptions+DutchHouseType}"/>
-			</StackLayout>
+			
 
 			<Button Text="Kies foto's"
 					Style="{StaticResource SecondaryButton}"

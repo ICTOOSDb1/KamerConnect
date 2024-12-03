@@ -108,8 +108,6 @@
                             <x:String>Man</x:String>
                             <x:String>Vrouw</x:String>
                             <x:String>Anders</x:String>
-
-<<<<<<< HEAD
                         </Picker.Items>
                     </Picker>
                     <Image Source="sort_down.png"
@@ -123,15 +121,6 @@
             </Frame>
         
         </VerticalStackLayout>
-=======
-        <StackLayout Spacing="10"
-                     Grid.Row="4">
-            <components:EnumPicker
-                x:Name="genderPicker"
-                Title="Geslacht*"
-                EnumType="{x:Type models:PickerOptions+DutchGender}"/>
 
-        </StackLayout>
->>>>>>> 490f8ab8ade6648543d5e7d256251698ef9cb114
     </Grid>
 </ContentView>
