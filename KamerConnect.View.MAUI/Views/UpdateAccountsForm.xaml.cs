@@ -30,7 +30,7 @@ public partial class UpdateAccountsForm : ContentView
         
     }
 
-    private async void Image_tapped(object sender, EventArgs e)
+    private async void ImageTapped(object sender, EventArgs e)
     {
         IFilePickerService picker = new FilePickerService();
 
@@ -52,7 +52,7 @@ public partial class UpdateAccountsForm : ContentView
         }
     }
 
-    public async void Button_Update_Account()
+    public async void ButtonUpdateAccount()
     {
         if (!ValidateForm()) return;
         _personService.UpdatePerson(_currentPerson);
