@@ -11,7 +11,12 @@
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
                 <StackLayout Spacing="20">
                     
-
+                    <Image Scale="0.3"
+                           Source="logo.png"
+                           Aspect="Center"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Center"
+                           Margin = "-100"/>
                     <Label Style="{StaticResource TitleTextStyle}" Text="Aanmeldingsformulier - Woning voorkeuren" HorizontalOptions="Start"></Label>
                     
                     <BoxView HeightRequest="0.5" 

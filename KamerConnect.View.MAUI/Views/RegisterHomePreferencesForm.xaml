@@ -4,29 +4,26 @@
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
              x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm">
+    <Grid RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-    
-        
-            <Grid RowSpacing="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-    
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="10"/>
-                </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
 
+<<<<<<< HEAD
                
               
                 <Grid  ColumnDefinitions="*,*" Grid.Row="1" Grid.Column="1" ColumnSpacing="20">
@@ -230,6 +227,102 @@
                         </Grid>
                     </Frame>
                 </VerticalStackLayout>
+=======
+        <Grid  ColumnDefinitions="*,*"
+               Grid.Row="1"
+               Grid.Column="1"
+               ColumnSpacing="20">
+            <Components:Entry LabelText="Minimale beschikbaar budget per maand"
+                              x:Name="MinBudgetInput"
+                              Placeholder="€"
+                              Text="{Binding MinBudget, Mode=TwoWay}"
+                              InputType="Decimal"
+                              Grid.Column="0"
+                              IsRequired="True"/>
+            <Components:Entry LabelText="Maximaal beschikbaar budget per maand"
+                              x:Name="MaxBudgetInput"
+                              Placeholder="€"
+                              Text="{Binding MaxBudget, Mode=TwoWay}"
+                              InputType="Decimal"
+                              Grid.Column="1"
+                              IsRequired="True"/>
+>>>>>>> 490f8ab8ade6648543d5e7d256251698ef9cb114
         </Grid>
-     
+        <Components:Entry LabelText="Oppervlak in vierkante meter"
+                          x:Name="AreaInput"
+                          Placeholder="m²"
+                          Text="{Binding SurfaceArea, Mode=TwoWay}"
+                          Grid.Row="2"
+                          Grid.Column="1"
+                          InputType="Number"
+                          IsRequired="True"/>
+
+        <Components:EnumPicker
+            x:Name="housetypePicker"
+            Title="Type woning*"
+            EnumType="{x:Type models:PickerOptions+DutchHouseType}"
+            Grid.Row="3"
+            Grid.Column="1"/>
+
+        <Components:Entry LabelText="Hoeveelheid kamergenoten"
+                          x:Name="ResidentsInput"
+                          Text="{Binding Residents, Mode=TwoWay}"
+                          Grid.Row="4"
+                          Grid.Column="1"
+                          InputType="Number"
+                          IsRequired="True"/>
+
+        <Picker x:Name="SmokersPicker"
+                Title="Roken in huis?"
+                SelectedIndex="0"
+                Grid.Row="5"
+                Grid.Column="1">
+
+            <Picker.Items>
+                <x:String>Ja</x:String>
+                <x:String>Nee</x:String>
+                <x:String>Geen voorkeur</x:String>
+            </Picker.Items>
+        </Picker>
+
+        <Picker x:Name="PetPicker"
+                Title="Huisdieren in huis?"
+                SelectedIndex="0"
+                Grid.Row="6"
+                Grid.Column="1">
+
+            <Picker.Items>
+                <x:String>Ja</x:String>
+                <x:String>Nee</x:String>
+                <x:String>Geen voorkeur</x:String>
+            </Picker.Items>
+        </Picker>
+
+        <Picker x:Name="ParkingPicker"
+                Title="Moet er een fietsenstalling bij het huis zijn?"
+                SelectedIndex="0"
+                Grid.Row="7"
+                Grid.Column="1">
+
+            <Picker.Items>
+                <x:String>Ja</x:String>
+                <x:String>Nee</x:String>
+                <x:String>Geen voorkeur</x:String>
+            </Picker.Items>
+        </Picker>
+
+        <Picker x:Name="InteriorPicker"
+                Title="wilt u meubilair inbegrepen?"
+                SelectedIndex="0"
+                Grid.Row="8"
+                Grid.Column="1">
+
+            <Picker.Items>
+                <x:String>Ja</x:String>
+                <x:String>Nee</x:String>
+                <x:String>Geen voorkeur</x:String>
+            </Picker.Items>
+        </Picker>
+    </Grid>
+
 </ContentView>

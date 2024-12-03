@@ -8,7 +8,14 @@
              >
     <ScrollView>
         <StackLayout>
+            <Image Scale="0.3"
+                   Source="logo.png"
+                   Aspect="Center"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Center"
+                   Margin = "-100"/>
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+                
                 <Grid BackgroundColor="{StaticResource BackgroundColor}"
                       Row="0"
                       Column="1"
@@ -34,11 +41,14 @@
                         Grid.Column="1"/>
                 </Grid>
             </Components:FormCard>
-
+        
             <Components:FormCard Style="{StaticResource ContainerFrameStyle}">
+                
                 <StackLayout Spacing="20">
+                   
+                   
                     <Label Style="{StaticResource TitleTextStyle}"
-                           Text="Aanmeldingsformulier"
+                           Text="Aanmeldingsformulier - Persoonlijke gegevens"
                            HorizontalOptions="Start"></Label>
                     <BoxView HeightRequest="0.5"
                              BackgroundColor="{StaticResource Gray100}"

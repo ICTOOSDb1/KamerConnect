@@ -1,4 +1,6 @@
 ﻿
+using KamerConnect.View.MAUI.Views;
+
 namespace KamerConnect.View.MAUI.Pages;
 
 public partial class MainPage : ContentPage
@@ -8,8 +10,11 @@ public partial class MainPage : ContentPage
     {
         _serviceProvider = serviceProvider;
         NavigationPage.SetHasNavigationBar(this, false);
-        
+
         InitializeComponent();
+
+        var navbar = serviceProvider.GetRequiredService<Navbar>();
+        NavbarContainer.Content = navbar;
     }
 
     private async void Button_Clicked(object sender, EventArgs e)
