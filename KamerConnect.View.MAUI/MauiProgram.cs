@@ -54,6 +54,7 @@ public static class MauiProgram
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
 		builder.Services.AddTransient<Registration>();
+		builder.Services.AddTransient<HousePage>();
 
 		builder.Services.AddFilePicker();
 
