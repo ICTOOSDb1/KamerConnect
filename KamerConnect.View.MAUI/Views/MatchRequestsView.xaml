@@ -4,25 +4,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KamerConnect.View.MAUI.Views.MatchRequestsView">
     
-    <TableView Intent="Menu">
-        <TableRoot>
-            <TableSection Title="Learn how to use your XBox">
-                <ImageCell Text="1. Introduction"
-                           Detail="Learn about your XBox and its capabilities."
-                           ImageSource="dotnet_bot.png" />
-                <ImageCell Text="2. Turn it on"
-                           Detail="Learn how to turn on your XBox."
-                           ImageSource="dotnet_bot.png" />
-                <ImageCell Text="3. Connect your controller"
-                           Detail="Learn how to connect your wireless controller."
-                           ImageSource="dotnet_bot.png" />
-                <ImageCell Text="4. Launch a game"
-                           Detail="Learn how to launch a game."
-                           ImageSource="dotnet_bot.png" 
-                           BindingContext="{}"/>
-            </TableSection>
-        </TableRoot>
-    </TableView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" ></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Image Scale="0.3"
+               Source="logo.png"
+               Aspect="Center"
+               VerticalOptions="Start"
+               HorizontalOptions="Center"
+               Margin = "-100"
+               Grid.Row="0"
+               Grid.Column="0"/>
+        <Label Grid.Row="0" Grid.Column="1" Text="Straat"></Label>
+        <Label Grid.Row="0" Grid.Column="2" Text="Stad"></Label>
+        <Label Grid.Row="0" Grid.Column="3" Text="Type"></Label>
+        <Label Grid.Row="0" Grid.Column="4" Text="Prijs"></Label>
+        <Label Grid.Row="0" Grid.Column="5" Text="Accepteren"></Label>
+        
+        
+        
+    </Grid>
     
     
 </ContentView>
