@@ -1,33 +1,78 @@
 ﻿
 using KamerConnect.View.MAUI.Views;
+using KamerConnect.Models;
+using KamerConnect.Services;
+using System.Collections.ObjectModel;
 
 namespace KamerConnect.View.MAUI.Pages;
 
 public partial class MainPage : ContentPage
 {
-    private IServiceProvider _serviceProvider;
-    public MainPage(IServiceProvider serviceProvider)
+    private readonly IServiceProvider _serviceProvider;
+    private readonly AuthenticationService _authenticationService;
+    private readonly HouseService _houseService;
+    private readonly PersonService _personService;
+    private ObservableCollection<House> _houses;
+    public ObservableCollection<House> Houses
+    {
+        get => _houses;
+        set
+        {
+            if (_houses != value)
+            {
+                _houses = value;
+                OnPropertyChanged(nameof(Houses));
+            }
+        }
+    }
+
+    private Person _person;
+
+    public MainPage(IServiceProvider serviceProvider,
+        AuthenticationService authenticationService,
+        HouseService houseService,
+        PersonService personService)
     {
         _serviceProvider = serviceProvider;
+        _authenticationService = authenticationService;
+        _houseService = houseService;
+        _personService = personService;
         NavigationPage.SetHasNavigationBar(this, false);
+
+        GetCurrentPerson().GetAwaiter().GetResult();
+
+        Houses = new ObservableCollection<House>();
+        LoadHouses();
+        LoadHouses();
+        LoadHouses();
+        LoadHouses();
+
 
         InitializeComponent();
 
         var navbar = serviceProvider.GetRequiredService<Navbar>();
         NavbarContainer.Content = navbar;
+
+        BindingContext = this;
     }
 
-    private async void Button_Clicked(object sender, EventArgs e)
+    private void LoadHouses()
     {
-        await Shell.Current.GoToAsync("UpdateAccount");
+        Houses.Add(GetCurrentHouse());
     }
 
-    private async void ToAccount(object sender, EventArgs e)
+    private async Task GetCurrentPerson()
     {
-        if (Application.Current.MainPage is NavigationPage navigationPage)
+        var session = await _authenticationService.GetSession();
+        if (session != null)
         {
-            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<UpdateAccount>());
+            _person = _personService.GetPersonById(session.personId);
         }
+    }
+
+    private House GetCurrentHouse()
+    {
+        return _houseService.GetByPersonId(_person.Id);
     }
 }
 
