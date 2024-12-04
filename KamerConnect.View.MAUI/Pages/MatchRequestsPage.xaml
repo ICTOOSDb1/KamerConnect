@@ -8,7 +8,7 @@
     <ContentPage.Content>
         
         <StackLayout>
-            <views:MatchRequestsView />
+            <ContentView x:Name="MatchContainer"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
