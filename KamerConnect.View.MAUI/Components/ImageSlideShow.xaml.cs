@@ -11,9 +11,11 @@ public partial class ImageSlideShow : ContentView
     
     public List<string> Images { get; set; } = new()
     {
-        "dotnet_bot.png",
-        "logo.png",
-        "login_image.png"
+        "backjard.jpg",
+        "topview.jpg",
+        "livingroom.jpg",
+        "garden.jpg"
+        
     };
     
     private int _currentImageIndex = 0;

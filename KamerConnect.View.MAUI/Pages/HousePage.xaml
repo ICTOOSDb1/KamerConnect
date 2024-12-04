@@ -6,7 +6,10 @@
              xmlns:maui="using:KamerConnect.View.MAUI"
              x:Class="KamerConnect.View.MAUI.Pages.HousePage"
              BackgroundColor="White">
-    <ScrollView VerticalOptions="Start" VerticalScrollBarVisibility="Always" Orientation="Vertical">
+    <Grid RowDefinitions="Auto,*">
+        <ContentView x:Name="NavbarContainer"
+                     Grid.Row="0"/>
+    <ScrollView Grid.Row="1" VerticalOptions="Start" VerticalScrollBarVisibility="Never" Orientation="Vertical" Margin="50, 30">
         <Grid RowSpacing="50">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -14,16 +17,17 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Components:ImageSlideShow Grid.Column="0"></Components:ImageSlideShow>
+                
 
-
-                <Grid Grid.Column="1" RowSpacing="30">
+                <Grid Grid.Column="2" RowSpacing="30">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -146,4 +150,5 @@
             <BoxView Grid.Row="2" HeightRequest="380" BackgroundColor="Black" HorizontalOptions="FillAndExpand" />
         </Grid>
     </ScrollView>
+        </Grid>
 </ContentPage>
