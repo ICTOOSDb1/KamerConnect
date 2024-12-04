@@ -9,6 +9,7 @@ namespace KamerConnect.Models
         public Guid Id { get; set; }
         public double MinBudget { get; set; }
         public double MaxBudget { get; set; }
+        public string City { get; set; }
         public double SurfaceArea { get; set; }
         public HouseType Type { get; set; }
         public int Residents { get; set; }
@@ -17,11 +18,12 @@ namespace KamerConnect.Models
         public PreferenceChoice Interior { get; set; }
         public PreferenceChoice Parking { get; set; }
 
-        public HousePreferences(double minBudget, double maxBudget, double surfaceArea, HouseType type, int residents, PreferenceChoice smoking, PreferenceChoice pet, PreferenceChoice interior, PreferenceChoice parking, Guid id)
+        public HousePreferences(double minBudget, double maxBudget, string city, double surfaceArea, HouseType type, int residents, PreferenceChoice smoking, PreferenceChoice pet, PreferenceChoice interior, PreferenceChoice parking, Guid id)
         {
             Id = id;
             MinBudget = minBudget;
             MaxBudget = maxBudget;
+            City = city;
             SurfaceArea = surfaceArea;
             Type = type;
             Residents = residents;

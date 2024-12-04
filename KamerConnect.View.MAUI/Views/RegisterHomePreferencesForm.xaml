@@ -12,9 +12,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -52,7 +53,16 @@
                                   InputType="Number"
                                   IsRequired="True"/>
                 
-                <VerticalStackLayout Grid.Row="3" Grid.Column="1" Spacing="5">
+                <Components:Entry LabelText="Stad om in te wonen"
+                                  x:Name="CityInput"
+                                  Placeholder="Zwolle" 
+                                  Text="{Binding City, Mode=TwoWay}"
+                                  Grid.Row="3" 
+                                  Grid.Column="1" 
+                                  InputType="Text"
+                                  IsRequired="True"/>
+                
+                <VerticalStackLayout Grid.Row="4" Grid.Column="1" Spacing="5">
                     <Label Text="Type woning" 
                            FontSize="14"
                            VerticalOptions="Center" />
@@ -88,13 +98,13 @@
             <Components:Entry LabelText="Hoeveelheid kamergenoten"
                    x:Name="ResidentsInput"
                    Text="{Binding Residents, Mode=TwoWay}"
-                   Grid.Row="4" 
+                   Grid.Row="5" 
                    Grid.Column="1" 
                     InputType="Number"
                    IsRequired="True"
                    />
                 
-                <VerticalStackLayout Grid.Row="5" Grid.Column="1" Spacing="5">
+                <VerticalStackLayout Grid.Row="6" Grid.Column="1" Spacing="5">
                     <Label Text="Roken in huis" 
                            FontSize="14"
                            VerticalOptions="Center" />
@@ -127,7 +137,7 @@
                     </Frame>
                 </VerticalStackLayout>
                 
-                <VerticalStackLayout Grid.Row="6" Grid.Column="1" Spacing="5">
+                <VerticalStackLayout Grid.Row="7" Grid.Column="1" Spacing="5">
                     <Label Text="Huisdieren in huis?" 
                            FontSize="14"
                            VerticalOptions="Center" />
@@ -160,7 +170,7 @@
                     </Frame>
                 </VerticalStackLayout>
                 
-                <VerticalStackLayout Grid.Row="7" Grid.Column="1" Spacing="5">
+                <VerticalStackLayout Grid.Row="8" Grid.Column="1" Spacing="5">
                     <Label Text="Moet er een fietsenstalling bij het huis zijn?" 
                            FontSize="14"
                            VerticalOptions="Center" />
@@ -193,7 +203,7 @@
                     </Frame>
                 </VerticalStackLayout>
                 
-                <VerticalStackLayout Grid.Row="8" Grid.Column="1" Spacing="5">
+                <VerticalStackLayout Grid.Row="9" Grid.Column="1" Spacing="5">
                     <Label Text="Wilt u meubilair inbregrepen?" 
                            FontSize="14"
                            VerticalOptions="Center" />

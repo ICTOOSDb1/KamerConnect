@@ -26,6 +26,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                     SET type = @Type::house_type,
                         min_price = @MinPrice,
                         max_price = @MaxPrice,
+                        city = @City,
                         surface = @Surface,
                         residents = @Residents,
                         smoking = @Smoking::preference_choice,
@@ -38,6 +39,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                 updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
                 updateCommand.Parameters.AddWithValue("@MinPrice", housePreferences.MinBudget);
                 updateCommand.Parameters.AddWithValue("@MaxPrice", housePreferences.MaxBudget);
+                updateCommand.Parameters.AddWithValue("@City", housePreferences.City);
                 updateCommand.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea);
                 updateCommand.Parameters.AddWithValue("@Residents", housePreferences.Residents);
                 updateCommand.Parameters.AddWithValue("@Smoking", housePreferences.Smoking.ToString());
@@ -60,7 +62,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
 
             using (var command = new NpgsqlCommand(
                        """
-                   SELECT hp.min_price, hp.max_price, hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id
+                   SELECT hp.min_price, hp.max_price, hp.city, hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id
                    FROM house_preferences hp
                    INNER JOIN person p ON p.house_preferences_id = hp.id
                    WHERE p.id = @PersonId;
@@ -75,14 +77,15 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                         return new HousePreferences(
                             reader.GetDouble(0),
                             reader.GetDouble(1),
-                            reader.GetDouble(2),
-                            EnumUtils.Validate<HouseType>(reader.GetString(3)),
-                            reader.GetInt32(4),
-                            EnumUtils.Validate<PreferenceChoice>(reader.GetString(5)),
+                            reader.GetString(2),
+                            reader.GetDouble(3),
+                            EnumUtils.Validate<HouseType>(reader.GetString(4)),
+                            reader.GetInt32(5),
                             EnumUtils.Validate<PreferenceChoice>(reader.GetString(6)),
                             EnumUtils.Validate<PreferenceChoice>(reader.GetString(7)),
                             EnumUtils.Validate<PreferenceChoice>(reader.GetString(8)),
-                            reader.GetGuid(9)
+                            EnumUtils.Validate<PreferenceChoice>(reader.GetString(9)),
+                            reader.GetGuid(10)
                         );
                     }
                 }
@@ -100,11 +103,12 @@ public class HousePreferenceRepository : IHousePreferenceRepository
             connection.Open();
             using (var command = new NpgsqlCommand(
                        """
-                        INSERT INTO house_preferences (id, type, min_price, max_price, surface, residents, smoking, pet, interior, parking)
+                        INSERT INTO house_preferences (id, type, min_price, max_price, city, surface, residents, smoking, pet, interior, parking)
                         VALUES (@Id::uuid, 
                                 @Type::house_type, 
                                 @MinPrice, 
                                 @MaxPrice, 
+                                @City,
                                 @Surface, 
                                 @Residents, 
                                 @Smoking::Preference_choice,
@@ -119,6 +123,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                 command.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
                 command.Parameters.AddWithValue("@MinPrice", housePreferences.MinBudget);
                 command.Parameters.AddWithValue("@MaxPrice", housePreferences.MaxBudget);
+                command.Parameters.AddWithValue("@City", housePreferences.City);
                 command.Parameters.AddWithValue("@Surface", housePreferences.SurfaceArea);
                 command.Parameters.AddWithValue("@Residents", housePreferences.Residents);
                 command.Parameters.AddWithValue("@Smoking", housePreferences.Smoking.ToString());
