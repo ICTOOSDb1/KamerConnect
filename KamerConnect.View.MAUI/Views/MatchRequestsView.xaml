@@ -2,7 +2,24 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+
+
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Views.MatchRequestsView">
+    
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="ContentView">
+                <Setter Property="BackgroundColor" Value="#F9FBFD" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="Arial"/>
+                <Setter Property="TextColor"
+                        Value="{StaticResource TextColor}"/>
+            </Style>
+            
+        </ResourceDictionary>
+    </ContentView.Resources>
     
     <Grid x:Name="MatchRequests">
        
@@ -15,13 +32,17 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
-        <Label Grid.Row="0" Grid.Column="1" Text="Straat" HorizontalOptions="Center" VerticalOptions="Center"  ></Label>
+        <!--<Label Grid.Row="0" Grid.Column="1" Text="Straat" HorizontalOptions="Center" VerticalOptions="Center"  ></Label>-->
         <Label Grid.Row="0" Grid.Column="2" Text="Stad" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
         <Label Grid.Row="0" Grid.Column="3" Text="Type" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
         <Label Grid.Row="0" Grid.Column="4" Text="Prijs" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
         <Label Grid.Row="0" Grid.Column="5" Text="MatchRequest status" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
         
-        
+        <Image Grid.Row="0" Grid.Column="1" 
+               Source="sort.svg" 
+               Aspect="AspectFit"
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" />
         
     </Grid>
     
