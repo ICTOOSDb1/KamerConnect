@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace KamerConnect.Models;
 
 public class Person
@@ -43,7 +45,10 @@ public enum Role
 }
 public enum Gender
 {
+    [Description("man")]
     Male,
+    [Description("vrouw")]
     Female,
+    [Description("overig")]
     Other
 }
