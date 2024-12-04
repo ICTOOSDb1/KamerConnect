@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS house_preferences (
 	type house_type,
     min_price DECIMAL(10, 2),
 	max_price DECIMAL(10, 2),
+    city TEXT,
     surface DECIMAL(10, 2),
     residents INT,
     smoking preference_choice,

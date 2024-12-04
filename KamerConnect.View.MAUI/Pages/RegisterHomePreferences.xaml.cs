@@ -40,6 +40,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
             HousePreferences preferences = new HousePreferences(
                 double.Parse(homePreferencesForm.MinBudget),
                 double.Parse(homePreferencesForm.MaxBudget),
+                homePreferencesForm.City,
                 double.Parse(homePreferencesForm.Area),
                 homePreferencesForm.Type,
                 int.Parse(homePreferencesForm.Residents),

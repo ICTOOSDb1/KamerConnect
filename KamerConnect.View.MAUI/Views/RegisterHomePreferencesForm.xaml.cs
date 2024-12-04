@@ -12,6 +12,7 @@ public partial class RegisterHomePreferencesForm : ContentView
     private HousePreferences? _housePreferences; 
     public string MinBudget => MinBudgetInput.Text ?? string.Empty;
     public string MaxBudget => MaxBudgetInput.Text ?? string.Empty;
+    public string City => CityInput.Text ?? string.Empty;
     public string Area => AreaInput.Text ?? string.Empty;
     public string Residents => ResidentsInput.Text ?? string.Empty;
     public HouseType Type =>  _housePreferences?.Type ?? HouseTypeChanged();
