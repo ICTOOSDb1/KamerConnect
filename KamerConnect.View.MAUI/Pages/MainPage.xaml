@@ -15,7 +15,7 @@
                     VerticalScrollBarVisibility="Never"
                     HorizontalScrollBarVisibility="Never">
             <VerticalStackLayout Padding="10">
-                <Label Text="Welkom op de hoofdpagina!"
+                <Label Text="Welkoop de hoofdpagina!"
                        FontSize="24"
                        HorizontalOptions="Center"
                        VerticalOptions="CenterAndExpand"/>
