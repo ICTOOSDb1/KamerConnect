@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KamerConnect.Extensions;
+
 using KamerConnect.Models;
 using KamerConnect.Services;
+using KamerConnect.Utils;
 using KamerConnect.View.MAUI.Views;
 
 
@@ -20,11 +21,10 @@ public partial class ProfilePage : ContentPage
     private IServiceProvider _serviceProvider;
     private Person _person;
     
-    // private readonly FileService _fileService;
 
     public ProfilePage(FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider)
     {
-        // _fileService = fileService;
+    
         _serviceProvider = serviceProvider;
         NavigationPage.SetHasNavigationBar(this, false);
 
@@ -52,27 +52,20 @@ public partial class ProfilePage : ContentPage
     {
         string profileImageUrl = _person.ProfilePicturePath != null
             ? _fileService.GetFilePath(_bucketName, _person.ProfilePicturePath)
-            : "camera.jpg";
-        string name = $"{_person.FirstName} {_person.MiddleName} {_person.Surname}";
-        string phone = _person.PhoneNumber;
-        string email = _person.Email;
-        string gender = _person.Gender.GetEnumDescription();
-        string school = _person.Personality.School;
-        string course = _person.Personality.Study;
-        string description = _person.Personality.Description;
+            : "geenProfiel.png";
+        
         string motivation = "Deze prachtige instapklare woning biedt alles wat u zoekt: ...";
         
         
-
-        // Assign Data
         ProfileImage.Source = profileImageUrl;
-        NameLabel.Text = name;
-        PhoneLabel.Text = $"{phone}";
-        EmailLabel.Text = $"{email}";
-        GenderLabel.Text = $"{gender}";
-        SchoolLabel.Text = $"{school}";
-        CourseLabel.Text = $"{course}";
-        DescriptionLabel.Text = description;
+        NameLabel.Text = $"{_person.FirstName} {_person.MiddleName} {_person.Surname}";
+        PhoneLabel.Text = _person.PhoneNumber;
+        EmailLabel.Text = _person.Email;
+        GenderLabel.Text = _person.Gender.GetEnumDescription();
+        BirthLabel.Text = _person.BirthDate.ToShortDateString();
+        SchoolLabel.Text = _person.Personality.School;
+        CourseLabel.Text = _person.Personality.Study;
+        DescriptionLabel.Text =_person.Personality.Description;
         MotivationLabel.Text = motivation;
     }
 }

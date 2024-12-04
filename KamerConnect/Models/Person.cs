@@ -45,10 +45,10 @@ public enum Role
 }
 public enum Gender
 {
-    [Description("man")]
+    [Description("Man")]
     Male,
-    [Description("vrouw")]
+    [Description("Vrouw")]
     Female,
-    [Description("overig")]
+    [Description("Overig")]
     Other
 }
