@@ -53,7 +53,7 @@ public partial class ProfilePage : ContentPage
         NameLabel.Text = $"{_person.FirstName} {_person.MiddleName} {_person.Surname}";
         PhoneLabel.Text = _person.PhoneNumber;
         EmailLabel.Text = _person.Email;
-        GenderLabel.Text = _person.Gender.GetEnumDescription();
+        GenderLabel.Text = _person.Gender.GetDisplayName();
         BirthLabel.Text = _person.BirthDate.ToShortDateString();
         SchoolLabel.Text = _person.Personality.School;
         CourseLabel.Text = _person.Personality.Study;
