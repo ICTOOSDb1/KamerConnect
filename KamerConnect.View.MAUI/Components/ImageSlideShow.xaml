@@ -8,12 +8,17 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-        <Image Grid.Row="0"
+        <Border Grid.Row="0"
+                Stroke="Transparent"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 15" >
+        <Image 
                x:Name="MainImage"
             Source="login_image.png"
             HeightRequest="550"
             HorizontalOptions="Fill" 
             Aspect="AspectFill"/>
+        </Border>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

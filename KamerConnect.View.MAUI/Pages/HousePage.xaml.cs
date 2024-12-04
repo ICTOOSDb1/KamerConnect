@@ -1,4 +1,5 @@
 ﻿using KamerConnect.Exceptions;
+using KamerConnect.View.MAUI.Views;
 
 namespace KamerConnect.View.MAUI.Pages;
 
@@ -13,5 +14,8 @@ public partial class HousePage : ContentPage
         NavigationPage.SetHasNavigationBar(this, false);
         
         InitializeComponent();
+        
+        var navbar = serviceProvider.GetRequiredService<Navbar>();
+        NavbarContainer.Content = navbar;
     }
 }
