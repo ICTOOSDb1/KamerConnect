@@ -29,7 +29,6 @@ public partial class MatchRequestsView : ContentView
         _authenticationService = authenticationService;
         _personService = personService;
         GetCurrentPerson().GetAwaiter().GetResult();
-        InitializeComponent();
         GetMatchRequests();
         AddLegend();
     }
@@ -44,7 +43,7 @@ public partial class MatchRequestsView : ContentView
 
     public void GetMatchRequests()
     {
-        _matchService.GetMatchesById(_person.)
+
         for (int i = 1; i < 6; i++)
         {
             var border = new Border
