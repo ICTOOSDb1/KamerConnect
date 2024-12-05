@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KamerConnect.Models;
 using Microsoft.Maui.Controls.Shapes;
 using CommunityToolkit.Maui;
+using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -33,6 +34,15 @@ public partial class MatchRequestsView : ContentView
             BackgroundColor = Colors.Transparent,
         };
         MatchRequests.Add(statusImage, 3, 2);
+        
+        
+        DisplayStatus(2, Role.Seeking, MatchRequestStatus.Accepted);
+        
+        DisplayStatus(4, Role.Offering, MatchRequestStatus.Rejected);
+        DisplayStatus(3, Role.Offering, MatchRequestStatus.Accepted);
+        
+        
+        DisplayStatus(1, Role.Seeking, MatchRequestStatus.Pending);
     }
 
     public void GetMatchRequests()
@@ -57,10 +67,19 @@ public partial class MatchRequestsView : ContentView
                     HorizontalOptions = LayoutOptions.Center
                 }
             };
+            var separator = new BoxView
+            {
+                HeightRequest = 1,
+                BackgroundColor = Colors.Gray,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.End
+            };
             var label1 = new Label {Text = $"Label {i} 2", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label2 = new Label {Text = $"Label {i} 3", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label3 = new Label {Text = $"Label {i} 4", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
+            MatchRequests.Add(separator, 0, i);
+            Grid.SetColumnSpan(separator, 6);
             MatchRequests.Add(border, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
@@ -91,11 +110,24 @@ public partial class MatchRequestsView : ContentView
                 VerticalOptions = LayoutOptions.Center
             }, i + 1, 0);*/
         }
+        var separator = new BoxView
+        {
+            HeightRequest = 1,
+            BackgroundColor = Colors.Gray,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.End
+        };
+        MatchRequests.Add(separator, 0, 0);
+        Grid.SetColumnSpan(separator, 6);
     }
 
     public void DisplayStatus(int row, Role role, MatchRequestStatus status)
     {
-        var statusLabel = new Label();
+        var statusLabel = new Label
+        {
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        };
         var statusImage = new Image
         {
             Scale = 0.3,
@@ -124,19 +156,19 @@ public partial class MatchRequestsView : ContentView
             {
                 case MatchRequestStatus.Accepted:
                     statusLabel.Text = "Geaccepteerd";
-                    statusImage.Source = "circleAccepted.png";
+                    statusImage.Source = "circleaccepted.png";
                     break;
                 case MatchRequestStatus.Pending:
                     statusLabel.Text = "In behandeling";
-                    statusImage.Source = "circlePending.png";
+                    statusImage.Source = "circlepending.png";
                     break;
                 case MatchRequestStatus.Rejected:
                     statusLabel.Text = "Geweigerd";
-                    statusImage.Source = "circleRejected.png";
+                    statusImage.Source = "circlerejected.png";
                     break;
             }
         }
-        MatchRequests.Add(statusImage, 6, row + 1);
-        MatchRequests.Add(statusImage, 6, row + 1);
+        MatchRequests.Add(statusImage, 5, row + 1);
+        MatchRequests.Add(statusLabel, 5, row + 1);
     }
 }
