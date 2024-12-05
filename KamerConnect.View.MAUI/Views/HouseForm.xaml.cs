@@ -33,7 +33,7 @@ public partial class HouseForm : ContentView
         }
     }
 
-    public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
+    public HouseType Type;
 
     public HouseForm(FileService fileService, HouseService houseService,
         Person person)
@@ -42,17 +42,20 @@ public partial class HouseForm : ContentView
         _houseService = houseService;
         _person = person;
         houseImages = new ObservableCollection<HouseImage>();
-
+        
+      
         GetCurrentHouse();
         InitializeComponent();
         BindingContext = this;
+        
+        HouseTypePicker.SelectedItem = _house?.Type.GetDisplayName() ?? "Huis";
     }
 
     private void GetCurrentHouse()
     {
         House = _houseService.GetByPersonId(_person.Id);
 
-        House.HouseImages.ForEach(houseImages.Add);
+        House?.HouseImages?.ForEach(houseImages.Add);
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
@@ -126,8 +129,7 @@ public partial class HouseForm : ContentView
         int residents = int.Parse(residentsEntry.Text);
         string description = descriptionEntry.Text;
 
-        HouseType houseType;
-        houseType = PickerOptions.TranslateHouseType(Type);
+        HouseType houseType = Type;
 
         if (House == null)
         {
@@ -167,6 +169,22 @@ public partial class HouseForm : ContentView
         }
 
         await Application.Current?.MainPage?.DisplayAlert("Huis opgeslagen", "Succesvol opgeslagen!", "Ga verder");
+    }
+    
+    private async void HouseTypeChanged(object sender, EventArgs e)
+    {
+        switch ($"{HouseTypePicker.SelectedItem}")
+        {
+            case "Appartement":
+                Type = HouseType.Apartment;
+                break;
+            case "Huis":
+                Type = HouseType.House;
+                break;
+            case "Studio":
+                Type = HouseType.Studio;
+                break;
+        }
     }
 
 }

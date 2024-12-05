@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace KamerConnect.Models;
 
 public class House
@@ -37,7 +39,10 @@ public class House
 
 public enum HouseType
 {
+    [Display(Name = "Appartement")]
     Apartment,
+    [Display(Name = "Huis")]
     House,
+    [Display(Name = "Studio")]
     Studio
 }

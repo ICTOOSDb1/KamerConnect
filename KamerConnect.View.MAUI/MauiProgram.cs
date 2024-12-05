@@ -42,15 +42,17 @@ public static class MauiProgram
 		builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
 		builder.Services.AddSingleton<HouseService>(sp => new HouseService(new HouseRepository()));
 		builder.Services.AddSingleton<HousePreferenceService>(sp => new HousePreferenceService(new HousePreferenceRepository()));
-
+		
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();
 		builder.Services.AddTransient<UpdateAccount>();
 		builder.Services.AddTransient<RegisterHomePreferencesPage>();
 		builder.Services.AddTransient<UpdateAccountsForm>();
+		builder.Services.AddTransient<Navbar>();
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
 		builder.Services.AddTransient<Registration>();
+		builder.Services.AddTransient<ProfilePage>();
 
 		builder.Services.AddFilePicker();
 

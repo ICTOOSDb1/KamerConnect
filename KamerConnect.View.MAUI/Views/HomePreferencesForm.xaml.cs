@@ -9,8 +9,8 @@ public partial class HomePreferencesForm : ContentView
     private readonly HousePreferenceService _housePreferenceService;
     private Person? _currentPerson;
     private HousePreferences? _housePreferences;
-    private PickerOptions.DutchHouseType houseTypePreference;
-    public PickerOptions.DutchHouseType HouseTypePreference
+    private HouseType houseTypePreference;
+    public HouseType HouseTypePreference
     {
         get => houseTypePreference;
         set
@@ -25,10 +25,7 @@ public partial class HomePreferencesForm : ContentView
         _currentPerson = person;
         _housePreferenceService = housePreferenceService;
         _housePreferences = _housePreferenceService.GetHousePreferences(person.Id);
-        if (_housePreferences != null)
-        {
-            HouseTypePreference = PickerOptions.TranslateHouseType(_housePreferences.Type);
-        }
+       
         BindingContext = _housePreferences;
         InitializeComponent();
     }
@@ -37,19 +34,19 @@ public partial class HomePreferencesForm : ContentView
     {
         if (!ValidateForm()) return;
 
-        CheckIfHomeTypeIsPicked(_currentPerson);
+        //CheckIfHomeTypeIsPicked(_currentPerson);
         _housePreferenceService.UpdateHousePreferences(_housePreferences);
         await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
 
-    public void CheckIfHomeTypeIsPicked(Person person)
-    {
-        var selectedOption = HometypePicker.SelectedItem?.ToString();
-        if (Enum.TryParse(selectedOption, true, out HouseType houseType))
-        {
-            _housePreferences.Type = houseType;
-        }
-    }
+    // public void CheckIfHomeTypeIsPicked(Person person)
+    // {
+    //     var selectedOption = SelectedItem?.ToString();
+    //     if (Enum.TryParse(selectedOption, true, out HouseType houseType))
+    //     {
+    //         _housePreferences.Type = houseType;
+    //     }
+    // }
 
     public bool ValidateForm()
     {

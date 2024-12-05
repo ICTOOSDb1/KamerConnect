@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using KamerConnect.Models;
 using KamerConnect.Services;
 using KamerConnect.Utils;
@@ -12,17 +13,23 @@ public partial class RegisterHomePreferencesForm : ContentView
     public string MinBudget => MinBudgetInput.Text ?? string.Empty;
     public string MaxBudget => MaxBudgetInput.Text ?? string.Empty;
     public string Area => AreaInput.Text ?? string.Empty;
-    public PickerOptions.DutchHouseType Type => (PickerOptions.DutchHouseType)housetypePicker.SelectedValue;
     public string Residents => ResidentsInput.Text ?? string.Empty;
-    public PreferenceChoice SmokingPreference => PreferenceChoiceTypeChanged(SmokersPicker);
-    public PreferenceChoice PetPreference => PreferenceChoiceTypeChanged(PetPicker);
-    public PreferenceChoice InteriorPreference => PreferenceChoiceTypeChanged(InteriorPicker);
-    public PreferenceChoice ParkingPreference => PreferenceChoiceTypeChanged(ParkingPicker);
+    public HouseType Type =>  _housePreferences?.Type ?? HouseTypeChanged();
+    public PreferenceChoice SmokingPreference => _housePreferences?.Smoking ?? PreferenceChoiceTypeChanged(SmokingTypePicker);
+    public PreferenceChoice PetPreference => _housePreferences?.Pet ?? PreferenceChoiceTypeChanged(PetTypePicker);
+    public PreferenceChoice InteriorPreference => _housePreferences?.Interior ?? PreferenceChoiceTypeChanged(InteriorTypePicker);
+    public PreferenceChoice ParkingPreference => _housePreferences?.Parking ?? PreferenceChoiceTypeChanged(ParkingTypePicker);
 
     public RegisterHomePreferencesForm()
 	{
 		InitializeComponent();
-	}
+        
+        SmokingTypePicker.SelectedItem = "Geen voorkeur";
+        PetTypePicker.SelectedItem = "Geen voorkeur";
+        InteriorTypePicker.SelectedItem = "Geen voorkeur";
+        ParkingTypePicker.SelectedItem = "Geen voorkeur";
+        HouseTypePicker.SelectedItem = "Appartement";
+    }
     public RegisterHomePreferencesForm(HousePreferenceService housePreferenceService, Person person)
     {
         _currentPerson = person;
@@ -30,7 +37,12 @@ public partial class RegisterHomePreferencesForm : ContentView
         _housePreferences = _housePreferenceService.GetHousePreferences(person.Id);
         BindingContext = _housePreferences;
         InitializeComponent();
-
+        
+        SmokingTypePicker.SelectedItem = _housePreferences?.Smoking.GetDisplayName();
+        PetTypePicker.SelectedItem = _housePreferences?.Pet.GetDisplayName();
+        InteriorTypePicker.SelectedItem = _housePreferences?.Interior.GetDisplayName();
+        ParkingTypePicker.SelectedItem = _housePreferences?.Parking.GetDisplayName();
+        HouseTypePicker.SelectedItem = _housePreferences?.Type.GetDisplayName();
     }
 
     private PreferenceChoice PreferenceChoiceTypeChanged(Picker picker)
@@ -42,10 +54,10 @@ public partial class RegisterHomePreferencesForm : ContentView
             case "Nee":
                 return PreferenceChoice.No; 
             case "Geen voorkeur":
-                return PreferenceChoice.No_Preferences; 
+                return PreferenceChoice.No_preference; 
         }
 
-        return PreferenceChoice.No;
+        return PreferenceChoice.No_preference;
     }
     public async void Button_Update_house_preferences()
     {
@@ -65,5 +77,20 @@ public partial class RegisterHomePreferencesForm : ContentView
                (MaxBudgetInput?.IsValid ?? true) &&
                (AreaInput?.IsValid ?? true) &&
                (ResidentsInput?.IsValid ?? true);
+    }
+    
+    private  HouseType HouseTypeChanged()
+    {
+        switch ($"{HouseTypePicker.SelectedItem}")
+        {
+            case "Appartement":
+                return HouseType.Apartment;
+            case "Huis":
+                return HouseType.House;
+            case "Studio":
+                return HouseType.Studio;
+        }
+
+        return HouseType.Apartment;
     }
 }

@@ -6,131 +6,162 @@
 			 xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
 			 x:Class="KamerConnect.View.MAUI.Views.HouseForm">
 	<ScrollView>
-		
-			<Grid RowSpacing="20">
+
+		<Grid RowSpacing="20">
 			<Grid.RowDefinitions>
-				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-				<RowDefinition />
-				
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+				<RowDefinition/>
+
 			</Grid.RowDefinitions>
-				<Grid ColumnSpacing="20" 
-				      Grid.Row="0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="150"/>
-						<ColumnDefinition Width="100"/>
-					</Grid.ColumnDefinitions>
+			<Grid ColumnSpacing="20"
+				  Grid.Row="0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="150"/>
+					<ColumnDefinition Width="100"/>
+				</Grid.ColumnDefinitions>
 
-					<Components:Entry LabelText="Straat"
-									  Grid.Column="0"
-									  x:Name="streetEntry"
-									  Text="{Binding House.Street}"
-									  IsRequired="True"/>
-					<Components:Entry LabelText="Huisnummer"
-									  Grid.Column="1"
-									  x:Name="houseNumberEntry"
-									  Text="{Binding House.HouseNumber}"
-									  IsRequired="True"/>
-					<Components:Entry LabelText="Toevoeging"
-									  Grid.Column="2"
-									  x:Name="additionEntry"
-									  Text="{Binding House.HouseNumberAddition}"/>
-				</Grid>
-
-				<Grid ColumnSpacing="20" 
-				      Grid.Row="1">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="250"/>
-					</Grid.ColumnDefinitions>
-
-					<Components:Entry LabelText="Stad"
-									  Grid.Column="0"
-									  x:Name="cityEntry"
-									  Text="{Binding House.City}"
-									  IsRequired="True"/>
-					<Components:Entry LabelText="Postcode"
-									  Grid.Column="1"
-									  x:Name="postalCodeEntry"
-									  InputType="PostalCode"
-									  Text="{Binding House.PostalCode}"
-									  IsRequired="True"/>
-				</Grid>
-
-				<Grid ColumnSpacing="20"  
-				      Grid.Row="2">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-						<ColumnDefinition Width="*"/>
-					</Grid.ColumnDefinitions>
-
-					<Components:Entry LabelText="Prijs per maand"
-									  InputType="Decimal"
-									  Grid.Column="0"
-									  x:Name="priceEntry"
-									  Text="{Binding House.Price}"
-									  IsRequired="True"/>
-					<Components:Entry LabelText="Oppervlak"
-									  InputType="Number"
-									  Grid.Column="1"
-									  x:Name="surfaceEntry"
-									  Text="{Binding House.Surface}"
-									  IsRequired="True"/>
-					<Components:Entry LabelText="Bewoners"
-									  InputType="Number"
-									  Grid.Column="2"
-									  x:Name="residentsEntry"
-									  Text="{Binding House.Residents}"
-									  IsRequired="True"/>
-				</Grid>
-
-				<Components:TextEditor LabelText="Beschrijving"
-									   x:Name="descriptionEntry"
-									   Text="{Binding House.Description}"
-									   Grid.Row="3"
-									   />
-
-				<StackLayout Spacing="10"  
-				             Grid.Row="4">
-					<Components:EnumPicker
-						x:Name="housetypePicker"
-						Title="Type woning*"
-						EnumType="{x:Type models:PickerOptions+DutchHouseType}"/>
-				</StackLayout>
-
-				<Button Text="Kies foto's"
-						Style="{StaticResource SecondaryButton}"
-						Clicked="OnPickFilesClicked"
-						Grid.Row="5"/>
-
-				<CollectionView ItemsSource="{Binding houseImages}"
-				                Grid.Row="6">
-					<CollectionView.ItemTemplate>
-						<DataTemplate>
-							<StackLayout Orientation="Vertical"
-										 Spacing="10">
-								<Image Source="{Binding FullPath}"
-									   WidthRequest="300"
-									   HeightRequest="300"
-									   Aspect="AspectFill"/>
-								<Button Text="Verwijderen"
-										Style="{StaticResource SecondaryButton}"
-										CommandParameter="{Binding .}"
-										Clicked="OnRemoveFileClicked"/>
-							</StackLayout>
-						</DataTemplate>
-					</CollectionView.ItemTemplate>
-				</CollectionView>
-
-
+				<Components:Entry LabelText="Straat"
+								  Grid.Column="0"
+								  x:Name="streetEntry"
+								  Text="{Binding House.Street}"
+								  IsRequired="True"/>
+				<Components:Entry LabelText="Huisnummer"
+								  Grid.Column="1"
+								  x:Name="houseNumberEntry"
+								  Text="{Binding House.HouseNumber}"
+								  IsRequired="True"/>
+				<Components:Entry LabelText="Toevoeging"
+								  Grid.Column="2"
+								  x:Name="additionEntry"
+								  Text="{Binding House.HouseNumberAddition}"/>
 			</Grid>
-		
+
+			<Grid ColumnSpacing="20"
+				  Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="250"/>
+				</Grid.ColumnDefinitions>
+
+				<Components:Entry LabelText="Stad"
+								  Grid.Column="0"
+								  x:Name="cityEntry"
+								  Text="{Binding House.City}"
+								  IsRequired="True"/>
+				<Components:Entry LabelText="Postcode"
+								  Grid.Column="1"
+								  x:Name="postalCodeEntry"
+								  InputType="PostalCode"
+								  Text="{Binding House.PostalCode}"
+								  IsRequired="True"/>
+				
+			</Grid>
+			
+			<VerticalStackLayout Grid.Row="2" Spacing="5">
+				<Label Text="Type woning" 
+				       FontSize="14"
+				       VerticalOptions="Center" />
+        
+				<Frame Style="{StaticResource EntryFrameStyle}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<Picker x:Name="HouseTypePicker"
+						        SelectedIndexChanged="HouseTypeChanged"
+						        HorizontalOptions="FillAndExpand"
+						        BackgroundColor="Transparent"
+						        TextColor="Black" >
+							<Picker.Items>
+								<x:String>Appartement</x:String>
+								<x:String>Huis</x:String>
+								<x:String>Studio</x:String>
+							</Picker.Items>
+						</Picker>
+						<Image Source="sort_down.png"
+						       Grid.Column="1"
+						       VerticalOptions="Center"
+						       HorizontalOptions="End"
+						       Margin="0,0,10,0"
+						       WidthRequest="20"
+						       HeightRequest="20" />
+					</Grid>
+				</Frame>
+			</VerticalStackLayout>
+
+			<Grid ColumnSpacing="20"
+				  Grid.Row="3">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				
+
+				<Components:Entry LabelText="Prijs per maand"
+								  InputType="Decimal"
+								  Grid.Row="5" Grid.Column="0"
+								  x:Name="priceEntry"
+								  Text="{Binding House.Price}"
+								  IsRequired="True"/>
+				<Components:Entry LabelText="Oppervlak"
+								  InputType="Number"
+								  Grid.Row="5" Grid.Column="1"
+								  x:Name="surfaceEntry"
+								  Text="{Binding House.Surface}"
+								  IsRequired="True"/>
+				<Components:Entry LabelText="Bewoners"
+								  InputType="Number"
+								  Grid.Row="5" Grid.Column="2"
+								  x:Name="residentsEntry"
+								  Text="{Binding House.Residents}"
+								  IsRequired="True"/>
+			</Grid>
+			<Components:TextEditor LabelText="Beschrijving"
+								   x:Name="descriptionEntry"
+								   Text="{Binding House.Description}"
+								   Grid.Row="4"/>
+
+			<Button Text="Kies foto's"
+					Style="{StaticResource SecondaryButton}"
+					Clicked="OnPickFilesClicked"
+					Grid.Row="5"/>
+
+			<CollectionView ItemsSource="{Binding houseImages}"
+							Grid.Row="6">
+				<CollectionView.ItemTemplate>
+					<DataTemplate>
+						<StackLayout Orientation="Vertical"
+									 Spacing="10">
+							<Image Source="{Binding FullPath}"
+								   WidthRequest="300"
+								   HeightRequest="300"
+								   Aspect="AspectFill"/>
+							<Button Text="Verwijderen"
+									Style="{StaticResource SecondaryButton}"
+									CommandParameter="{Binding .}"
+									Clicked="OnRemoveFileClicked"/>
+						</StackLayout>
+					</DataTemplate>
+				</CollectionView.ItemTemplate>
+			</CollectionView>
+		</Grid>
 	</ScrollView>
 </ContentView>
