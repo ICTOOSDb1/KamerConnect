@@ -27,9 +27,9 @@ public class MatchService
         _matchRepository.AddMatch(match);
     }
 
-    public void UpdateMatch(Match match)
+    public void UpdateMatch(Match match, status status)
     {
-        _matchRepository.UpdateMatch(match);
+        _matchRepository.UpdateMatch(match , status);
     }
 
     public void DeleteMatch(Match match)

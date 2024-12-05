@@ -56,7 +56,7 @@ public class MatchRepository : IMatchRepository
             using (var command = new NpgsqlCommand("""
                                                    SELECT *
                                                    FROM matchrequests
-                                                   WHERE house_id = @id::uuid or person_id = @id::uuid
+                                                   WHERE (house_id = @id::uuid or person_id = @id::uuid) and status = 'Pending'
                                                    """, 
                        connection))
             {
@@ -87,9 +87,52 @@ public class MatchRepository : IMatchRepository
         throw new NotImplementedException();
     }
 
-    public void UpdateMatch(Match match)
+    public void UpdateMatch(Match match , status status)
     {
-        throw new NotImplementedException();
+        if (match.matchId == Guid.Empty)
+            throw new ArgumentException("MatchId must not be null for update.");
+        
+        try
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+        
+                string updateQuery = @"
+            UPDATE matchrequests
+            SET status = @status::matchrequest_status
+            WHERE id = @id";
+
+                using (var command = new NpgsqlCommand(updateQuery, connection))
+                {
+                    // Set the parameters, converting the enum to its string representation
+                    command.Parameters.AddWithValue("@status", status.ToString());
+                    command.Parameters.AddWithValue("@id", match.matchId);
+            
+                    try
+                    {
+                        // Execute the command
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle the error (e.g., log it)
+                        Console.WriteLine($"Error updating match request status: {ex.Message}");
+                    }
+                }
+            }
+        }
+        catch (NpgsqlException e)
+        {
+            Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
+            throw;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error occurred while updating Match: {e.Message}");
+            throw;
+        }
+        
     }
 
     public void DeleteMatch(Match match)

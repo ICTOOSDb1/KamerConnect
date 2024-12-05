@@ -94,7 +94,7 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(label4, 4, i);
             var tapGestureRecognizer = new TapGestureRecognizer
             {
-                CommandParameter = person
+                CommandParameter = matches[i-1]
             };
             tapGestureRecognizer.Tapped += ToProfile_OnTapped;
 
@@ -123,12 +123,12 @@ public partial class MatchRequestsView : ContentView
     }
     private async void ToProfile_OnTapped(object? sender, TappedEventArgs e)
     {
-        if (e.Parameter is Person person)
+        if (e.Parameter is Match match)
         {
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {
                 var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
-                profilePage.BindingContext = person;
+                profilePage.BindingContext = match;
                 await navigationPage.Navigation.PushAsync(profilePage);
             }
         }

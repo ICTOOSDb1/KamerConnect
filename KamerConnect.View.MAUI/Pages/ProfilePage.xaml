@@ -2,16 +2,11 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converters="clr-namespace:KamerConnect.Utils.Converters;assembly=KamerConnect"
+         
              x:Class="KamerConnect.View.MAUI.Pages.ProfilePage"
              BackgroundColor="{StaticResource BackgroundColor}">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <converters:FileServiceConverter x:Key="FileServiceConverter" />
-            <converters:GenderDisplayNameConverter x:Key="GenderDisplayNameConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
+    
     <Grid RowDefinitions="Auto,Auto, Auto, Auto, Auto, *">
         <ContentView x:Name="NavbarContainer"
                      Grid.Row="0" />
@@ -19,43 +14,43 @@
         <Grid ColumnDefinitions="350 , *" RowDefinitions="350" RowSpacing="10" Grid.Row="1" Margin="50,30,50,0">
             <Frame Grid.Column="0" CornerRadius="25" HeightRequest="300" WidthRequest="300" VerticalOptions="Start"
                    HorizontalOptions="Start" BackgroundColor="Transparent" BorderColor="Transparent">
-                <Image x:Name="ProfileImage" Source="{Binding ProfilePicturePath, Converter={StaticResource FileServiceConverter}, ConverterParameter={StaticResource BucketName}}" />
+                <Image x:Name="ProfileImage" />
             </Frame>
             <StackLayout Grid.Column="1">
 
-                <Label x:Name="NameLabel" FontSize="24" Text="{Binding FirstName}"></Label>
+                <Label x:Name="NameLabel" FontSize="24"></Label>
                 <Grid ColumnDefinitions="auto,50,auto,*" RowDefinitions="*,*,*,*" RowSpacing="50">
                     <VerticalStackLayout Grid.Row="0" Grid.Column="0">
                         <Label Text="Telefoonnummer" FontSize="12" TextColor="Gray" />
-                        <Label FontSize="16" TextColor="Black" Text="{Binding PhoneNumber}" />
+                        <Label x:Name="PhoneLabel" FontSize="16" TextColor="Black"  />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Row="1" Grid.Column="0">
                         <Label Text="Email" FontSize="12" TextColor="Gray" />
-                        <Label FontSize="16" TextColor="Black" Text="{Binding Email}" />
+                        <Label x:Name="EmailLabel" FontSize="16" TextColor="Black" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Row="0" Grid.Column="2">
                         <Label Text="Geslacht" FontSize="12" TextColor="Gray" />
-                        <Label FontSize="16" TextColor="Black" Text="{Binding Gender, Converter={StaticResource GenderDisplayNameConverter}}" />
+                        <Label x:Name="GenderLabel" FontSize="16" TextColor="Black"  />
                     </VerticalStackLayout>
-
                     <VerticalStackLayout Grid.Row="1" Grid.Column="2">
                         <Label Text="geboorte datum" FontSize="12" TextColor="Gray"></Label>
-                        <Label FontSize="16" TextColor="Black" Text="{Binding BirthDate, StringFormat='{0:dd-MM-yyyy}'}"></Label>
+                        <Label x:Name="BirthLabel" FontSize="16" TextColor="Black"></Label>
                     </VerticalStackLayout>
 
                     <!-- Second Row -->
                     <VerticalStackLayout Grid.Row="2" Grid.Column="0">
                         <Label Text="School" FontSize="12" TextColor="Gray" />
-                        <Label FontSize="16" TextColor="Black" Text="{Binding Personality.School}" />
+                        <Label x:Name="SchoolLabel" FontSize="16" TextColor="Black" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Row="2" Grid.Column="2">
                         <Label Text="Opleiding" FontSize="12" TextColor="Gray" />
-                        <Label FontSize="16" TextColor="Black" Text="{Binding Personality.Study}" />
+                        <Label x:Name="CourseLabel" FontSize="16" TextColor="Black" />
                     </VerticalStackLayout>
                     <HorizontalStackLayout Grid.Row="3" Grid.Column="3" HorizontalOptions="End">
+                        <VerticalStackLayout>
                         <Button x:Name="RejectButton"
                                 Text="Afwijzen"
                                 BackgroundColor="Red"
@@ -63,16 +58,24 @@
                                 CornerRadius="20"
                                 WidthRequest="120"
                                 HeightRequest="40"
-                                HorizontalOptions="End" />
+                                HorizontalOptions="End"
+                                Clicked="RejectButton_OnClicked"/>
+                        <Label x:Name="RejectLabel" IsVisible="False"  Text="Afgewezen" FontSize="16"></Label>
+                        </VerticalStackLayout>
+                        
+                        <VerticalStackLayout>
+                            <Button x:Name="AcceptButton"
+                                    Text="Accepteren"
+                                    BackgroundColor="Green"
+                                    TextColor="White"
+                                    CornerRadius="20"
+                                    WidthRequest="120"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    Clicked="AcceptButton_OnClicked"/>
+                            <Label x:Name="AcceptLabel" IsVisible="False" Text="Geaccepteerd" FontSize="16"></Label>
+                        </VerticalStackLayout>
 
-                        <Button x:Name="AcceptButton"
-                                Text="Accepteren"
-                                BackgroundColor="Green"
-                                TextColor="White"
-                                CornerRadius="20"
-                                WidthRequest="120"
-                                HeightRequest="40"
-                                HorizontalOptions="End" />
                     </HorizontalStackLayout>
                 </Grid>
 
@@ -84,7 +87,7 @@
             <Grid ColumnDefinitions="*, 75, *" Margin="50, 25" >
                 <StackLayout Grid.Column="0">
                     <Label Text="Omschrijving" FontSize="20" FontAttributes="Bold" TextColor="Black" />
-                    <Label x:Name="DescriptionLabel" TextColor="Gray" FontSize="14" Text="{Binding Personality.Description}" />
+                    <Label x:Name="DescriptionLabel" TextColor="Gray" FontSize="14" />
                 </StackLayout>
 
                 <!-- Motivation Section -->
