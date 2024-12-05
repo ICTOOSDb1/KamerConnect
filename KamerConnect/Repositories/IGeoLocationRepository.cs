@@ -1,9 +1,10 @@
 using System;
 using KamerConnect.Models;
+using NetTopologySuite.Geometries;
 
 namespace KamerConnect.Repositories;
 
 public interface IGeoLocationRepository
 {
-    Task<string> GetGeoCode(string search);
+    Task<Point> GetGeoCode(string search);
 }

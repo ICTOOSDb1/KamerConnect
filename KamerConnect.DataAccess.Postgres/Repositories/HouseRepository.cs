@@ -13,52 +13,61 @@ public class HouseRepository : IHouseRepository
 
     private Guid CreateHouseRecord(House house, NpgsqlConnection connection)
     {
-        using (var command = new NpgsqlCommand($"""
-                                                INSERT INTO house (
-                                                    type,
-                                                    price,
-                                                    description,
-                                                    surface,
-                                                    residents,
-                                                    city,
-                                                    street,
-                                                    postal_code,
-                                                    house_number,
-                                                    house_number_addition
-                                                )
-                                                VALUES (
-                                                    @type::house_type,
-                                                    @price,
-                                                    @description,
-                                                    @surface,
-                                                    @residents,
-                                                    @city,
-                                                    @street,
-                                                    @postalCode,
-                                                    @houseNumber,
-                                                    @houseNumberAddition,
-                                                    ST_SetSRID(ST_MakePoint(@x, @y), 4326)
-                                                ) RETURNING id;
-                                                """, connection))
+        try
         {
-            command.Parameters.AddWithValue("@type", house.Type.ToString());
-            command.Parameters.AddWithValue("@price", house.Price);
-            command.Parameters.AddWithValue("@description", (object)house.Description ?? DBNull.Value);
-            command.Parameters.AddWithValue("@surface", (object)house.Surface ?? DBNull.Value);
-            command.Parameters.AddWithValue("@residents", house.Residents);
-            command.Parameters.AddWithValue("@city", house.City);
-            command.Parameters.AddWithValue("@street", house.Street);
-            command.Parameters.AddWithValue("@postalCode", house.PostalCode);
-            command.Parameters.AddWithValue("@houseNumber", house.HouseNumber);
-            command.Parameters.AddWithValue("@houseNumberAddition", house.HouseNumberAddition);
-            command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
-            command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
+            using (var command = new NpgsqlCommand($"""
+                                                    INSERT INTO house (
+                                                        type,
+                                                        price,
+                                                        description,
+                                                        surface,
+                                                        residents,
+                                                        city,
+                                                        street,
+                                                        postal_code,
+                                                        house_number,
+                                                        house_number_addition,
+                                                        house_geolocation
+                                                    )
+                                                    VALUES (
+                                                        @type::house_type,
+                                                        @price,
+                                                        @description,
+                                                        @surface,
+                                                        @residents,
+                                                        @city,
+                                                        @street,
+                                                        @postalCode,
+                                                        @houseNumber,
+                                                        @houseNumberAddition,
+                                                        ST_SetSRID(ST_MakePoint(@x, @y), 4326)
+                                                    ) RETURNING id;
+                                                    """, connection))
+            {
+                command.Parameters.AddWithValue("@type", house.Type.ToString());
+                command.Parameters.AddWithValue("@price", house.Price);
+                command.Parameters.AddWithValue("@description", (object)house.Description ?? DBNull.Value);
+                command.Parameters.AddWithValue("@surface", (object)house.Surface ?? DBNull.Value);
+                command.Parameters.AddWithValue("@residents", house.Residents);
+                command.Parameters.AddWithValue("@city", house.City);
+                command.Parameters.AddWithValue("@street", house.Street);
+                command.Parameters.AddWithValue("@postalCode", house.PostalCode);
+                command.Parameters.AddWithValue("@houseNumber", house.HouseNumber);
+                command.Parameters.AddWithValue("@houseNumberAddition", house.HouseNumberAddition);
+                command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
+                command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
 
-            var houseId = command.ExecuteScalar() as Guid?;
-            if (!houseId.HasValue)
-                throw new InvalidOperationException("Failed to retrieve the ID of the created house.");
+                var houseId = command.ExecuteScalar() as Guid?;
+                if (!houseId.HasValue)
+                    throw new InvalidOperationException("Failed to retrieve the ID of the created house.");
 
-            return houseId.Value;
+                return houseId.Value;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 

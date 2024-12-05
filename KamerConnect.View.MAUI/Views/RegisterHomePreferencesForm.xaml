@@ -55,7 +55,6 @@
                 
                 <Components:Entry LabelText="Stad om in te wonen"
                                   x:Name="CityInput"
-                                  Placeholder="Zwolle" 
                                   Text="{Binding City, Mode=TwoWay}"
                                   Grid.Row="3" 
                                   Grid.Column="1" 

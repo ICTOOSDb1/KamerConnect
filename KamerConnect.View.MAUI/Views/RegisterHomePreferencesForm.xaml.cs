@@ -73,10 +73,12 @@ public partial class RegisterHomePreferencesForm : ContentView
         MaxBudgetInput?.Validate();
         AreaInput?.Validate();
         ResidentsInput?.Validate();
+        CityInput?.Validate();
         
         return (MinBudgetInput?.IsValid ?? true) &&
                (MaxBudgetInput?.IsValid ?? true) &&
                (AreaInput?.IsValid ?? true) &&
+               (CityInput?.IsValid ?? true) &&
                (ResidentsInput?.IsValid ?? true);
     }
     

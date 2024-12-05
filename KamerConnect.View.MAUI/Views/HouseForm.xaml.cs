@@ -11,6 +11,7 @@ public partial class HouseForm : ContentView
     private const string bucketName = "house";
     private readonly FileService _fileService;
     private readonly HouseService _houseService;
+    private readonly GeoLocationService _geoLocationService;
     private readonly Person _person;
     private House? _house;
     public House? House
@@ -36,11 +37,13 @@ public partial class HouseForm : ContentView
     public HouseType Type;
 
     public HouseForm(FileService fileService, HouseService houseService,
-        Person person)
+        Person person, GeoLocationService geoLocationService)
     {
         _fileService = fileService;
         _houseService = houseService;
+        _geoLocationService = geoLocationService;
         _person = person;
+        
         houseImages = new ObservableCollection<HouseImage>();
         
       
@@ -118,7 +121,7 @@ public partial class HouseForm : ContentView
     public async void OnPublish()
     {
         if (!ValidateForm()) return;
-
+        
         string street = streetEntry.Text;
         int houseNumber = int.Parse(houseNumberEntry.Text);
         string addition = additionEntry.Text;
@@ -128,9 +131,9 @@ public partial class HouseForm : ContentView
         int surface = int.Parse(surfaceEntry.Text);
         int residents = int.Parse(residentsEntry.Text);
         string description = descriptionEntry.Text;
-
+        
         HouseType houseType = Type;
-
+        
         if (House == null)
         {
             _houseService.Create(new House(
@@ -145,6 +148,7 @@ public partial class HouseForm : ContentView
                     postalCode,
                     houseNumber,
                     addition,
+                    await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
                     houseImages.ToList()
                 ),
                 _person.Id
@@ -164,10 +168,11 @@ public partial class HouseForm : ContentView
                 postalCode,
                 houseNumber,
                 addition,
+                await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
                 houseImages.ToList()
             ));
         }
-
+        
         await Application.Current?.MainPage?.DisplayAlert("Huis opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
     

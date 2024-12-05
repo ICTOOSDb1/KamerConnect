@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using KamerConnect.DataAccess.GeoLocation.Repositories;
+using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.DataAccess.Minio;
-using KamerConnect.DataAccess.GeoLocation.Repositories;
 using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;

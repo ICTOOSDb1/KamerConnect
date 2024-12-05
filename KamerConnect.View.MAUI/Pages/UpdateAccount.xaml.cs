@@ -11,10 +11,11 @@ namespace KamerConnect.View.MAUI.Pages
         private readonly PersonService _personService;
         private readonly AuthenticationService _authenticationService;
         private readonly HousePreferenceService _housePreferenceService;
+        private readonly GeoLocationService _geoLocationService;
         private Person _person;
 
         public UpdateAccount(FileService fileService, HouseService houseService, HousePreferenceService housePreferenceService,
-            AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider)
+            AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, GeoLocationService geoLocationService)
         {
             NavigationPage.SetHasNavigationBar(this, false);
 
@@ -25,6 +26,7 @@ namespace KamerConnect.View.MAUI.Pages
             _authenticationService = authenticationService;
             _personService = personService;
             _housePreferenceService = housePreferenceService;
+            _geoLocationService = geoLocationService;
 
             GetCurrentPerson().GetAwaiter().GetResult();
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
@@ -70,7 +72,7 @@ namespace KamerConnect.View.MAUI.Pages
         private void House(object sender, EventArgs e)
         {
             SetButtonStyles(HouseButton);
-            FormsContainer.Content = new HouseForm(_fileService, _houseService, _person);
+            FormsContainer.Content = new HouseForm(_fileService, _houseService, _person,  _geoLocationService);
         }
 
         private void Button_Update(object sender, EventArgs e)

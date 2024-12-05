@@ -33,20 +33,10 @@ public partial class HomePreferencesForm : ContentView
     private async void Button_Update_house_preferences(object sender, EventArgs e)
     {
         if (!ValidateForm()) return;
-
-        //CheckIfHomeTypeIsPicked(_currentPerson);
+        ;
         _housePreferenceService.UpdateHousePreferences(_housePreferences);
         await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
-
-    // public void CheckIfHomeTypeIsPicked(Person person)
-    // {
-    //     var selectedOption = SelectedItem?.ToString();
-    //     if (Enum.TryParse(selectedOption, true, out HouseType houseType))
-    //     {
-    //         _housePreferences.Type = houseType;
-    //     }
-    // }
 
     public bool ValidateForm()
     {

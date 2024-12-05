@@ -1,4 +1,5 @@
 using KamerConnect.Repositories;
+using NetTopologySuite.Geometries;
 
 namespace KamerConnect.Services;
 
@@ -11,7 +12,7 @@ public class GeoLocationService
         _geoLocationRepository = geoLocationRepository;
     }
 
-    public async Task<string> GetGeoCode(string search)
+    public async Task<Point> GetGeoCode(string search)
     {
         return await _geoLocationRepository.GetGeoCode(search);
     }
