@@ -82,10 +82,10 @@ public partial class MatchRequestsView : ContentView
                     HorizontalOptions = LayoutOptions.Center
                 }
             };
-            var label1 = new Label { Text = person.FirstName, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label { Text = person.Personality.School, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label { Text = person.Personality.Study, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label4 = new Label { Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var FirstNameLabel = new Label { Text = person.FirstName, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var SchoolLabel = new Label { Text = person.Personality.School, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var StudyLabel = new Label { Text = person.Personality.Study, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var BirthLabel = new Label { Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var horizontalstack = new HorizontalStackLayout{ HorizontalOptions = LayoutOptions.Center };
             Button rejectButton = new Button
             {
@@ -119,10 +119,10 @@ public partial class MatchRequestsView : ContentView
             
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(border, 0, i);
-            MatchRequests.Add(label1, 1, i);
-            MatchRequests.Add(label2, 2, i);
-            MatchRequests.Add(label3, 3, i);
-            MatchRequests.Add(label4, 4, i);
+            MatchRequests.Add(FirstNameLabel, 1, i);
+            MatchRequests.Add(SchoolLabel, 2, i);
+            MatchRequests.Add(StudyLabel, 3, i);
+            MatchRequests.Add(BirthLabel, 4, i);
             MatchRequests.Add(horizontalstack, 5, i);
             var tapGestureRecognizer = new TapGestureRecognizer
             {
