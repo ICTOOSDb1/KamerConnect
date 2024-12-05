@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls.Shapes;
-using KamerConnect.Services;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -13,14 +12,12 @@ public partial class MatchRequestsView : ContentView
     
     public MatchRequestsView()
     {
-        _currentMatchService = matchService;
         InitializeComponent();
         GetMatchRequests();
         AddLegend();
-        PlaceMatchRequests();
     }
 
-    public void PlaceMatchRequests()
+    public void GetMatchRequests()
     {
         for (int i = 1; i < 6; i++)
         {
@@ -34,9 +31,14 @@ public partial class MatchRequestsView : ContentView
                 },
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
-                Margin = new Thickness(-100)
+                Content = new Image
+                {
+                    Source = "logo.png",
+                    Aspect = Aspect.AspectFit, 
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center
+                }
             };
-
             var label1 = new Label { Text = $"Label {i} 2", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label2 = new Label { Text = $"Label {i} 3", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label3 = new Label { Text = $"Label {i} 4", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
