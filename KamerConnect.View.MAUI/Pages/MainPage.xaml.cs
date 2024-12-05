@@ -40,13 +40,7 @@ public partial class MainPage : ContentPage
         NavigationPage.SetHasNavigationBar(this, false);
 
         GetCurrentPerson().GetAwaiter().GetResult();
-
-        Houses = new ObservableCollection<House>();
         LoadHouses();
-        LoadHouses();
-        LoadHouses();
-        LoadHouses();
-
 
         InitializeComponent();
 
@@ -58,7 +52,7 @@ public partial class MainPage : ContentPage
 
     private void LoadHouses()
     {
-        Houses.Add(GetCurrentHouse());
+        Houses = new ObservableCollection<House>(_houseService.GetAll());
     }
 
     private async Task GetCurrentPerson()
