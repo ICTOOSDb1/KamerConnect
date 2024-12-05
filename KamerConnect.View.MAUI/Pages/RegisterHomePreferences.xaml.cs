@@ -2,6 +2,7 @@ using KamerConnect.Models;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 
+
 namespace KamerConnect.View.MAUI;
 
 public partial class RegisterHomePreferencesPage : ContentPage

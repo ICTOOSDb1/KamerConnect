@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS house (
     street text NOT NULL,
     postal_code text NOT NULL,
     house_number int NOT NULL,
-    house_number_addition text NOT NULL
+    house_number_addition text NOT NULL,
+    house_geolocation GEOMETRY(Point, 4326) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS house_preferences (
     id UUID PRIMARY KEY default gen_random_uuid(),
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS house_preferences (
     min_price DECIMAL(10, 2),
 	max_price DECIMAL(10, 2),
     city TEXT,
+    city_geolocation GEOMETRY(Point, 4326),
     surface DECIMAL(10, 2),
     residents INT,
     smoking preference_choice,

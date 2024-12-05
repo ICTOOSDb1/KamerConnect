@@ -1,6 +1,7 @@
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
+using NetTopologySuite.Geometries;
 using Npgsql;
 
 namespace KamerConnect.DataAccess.Postgres.Repositories;
@@ -78,6 +79,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                             reader.GetDouble(0),
                             reader.GetDouble(1),
                             reader.GetString(2),
+                            reader.GetFieldValue<Geometry>(1) as Point,
                             reader.GetDouble(3),
                             EnumUtils.Validate<HouseType>(reader.GetString(4)),
                             reader.GetInt32(5),
