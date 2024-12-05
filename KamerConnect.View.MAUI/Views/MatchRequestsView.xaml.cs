@@ -3,48 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KamerConnect.Models;
-using KamerConnect.Services;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace KamerConnect.View.MAUI.Views;
 
 public partial class MatchRequestsView : ContentView
 {
-    private readonly FileService _fileService;
-    private readonly MatchService _matchService;
-    private readonly PersonService _personService;
-    private readonly AuthenticationService _authenticationService;
-    private const string _bucketName = "profilepictures";
-    private IServiceProvider _serviceProvider;
-    private Person _person;
     
-    public MatchRequestsView(FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
+    public MatchRequestsView()
     {
-        _serviceProvider = serviceProvider;
-        NavigationPage.SetHasNavigationBar(this, false);
-        InitializeComponent();
-        _fileService = fileService;
-        _matchService = matchService;
-        _authenticationService = authenticationService;
-        _personService = personService;
-        GetCurrentPerson().GetAwaiter().GetResult();
         InitializeComponent();
         GetMatchRequests();
         AddLegend();
     }
-    private async Task GetCurrentPerson()
-    {
-        var session = await _authenticationService.GetSession();
-        if (session != null)
-        {
-            _person = _personService.GetPersonById(session.personId);
-        }
-    }
 
     public void GetMatchRequests()
     {
-        _matchService.GetMatchesById(_person.)
         for (int i = 1; i < 6; i++)
         {
             var border = new Border
@@ -59,9 +33,7 @@ public partial class MatchRequestsView : ContentView
                 HorizontalOptions = LayoutOptions.Center,
                 Content = new Image
                 {
-                    Source = _person.ProfilePicturePath != null
-                        ? _fileService.GetFilePath(_bucketName, _person.ProfilePicturePath)
-                        : "geenProfiel.png",
+                    Source = "logo.png",
                     Aspect = Aspect.AspectFit, 
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center
