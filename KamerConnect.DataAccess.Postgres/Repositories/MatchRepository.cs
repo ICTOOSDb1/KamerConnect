@@ -8,16 +8,16 @@ namespace KamerConnect.DataAccess.Postgres.Repositories;
 
 public class MatchRepository : IMatchRepository
 {
-    private readonly string connectionString;
+    private readonly string _connectionString;
 
     public MatchRepository()
     {
-        connectionString = EnvironmentUtils.GetConnectionString();
+        _connectionString = EnvironmentUtils.GetConnectionString();
     }
     
-    public Match[]? GetMatchesByHouseId(Guid Houseid)
+    public List<Match>? GetMatchesById(Guid Id)
     {
-        using (var connection = new NpgsqlConnection(connectionString))
+        using (var connection = new NpgsqlConnection(_connectionString))
         {
             connection.Open();
 
@@ -28,7 +28,7 @@ public class MatchRepository : IMatchRepository
                                                    """, 
                        connection))
             {
-                command.Parameters.AddWithValue("@id", Houseid);
+                command.Parameters.AddWithValue("@id", Id);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -43,7 +43,7 @@ public class MatchRepository : IMatchRepository
                         }
                     }
 
-                    return matches.Count > 0 ? matches.ToArray() : null;
+                    return matches.Count > 0 ? matches : null;
                 }
             }
         }
@@ -52,12 +52,9 @@ public class MatchRepository : IMatchRepository
     
     public void UpdateMatch(Match match , status status)
     {
-        if (match.matchId == Guid.Empty)
-            throw new ArgumentException("MatchId must not be null for update.");
-        
         try
         {
-            using (var connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
         
@@ -68,18 +65,15 @@ public class MatchRepository : IMatchRepository
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
-                    // Set the parameters, converting the enum to its string representation
                     command.Parameters.AddWithValue("@status", status.ToString());
                     command.Parameters.AddWithValue("@id", match.matchId);
             
                     try
                     {
-                        // Execute the command
                         command.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
-                        // Handle the error (e.g., log it)
                         Console.WriteLine($"Error updating match request status: {ex.Message}");
                     }
                 }
@@ -88,11 +82,6 @@ public class MatchRepository : IMatchRepository
         catch (NpgsqlException e)
         {
             Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error occurred while updating Match: {e.Message}");
             throw;
         }
         
@@ -106,7 +95,7 @@ public class MatchRepository : IMatchRepository
             reader.GetGuid(1),
             reader.GetGuid(2),
             EnumUtils.Validate<status>(reader.GetString(3)),
-            "test"
+            "Placeholder motivation"
         );
     return match;
     }

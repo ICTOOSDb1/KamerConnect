@@ -14,9 +14,9 @@ public class MatchService
 
  
 
-    public Match[]? GetMatchesByHouseId(Guid houseId)
+    public List<Match>? GetMatchesById(Guid Id)
     {
-        return _matchRepository.GetMatchesByHouseId(houseId);
+        return _matchRepository.GetMatchesById(Id);
     }
     
 

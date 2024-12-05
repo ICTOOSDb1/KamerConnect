@@ -54,11 +54,11 @@ public partial class MatchRequestsView : ContentView
 
     public void GetMatchRequestsOffering()
     {
-        Match[] matches;
+        List<Match> matches;
         House house = _houseService.GetByPersonId(_person.Id);
-        matches =_matchService.GetMatchesByHouseId(house.Id);
+        matches =_matchService.GetMatchesById(house.Id);
         
-        for (int i = 1; i < matches.Length+1 ; i++)
+        for (int i = 1; i < matches.Count+1 ; i++)
         {
 
             Person person = _personService.GetPersonById(matches[i-1].personId);
