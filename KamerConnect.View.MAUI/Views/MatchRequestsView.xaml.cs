@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KamerConnect.Models;
 using KamerConnect.Services;
+using KamerConnect.View.MAUI.Pages;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace KamerConnect.View.MAUI.Views;
@@ -91,20 +92,20 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
             MatchRequests.Add(label4, 4, i);
+            var tapGestureRecognizer = new TapGestureRecognizer
+            {
+                CommandParameter = person
+            };
+            tapGestureRecognizer.Tapped += ToProfile_OnTapped;
+
+            // Add the TapGestureRecognizer to the border element
+            border.GestureRecognizers.Add(tapGestureRecognizer);
         }
         AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
     }
 
     public void AddLegend(string label1, string label2, string label3, string label4)
     {
-        /*var image = new Image
-        {   Scale = 0.3,
-            Source = "arrowupdown.png",
-            Aspect = Aspect.Center,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center
-        };*/
-        
         var columns = new List<Label>
         {
             new Label { Text = label1, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
@@ -117,15 +118,21 @@ public partial class MatchRequestsView : ContentView
         for (int i = 0; i < columns.Count; i++)
         {
             MatchRequests.Add(columns[i], i + 1, 0);
-            MatchRequests.Add(new Image
-            {
-                Scale = 0.3,
-                Source = "arrowupdown.png",
-                Aspect = Aspect.AspectFit,
-                HorizontalOptions = LayoutOptions.End,
-                VerticalOptions = LayoutOptions.Center
-            }, i + 1, 0);
+            
         }
     }
+    private async void ToProfile_OnTapped(object? sender, TappedEventArgs e)
+    {
+        if (e.Parameter is Person person)
+        {
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
+                profilePage.BindingContext = person;
+                await navigationPage.Navigation.PushAsync(profilePage);
+            }
+        }
+    }
+
 
 }
