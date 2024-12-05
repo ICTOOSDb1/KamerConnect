@@ -16,7 +16,7 @@ public partial class Navbar : ContentView
 	{
 		if (Application.Current.MainPage is NavigationPage navigationPage)
 		{
-			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<ProfilePage>());
+			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
 		}
 	}
 
