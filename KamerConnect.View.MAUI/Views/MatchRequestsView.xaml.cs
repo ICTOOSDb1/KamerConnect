@@ -86,12 +86,44 @@ public partial class MatchRequestsView : ContentView
             var label2 = new Label { Text = person.Personality.School, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label3 = new Label { Text = person.Personality.Study, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label4 = new Label { Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var horizontalstack = new HorizontalStackLayout{ HorizontalOptions = LayoutOptions.Center };
+            Button rejectButton = new Button
+            {
+                Text = "✖",
+                BackgroundColor = Color.FromRgb(255,0,0),
+                TextColor = Color.FromRgb(255, 255, 255),
+                CornerRadius = 20,
+                WidthRequest = 20,
+                HeightRequest = 20,
+                HorizontalOptions = LayoutOptions.End,
+                CommandParameter = matches[i - 1]
+                
+            };
+            horizontalstack.Add(rejectButton);
+            rejectButton.Clicked += RejectButton_OnClicked;
+             
+            
+            Button acceptButton = new Button
+            {
+                Text = "✔",
+                BackgroundColor = Color.FromRgb(0,255,0),
+                TextColor = Color.FromRgb(255, 255, 255),
+                CornerRadius = 20,
+                WidthRequest = 20,
+                HeightRequest = 20,
+                HorizontalOptions = LayoutOptions.End,
+                CommandParameter = matches[i - 1]
+            };
+            horizontalstack.Add(acceptButton);
+            acceptButton.Clicked += AcceptButton_OnClicked;
+            
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(border, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
             MatchRequests.Add(label4, 4, i);
+            MatchRequests.Add(horizontalstack, 5, i);
             var tapGestureRecognizer = new TapGestureRecognizer
             {
                 CommandParameter = matches[i-1]
@@ -102,6 +134,7 @@ public partial class MatchRequestsView : ContentView
             border.GestureRecognizers.Add(tapGestureRecognizer);
         }
         AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+        
     }
 
     public void AddLegend(string label1, string label2, string label3, string label4)
@@ -121,6 +154,23 @@ public partial class MatchRequestsView : ContentView
             
         }
     }
+    private void AcceptButton_OnClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is Match match)
+        {
+            _matchService.UpdateMatch(match, status.Accepted);
+            RefreshPage();
+        }
+    }
+
+    private void RejectButton_OnClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is Match match)
+        {
+            _matchService.UpdateMatch(match, status.Rejected);
+            RefreshPage();
+        }
+    }
     private async void ToProfile_OnTapped(object? sender, TappedEventArgs e)
     {
         if (e.Parameter is Match match)
@@ -134,5 +184,11 @@ public partial class MatchRequestsView : ContentView
         }
     }
 
-
+    private async void RefreshPage()
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+        }
+    }
 }
