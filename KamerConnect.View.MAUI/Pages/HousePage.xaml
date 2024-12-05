@@ -24,7 +24,7 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Components:ImageSlideShow Grid.Column="0"></Components:ImageSlideShow>
+                <Components:ImageSlideShow x:Name="ImageSlideShow" Grid.Column="0" />
                 
 
                 <Grid Grid.Column="2" RowSpacing="30">
@@ -37,27 +37,31 @@
 
                     <VerticalStackLayout Grid.Row="0">
                         <HorizontalStackLayout>
-                            <Label Text="Liguster 14"
+                            <Label x:Name="StreetLabel"
+                                Text="Liguster 14"
                                    FontFamily="InterMedium"
                                    FontSize="36"
                                    VerticalTextAlignment="End" />
-                            <Label Text=" Coevorden"
-                                   FontFamily="InterRegular"
-                                   FontSize="20"
-                                   VerticalTextAlignment="End" />
-                            <Label Text=" 7742SP"
-                                   FontFamily="InterBold"
-                                   FontSize="16"
-                                   VerticalTextAlignment="End" />
+                            <Label  x:Name="CityLabel" 
+                                    Text=" Coevorden"
+                                    FontFamily="InterRegular"
+                                    FontSize="20"
+                                    VerticalTextAlignment="End" />
+                            <Label  x:Name="PostalcodeLabel"
+                                    Text=" 7742SP"
+                                    FontFamily="InterBold"
+                                    FontSize="16"
+                                    VerticalTextAlignment="End" />
                         </HorizontalStackLayout>
                         <HorizontalStackLayout>
                             <Label Text="van"
                                    FontFamily="InterSemiBold"
                                    FontSize="16" />
-                            <Label Text=" Niek van den Berg"
-                                   FontFamily="InterRegular"
-                                   FontSize="16"
-                                   TextColor="{StaticResource Primary}" />
+                            <Label  x:Name="FullnameLabel"
+                                    Text=" Niek van den Berg"
+                                    FontFamily="InterRegular"
+                                    FontSize="16"
+                                    TextColor="{StaticResource Primary}" />
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
 
@@ -85,6 +89,7 @@
                                 FontSize="10"
                                 TextColor="#999999" />
                             <Label
+                                x:Name="MonthlyPriceLabel"
                                 Text="€ 100,00"
                                 FontFamily="InterRegular"
                                 FontSize="16" />
@@ -96,10 +101,10 @@
                                 FontFamily="InterLight"
                                 FontSize="10"
                                 TextColor="#999999" />
-                            <Label
-                                Text="50m²"
-                                FontFamily="InterRegular"
-                                FontSize="16" />
+                            <Label  x:Name="SurfaceLabel"
+                                    Text="50m²"
+                                    FontFamily="InterRegular"
+                                    FontSize="16" />
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="1" Grid.Column="1">
@@ -108,10 +113,10 @@
                                 FontFamily="InterLight"
                                 FontSize="10"
                                 TextColor="#999999" />
-                            <Label
-                                Text="4"
-                                FontFamily="InterRegular"
-                                FontSize="16" />
+                            <Label  x:Name="ResidentsLabel"
+                                    Text="4"
+                                    FontFamily="InterRegular"
+                                    FontSize="16" />
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="3" Grid.Column="1">
@@ -120,10 +125,10 @@
                                 FontFamily="InterLight"
                                 FontSize="10"
                                 TextColor="#999999" />
-                            <Label
-                                Text="Appartement"
-                                FontFamily="InterRegular"
-                                FontSize="16" />
+                            <Label  x:Name="HouseTypeLabel"
+                                    Text="Appartement"
+                                    FontFamily="InterRegular"
+                                    FontSize="16" />
                         </VerticalStackLayout>
 
                     </Grid>
@@ -135,13 +140,13 @@
                             Text="Beschrijving"
                             FontFamily="InterSemiBold"
                             FontSize="20" />
-                        <Label
-                            Text="Deze prachtige instapklare woning biedt alles wat u zoekt: een ruime en lichte woonkamer met grote ramen die zorgen voor veel natuurlijk licht, een moderne keuken met hoogwaardige inbouwapparatuur en voldoende opbergruimte, en meerdere royale slaapkamers die ideaal zijn voor een gezin of een thuiskantoor. De luxe badkamer is van alle gemakken voorzien en straalt comfort uit. De woning beschikt daarnaast over een zonnige tuin, perfect om te ontspannen of te genieten van gezellige momenten met familie en vrienden. Gelegen in een gewilde en rustige buurt, dichtbij scholen, winkels, openbaar vervoer en andere voorzieningen, is dit huis de ideale plek om thuis te komen. Mis deze kans niet en plan snel een bezichtiging!"
-                            FontFamily="InterLight"
-                            FontSize="16"
-                            LineBreakMode="WordWrap"
-                            HorizontalOptions="FillAndExpand"
-                            VerticalOptions="Start" />
+                        <Label  x:Name="DescriptionLabel"
+                                Text="Deze prachtige instapklare woning biedt alles wat u zoekt: een ruime en lichte woonkamer met grote ramen die zorgen voor veel natuurlijk licht, een moderne keuken met hoogwaardige inbouwapparatuur en voldoende opbergruimte, en meerdere royale slaapkamers die ideaal zijn voor een gezin of een thuiskantoor. De luxe badkamer is van alle gemakken voorzien en straalt comfort uit. De woning beschikt daarnaast over een zonnige tuin, perfect om te ontspannen of te genieten van gezellige momenten met familie en vrienden. Gelegen in een gewilde en rustige buurt, dichtbij scholen, winkels, openbaar vervoer en andere voorzieningen, is dit huis de ideale plek om thuis te komen. Mis deze kans niet en plan snel een bezichtiging!"
+                                FontFamily="InterLight"
+                                FontSize="16"
+                                LineBreakMode="WordWrap"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="Start" />
                     </VerticalStackLayout>
                 </Grid>
             </Grid>
