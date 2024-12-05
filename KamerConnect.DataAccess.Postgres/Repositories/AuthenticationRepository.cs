@@ -74,7 +74,7 @@ public class AuthenticationRepository : IAuthenticationRepository
         {
             connection.Open();
             using (var command = new NpgsqlCommand(
-                       "SELECT * FROM session LIMIT 1", connection))
+                       "SELECT * FROM session WHERE sessiontoken = @sessiontoken;", connection))
             {
                 command.Parameters.AddWithValue("@sessiontoken", localSessionToken);
 
