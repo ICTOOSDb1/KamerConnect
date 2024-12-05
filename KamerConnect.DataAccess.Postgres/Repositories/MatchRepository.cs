@@ -14,39 +14,7 @@ public class MatchRepository : IMatchRepository
     {
         connectionString = EnvironmentUtils.GetConnectionString();
     }
-
-    public Match? GetMatchById(Guid id)
-    {
-        {
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (var command =
-                       new NpgsqlCommand("""
-                                         SELECT *
-                                         FROM matchrequests
-                                         WHERE person_id = @id::uuid;
-
-                                         """,
-                           connection))
-                {
-                    command.Parameters.AddWithValue("@id", id);
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            return readToMatch(reader);
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-    }
-
+    
     public Match[]? GetMatchesByHouseId(Guid Houseid)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -81,12 +49,7 @@ public class MatchRepository : IMatchRepository
         }
     }
 
-
-    public void AddMatch(Match match)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public void UpdateMatch(Match match , status status)
     {
         if (match.matchId == Guid.Empty)
@@ -134,11 +97,7 @@ public class MatchRepository : IMatchRepository
         }
         
     }
-
-    public void DeleteMatch(Match match)
-    {
-        throw new NotImplementedException();
-    }
+    
 
     public Match readToMatch(DbDataReader reader)
     {
