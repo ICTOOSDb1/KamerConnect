@@ -10,8 +10,7 @@
            BackgroundColor="#F8F8F8"
            Padding="0">
         <Frame.GestureRecognizers>
-            <TapGestureRecognizer Tapped="{Binding OnHouseCardTapped}"
-                                  CommandParameter="{Binding}"/>
+            <TapGestureRecognizer Tapped="OnHouseCardTapped"/>
         </Frame.GestureRecognizers>
         <VerticalStackLayout Padding="0">
             <Image x:Name="ImageControl"

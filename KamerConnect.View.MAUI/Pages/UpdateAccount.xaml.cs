@@ -65,14 +65,14 @@ namespace KamerConnect.View.MAUI.Pages
         }
         private void HomePreferences(object sender, EventArgs e)
         {
-            FormsContainer.Content = new RegisterHomePreferencesForm(_housePreferenceService, _person);
+            FormsContainer.Content = new RegisterHomePreferencesForm(_housePreferenceService, _geoLocationService, _person);
             SetButtonStyles(HomePreferencesButton);
         }
 
         private void House(object sender, EventArgs e)
         {
             SetButtonStyles(HouseButton);
-            FormsContainer.Content = new HouseForm(_fileService, _houseService, _person,  _geoLocationService);
+            FormsContainer.Content = new HouseForm(_fileService, _houseService, _person, _geoLocationService);
         }
 
         private void Button_Update(object sender, EventArgs e)

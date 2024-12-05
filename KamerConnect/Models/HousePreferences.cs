@@ -6,8 +6,6 @@ namespace KamerConnect.Models
 {
     public class HousePreferences
     {
-
-
         public Guid Id { get; set; }
         public double MinBudget { get; set; }
         public double MaxBudget { get; set; }

@@ -26,8 +26,6 @@ public partial class RegisterHomePreferencesPage : ContentPage
         _housePreferenceService = _serviceProvider.GetRequiredService<HousePreferenceService>();
         _authenticationService = _serviceProvider.GetRequiredService<AuthenticationService>();
         _geoLocationService = _serviceProvider.GetRequiredService<GeoLocationService>();
-        
-        
     }
 
     private async void Back(object sender, EventArgs e)
@@ -56,12 +54,12 @@ public partial class RegisterHomePreferencesPage : ContentPage
                 homePreferencesForm.ParkingPreference,
                 Guid.NewGuid()
             );
-            
+
             _authenticationService.Register(_person, _password);
-        
+
             _housePreferenceService.CreateHousePreferences(preferences);
             _housePreferenceService.AddHousePreferences(_person.Id, preferences.Id);
-            
+
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {
                 await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<LoginPage>());

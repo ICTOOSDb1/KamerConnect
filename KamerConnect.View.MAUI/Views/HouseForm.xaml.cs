@@ -43,14 +43,13 @@ public partial class HouseForm : ContentView
         _houseService = houseService;
         _geoLocationService = geoLocationService;
         _person = person;
-        
+
         houseImages = new ObservableCollection<HouseImage>();
-        
-      
+
         GetCurrentHouse();
         InitializeComponent();
         BindingContext = this;
-        
+
         HouseTypePicker.SelectedItem = _house?.Type.GetDisplayName() ?? "Huis";
     }
 
@@ -121,7 +120,7 @@ public partial class HouseForm : ContentView
     public async void OnPublish()
     {
         if (!ValidateForm()) return;
-        
+
         string street = streetEntry.Text;
         int houseNumber = int.Parse(houseNumberEntry.Text);
         string addition = additionEntry.Text;
@@ -131,9 +130,9 @@ public partial class HouseForm : ContentView
         int surface = int.Parse(surfaceEntry.Text);
         int residents = int.Parse(residentsEntry.Text);
         string description = descriptionEntry.Text;
-        
+
         HouseType houseType = Type;
-        
+
         if (House == null)
         {
             _houseService.Create(new House(
@@ -172,10 +171,10 @@ public partial class HouseForm : ContentView
                 houseImages.ToList()
             ));
         }
-        
+
         await Application.Current?.MainPage?.DisplayAlert("Huis opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
-    
+
     private async void HouseTypeChanged(object sender, EventArgs e)
     {
         switch ($"{HouseTypePicker.SelectedItem}")

@@ -3,6 +3,7 @@ using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using Npgsql;
 
 namespace KamerConnect.DataAccess.Postgres.Repositories;
@@ -160,36 +161,6 @@ public class HouseRepository : IHouseRepository
         }
     }
 
-    public House? Get(Guid id)
-    {
-        using (var connection = new NpgsqlConnection(_connectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand($"SELECT * FROM house " +
-                                     $"WHERE house.id = @id::uuid",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@id", id);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        var house = ReadToHouse(reader);
-                        house.HouseImages = GetHouseImages(house.Id, connection);
-
-                        return house;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
     private List<HouseImage> GetHouseImages(Guid houseId, NpgsqlConnection connection)
     {
         var houseImages = new List<HouseImage>();
@@ -228,7 +199,7 @@ public class HouseRepository : IHouseRepository
                    new NpgsqlCommand($"""
                                       SELECT h.id, h.type, h.price, h.description, h.surface,
                                              h.residents, h.city, h.street, h.postal_code,
-                                             h.house_number, h.house_number_addition, h.house_geolocation
+                                             h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation)
                                       FROM house h
                                       INNER JOIN person p ON p.house_id = h.id
                                       WHERE p.id = @PersonId;
@@ -269,7 +240,7 @@ public class HouseRepository : IHouseRepository
             reader.GetString(8),
             reader.GetInt32(9),
             reader.GetString(10),
-            reader.GetFieldValue<Geometry>(1) as Point,
+            new WKTReader().Read(reader.GetString(11)) as Point,
             new List<HouseImage>()
         );
     }
@@ -384,32 +355,46 @@ public class HouseRepository : IHouseRepository
         }
     }
 
-    public List<House> GetAll()
+    public List<House> GetByPreferences(HousePreferences housePreferences)
     {
-        var houses = new List<House>();
-
-        using (var connection = new NpgsqlConnection(_connectionString))
+        try
         {
-            connection.Open();
+            var houses = new List<House>();
 
-            using (var command = new NpgsqlCommand($"""
-            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition
-            FROM house;
-        """, connection))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var house = ReadToHouse(reader);
-                        houses.Add(house);
-                    }
-                }
-                houses.ForEach((house) => { house.HouseImages = GetHouseImages(house.Id, connection); });
-            }
-        }
+                connection.Open();
 
-        return houses;
+                using (var command = new NpgsqlCommand($"""
+            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition, ST_AsText(house_geolocation)
+            FROM house WHERE ST_DWithin(
+                house.house_geolocation,
+                (SELECT city_geolocation FROM house_preferences WHERE id = @housePreferenceId::uuid),
+                0.06
+            );
+        """, connection))
+                {
+                    command.Parameters.AddWithValue("@housePreferenceId", housePreferences.Id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var house = ReadToHouse(reader);
+                            houses.Add(house);
+                        }
+                    }
+                    houses.ForEach((house) => { house.HouseImages = GetHouseImages(house.Id, connection); });
+                }
+            }
+
+            return houses;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
 }

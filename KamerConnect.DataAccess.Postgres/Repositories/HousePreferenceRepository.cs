@@ -2,6 +2,7 @@ using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using Npgsql;
 
 namespace KamerConnect.DataAccess.Postgres.Repositories;
@@ -14,7 +15,6 @@ public class HousePreferenceRepository : IHousePreferenceRepository
     {
         connectionString = EnvironmentUtils.GetConnectionString();
     }
-
 
     public void UpdateHousePreferences(HousePreferences housePreferences)
     {
@@ -60,41 +60,49 @@ public class HousePreferenceRepository : IHousePreferenceRepository
 
     public HousePreferences? GetHousePreferences(Guid personId)
     {
-        using (var connection = new NpgsqlConnection(connectionString))
+        try
         {
-            connection.Open();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
 
-            using (var command = new NpgsqlCommand(
-                       """
-                   SELECT hp.min_price, hp.max_price, hp.city, hp.city_geolocation, hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id
+                using (var command = new NpgsqlCommand(
+                           """
+                   SELECT hp.min_price, hp.max_price, hp.city, ST_AsText(hp.city_geolocation), hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id
                    FROM house_preferences hp
                    INNER JOIN person p ON p.house_preferences_id = hp.id
                    WHERE p.id = @PersonId;
                    """, connection))
-            {
-                command.Parameters.AddWithValue("@PersonId", personId);
-
-                using (var reader = command.ExecuteReader())
                 {
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@PersonId", personId);
+
+                    using (var reader = command.ExecuteReader())
                     {
-                        return new HousePreferences(
-                            reader.GetDouble(0),
-                            reader.GetDouble(1),
-                            reader.GetString(2),
-                            reader.GetFieldValue<Geometry>(1) as Point,
-                            reader.GetDouble(3),
-                            EnumUtils.Validate<HouseType>(reader.GetString(4)),
-                            reader.GetInt32(5),
-                            EnumUtils.Validate<PreferenceChoice>(reader.GetString(6)),
-                            EnumUtils.Validate<PreferenceChoice>(reader.GetString(7)),
-                            EnumUtils.Validate<PreferenceChoice>(reader.GetString(8)),
-                            EnumUtils.Validate<PreferenceChoice>(reader.GetString(9)),
-                            reader.GetGuid(10)
-                        );
+                        if (reader.Read())
+                        {
+                            return new HousePreferences(
+                                reader.GetDouble(0),
+                                reader.GetDouble(1),
+                                reader.GetString(2),
+                                new WKTReader().Read(reader.GetString(3)) as Point,
+                                reader.GetDouble(4),
+                                EnumUtils.Validate<HouseType>(reader.GetString(5)),
+                                reader.GetInt32(6),
+                                EnumUtils.Validate<PreferenceChoice>(reader.GetString(7)),
+                                EnumUtils.Validate<PreferenceChoice>(reader.GetString(8)),
+                                EnumUtils.Validate<PreferenceChoice>(reader.GetString(9)),
+                                EnumUtils.Validate<PreferenceChoice>(reader.GetString(10)),
+                                reader.GetGuid(11)
+                            );
+                        }
                     }
                 }
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
 
         return null;
@@ -164,10 +172,10 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                        WHERE id = @PersonId::uuid;
                        """, connection))
             {
-                
+
                 updateCommand.Parameters.AddWithValue("@HousePreferencesId", housePreferencesId);
                 updateCommand.Parameters.AddWithValue("@PersonId", personId);
-                
+
                 updateCommand.ExecuteNonQuery();
             }
         }

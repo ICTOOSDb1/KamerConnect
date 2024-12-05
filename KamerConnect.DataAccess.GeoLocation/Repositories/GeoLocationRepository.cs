@@ -22,7 +22,7 @@ public class GeoLocationRepository : IGeoLocationRepository
                 response.EnsureSuccessStatusCode();
 
                 string jsonResponse = await response.Content.ReadAsStringAsync();
-    
+
                 var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory();
                 var wktReader = new WKTReader(geometryFactory);
 
