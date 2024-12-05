@@ -8,4 +8,5 @@ public interface IHouseRepository
     House? Get(Guid id);
     Guid Create(House house, Guid personId);
     House? GetByPersonId(Guid personId);
+    List<House> GetAll();
 }

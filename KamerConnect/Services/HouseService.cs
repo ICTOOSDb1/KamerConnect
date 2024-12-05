@@ -31,4 +31,9 @@ public class HouseService
     {
         _repository.Update(house);
     }
+
+    public List<House> GetAll()
+    {
+        return _repository.GetAll();
+    }
 }

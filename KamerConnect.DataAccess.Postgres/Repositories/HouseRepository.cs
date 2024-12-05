@@ -383,4 +383,33 @@ public class HouseRepository : IHouseRepository
             }
         }
     }
+
+    public List<House> GetAll()
+    {
+        var houses = new List<House>();
+
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand($"""
+            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition
+            FROM house;
+        """, connection))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var house = ReadToHouse(reader);
+                        houses.Add(house);
+                    }
+                }
+                houses.ForEach((house) => { house.HouseImages = GetHouseImages(house.Id, connection); });
+            }
+        }
+
+        return houses;
+    }
+
 }
