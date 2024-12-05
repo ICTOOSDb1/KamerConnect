@@ -56,7 +56,7 @@ public class MatchRepository : IMatchRepository
             using (var command = new NpgsqlCommand("""
                                                    SELECT *
                                                    FROM matchrequests
-                                                   WHERE house_id = @id::uuid;
+                                                   WHERE house_id = @id::uuid or person_id = @id::uuid
                                                    """, 
                        connection))
             {
@@ -104,7 +104,7 @@ public class MatchRepository : IMatchRepository
             reader.GetGuid(1),
             reader.GetGuid(2),
             EnumUtils.Validate<status>(reader.GetString(3)),
-            reader.GetString(4)
+            "test"
         );
     return match;
     }

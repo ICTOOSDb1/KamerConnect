@@ -17,10 +17,12 @@ public partial class MatchRequestsPage : ContentPage
     private readonly AuthenticationService _authenticationService;
     private const string _bucketName = "profilepictures";
     private IServiceProvider _serviceProvider;
+    private readonly HouseService _houseService;
     private Person _person;
-    public MatchRequestsPage(FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
+    public MatchRequestsPage(HouseService houseService, FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
     {
         InitializeComponent();
+        _houseService = houseService;
         _serviceProvider = serviceProvider;
         _fileService = fileService;
         _matchService = matchService;

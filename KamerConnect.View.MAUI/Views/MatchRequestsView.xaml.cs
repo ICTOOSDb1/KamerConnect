@@ -18,9 +18,11 @@ public partial class MatchRequestsView : ContentView
     private const string _bucketName = "profilepictures";
     private IServiceProvider _serviceProvider;
     private Person _person;
+    private readonly HouseService _houseService;
     
-    public MatchRequestsView(FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
+    public MatchRequestsView(HouseService houseService, FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
     {
+         _houseService = houseService;
         _serviceProvider = serviceProvider;
         NavigationPage.SetHasNavigationBar(this, false);
         InitializeComponent();
@@ -29,8 +31,16 @@ public partial class MatchRequestsView : ContentView
         _authenticationService = authenticationService;
         _personService = personService;
         GetCurrentPerson().GetAwaiter().GetResult();
-        GetMatchRequests();
-        AddLegend();
+        if (_person.Role == Role.Offering)
+        {
+           GetMatchRequestsOffering(); 
+        }
+        else
+        {
+            
+        }
+        
+     
     }
     private async Task GetCurrentPerson()
     {
@@ -41,11 +51,16 @@ public partial class MatchRequestsView : ContentView
         }
     }
 
-    public void GetMatchRequests()
+    public void GetMatchRequestsOffering()
     {
-
-        for (int i = 1; i < 6; i++)
+        Match[] matches;
+        House house = _houseService.GetByPersonId(_person.Id);
+        matches =_matchService.GetMatchesByHouseId(house.Id);
+        
+        for (int i = 1; i < matches.Length+1 ; i++)
         {
+
+            Person person = _personService.GetPersonById(matches[i-1].personId);
             var border = new Border
             {
                 WidthRequest = 100,
@@ -66,18 +81,21 @@ public partial class MatchRequestsView : ContentView
                     HorizontalOptions = LayoutOptions.Center
                 }
             };
-            var label1 = new Label { Text = $"Label {i} 2", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label { Text = $"Label {i} 3", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label { Text = $"Label {i} 4", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label1 = new Label { Text = person.FirstName, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label2 = new Label { Text = person.Personality.School, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label3 = new Label { Text = person.Personality.Study, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label4 = new Label { Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(border, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
+            MatchRequests.Add(label4, 4, i);
         }
+        AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
     }
 
-    public void AddLegend()
+    public void AddLegend(string label1, string label2, string label3, string label4)
     {
         /*var image = new Image
         {   Scale = 0.3,
@@ -89,10 +107,10 @@ public partial class MatchRequestsView : ContentView
         
         var columns = new List<Label>
         {
-            new Label { Text = "Straat", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = "Stad", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = "Type", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = "Prijs", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label1, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label2, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label3, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label4, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
             new Label { Text = "Match request", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
         };
         
