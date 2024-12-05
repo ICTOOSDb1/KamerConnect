@@ -74,8 +74,8 @@ public partial class MatchRequestsView : ContentView
                 HorizontalOptions = LayoutOptions.Center,
                 Content = new Image
                 {
-                    Source = _person.ProfilePicturePath != null
-                        ? _fileService.GetFilePath(_bucketName, _person.ProfilePicturePath)
+                    Source = person.ProfilePicturePath != null
+                        ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
                         : "geenProfiel.png",
                     Aspect = Aspect.AspectFit, 
                     VerticalOptions = LayoutOptions.Center,
