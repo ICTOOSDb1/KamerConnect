@@ -2,7 +2,7 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
 
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              x:Class="KamerConnect.View.MAUI.Views.MatchRequestsView">
@@ -20,32 +20,19 @@
             
         </ResourceDictionary>
     </ContentView.Resources>
-    
-    <Grid x:Name="MatchRequests">
-       
-        <Grid.ColumnDefinitions>
+    <ScrollView VerticalScrollBarVisibility="Always" Height="100">
+        <StackLayout>
+            <Grid x:Name="MatchRequests">
+                <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" ></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
+                    
         </Grid.ColumnDefinitions>
-        
-        <!--<Label Grid.Row="0" Grid.Column="1" Text="Straat" HorizontalOptions="Center" VerticalOptions="Center"  ></Label>
-        <Label Grid.Row="0" Grid.Column="2" Text="Stad" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
-        <Label Grid.Row="0" Grid.Column="3" Text="Type" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
-        <Label Grid.Row="0" Grid.Column="4" Text="Prijs" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
-        <Label Grid.Row="0" Grid.Column="5" Text="MatchRequest status" HorizontalOptions="Center" VerticalOptions="Center" ></Label>
-        
-        <Image Grid.Row="0" Grid.Column="1" 
-               Source="arrowupdown.png" 
-               Aspect="AspectFit"
-               HorizontalOptions="End" 
-               VerticalOptions="Center" 
-               Scale="0.3"/>-->
-        
     </Grid>
-    
-    
+    </StackLayout>
+    </ScrollView>
 </ContentView>

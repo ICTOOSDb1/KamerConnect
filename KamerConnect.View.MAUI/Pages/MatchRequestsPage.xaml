@@ -7,8 +7,10 @@
              BackgroundColor="{StaticResource BackgroundColor}">
     <ContentPage.Content>
         
-        <StackLayout>
-            <views:MatchRequestsView />
+        <StackLayout Height="300" Width="300">
+            <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always">
+                <views:MatchRequestsView />
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
