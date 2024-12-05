@@ -12,11 +12,10 @@ public partial class App : Application
 	{
 		_serviceProvider = serviceProvider;
 		InitializeComponent();
-		/*InitializeAppAsync().GetAwaiter().GetResult();*/
-		MainPage = new MatchRequestsPage();
+		InitializeAppAsync().GetAwaiter().GetResult();
 	}
 
-	/*private async Task InitializeAppAsync()
+	private async Task InitializeAppAsync()
 	{
 		var authService = _serviceProvider.GetService<AuthenticationService>();
 		if (authService == null)
@@ -32,5 +31,5 @@ public partial class App : Application
 		{
 			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
 		}
-	}*/
+	}
 }

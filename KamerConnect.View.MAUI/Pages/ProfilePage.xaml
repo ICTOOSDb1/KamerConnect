@@ -88,7 +88,12 @@
             </Grid>
         </ScrollView>
         <BoxView Grid.Row="4" Color="{StaticResource Gray100}" HeightRequest="1" Margin="50, 25"></BoxView>
-       
+        <Label x:Name="MatchResultLabel" 
+               Grid.Row="5"
+               Text="Resultaten verschijnen hier..." 
+               FontSize="16" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" />
 
     </Grid>
 </ContentPage>
