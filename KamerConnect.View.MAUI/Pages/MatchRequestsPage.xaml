@@ -14,7 +14,7 @@
                    VerticalOptions="End"
                    TextColor="Black"/>
             <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always">
-                <views:MatchRequestsView WidthRequest="1100" HeightRequest="600" />
+                <ContentView x:Name="MatchView" WidthRequest="1100" HeightRequest="700"/>
             </ScrollView>
         </StackLayout>
     </ContentPage.Content>
