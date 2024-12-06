@@ -102,42 +102,51 @@ public class PersonRepository : IPersonRepository
 
     public Guid CreatePerson(Person person)
     {
-        using (var connection = new NpgsqlConnection(connectionString))
+        try
         {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand($"""
-                                      INSERT INTO person (    
-                                        id, email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
-                                        VALUES (@Id, @Email,
-                                        @FirstName,
-                                        @MiddleName,
-                                        @Surname,
-                                        @PhoneNumber,
-                                        @BirthDate,
-                                        @Gender::gender,
-                                        @Role::user_role,
-                                        @ProfilePicturePath
-                                      ) RETURNING id;
-                                      """,
-                       connection))
+            using (var connection = new NpgsqlConnection(connectionString))
             {
-                command.Parameters.AddWithValue("@Id", person.Id);
-                command.Parameters.AddWithValue("@Email", person.Email);
-                command.Parameters.AddWithValue("@FirstName", person.FirstName);
-                command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@Surname", person.Surname);
-                command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
-                command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
-                command.Parameters.AddWithValue("@Role", person.Role.ToString());
-                command.Parameters.AddWithValue("@ProfilePicturePath",
-                    person.ProfilePicturePath ?? (object)DBNull.Value);
+                connection.Open();
 
-                var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
-                return (Guid)result;
+                using (var command =
+                       new NpgsqlCommand($"""
+                                          INSERT INTO person (
+                                            id, email, first_name, middle_name, surname, phone_number, birth_date, gender, role, profile_picture_path)
+                                            VALUES (@Id, @Email,
+                                            @FirstName,
+                                            @MiddleName,
+                                            @Surname,
+                                            @PhoneNumber,
+                                            @BirthDate,
+                                            @Gender::gender,
+                                            @Role::user_role,
+                                            @ProfilePicturePath
+                                          ) RETURNING id;
+                                          """,
+                           connection))
+                {
+
+                    command.Parameters.AddWithValue("@Id", person.Id);
+                    command.Parameters.AddWithValue("@Email", person.Email);
+                    command.Parameters.AddWithValue("@FirstName", person.FirstName);
+                    command.Parameters.AddWithValue("@MiddleName", person.MiddleName ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@Surname", person.Surname);
+                    command.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
+                    command.Parameters.AddWithValue("@Gender", person.Gender.ToString());
+                    command.Parameters.AddWithValue("@Role", person.Role.ToString());
+                    command.Parameters.AddWithValue("@ProfilePicturePath",
+                        person.ProfilePicturePath ?? (object)DBNull.Value);
+
+                    var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                    return (Guid)result;
+                }
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 
@@ -245,7 +254,6 @@ public class PersonRepository : IPersonRepository
                             insertCommand.ExecuteNonQuery();
                         }
                 }
-
                 transaction.Commit();
             }
         }

@@ -9,7 +9,4 @@ public interface IPersonRepository
     Guid CreatePerson(Person person);
     void UpdatePerson(Person person);
     void UpdatePersonality(Guid personId, Personality personality);
-    public void UpdateHousePreferences(HousePreferences housePreferences);
-    Guid CreateHousePreferences(HousePreferences housePreferences);
-    HousePreferences? GetHousePreferences(Guid personId);
 }
