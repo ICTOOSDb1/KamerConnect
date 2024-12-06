@@ -38,17 +38,17 @@
                     <VerticalStackLayout Grid.Row="0">
                         <HorizontalStackLayout>
                             <Label x:Name="StreetLabel"
-                                Text="Liguster 14"
+                                Text="{Binding Street}"
                                    FontFamily="InterMedium"
                                    FontSize="36"
                                    VerticalTextAlignment="End" />
                             <Label  x:Name="CityLabel" 
-                                    Text=" Coevorden"
+                                    Text="{Binding City}"
                                     FontFamily="InterRegular"
                                     FontSize="20"
                                     VerticalTextAlignment="End" />
                             <Label  x:Name="PostalcodeLabel"
-                                    Text=" 7742SP"
+                                    Text="{Binding PostalCode}"
                                     FontFamily="InterBold"
                                     FontSize="16"
                                     VerticalTextAlignment="End" />
@@ -90,7 +90,7 @@
                                 TextColor="#999999" />
                             <Label
                                 x:Name="MonthlyPriceLabel"
-                                Text="€ 100,00"
+                                Text="{Binding Price}"
                                 FontFamily="InterRegular"
                                 FontSize="16" />
                         </VerticalStackLayout>
@@ -102,7 +102,7 @@
                                 FontSize="10"
                                 TextColor="#999999" />
                             <Label  x:Name="SurfaceLabel"
-                                    Text="50m²"
+                                    Text="{Binding Surface}"
                                     FontFamily="InterRegular"
                                     FontSize="16" />
                         </VerticalStackLayout>
@@ -114,7 +114,7 @@
                                 FontSize="10"
                                 TextColor="#999999" />
                             <Label  x:Name="ResidentsLabel"
-                                    Text="4"
+                                    Text="{Binding Residents}"
                                     FontFamily="InterRegular"
                                     FontSize="16" />
                         </VerticalStackLayout>
@@ -126,7 +126,7 @@
                                 FontSize="10"
                                 TextColor="#999999" />
                             <Label  x:Name="HouseTypeLabel"
-                                    Text="Appartement"
+                                    Text="{Binding Type}"
                                     FontFamily="InterRegular"
                                     FontSize="16" />
                         </VerticalStackLayout>
@@ -141,7 +141,7 @@
                             FontFamily="InterSemiBold"
                             FontSize="20" />
                         <Label  x:Name="DescriptionLabel"
-                                Text="Deze prachtige instapklare woning biedt alles wat u zoekt: een ruime en lichte woonkamer met grote ramen die zorgen voor veel natuurlijk licht, een moderne keuken met hoogwaardige inbouwapparatuur en voldoende opbergruimte, en meerdere royale slaapkamers die ideaal zijn voor een gezin of een thuiskantoor. De luxe badkamer is van alle gemakken voorzien en straalt comfort uit. De woning beschikt daarnaast over een zonnige tuin, perfect om te ontspannen of te genieten van gezellige momenten met familie en vrienden. Gelegen in een gewilde en rustige buurt, dichtbij scholen, winkels, openbaar vervoer en andere voorzieningen, is dit huis de ideale plek om thuis te komen. Mis deze kans niet en plan snel een bezichtiging!"
+                                Text="{Binding Description}"                                
                                 FontFamily="InterLight"
                                 FontSize="16"
                                 LineBreakMode="WordWrap"
