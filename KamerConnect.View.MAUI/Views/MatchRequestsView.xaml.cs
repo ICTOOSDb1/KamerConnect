@@ -83,8 +83,18 @@ public partial class MatchRequestsView : ContentView
                 }
             };
             var FirstNameLabel = new Label { Text = person.FirstName, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var SchoolLabel = new Label { Text = person.Personality.School, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var StudyLabel = new Label { Text = person.Personality.Study, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var SchoolLabel = new Label();
+            var StudyLabel = new Label();
+            if (person.Personality != null)
+            {
+                    SchoolLabel.Text = person.Personality.School;
+                    SchoolLabel.HorizontalOptions = LayoutOptions.Center;
+                    SchoolLabel.VerticalOptions = LayoutOptions.Center;
+
+                    StudyLabel.Text = person.Personality.Study;
+                    StudyLabel.HorizontalOptions = LayoutOptions.Center;
+                    StudyLabel.VerticalOptions = LayoutOptions.Center;
+            }
             var BirthLabel = new Label { Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var horizontalstack = new HorizontalStackLayout{ HorizontalOptions = LayoutOptions.Center };
             Button rejectButton = new Button
