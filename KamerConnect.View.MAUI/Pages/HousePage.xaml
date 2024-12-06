@@ -33,6 +33,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <VerticalStackLayout Grid.Row="0">
@@ -148,6 +149,12 @@
                                 HorizontalOptions="FillAndExpand"
                                 VerticalOptions="Start" />
                     </VerticalStackLayout>
+                    
+                    <Button Text="Registreren"
+                            Style="{StaticResource PrimaryButton}"
+                            Grid.Row="4"
+                            Clicked="MakeMatch"
+                            HorizontalOptions="End" />
                 </Grid>
             </Grid>
 

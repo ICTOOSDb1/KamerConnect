@@ -9,46 +9,52 @@ namespace KamerConnect.View.MAUI.Components;
 
 public partial class ImageSlideShow : ContentView
 {
+ 
     
-    //public List<string> Images { get; set; }
-    
-    public static readonly BindableProperty ImagesProperty = BindableProperty.Create(
-        nameof(Images),
-        typeof(List<HouseImage>),
-        typeof(ImageSlideShow),
-        null, BindingMode.TwoWay);
-
-    public List<HouseImage> Images
-    {
-        get => (List<HouseImage>)GetValue(ImagesProperty);
-        set => SetValue(ImagesProperty, value);
-    }
-    
-    private int _currentImageIndex = 0;
-    
-    public int CurrentImageIndex
-    {
-        get => _currentImageIndex;
-        set
-        {
-            if (_currentImageIndex != value)
-            {
-                _currentImageIndex = value;
-                SetCurrentImage(value);
-            }
-        }
-    }
-    
-    public ImageSlideShow(List<HouseImage> images)
-    {
-        Images = images;
-        
-        InitializeComponent();
-
-        AddImagesToScrollView(Images);
-        
-        SetCurrentImage(_currentImageIndex);
-    }
+     public static readonly BindableProperty ImagesProperty = BindableProperty.Create(
+           nameof(Images),
+           typeof(List<HouseImage>),
+           typeof(ImageSlideShow),
+           null,
+           BindingMode.TwoWay,
+           propertyChanged: OnImagesChanged);
+   
+       public List<HouseImage> Images
+       {
+           get => (List<HouseImage>)GetValue(ImagesProperty);
+           set => SetValue(ImagesProperty, value);
+       }
+   
+       private int _currentImageIndex;
+   
+       public int CurrentImageIndex
+       {
+           get => _currentImageIndex;
+           set
+           {
+               if (_currentImageIndex != value)
+               {
+                   _currentImageIndex = value;
+                   SetCurrentImage(value);
+               }
+           }
+       }
+   
+       public ImageSlideShow()
+       {
+           InitializeComponent();
+           // Initialize components and set the default state
+           _currentImageIndex = 0;
+       }
+   
+       private static void OnImagesChanged(BindableObject bindable, object oldValue, object newValue)
+       {
+           if (bindable is ImageSlideShow slideshow && newValue is List<HouseImage> newImages)
+           {
+               slideshow.AddImagesToScrollView(newImages);
+               slideshow.SetCurrentImage(0); // Start with the first image
+           }
+       }
 
     private void SetCurrentImage(int index)
     {

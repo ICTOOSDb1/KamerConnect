@@ -1,32 +1,40 @@
 using KamerConnect.Models;
+using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI.Views;
 
 public partial class HouseCard : ContentView
 {
-	public HouseCard()
-	{
-		InitializeComponent();
-		BindingContextChanged += OnBindingContextChanged;
-	}
+    public HouseCard()
+    {
+        InitializeComponent();
+        BindingContextChanged += OnBindingContextChanged;
+    }
 
-	private void OnHouseCardTapped(object sender, EventArgs e)
-	{
-		// Implement house navigation here
-	}
+    private void OnHouseCardTapped(object sender, EventArgs e)
+    {
+        if (BindingContext is House house)
+        {
+            // Resolve HousePage and pass the house object
+            var housePage = MauiProgram.Services.GetRequiredService<HousePage>();
+            housePage.BindingContext = house;
 
-	private void OnBindingContextChanged(object sender, EventArgs e)
-	{
-		if (BindingContext is House house)
-		{
-			if (house.HouseImages?.Count > 0)
-			{
-				ImageControl.Source = house.HouseImages[0].FullPath;
-			}
-			else
-			{
-				ImageControl.Source = null;
-			}
-		}
-	}
+            App.Current.MainPage = new NavigationPage(housePage);
+        }
+    }
+
+    private void OnBindingContextChanged(object sender, EventArgs e)
+    {
+        if (BindingContext is House house)
+        {
+            if (house.HouseImages?.Count > 0)
+            {
+                ImageControl.Source = house.HouseImages[0].FullPath;
+            }
+            else
+            {
+                ImageControl.Source = null;
+            }
+        }
+    }
 }

@@ -6,18 +6,14 @@ namespace KamerConnect.View.MAUI.Pages;
 
 public partial class HousePage : ContentPage
 {
-    private readonly IServiceProvider _serviceProvider;
-    private House _house;
 
     public HousePage(IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
-        
         NavigationPage.SetHasNavigationBar(this, false);
         
         InitializeComponent();
-        
-        var navbar = serviceProvider.GetRequiredService<Navbar>();
+      
+        var navbar = MauiProgram.Services.GetRequiredService<Navbar>();
         NavbarContainer.Content = navbar;
         
         BindingContextChanged += OnBindingContextChanged;
@@ -36,6 +32,11 @@ public partial class HousePage : ContentPage
                 ImageSlideShow.Images = null;
             }
         }
+    }
+
+    private void MakeMatch(object sender, System.EventArgs e)
+    {
+        
     }
     
 }

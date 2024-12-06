@@ -31,7 +31,7 @@ public partial class App : Application
 		{
 			if (personService.GetPersonById(session.personId)?.Role == Role.Seeking)
 			{
-				MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
+				MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
 			}
 			else MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
 		}
