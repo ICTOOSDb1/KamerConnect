@@ -28,6 +28,7 @@ public partial class MatchRequestsPage : ContentPage
         _matchService = matchService;
         _authenticationService = authenticationService;
         _personService = personService;
+        NavigationPage.SetHasNavigationBar(this, false);
         MatchView.Content = _serviceProvider.GetRequiredService<MatchRequestsView>();
     }
     

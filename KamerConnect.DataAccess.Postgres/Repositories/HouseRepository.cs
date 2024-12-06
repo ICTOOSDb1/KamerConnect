@@ -163,6 +163,8 @@ public class HouseRepository : IHouseRepository
                     if (reader.Read())
                     {
                         var house = ReadToHouse(reader);
+                        reader.Close();
+                        
                         house.HouseImages = GetHouseImages(house.Id, connection);
 
                         return house;
@@ -178,7 +180,7 @@ public class HouseRepository : IHouseRepository
     private List<HouseImage> GetHouseImages(Guid houseId, NpgsqlConnection connection)
     {
         var houseImages = new List<HouseImage>();
-
+   
         using (var command = new NpgsqlCommand($"""
     SELECT path, bucket
     FROM house_image

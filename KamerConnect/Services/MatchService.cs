@@ -12,14 +12,9 @@ public class MatchService
         _matchRepository = matchRepository;
     }
 
-    public Match? GetMatchById(Guid PersonId)
+    public Match[]? GetMatchesById(Guid houseId)
     {
-        return _matchRepository.GetMatchById(PersonId);
-    }
-
-    public Match[]? GetMatchesByHouseId(Guid houseId)
-    {
-        return _matchRepository.GetMatchesByHouseId(houseId);
+        return _matchRepository.GetMatchesById(houseId);
     }
 
     public void AddMatch(Match match)
