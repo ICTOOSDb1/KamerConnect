@@ -24,8 +24,6 @@ public class AuthenticationService
         _repository = authenticationRepository;
 
         _passwordHashingConfig = GetHashValues();
-
-
     }
 
     public async Task<string?> Authenticate(string email, string passwordAttempt)
@@ -114,7 +112,7 @@ public class AuthenticationService
         return token;
     }
 
-    private void RemoveSession(string? currentToken)
+    public void RemoveSession(string? currentToken)
     {
         _repository.RemoveSession(currentToken);
         Preferences.Remove("session_token");

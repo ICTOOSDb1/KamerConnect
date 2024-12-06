@@ -1,15 +1,17 @@
 ﻿using KamerConnect.Models;
-using KamerConnect.View.MAUI.Components;
 
 namespace KamerConnect.View.MAUI;
 
 public partial class PersonalInformationForm : ContentView
 {
+    
     public PersonalInformationForm()
     {
         InitializeComponent();
         BindingContext = this;
+        HousetypePicker.SelectedItem = "Anders";
     }
+    
     public string? Email => emailEntry.Text;
     public string? FirstName => firstNameEntry.Text;
     public string? MiddleName => middleNameEntry.Text;
@@ -18,8 +20,23 @@ public partial class PersonalInformationForm : ContentView
     public string Password => passwordEntry.Text;
     public string ConfirmPassword => confirmPasswordEntry.Text;
     public DateTime? BirthDate => birthDateEntry.Text != null ? DateTime.Parse(birthDateEntry.Text) : null;
-    public PickerOptions.DutchGender Gender => (PickerOptions.DutchGender)genderPicker.SelectedValue;
-    
+    public Gender Gender;
+
+    private async void GenderTypeChanged(object sender, EventArgs e)
+    {
+        switch ($"{HousetypePicker.SelectedItem}")
+        {
+            case "Man":
+                Gender = Gender.Male;
+                break;
+            case "Vrouw":
+                Gender = Gender.Female;
+                break;
+            case "Anders":
+                Gender = Gender.Other;
+                break;
+        }
+    }
 
     public bool ValidateAll()
     {

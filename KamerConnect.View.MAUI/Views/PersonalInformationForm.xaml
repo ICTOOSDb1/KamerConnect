@@ -14,10 +14,11 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        
 
 
-        <Grid ColumnSpacing="20" Grid.Row="1">
+
+        <Grid ColumnSpacing="20"
+              Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="150"/>
@@ -26,7 +27,7 @@
 
             <VerticalStackLayout Grid.Column="0">
                 <components:Entry x:Name="firstNameEntry"
-                                  LabelText="Voornaam*"
+                                  LabelText="Voornaam"
                                   IsRequired="True"/>
             </VerticalStackLayout>
 
@@ -38,59 +39,90 @@
 
             <VerticalStackLayout Grid.Column="2">
                 <components:Entry x:Name="surnameEntry"
-                                  LabelText="Achternaam*"
+                                  LabelText="Achternaam"
                                   IsRequired="True"/>
             </VerticalStackLayout>
         </Grid>
-        
-        <Grid ColumnSpacing="20" Grid.Row="2">
+
+        <Grid ColumnSpacing="20"
+              Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout Grid.Column="0" Spacing="10">
+            <VerticalStackLayout Grid.Column="0"
+                                 Spacing="10">
                 <components:Entry x:Name="emailEntry"
                                   InputType="Email"
-                                  LabelText="E-mail*"
+                                  LabelText="E-mail"
                                   Keyboard="Email"
                                   IsRequired="True"/>
 
                 <components:Entry x:Name="passwordEntry"
                                   InputType="Password"
-                                  LabelText="Wachtwoord*"
-                                  IsRequired="True"
-                                  />
+                                  LabelText="Wachtwoord"
+                                  IsRequired="True"/>
             </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Column="1" Spacing="10">
+            <VerticalStackLayout Grid.Column="1"
+                                 Spacing="10">
                 <components:Entry x:Name="phoneNumberEntry"
                                   InputType="PhoneNumber"
                                   LabelText="Telefoonnummer"
                                   Keyboard="Telephone"
                                   IsRequired="False"/>
-                
+
                 <components:Entry x:Name="confirmPasswordEntry"
                                   InputType="ConfirmPassword"
-                                  LabelText="Wachtwoord bevestigen*"
-                 />
+                                  IsRequired="True"
+                                  LabelText="Wachtwoord bevestigen"/>
             </VerticalStackLayout>
         </Grid>
 
         <VerticalStackLayout Grid.Row="3">
             <components:Entry x:Name="birthDateEntry"
                               InputType="Date"
-                              LabelText="Geboortedatum*"
+                              LabelText="Geboortedatum"
                               Placeholder="dd/mm/jjjj"
-                              Keyboard="Numeric"/>
+                              Keyboard="Numeric"
+                              IsRequired="True"/>
         </VerticalStackLayout>
 
-        <StackLayout Spacing="10" Grid.Row="4">
-            <components:EnumPicker 
-                x:Name="genderPicker"
-                Title="Geslacht*" 
-                EnumType="{x:Type models:PickerOptions+DutchGender}"/>
+        <VerticalStackLayout Grid.Row="4"
+                             Spacing="5">
+            <Label Text="Wat is je geslacht?"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
 
-        </StackLayout>
+            <Frame Style="{StaticResource EntryFrameStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="HousetypePicker"
+                            SelectedIndexChanged="GenderTypeChanged"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Transparent"
+                            TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Man</x:String>
+                            <x:String>Vrouw</x:String>
+                            <x:String>Anders</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Image Source="sort_down.png"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0"
+                           WidthRequest="20"
+                           HeightRequest="20"/>
+                </Grid>
+            </Frame>
+
+        </VerticalStackLayout>
+
     </Grid>
 </ContentView>

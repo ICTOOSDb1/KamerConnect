@@ -28,6 +28,9 @@ namespace KamerConnect.View.MAUI.Pages
 
             GetCurrentPerson().GetAwaiter().GetResult();
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
+
+            var navbar = serviceProvider.GetRequiredService<Navbar>();
+            NavbarContainer.Content = navbar;
         }
 
         private async Task GetCurrentPerson()
@@ -58,7 +61,6 @@ namespace KamerConnect.View.MAUI.Pages
             FormsContainer.Content = new InterestsForm(_personService, _person);
             SetButtonStyles(InterestsButton);
         }
-
         private void HomePreferences(object sender, EventArgs e)
         {
             FormsContainer.Content = new RegisterHomePreferencesForm(_housePreferenceService, _person);
@@ -73,7 +75,8 @@ namespace KamerConnect.View.MAUI.Pages
 
         private void Button_Update(object sender, EventArgs e)
         {
-            switch (FormsContainer.Content){
+            switch (FormsContainer.Content)
+            {
                 case RegisterHomePreferencesForm form:
                     UpdateHousePreferences(form);
                     break;
@@ -103,7 +106,7 @@ namespace KamerConnect.View.MAUI.Pages
         }
         private void UpdatePersonalInformation(UpdateAccountsForm form)
         {
-            form.Button_Update_Account();
+            form.ButtonUpdateAccount();
         }
         private void SetButtonStyles(Button buttonSource)
         {

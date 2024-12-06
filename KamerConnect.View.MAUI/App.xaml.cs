@@ -13,7 +13,6 @@ public partial class App : Application
 		_serviceProvider = serviceProvider;
 		InitializeComponent();
 		InitializeAppAsync().GetAwaiter().GetResult();
-		MainPage = new MatchRequestsPage();
 	}
 
 	private async Task InitializeAppAsync()

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KamerConnect.Models;
+using KamerConnect.Services;
+using KamerConnect.View.MAUI.Pages;
 using Microsoft.Maui.Controls.Shapes;
 using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
@@ -11,91 +13,185 @@ namespace KamerConnect.View.MAUI.Views;
 
 public partial class MatchRequestsView : ContentView
 {
-
-    public enum MatchRequestStatus
+    private readonly FileService _fileService;
+    private readonly MatchService _matchService;
+    private readonly PersonService _personService;
+    private readonly AuthenticationService _authenticationService;
+    private const string _bucketName = "profilepictures";
+    private IServiceProvider _serviceProvider;
+    private Person _person;
+    private readonly HouseService _houseService;
+    
+    public MatchRequestsView(HouseService houseService, FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
     {
-        Accepted,
-        Pending,
-        Rejected
-    }
-    public MatchRequestsView()
-    {
+         _houseService = houseService;
+        _serviceProvider = serviceProvider;
+        NavigationPage.SetHasNavigationBar(this, false);
         InitializeComponent();
-        AddLegend();
-        GetMatchRequests();
-        
-        DisplayStatus(2, Role.Seeking, MatchRequestStatus.Accepted);
-        DisplayStatus(4, Role.Offering, MatchRequestStatus.Rejected);
-        DisplayStatus(3, Role.Offering, MatchRequestStatus.Accepted);
-        DisplayStatus(1, Role.Seeking, MatchRequestStatus.Pending);
-        
-        /*AddAcceptAndRejectButtons(15, Role.Offering);*/
-    }
-
-    public void GetMatchRequests()
-    {
-        for (int i = 1; i < 15; i++)
+        _fileService = fileService;
+        _matchService = matchService;
+        _authenticationService = authenticationService;
+        _personService = personService;
+        GetCurrentPerson().GetAwaiter().GetResult();
+        if (_person.Role == Role.Offering)
         {
-            var border = new Border
-            {
-                WidthRequest = 100,
-                HeightRequest = 100,
-                StrokeShape = new RoundRectangle
-                {
-                    CornerRadius = new CornerRadius(10)
-                },
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-                Content = new Image
-                {
-                    Source = "logo.png",
-                    Aspect = Aspect.AspectFit,
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
-                }
-            };
-            var separator = new BoxView
-            {
-                HeightRequest = 2,
-                BackgroundColor = Colors.LightGray,
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.End
-            };
-            var label1 = new Label {Text = $"Label {i} 2", FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label {Text = $"Label {i} 3", FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label {Text = $"Label {i} 4", FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
-            MatchRequests.Add(separator, 0, i);
-            Grid.SetColumnSpan(separator, 6);
-            MatchRequests.Add(border, 0, i);
-            MatchRequests.Add(label1, 1, i);
-            MatchRequests.Add(label2, 2, i);
-            MatchRequests.Add(label3, 3, i);
+           GetMatchRequestsOffering(); 
+        }
+        else
+        {
+            
+        }
+        
+     
+    }
+    private async Task GetCurrentPerson()
+    {
+        var session = await _authenticationService.GetSession();
+        if (session != null)
+        {
+            _person = _personService.GetPersonById(session.personId);
         }
     }
 
-    public void AddLegend()
+    public void GetMatchRequestsOffering()
+    {
+        List<Match> matches;
+        House house = _houseService.GetByPersonId(_person.Id);
+        if (house != null)
+        {
+            matches = _matchService.GetMatchesById(house.Id);
+
+            for (int i = 1; i < matches.Count + 1; i++)
+            {
+
+                Person person = _personService.GetPersonById(matches[i - 1].personId);
+
+                var border = AddProfilePicture(person);
+                var FirstNameLabel = new Label
+                {
+                    Text = person.FirstName, HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                };
+                var SchoolLabel = new Label();
+                var StudyLabel = new Label();
+                if (person.Personality != null)
+                {
+                    SchoolLabel.Text = person.Personality.School;
+                    SchoolLabel.HorizontalOptions = LayoutOptions.Center;
+                    SchoolLabel.VerticalOptions = LayoutOptions.Center;
+
+                    StudyLabel.Text = person.Personality.Study;
+                    StudyLabel.HorizontalOptions = LayoutOptions.Center;
+                    StudyLabel.VerticalOptions = LayoutOptions.Center;
+                }
+
+                var BirthLabel = new Label
+                {
+                    Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                };
+                var horizontalstack = new HorizontalStackLayout { HorizontalOptions = LayoutOptions.Center };
+                Button rejectButton = new Button
+                {
+                    Text = "✖",
+                    BackgroundColor = Color.FromRgb(255, 0, 0),
+                    TextColor = Color.FromRgb(255, 255, 255),
+                    CornerRadius = 20,
+                    WidthRequest = 20,
+                    HeightRequest = 20,
+                    HorizontalOptions = LayoutOptions.End,
+                    CommandParameter = matches[i - 1]
+
+                };
+                horizontalstack.Add(rejectButton);
+                rejectButton.Clicked += RejectButton_OnClicked;
+
+
+                Button acceptButton = new Button
+                {
+                    Text = "✔",
+                    BackgroundColor = Color.FromRgb(0, 255, 0),
+                    TextColor = Color.FromRgb(255, 255, 255),
+                    CornerRadius = 20,
+                    WidthRequest = 20,
+                    HeightRequest = 20,
+                    HorizontalOptions = LayoutOptions.End,
+                    CommandParameter = matches[i - 1]
+                };
+                horizontalstack.Add(acceptButton);
+                acceptButton.Clicked += AcceptButton_OnClicked;
+                var separator = new BoxView
+                {
+                    HeightRequest = 2,
+                    BackgroundColor = Colors.LightGray,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.End
+                };
+
+                MatchRequests.RowDefinitions.Add(new RowDefinition
+                    { Height = new GridLength(100, GridUnitType.Absolute) });
+                MatchRequests.Add(separator, 0, i);
+                Grid.SetColumnSpan(separator, 6);
+                MatchRequests.Add(AddProfilePicture(person), 0, i);
+                MatchRequests.Add(FirstNameLabel, 1, i);
+                MatchRequests.Add(SchoolLabel, 2, i);
+                MatchRequests.Add(StudyLabel, 3, i);
+                MatchRequests.Add(BirthLabel, 4, i);
+                MatchRequests.Add(horizontalstack, 5, i);
+                var tapGestureRecognizer = new TapGestureRecognizer
+                {
+                    CommandParameter = matches[i - 1]
+                };
+                tapGestureRecognizer.Tapped += ToProfile_OnTapped;
+                
+                border.GestureRecognizers.Add(tapGestureRecognizer);
+            }
+        }
+        AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+    }
+
+    public Border AddProfilePicture(Person person)
+    {
+        var border = new Border
+        {
+            WidthRequest = 100,
+            HeightRequest = 100,
+            StrokeShape = new RoundRectangle
+            {
+                CornerRadius = new CornerRadius(10)
+            },
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Center,
+            Content = new Image
+            {
+                Source = person.ProfilePicturePath != null
+                    ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
+                    : "geenProfiel.png",
+                Aspect = Aspect.AspectFit,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            }
+        };
+        return border;
+    }
+    
+    
+
+    public void AddLegend(string label1, string label2, string label3, string label4)
     {
         MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40, GridUnitType.Absolute) });
         var columns = new List<Label>
         {
-            new Label {Text = "Straat", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
-            new Label {Text = "Stad", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
-            new Label {Text = "Type", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
-            new Label {Text = "Prijs", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
-            new Label {Text = "Match request", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center}
+            new Label { Text = label1, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label2, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label3, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label4, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = "Match request", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
         };
+        
         for (int i = 0; i < columns.Count; i++)
         {
             MatchRequests.Add(columns[i], i + 1, 0);
-            /*MatchRequests.Add(new Image
-            {
-                Scale = 0.3,
-                Source = "arrowupdown.png",
-                Aspect = Aspect.AspectFit,
-                HorizontalOptions = LayoutOptions.End,
-                VerticalOptions = LayoutOptions.Center
-            }, i + 1, 0);*/
         }
         var separator = new BoxView
         {
@@ -107,50 +203,43 @@ public partial class MatchRequestsView : ContentView
         MatchRequests.Add(separator, 0, 0);
         Grid.SetColumnSpan(separator, 6);
     }
-
-    public void DisplayStatus(int row, Role role, MatchRequestStatus status)
+    private void AcceptButton_OnClicked(object sender, EventArgs e)
     {
-        if (role == Role.Seeking)
+        if (sender is Button button && button.CommandParameter is Match match)
         {
-            var statusLabel = new Label
-            {
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center
-            };
-            var statusImage = new Image
-            {
-                Aspect = Aspect.AspectFit,
-                Scale = 0.2,
-                HorizontalOptions = LayoutOptions.End,
-                VerticalOptions = LayoutOptions.Center,
-                BackgroundColor = Colors.Transparent,
-            };
-            switch (status)
-            {
-                case MatchRequestStatus.Accepted:
-                    statusLabel.Text = "Geaccepteerd";
-                    statusImage.Source = "circleaccepted.png";
-                    break;
-                case MatchRequestStatus.Pending:
-                    statusLabel.Text = "In behandeling";
-                    statusImage.Source = "circlepending.png";
-                    break;
-                case MatchRequestStatus.Rejected:
-                    statusLabel.Text = "Geweigerd";
-                    statusImage.Source = "circlerejected.png";
-                    break;
-            }
-            var buttonContainer = new HorizontalStackLayout
-            {
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                Spacing = 5,
-            };
-            MatchRequests.Add(statusImage, 5, row);
-            MatchRequests.Add(statusLabel, 5, row);
+            _matchService.UpdateMatch(match, status.Accepted);
+            RefreshPage();
         }
     }
 
+    private void RejectButton_OnClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is Match match)
+        {
+            _matchService.UpdateMatch(match, status.Rejected);
+            RefreshPage();
+        }
+    }
+    private async void ToProfile_OnTapped(object? sender, TappedEventArgs e)
+    {
+        if (e.Parameter is Match match)
+        {
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
+                profilePage.BindingContext = match;
+                await navigationPage.Navigation.PushAsync(profilePage);
+            }
+        }
+    }
+
+    private async void RefreshPage()
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+        }
+    }
     public void AddAcceptAndRejectButtons(int rows, Role role)
     {
         if (role == Role.Offering)

@@ -11,23 +11,7 @@
             
                 <Components:Entry InputType="Text" LabelText="Aantal vierkante meter" Text="{Binding SurfaceArea, Mode=TwoWay}" x:Name="surfaceEntry" IsRequired="True"/>
                 <Components:Entry InputType="Text" LabelText="Prijs" Text="{Binding MaxBudget, Mode=TwoWay}" x:Name="priceEntry" IsRequired="True"/>
-
-                <Picker x:Name="HometypePicker"
-                        Title="Woning type"
-                        SelectedIndex="0">
-                    <Picker.Items>
-                        <x:String>Maak een keuze</x:String>
-                        <x:String>Apartment</x:String>
-                        <x:String>House</x:String>
-                        <x:String>Studio</x:String>
-                        <x:String>X</x:String>
-                    </Picker.Items>
-                </Picker>
-                <Components:EnumPicker 
-                    x:Name="housetypePicker"
-                    Title="Type woning*" 
-                    EnumType="{x:Type models:PickerOptions+DutchHouseType}"
-                    SelectedValue="{Binding HouseTypePreference}"/>
+                
                 
             </VerticalStackLayout>
         </Components:FormCard>

@@ -5,67 +5,61 @@
 			 xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
 			 x:Class="KamerConnect.View.MAUI.Views.UpdateAccountsForm">
 	<ScrollView>
-		
-			
-			<Grid RowSpacing="20">
-				<Grid.RowDefinitions>
-					<RowDefinition></RowDefinition>
-					<RowDefinition></RowDefinition>
-					<RowDefinition></RowDefinition>
-					<RowDefinition></RowDefinition>
-					<RowDefinition></RowDefinition>
-				</Grid.RowDefinitions>
-				<Border WidthRequest="100"
-				        HeightRequest="100"
-				        Stroke="Black"
-				        StrokeThickness="1"
-				        StrokeShape="RoundRectangle 50"
-				        Grid.Row="0">
-					<Border.GestureRecognizers>
-						<TapGestureRecognizer Tapped="Image_tapped"/>
-					</Border.GestureRecognizers>
-					<Image Source="{Binding ProfilePicturePath}"
-						   x:Name="profile_picture"
-						   WidthRequest="98"
-						   HeightRequest="98"
-						   Aspect="AspectFill"/>
-				</Border>
+		<Grid RowSpacing="10">
+			<Grid.RowDefinitions>
+				<RowDefinition></RowDefinition>
+				<RowDefinition></RowDefinition>
+				<RowDefinition></RowDefinition>
+				<RowDefinition></RowDefinition>
+				<RowDefinition></RowDefinition>
+			</Grid.RowDefinitions>
+			<Border WidthRequest="100"
+					HeightRequest="100"
+					Stroke="Black"
+					StrokeThickness="1"
+					StrokeShape="RoundRectangle 50"
+					Grid.Row="0">
+				<Border.GestureRecognizers>
+					<TapGestureRecognizer Tapped="ImageTapped"/>
+				</Border.GestureRecognizers>
+				<Image Source="{Binding ProfilePicturePath}"
+					   x:Name="profile_picture"
+					   WidthRequest="98"
+					   HeightRequest="98"
+					   Aspect="AspectFill"/>
+			</Border>
 
+			<Components:Entry InputType="Text"
+							  LabelText="Voornaam"
+							  Text="{Binding FirstName, Mode=TwoWay}"
+							  x:Name="firstNameEntry"
+							  Grid.Row="1"/>
+			<Grid ColumnDefinitions="*,3*"
+				  ColumnSpacing="10"
+				  Grid.Row="2">
+				<Components:Entry
+					LabelText="Tussenvoegsel"
+					Grid.Column="0"
+					Text="{Binding MiddleName, Mode=TwoWay}"
+					x:Name="middleNameEntry"/>
 				<Components:Entry InputType="Text"
-								  LabelText="Voornaam"
-								  Text="{Binding FirstName, Mode=TwoWay}"
-								  x:Name="firstNameEntry"
-								  Grid.Row="1"
-								  IsRequired="True"/>
-				<Grid ColumnDefinitions="*,3*" ColumnSpacing="20" Grid.Row="2">
-					<Components:Entry
-						LabelText="Tussenvoegsel"
-						Grid.Column="0"
-						Text="{Binding MiddleName, Mode=TwoWay}"
-						x:Name="middleNameEntry"/>
-					<Components:Entry InputType="Text"
-									  LabelText="Achternaam"
-									  Grid.Column="1"
-									  Text="{Binding Surname, Mode=TwoWay}"
-									  x:Name="surNameEntry"
-									  IsRequired="True" />
-				</Grid>
-
-				<Components:Entry InputType="Email"
-								  LabelText="Email"
-								  Text="{Binding Email, Mode=TwoWay}"
-								  x:Name="emailEntry"
-								  Grid.Row="3"
-								  IsRequired="True"
-								  />
-				<Components:Entry InputType="PhoneNumber"
-								  LabelText="Telefoonnummer"
-								  Text="{Binding PhoneNumber, Mode=TwoWay}"
-								  x:Name="phoneNumberEntry"
-								  Grid.Row="4"/>
-
-				
+								  LabelText="Achternaam"
+								  Grid.Column="1"
+								  Text="{Binding Surname, Mode=TwoWay}"
+								  x:Name="surNameEntry"/>
 			</Grid>
-			
+
+			<Components:Entry InputType="Email"
+							  LabelText="Email"
+							  Text="{Binding Email, Mode=TwoWay}"
+							  x:Name="emailEntry"
+							  Grid.Row="3"/>
+			<Components:Entry InputType="PhoneNumber"
+							  LabelText="Telefoonnummer"
+							  Text="{Binding PhoneNumber, Mode=TwoWay}"
+							  x:Name="phoneNumberEntry"
+							  Grid.Row="4"/>
+		</Grid>
+
 	</ScrollView>
 </ContentView>

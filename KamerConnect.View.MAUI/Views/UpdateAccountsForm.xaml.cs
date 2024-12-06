@@ -22,9 +22,15 @@ public partial class UpdateAccountsForm : ContentView
         _currentPerson = person;
         InitializeComponent();
         BindingContext = _currentPerson;
+
+        profile_picture.Source = _currentPerson.ProfilePicturePath != null
+                                    ? _fileService.GetFilePath(_bucketName, _currentPerson.ProfilePicturePath)
+                                    : "camera.jpg";
+        
+        
     }
 
-    private async void Image_tapped(object sender, EventArgs e)
+    private async void ImageTapped(object sender, EventArgs e)
     {
         IFilePickerService picker = new FilePickerService();
 
@@ -46,7 +52,7 @@ public partial class UpdateAccountsForm : ContentView
         }
     }
 
-    public async void Button_Update_Account()
+    public async void ButtonUpdateAccount()
     {
         if (!ValidateForm()) return;
         _personService.UpdatePerson(_currentPerson);
