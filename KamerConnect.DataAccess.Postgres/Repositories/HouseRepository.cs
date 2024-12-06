@@ -2,7 +2,10 @@ using System.Data.Common;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using Npgsql;
+
 namespace KamerConnect.DataAccess.Postgres.Repositories;
 
 public class HouseRepository : IHouseRepository
@@ -11,49 +14,61 @@ public class HouseRepository : IHouseRepository
 
     private Guid CreateHouseRecord(House house, NpgsqlConnection connection)
     {
-        using (var command = new NpgsqlCommand($"""
-    INSERT INTO house (
-        type,
-        price,
-        description,
-        surface,
-        residents,
-        city,
-        street,
-        postal_code,
-        house_number,
-        house_number_addition
-    ) 
-    VALUES (
-        @type::house_type,
-        @price,
-        @description,
-        @surface,
-        @residents,
-        @city,
-        @street,
-        @postalCode,
-        @houseNumber,
-        @houseNumberAddition
-    ) RETURNING id;
-    """, connection))
+        try
         {
-            command.Parameters.AddWithValue("@type", house.Type.ToString());
-            command.Parameters.AddWithValue("@price", house.Price);
-            command.Parameters.AddWithValue("@description", (object)house.Description ?? DBNull.Value);
-            command.Parameters.AddWithValue("@surface", (object)house.Surface ?? DBNull.Value);
-            command.Parameters.AddWithValue("@residents", house.Residents);
-            command.Parameters.AddWithValue("@city", house.City);
-            command.Parameters.AddWithValue("@street", house.Street);
-            command.Parameters.AddWithValue("@postalCode", house.PostalCode);
-            command.Parameters.AddWithValue("@houseNumber", house.HouseNumber);
-            command.Parameters.AddWithValue("@houseNumberAddition", (object)house.HouseNumberAddition ?? DBNull.Value);
+            using (var command = new NpgsqlCommand($"""
+                                                    INSERT INTO house (
+                                                        type,
+                                                        price,
+                                                        description,
+                                                        surface,
+                                                        residents,
+                                                        city,
+                                                        street,
+                                                        postal_code,
+                                                        house_number,
+                                                        house_number_addition,
+                                                        house_geolocation
+                                                    )
+                                                    VALUES (
+                                                        @type::house_type,
+                                                        @price,
+                                                        @description,
+                                                        @surface,
+                                                        @residents,
+                                                        @city,
+                                                        @street,
+                                                        @postalCode,
+                                                        @houseNumber,
+                                                        @houseNumberAddition,
+                                                        ST_SetSRID(ST_MakePoint(@x, @y), 4326)
+                                                    ) RETURNING id;
+                                                    """, connection))
+            {
+                command.Parameters.AddWithValue("@type", house.Type.ToString());
+                command.Parameters.AddWithValue("@price", house.Price);
+                command.Parameters.AddWithValue("@description", (object)house.Description ?? DBNull.Value);
+                command.Parameters.AddWithValue("@surface", (object)house.Surface ?? DBNull.Value);
+                command.Parameters.AddWithValue("@residents", house.Residents);
+                command.Parameters.AddWithValue("@city", house.City);
+                command.Parameters.AddWithValue("@street", house.Street);
+                command.Parameters.AddWithValue("@postalCode", house.PostalCode);
+                command.Parameters.AddWithValue("@houseNumber", house.HouseNumber);
+                command.Parameters.AddWithValue("@houseNumberAddition", house.HouseNumberAddition);
+                command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
+                command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
 
-            var houseId = command.ExecuteScalar() as Guid?;
-            if (!houseId.HasValue)
-                throw new InvalidOperationException("Failed to retrieve the ID of the created house.");
+                var houseId = command.ExecuteScalar() as Guid?;
+                if (!houseId.HasValue)
+                    throw new InvalidOperationException("Failed to retrieve the ID of the created house.");
 
-            return houseId.Value;
+                return houseId.Value;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 
@@ -64,17 +79,17 @@ public class HouseRepository : IHouseRepository
         foreach (var image in houseImages)
         {
             using (var command = new NpgsqlCommand($"""
-            INSERT INTO house_image (
-                house_id,
-                path,
-                bucket
-            ) 
-            VALUES (
-                @houseId::uuid,
-                @path,
-                @bucket
-            );
-        """, connection))
+                                                        INSERT INTO house_image (
+                                                            house_id,
+                                                            path,
+                                                            bucket
+                                                        )
+                                                        VALUES (
+                                                            @houseId::uuid,
+                                                            @path,
+                                                            @bucket
+                                                        );
+                                                    """, connection))
             {
                 command.Parameters.AddWithValue("@houseId", houseId);
                 command.Parameters.AddWithValue("@path", image.Path);
@@ -100,7 +115,8 @@ public class HouseRepository : IHouseRepository
 
             if (rowsAffected == 0)
             {
-                throw new InvalidOperationException("Failed to update house ID for the person. Ensure the person exists.");
+                throw new InvalidOperationException(
+                    "Failed to update house ID for the person. Ensure the person exists.");
             }
         }
     }
@@ -145,45 +161,15 @@ public class HouseRepository : IHouseRepository
         }
     }
 
-    public House? Get(Guid id)
-    {
-        using (var connection = new NpgsqlConnection(_connectionString))
-        {
-            connection.Open();
-
-            using (var command =
-                   new NpgsqlCommand($"SELECT * FROM house " +
-                                     $"WHERE house.id = @id::uuid",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@id", id);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        var house = ReadToHouse(reader);
-                        house.HouseImages = GetHouseImages(house.Id, connection);
-
-                        return house;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
     private List<HouseImage> GetHouseImages(Guid houseId, NpgsqlConnection connection)
     {
         var houseImages = new List<HouseImage>();
 
         using (var command = new NpgsqlCommand($"""
-    SELECT path, bucket
-    FROM house_image
-    WHERE house_id = @houseId::uuid;
-    """, connection))
+                                                SELECT path, bucket
+                                                FROM house_image
+                                                WHERE house_id = @houseId::uuid;
+                                                """, connection))
         {
             command.Parameters.AddWithValue("@houseId", houseId);
 
@@ -211,13 +197,13 @@ public class HouseRepository : IHouseRepository
 
             using (var command =
                    new NpgsqlCommand($"""
-               SELECT h.id, h.type, h.price, h.description, h.surface, 
-                      h.residents, h.city, h.street, h.postal_code, 
-                      h.house_number, h.house_number_addition 
-               FROM house h 
-               INNER JOIN person p ON p.house_id = h.id 
-               WHERE p.id = @PersonId;
-               """, connection))
+                                      SELECT h.id, h.type, h.price, h.description, h.surface,
+                                             h.residents, h.city, h.street, h.postal_code,
+                                             h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation)
+                                      FROM house h
+                                      INNER JOIN person p ON p.house_id = h.id
+                                      WHERE p.id = @PersonId;
+                                      """, connection))
             {
                 command.Parameters.AddWithValue("@PersonId", personId);
 
@@ -235,6 +221,7 @@ public class HouseRepository : IHouseRepository
                 }
             }
         }
+
         return null;
     }
 
@@ -253,6 +240,7 @@ public class HouseRepository : IHouseRepository
             reader.GetString(8),
             reader.GetInt32(9),
             reader.GetString(10),
+            new WKTReader().Read(reader.GetString(11)) as Point,
             new List<HouseImage>()
         );
     }
@@ -273,19 +261,20 @@ public class HouseRepository : IHouseRepository
                     try
                     {
                         using (var command = new NpgsqlCommand($"""
-                        UPDATE house
-                        SET type = @type::house_type,
-                            price = @price,
-                            description = @description,
-                            surface = @surface,
-                            residents = @residents,
-                            city = @city,
-                            street = @street,
-                            postal_code = @postalCode,
-                            house_number = @houseNumber,
-                            house_number_addition = @houseNumberAddition
-                        WHERE id = @id::uuid;
-                    """, connection))
+                                                                    UPDATE house
+                                                                    SET type = @type::house_type,
+                                                                        price = @price,
+                                                                        description = @description,
+                                                                        surface = @surface,
+                                                                        residents = @residents,
+                                                                        city = @city,
+                                                                        street = @street,
+                                                                        postal_code = @postalCode,
+                                                                        house_number = @houseNumber,
+                                                                        house_number_addition = @houseNumberAddition,
+                                                                        ST_SetSRID(ST_MakePoint(@x, @y), 4326)
+                                                                    WHERE id = @id::uuid;
+                                                                """, connection))
                         {
                             command.Parameters.AddWithValue("@id", house.Id);
                             command.Parameters.AddWithValue("@type", house.Type.ToString());
@@ -297,7 +286,9 @@ public class HouseRepository : IHouseRepository
                             command.Parameters.AddWithValue("@street", house.Street);
                             command.Parameters.AddWithValue("@postalCode", house.PostalCode);
                             command.Parameters.AddWithValue("@houseNumber", house.HouseNumber);
-                            command.Parameters.AddWithValue("@houseNumberAddition", (object)house.HouseNumberAddition ?? DBNull.Value);
+                            command.Parameters.AddWithValue("@houseNumberAddition", house.HouseNumberAddition);
+                            command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
+                            command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
 
                             command.ExecuteNonQuery();
                         }
@@ -329,9 +320,9 @@ public class HouseRepository : IHouseRepository
     private void UpdateHouseImages(Guid houseId, List<HouseImage> houseImages, NpgsqlConnection connection)
     {
         using (var deleteCommand = new NpgsqlCommand("""
-        DELETE FROM house_image 
-        WHERE house_id = @houseId::uuid;
-    """, connection))
+                                                         DELETE FROM house_image
+                                                         WHERE house_id = @houseId::uuid;
+                                                     """, connection))
         {
             deleteCommand.Parameters.AddWithValue("@houseId", houseId);
             deleteCommand.ExecuteNonQuery();
@@ -342,17 +333,17 @@ public class HouseRepository : IHouseRepository
             foreach (var image in houseImages)
             {
                 using (var insertCommand = new NpgsqlCommand("""
-                INSERT INTO house_image (
-                    house_id,
-                    path,
-                    bucket
-                ) 
-                VALUES (
-                    @houseId::uuid,
-                    @path,
-                    @bucket
-                );
-            """, connection))
+                                                                 INSERT INTO house_image (
+                                                                     house_id,
+                                                                     path,
+                                                                     bucket
+                                                                 )
+                                                                 VALUES (
+                                                                     @houseId::uuid,
+                                                                     @path,
+                                                                     @bucket
+                                                                 );
+                                                             """, connection))
                 {
                     insertCommand.Parameters.AddWithValue("@houseId", houseId);
                     insertCommand.Parameters.AddWithValue("@path", image.Path);
@@ -364,32 +355,46 @@ public class HouseRepository : IHouseRepository
         }
     }
 
-    public List<House> GetAll()
+    public List<House> GetByPreferences(HousePreferences housePreferences)
     {
-        var houses = new List<House>();
-
-        using (var connection = new NpgsqlConnection(_connectionString))
+        try
         {
-            connection.Open();
+            var houses = new List<House>();
 
-            using (var command = new NpgsqlCommand($"""
-            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition
-            FROM house;
-        """, connection))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var house = ReadToHouse(reader);
-                        houses.Add(house);
-                    }
-                }
-                houses.ForEach((house) => { house.HouseImages = GetHouseImages(house.Id, connection); });
-            }
-        }
+                connection.Open();
 
-        return houses;
+                using (var command = new NpgsqlCommand($"""
+            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition, ST_AsText(house_geolocation)
+            FROM house WHERE ST_DWithin(
+                house.house_geolocation,
+                (SELECT city_geolocation FROM house_preferences WHERE id = @housePreferenceId::uuid),
+                0.06
+            );
+        """, connection))
+                {
+                    command.Parameters.AddWithValue("@housePreferenceId", housePreferences.Id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var house = ReadToHouse(reader);
+                            houses.Add(house);
+                        }
+                    }
+                    houses.ForEach((house) => { house.HouseImages = GetHouseImages(house.Id, connection); });
+                }
+            }
+
+            return houses;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
 }

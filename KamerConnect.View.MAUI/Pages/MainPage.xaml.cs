@@ -11,8 +11,9 @@ public partial class MainPage : ContentPage
     private readonly IServiceProvider _serviceProvider;
     private readonly AuthenticationService _authenticationService;
     private readonly HouseService _houseService;
+    private readonly HousePreferenceService _housePreferenceService;
     private readonly PersonService _personService;
-    private ObservableCollection<House> _houses;
+    private ObservableCollection<House> _houses = new ObservableCollection<House>();
     public ObservableCollection<House> Houses
     {
         get => _houses;
@@ -31,20 +32,22 @@ public partial class MainPage : ContentPage
     public MainPage(IServiceProvider serviceProvider,
         AuthenticationService authenticationService,
         HouseService houseService,
-        PersonService personService)
+        PersonService personService,
+        HousePreferenceService housePreferenceService)
     {
         _serviceProvider = serviceProvider;
         _authenticationService = authenticationService;
         _houseService = houseService;
+        _housePreferenceService = housePreferenceService;
         _personService = personService;
-        NavigationPage.SetHasNavigationBar(this, false);
 
         GetCurrentPerson().GetAwaiter().GetResult();
         LoadHouses();
 
         InitializeComponent();
 
-        var navbar = serviceProvider.GetRequiredService<Navbar>();
+        NavigationPage.SetHasNavigationBar(this, false);
+        var navbar = _serviceProvider.GetRequiredService<Navbar>();
         NavbarContainer.Content = navbar;
 
         BindingContext = this;
@@ -52,7 +55,9 @@ public partial class MainPage : ContentPage
 
     private void LoadHouses()
     {
-        Houses = new ObservableCollection<House>(_houseService.GetAll());
+        var housePreferences = _housePreferenceService.GetHousePreferences(_person.Id);
+        var houses = _houseService.GetByPreferences(housePreferences);
+        Houses = new ObservableCollection<House>(houses);
     }
 
     private async Task GetCurrentPerson()
@@ -62,11 +67,6 @@ public partial class MainPage : ContentPage
         {
             _person = _personService.GetPersonById(session.personId);
         }
-    }
-
-    private House GetCurrentHouse()
-    {
-        return _houseService.GetByPersonId(_person.Id);
     }
 }
 

@@ -10,12 +10,12 @@ public partial class HouseCard : ContentView
 		BindingContextChanged += OnBindingContextChanged;
 	}
 
-	private void OnHouseCardTapped()
+	private void OnHouseCardTapped(object sender, EventArgs e)
 	{
 		// Implement house navigation here
 	}
 
-	private void OnBindingContextChanged(object sender, System.EventArgs e)
+	private void OnBindingContextChanged(object sender, EventArgs e)
 	{
 		if (BindingContext is House house)
 		{
