@@ -7,8 +7,9 @@ namespace KamerConnect.View.MAUI.Pages;
 public partial class HousePage : ContentPage
 {
     private readonly IServiceProvider _serviceProvider;
+    private House _house;
 
-    public HousePage(IServiceProvider serviceProvider, House house)
+    public HousePage(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
         
@@ -19,17 +20,22 @@ public partial class HousePage : ContentPage
         var navbar = serviceProvider.GetRequiredService<Navbar>();
         NavbarContainer.Content = navbar;
         
-        SetupInfo(house);
+        BindingContextChanged += OnBindingContextChanged;
     }
-
-    private void SetupInfo(House house)
+    
+    private void OnBindingContextChanged(object sender, System.EventArgs e)
     {
-        ImageSlideShow.Images = house.HouseImages;
-        StreetLabel.Text = house.Street;
-        CityLabel.Text = house.City;
-        PostalcodeLabel.Text = house.PostalCode;
-        FullnameLabel.Text = "Niek van den Berg";
-        SurfaceLabel.Text = house.Surface.ToString();
-        ResidentsLabel.Text = house.Residents.ToString();
+        if (BindingContext is House house)
+        {
+            if (house.HouseImages?.Count > 0)
+            {
+                ImageSlideShow.Images = house.HouseImages;
+            }
+            else
+            {
+                ImageSlideShow.Images = null;
+            }
+        }
     }
+    
 }
