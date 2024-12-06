@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using KamerConnect.Models;
 using Microsoft.Maui.Controls.Shapes;
-using CommunityToolkit.Maui;
 using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace KamerConnect.View.MAUI.Views;
@@ -22,27 +21,15 @@ public partial class MatchRequestsView : ContentView
     public MatchRequestsView()
     {
         InitializeComponent();
-        GetMatchRequests();
         AddLegend();
-        var statusImage = new Image
-        {
-            Scale = 0.3,
-            Source="accepted2.png",
-            Aspect = Aspect.AspectFit,
-            HorizontalOptions = LayoutOptions.End,
-            VerticalOptions = LayoutOptions.Center,
-            BackgroundColor = Colors.Transparent,
-        };
-        MatchRequests.Add(statusImage, 3, 2);
-        
+        GetMatchRequests();
         
         DisplayStatus(2, Role.Seeking, MatchRequestStatus.Accepted);
-        
         DisplayStatus(4, Role.Offering, MatchRequestStatus.Rejected);
         DisplayStatus(3, Role.Offering, MatchRequestStatus.Accepted);
-        
-        
         DisplayStatus(1, Role.Seeking, MatchRequestStatus.Pending);
+        
+        /*AddAcceptAndRejectButtons(15, Role.Offering);*/
     }
 
     public void GetMatchRequests()
@@ -69,14 +56,14 @@ public partial class MatchRequestsView : ContentView
             };
             var separator = new BoxView
             {
-                HeightRequest = 1,
-                BackgroundColor = Colors.Gray,
+                HeightRequest = 2,
+                BackgroundColor = Colors.LightGray,
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.End
             };
-            var label1 = new Label {Text = $"Label {i} 2", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label {Text = $"Label {i} 3", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label {Text = $"Label {i} 4", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label1 = new Label {Text = $"Label {i} 2", FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label2 = new Label {Text = $"Label {i} 3", FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label3 = new Label {Text = $"Label {i} 4", FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
@@ -89,15 +76,15 @@ public partial class MatchRequestsView : ContentView
 
     public void AddLegend()
     {
+        MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40, GridUnitType.Absolute) });
         var columns = new List<Label>
         {
-            new Label {Text = "Straat", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
-            new Label {Text = "Stad", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
-            new Label {Text = "Type", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
-            new Label {Text = "Prijs", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label {Text = "Match request", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center}
+            new Label {Text = "Straat", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
+            new Label {Text = "Stad", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
+            new Label {Text = "Type", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
+            new Label {Text = "Prijs", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center},
+            new Label {Text = "Match request", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center}
         };
-
         for (int i = 0; i < columns.Count; i++)
         {
             MatchRequests.Add(columns[i], i + 1, 0);
@@ -112,8 +99,8 @@ public partial class MatchRequestsView : ContentView
         }
         var separator = new BoxView
         {
-            HeightRequest = 1,
-            BackgroundColor = Colors.Gray,
+            HeightRequest = 2,
+            BackgroundColor = Colors.LightGray,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.End
         };
@@ -123,35 +110,21 @@ public partial class MatchRequestsView : ContentView
 
     public void DisplayStatus(int row, Role role, MatchRequestStatus status)
     {
-        var statusLabel = new Label
-        {
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center
-        };
-        var statusImage = new Image
-        {
-            Scale = 0.3,
-            Aspect = Aspect.AspectFit,
-            HorizontalOptions = LayoutOptions.End,
-            VerticalOptions = LayoutOptions.Center,
-            BackgroundColor = Colors.Transparent,
-        };
-        if (role == Role.Offering)
-        {
-            switch (status)
-            {
-                case MatchRequestStatus.Accepted:
-                    statusLabel.Text = "Accepteren";
-                    statusImage.Source = "accept.png";
-                    break;
-                case MatchRequestStatus.Rejected:
-                    statusLabel.Text = "Weigeren";
-                    statusImage.Source = "reject.png";
-                    break;
-            }
-        }
         if (role == Role.Seeking)
         {
+            var statusLabel = new Label
+            {
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Center
+            };
+            var statusImage = new Image
+            {
+                Aspect = Aspect.AspectFit,
+                Scale = 0.2,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center,
+                BackgroundColor = Colors.Transparent,
+            };
             switch (status)
             {
                 case MatchRequestStatus.Accepted:
@@ -167,8 +140,46 @@ public partial class MatchRequestsView : ContentView
                     statusImage.Source = "circlerejected.png";
                     break;
             }
+            var buttonContainer = new HorizontalStackLayout
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                Spacing = 5,
+            };
+            MatchRequests.Add(statusImage, 5, row);
+            MatchRequests.Add(statusLabel, 5, row);
         }
-        MatchRequests.Add(statusImage, 5, row + 1);
-        MatchRequests.Add(statusLabel, 5, row + 1);
+    }
+
+    public void AddAcceptAndRejectButtons(int rows, Role role)
+    {
+        if (role == Role.Offering)
+        {
+            for (int i = 1; i < rows; i++)
+            {
+                var buttonContainer = new HorizontalStackLayout
+                {
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                };
+                var acceptButton = new Image
+                {
+                    Source = "accept.png",
+                    Scale = 0.3,
+                    BackgroundColor = Colors.Transparent,
+                    AutomationId = $"AcceptButton{i}"
+                };
+                var rejectButton = new Image
+                {
+                    Source = "reject.png",
+                    Scale = 0.3,
+                    BackgroundColor = Colors.Transparent,
+                    AutomationId = $"RejectButton{i}"
+                };
+                buttonContainer.Children.Add(acceptButton);
+                buttonContainer.Children.Add(rejectButton);
+                MatchRequests.Add(buttonContainer, 5, i);
+            }
+        }
     }
 }
