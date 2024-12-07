@@ -30,6 +30,8 @@ public partial class MatchRequestsPage : ContentPage
         _personService = personService;
         NavigationPage.SetHasNavigationBar(this, false);
         MatchView.Content = _serviceProvider.GetRequiredService<MatchRequestsView>();
+        var navbar = serviceProvider.GetRequiredService<Navbar>();
+        NavbarContainer.Content = navbar;
     }
     
 }

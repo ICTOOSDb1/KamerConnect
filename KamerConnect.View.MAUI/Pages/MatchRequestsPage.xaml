@@ -4,15 +4,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:KamerConnect.View.MAUI.Views"
              x:Class="KamerConnect.View.MAUI.Pages.MatchRequestsPage"
-             BackgroundColor="{StaticResource BackgroundColor}">
+
+    BackgroundColor="#E5ECEF">
     <ContentPage.Content>
         <StackLayout Height="300" Width="1100">
+            <ContentView x:Name="NavbarContainer"/>
             <Label Text="Matchverzoeken"
-                   FontSize="32"
-                   FontFamily="InterLight"
-                   HorizontalOptions="Start"
-                   VerticalOptions="End"
-                   TextColor="Black"/>
+                   TextColor="Black"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontFamily="Inter-Regular"
+                   FontSize="36"
+                   FontAttributes="Bold"/>
             <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always">
             <ContentView x:Name="MatchView"  WidthRequest="1100" HeightRequest="600"/>
             </ScrollView>

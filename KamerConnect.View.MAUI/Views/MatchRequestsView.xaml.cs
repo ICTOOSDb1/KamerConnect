@@ -53,52 +53,83 @@ public partial class MatchRequestsView : ContentView
         }
     }
 
-    public void GetMatchRequestsOffering()
-    {
-        Match[] matches;
-        House house = _houseService.GetByPersonId(_person.Id);
-        matches =_matchService.GetMatchesById(house.Id);
-        
-        for (int i = 1; i < matches.Length+1 ; i++)
-        {
+public void GetMatchRequestsOffering()
+{
+    Match[] matches;
+    House house = _houseService.GetByPersonId(_person.Id);
+    matches = _matchService.GetMatchesById(house.Id);
 
-            Person person = _personService.GetPersonById(matches[i-1].personId);
-            var border = new Border
+    for (int i = 1; i < matches.Length + 1; i++)
+    {
+        Person person = _personService.GetPersonById(matches[i - 1].personId);
+        
+
+        MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
+        AddBackGroundColor(i);
+        
+        var border = new Border
+        {
+            WidthRequest = 100,
+            HeightRequest = 100,
+            StrokeShape = new RoundRectangle
             {
-                WidthRequest = 100,
-                HeightRequest = 100,
-                StrokeShape = new RoundRectangle
-                {
-                    CornerRadius = new CornerRadius(10)
-                },
+                CornerRadius = new CornerRadius(10)
+            },
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Center,
+            Content = new Image
+            {
+                Source = person.ProfilePicturePath != null
+                    ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
+                    : "user.png",
+                Aspect = Aspect.AspectFit,
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-                Content = new Image
-                {
-                    Source = person.ProfilePicturePath != null
-                        ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
-                        : "user.png",
-                    Aspect = Aspect.AspectFit, 
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
-                }
-            };
-            var separator = CreateSeparator();
-            var label1 = new Label { Text = person.FirstName, FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label { Text = (person.Personality != null) ? person.Personality.School : "" , FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label { Text = (person.Personality!= null) ? person.Personality.Study : "", FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label4 = new Label { Text = person.BirthDate.ToShortDateString(), FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
-            MatchRequests.Add(separator, 0, i);
-            Grid.SetColumnSpan(separator, 6);
-            MatchRequests.Add(border, 0, i);
-            MatchRequests.Add(label1, 1, i);
-            MatchRequests.Add(label2, 2, i);
-            MatchRequests.Add(label3, 3, i);
-            MatchRequests.Add(label4, 4, i);
-            DisplayStatus(i, matches[i-1].Status);
-        }
+                HorizontalOptions = LayoutOptions.Center
+            }
+        };
+        
+        var separator = CreateSeparator();
+        var label1 = new Label
+        {
+            Text = person.FirstName,
+            FontFamily = "OpenSansRegular",
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        };
+        var label2 = new Label
+        {
+            Text = person.Personality?.School ?? "",
+            FontFamily = "OpenSansRegular",
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        };
+        var label3 = new Label
+        {
+            Text = person.Personality?.Study ?? "",
+            FontFamily = "OpenSansRegular",
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        };
+        var label4 = new Label
+        {
+            Text = person.BirthDate.ToShortDateString(),
+            FontFamily = "OpenSansRegular",
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center
+        };
+        
+        MatchRequests.Add(separator, 0, i);
+        Grid.SetColumnSpan(separator, 6);
+        MatchRequests.Add(border, 0, i);
+        MatchRequests.Add(label1, 1, i);
+        MatchRequests.Add(label2, 2, i);
+        MatchRequests.Add(label3, 3, i);
+        MatchRequests.Add(label4, 4, i);
+        
+        DisplayStatus(i, matches[i - 1].Status);
     }
+}
+
 
     public void GetMatchRequestsSeeking()
     {
@@ -125,7 +156,7 @@ public partial class MatchRequestsView : ContentView
                 {
                     Source = house.HouseImages[0].Path != null
                         ? house.HouseImages[0].FullPath
-                : "geenProfiel.png",
+                : "house.png",
                     Aspect = Aspect.AspectFit, 
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center
@@ -151,6 +182,7 @@ public partial class MatchRequestsView : ContentView
             var label3 = new Label { Text = houseTypeTranslation,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label4 = new Label { Text = "€"+house.Price,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
+            AddBackGroundColor(i);
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
             MatchRequests.Add(border, 0, i);
@@ -195,7 +227,8 @@ public partial class MatchRequestsView : ContentView
             var statusLabel = new Label
             {
                 HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center
+                VerticalOptions = LayoutOptions.Center,
+                FontFamily = "OpenSansRegular",
             };
             var statusImage = new Image
             {
@@ -239,6 +272,18 @@ public partial class MatchRequestsView : ContentView
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.End
         };
+    }
+
+    private void AddBackGroundColor(int row)
+    {
+        var backgroundBox = new BoxView
+        {
+            Color = (Color)Application.Current.Resources["BackgroundColor"],
+            VerticalOptions = LayoutOptions.Fill,
+            HorizontalOptions = LayoutOptions.Fill
+        };
+        MatchRequests.Add(backgroundBox, 0, row);
+        Grid.SetColumnSpan(backgroundBox, 6); 
     }
 
 }
