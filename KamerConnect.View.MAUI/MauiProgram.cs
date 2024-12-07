@@ -1,4 +1,4 @@
-﻿using KamerConnect.DataAccess.GeoLocation.Repositories;
+using KamerConnect.DataAccess.GeoLocation.Repositories;
 using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.DataAccess.Minio;
@@ -43,9 +43,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<FileService>(sp => new FileService(new FileRepository()));
 		builder.Services.AddSingleton<HouseService>(sp => new HouseService(new HouseRepository()));
 		builder.Services.AddSingleton<HousePreferenceService>(sp => new HousePreferenceService(new HousePreferenceRepository()));
+		builder.Services.AddSingleton<MatchService>(sp => new MatchService(new MatchRepository()));
 		builder.Services.AddSingleton<GeoLocationService>(sp => new GeoLocationService(new GeoLocationRepository()));
 
-		builder.Services.AddTransient<LoginPage>();
+    builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();
 		builder.Services.AddTransient<UpdateAccount>();
 		builder.Services.AddTransient<RegisterHomePreferencesPage>();
@@ -54,6 +55,9 @@ public static class MauiProgram
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
 		builder.Services.AddTransient<Registration>();
+		builder.Services.AddTransient<ProfilePage>();
+		builder.Services.AddTransient<MatchRequestsPage>();
+		builder.Services.AddTransient<MatchRequestsView>();
 
 		builder.Services.AddFilePicker();
 
