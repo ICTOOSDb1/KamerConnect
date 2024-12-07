@@ -45,7 +45,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<HouseService>(sp => new HouseService(new HouseRepository()));
 		builder.Services.AddSingleton<HousePreferenceService>(sp => new HousePreferenceService(new HousePreferenceRepository()));
 		builder.Services.AddSingleton<GeoLocationService>(sp => new GeoLocationService(new GeoLocationRepository()));
-
+		builder.Services.AddSingleton<MatchService>(sp => new MatchService(new MatchRepository()));
+		
 		builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();
 		builder.Services.AddTransient<UpdateAccount>();
@@ -55,6 +56,9 @@ public static class MauiProgram
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
 		builder.Services.AddTransient<Registration>();
+		builder.Services.AddTransient<ProfilePage>();
+		builder.Services.AddTransient<MatchRequestsPage>();
+		builder.Services.AddTransient<MatchRequestsView>();
 
 		builder.Services.AddFilePicker();
 
