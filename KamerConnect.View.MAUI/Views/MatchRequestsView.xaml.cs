@@ -77,7 +77,7 @@ public partial class MatchRequestsView : ContentView
                 {
                     Source = person.ProfilePicturePath != null
                         ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
-                        : "geenProfiel.png",
+                        : "user.png",
                     Aspect = Aspect.AspectFit, 
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center
