@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using KamerConnect.DataAccess.GeoLocation.Repositories;
+using Microsoft.Extensions.Logging;
 using KamerConnect.EnvironmentVariables;
 using KamerConnect.DataAccess.Minio;
 using KamerConnect.DataAccess.Postgres.Repositories;
@@ -43,8 +44,9 @@ public static class MauiProgram
 		builder.Services.AddSingleton<HouseService>(sp => new HouseService(new HouseRepository()));
 		builder.Services.AddSingleton<HousePreferenceService>(sp => new HousePreferenceService(new HousePreferenceRepository()));
 		builder.Services.AddSingleton<MatchService>(sp => new MatchService(new MatchRepository()));
-		
-		builder.Services.AddTransient<LoginPage>();
+		builder.Services.AddSingleton<GeoLocationService>(sp => new GeoLocationService(new GeoLocationRepository()));
+
+    builder.Services.AddTransient<LoginPage>();
 		builder.Services.AddTransient<MainPage>();
 		builder.Services.AddTransient<UpdateAccount>();
 		builder.Services.AddTransient<RegisterHomePreferencesPage>();
