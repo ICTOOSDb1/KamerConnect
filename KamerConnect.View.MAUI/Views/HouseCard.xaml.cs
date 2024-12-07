@@ -15,7 +15,6 @@ public partial class HouseCard : ContentView
     {
         if (BindingContext is House house)
         {
-            // Resolve HousePage and pass the house object
             var housePage = MauiProgram.Services.GetRequiredService<HousePage>();
             housePage.BindingContext = house;
 

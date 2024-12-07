@@ -43,7 +43,6 @@ public partial class ImageSlideShow : ContentView
        public ImageSlideShow()
        {
            InitializeComponent();
-           // Initialize components and set the default state
            _currentImageIndex = 0;
        }
    
@@ -52,7 +51,7 @@ public partial class ImageSlideShow : ContentView
            if (bindable is ImageSlideShow slideshow && newValue is List<HouseImage> newImages)
            {
                slideshow.AddImagesToScrollView(newImages);
-               slideshow.SetCurrentImage(0); // Start with the first image
+               slideshow.SetCurrentImage(0);
            }
        }
 
@@ -128,18 +127,10 @@ public partial class ImageSlideShow : ContentView
 
             imageButton.Clicked += SelectImage;
 
-            // Add the ImageButton to the Frame
+          
             imageFrame.Content = imageButton;
 
             imageGrid.Children.Add(imageFrame);
-
-            var grayOverlay = new BoxView
-            {
-                BackgroundColor = Colors.Gray,
-                Opacity = 0
-            };
-
-            imageGrid.Children.Add(grayOverlay);
 
             PreviewImages.Children.Add(imageGrid);
             index++;
