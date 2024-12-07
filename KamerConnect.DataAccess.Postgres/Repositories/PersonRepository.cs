@@ -50,10 +50,7 @@ public class PersonRepository : IPersonRepository
 
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        return ReadToPerson(reader);
-                    }
+                    while (reader.Read()) return ReadToPerson(reader);
                 }
             }
         }
@@ -87,7 +84,7 @@ public class PersonRepository : IPersonRepository
                                      FROM person
                                      LEFT JOIN personality ON person.id = personality.person_id
                                      WHERE person.email = @email;
-                                     
+
                                      """,
                        connection))
             {
@@ -95,10 +92,7 @@ public class PersonRepository : IPersonRepository
 
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
-                    {
-                        return ReadToPerson(reader);
-                    }
+                    while (reader.Read()) return ReadToPerson(reader);
                 }
             }
         }
@@ -229,13 +223,13 @@ public class PersonRepository : IPersonRepository
             using (var transaction = connection.BeginTransaction())
             {
                 using (var updateCommand = new NpgsqlCommand(
-                    """
-                UPDATE personality
-                SET school = @School,
-                    study = @Study,
-                    description = @Description
-                WHERE person_id = @PersonalityId;
-                """, connection))
+                           """
+                           UPDATE personality
+                           SET school = @School,
+                               study = @Study,
+                               description = @Description
+                           WHERE person_id = @PersonalityId;
+                           """, connection))
                 {
                     updateCommand.Parameters.AddWithValue("@PersonalityId", personId);
                     updateCommand.Parameters.AddWithValue("@School", personality.School ?? string.Empty);
@@ -245,21 +239,20 @@ public class PersonRepository : IPersonRepository
                     var rowsAffected = updateCommand.ExecuteNonQuery();
 
                     if (rowsAffected == 0)
-                    {
                         using (var insertCommand = new NpgsqlCommand(
-                            """
-                        INSERT INTO personality (person_id, school, study, description)
-                        VALUES (@PersonalityId, @School, @Study, @Description);
-                        """, connection))
+                                   """
+                                   INSERT INTO personality (person_id, school, study, description)
+                                   VALUES (@PersonalityId, @School, @Study, @Description);
+                                   """, connection))
                         {
                             insertCommand.Parameters.AddWithValue("@PersonalityId", personId);
                             insertCommand.Parameters.AddWithValue("@School", personality.School ?? string.Empty);
                             insertCommand.Parameters.AddWithValue("@Study", personality.Study ?? string.Empty);
-                            insertCommand.Parameters.AddWithValue("@Description", personality.Description ?? string.Empty);
+                            insertCommand.Parameters.AddWithValue("@Description",
+                                personality.Description ?? string.Empty);
 
                             insertCommand.ExecuteNonQuery();
                         }
-                    }
                 }
                 transaction.Commit();
             }
