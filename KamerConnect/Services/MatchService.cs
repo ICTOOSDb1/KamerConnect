@@ -19,10 +19,14 @@ public class MatchService
         return _matchRepository.GetMatchesById(Id);
     }
     
-
     public void UpdateMatch(Match match, status status)
     {
         _matchRepository.UpdateMatch(match , status);
+    }
+
+    public Guid CreateMatch(Match match)
+    {
+        return _matchRepository.CreateMatch(match);
     }
     
 }

@@ -6,7 +6,7 @@ public interface IMatchRepository
 {
 
     List<Match>? GetMatchesById(Guid Id);
-
     void UpdateMatch(Match match, status status);
+    Guid CreateMatch(Match match);
    
 }

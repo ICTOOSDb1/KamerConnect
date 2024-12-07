@@ -14,7 +14,7 @@ public class MatchRepository : IMatchRepository
     {
         _connectionString = EnvironmentUtils.GetConnectionString();
     }
-    
+
     public List<Match>? GetMatchesById(Guid Id)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
@@ -25,7 +25,7 @@ public class MatchRepository : IMatchRepository
                                                    SELECT *
                                                    FROM matchrequests
                                                    WHERE (house_id = @id::uuid or person_id = @id::uuid) and status = 'Pending'
-                                                   """, 
+                                                   """,
                        connection))
             {
                 command.Parameters.AddWithValue("@id", Id);
@@ -49,15 +49,15 @@ public class MatchRepository : IMatchRepository
         }
     }
 
-    
-    public void UpdateMatch(Match match , status status)
+
+    public void UpdateMatch(Match match, status status)
     {
         try
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
-        
+
                 string updateQuery = @"
             UPDATE matchrequests
             SET status = @status::matchrequest_status
@@ -67,7 +67,7 @@ public class MatchRepository : IMatchRepository
                 {
                     command.Parameters.AddWithValue("@status", status.ToString());
                     command.Parameters.AddWithValue("@id", match.matchId);
-            
+
                     try
                     {
                         command.ExecuteNonQuery();
@@ -84,9 +84,42 @@ public class MatchRepository : IMatchRepository
             Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
             throw;
         }
-        
     }
-    
+
+    public Guid CreateMatch(Match match)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string updateQuery = $"""
+                                      INSERT INTO matchrequests (
+                                        person_id, house_id, status, description)
+                                        VALUES (@personId::uuid, @houseId::uuid, @status::matchrequest_status, @description
+                                      ) RETURNING id;
+                                      """;
+
+                using (var command = new NpgsqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@personId", match.personId);
+                    command.Parameters.AddWithValue("@houseId", match.houseId);
+                    command.Parameters.AddWithValue("@status", match.Status.ToString());
+                    command.Parameters.AddWithValue("@description", match.motivation);
+
+                    var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                    return (Guid)result;
+                }
+            }
+        }
+        catch (NpgsqlException e)
+        {
+            Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
+            throw;
+        }
+    }
+
 
     public Match readToMatch(DbDataReader reader)
     {
@@ -97,6 +130,6 @@ public class MatchRepository : IMatchRepository
             EnumUtils.Validate<status>(reader.GetString(3)),
             "Placeholder motivation"
         );
-    return match;
+        return match;
     }
 }
