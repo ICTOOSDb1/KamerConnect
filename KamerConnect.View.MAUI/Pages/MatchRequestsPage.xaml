@@ -6,9 +6,18 @@
              x:Class="KamerConnect.View.MAUI.Pages.MatchRequestsPage"
              BackgroundColor="{StaticResource BackgroundColor}">
     <ContentPage.Content>
-        
-        <StackLayout>
-            <ContentView x:Name="MatchView"/>
-        </StackLayout>
+        <Grid RowDefinitions="Auto,*">
+            <ContentView x:Name="NavbarContainer"
+                         Grid.Row="0"/>
+
+            <ScrollView Grid.Row="1"
+                        BackgroundColor="Transparent"
+                        VerticalScrollBarVisibility="Never"
+                        HorizontalScrollBarVisibility="Never">
+                <StackLayout Padding="0, 50">
+                    <ContentView x:Name="MatchView"/>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

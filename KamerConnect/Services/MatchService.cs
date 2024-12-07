@@ -12,17 +12,14 @@ public class MatchService
         _matchRepository = matchRepository;
     }
 
- 
 
-    public List<Match>? GetMatchesById(Guid Id)
+    public List<Match> GetMatchesById(Guid Id)
     {
         return _matchRepository.GetMatchesById(Id);
     }
-    
 
     public void UpdateMatch(Match match, status status)
     {
-        _matchRepository.UpdateMatch(match , status);
+        _matchRepository.UpdateMatch(match, status);
     }
-    
 }

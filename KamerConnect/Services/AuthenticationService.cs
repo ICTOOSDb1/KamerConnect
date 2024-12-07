@@ -9,7 +9,7 @@ using KamerConnect.Services;
 using KamerConnect.Utils;
 using Microsoft.Maui.Storage;
 
-namespace KamerConnect;
+namespace KamerConnect.Services;
 
 public class AuthenticationService
 {
@@ -74,10 +74,10 @@ public class AuthenticationService
             var session = _repository.GetSessionWithLocalToken(sessionToken);
             if (session == null || DateTime.Now >= session.startingDate.AddMonths(6))
             {
-                RemoveSession(currentToken);
+                RemoveSession(sessionToken);
                 return null;
             }
-            return session
+            return session;
         }
         return null;
     }

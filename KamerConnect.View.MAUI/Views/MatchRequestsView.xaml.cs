@@ -20,29 +20,29 @@ public partial class MatchRequestsView : ContentView
     private IServiceProvider _serviceProvider;
     private Person _person;
     private readonly HouseService _houseService;
-    
-    public MatchRequestsView(HouseService houseService, FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
+
+    public MatchRequestsView(IServiceProvider serviceProvider)
     {
-         _houseService = houseService;
+        _houseService = serviceProvider.GetRequiredService<HouseService>();
         _serviceProvider = serviceProvider;
-        NavigationPage.SetHasNavigationBar(this, false);
-        InitializeComponent();
-        _fileService = fileService;
-        _matchService = matchService;
-        _authenticationService = authenticationService;
-        _personService = personService;
+        _fileService = serviceProvider.GetRequiredService<FileService>(); ;
+        _matchService = serviceProvider.GetRequiredService<MatchService>();
+        _authenticationService = serviceProvider.GetRequiredService<AuthenticationService>(); ;
+        _personService = serviceProvider.GetRequiredService<PersonService>();
         GetCurrentPerson().GetAwaiter().GetResult();
+
+        InitializeComponent();
+
         if (_person.Role == Role.Offering)
         {
-           GetMatchRequestsOffering(); 
+            GetMatchRequestsOffering();
         }
         else
         {
-            
+
         }
-        
-     
     }
+
     private async Task GetCurrentPerson()
     {
         var session = await _authenticationService.GetSession();
@@ -62,13 +62,13 @@ public partial class MatchRequestsView : ContentView
 
             for (int i = 1; i < matches.Count + 1; i++)
             {
-
                 Person person = _personService.GetPersonById(matches[i - 1].personId);
 
                 var border = AddProfilePicture(person);
                 var FirstNameLabel = new Label
                 {
-                    Text = person.FirstName, HorizontalOptions = LayoutOptions.Center,
+                    Text = person.FirstName,
+                    HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center
                 };
                 var SchoolLabel = new Label();
@@ -86,7 +86,8 @@ public partial class MatchRequestsView : ContentView
 
                 var BirthLabel = new Label
                 {
-                    Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
+                    Text = person.BirthDate.ToShortDateString(),
+                    HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center
                 };
                 var horizontalstack = new HorizontalStackLayout { HorizontalOptions = LayoutOptions.Center };
@@ -121,7 +122,7 @@ public partial class MatchRequestsView : ContentView
                 acceptButton.Clicked += AcceptButton_OnClicked;
 
                 MatchRequests.RowDefinitions.Add(new RowDefinition
-                    { Height = new GridLength(100, GridUnitType.Absolute) });
+                { Height = new GridLength(100, GridUnitType.Absolute) });
                 MatchRequests.Add(AddProfilePicture(person), 0, i);
                 MatchRequests.Add(FirstNameLabel, 1, i);
                 MatchRequests.Add(SchoolLabel, 2, i);
@@ -133,11 +134,11 @@ public partial class MatchRequestsView : ContentView
                     CommandParameter = matches[i - 1]
                 };
                 tapGestureRecognizer.Tapped += ToProfile_OnTapped;
-                
+
                 border.GestureRecognizers.Add(tapGestureRecognizer);
             }
         }
-        AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+        AddLegend("Voornaam", "School", "Opleiding", "Geboortedatum");
     }
 
     public Border AddProfilePicture(Person person)
@@ -164,8 +165,8 @@ public partial class MatchRequestsView : ContentView
         };
         return border;
     }
-    
-    
+
+
 
     public void AddLegend(string label1, string label2, string label3, string label4)
     {
@@ -177,11 +178,11 @@ public partial class MatchRequestsView : ContentView
             new Label { Text = label4, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
             new Label { Text = "Match request", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
         };
-        
+
         for (int i = 0; i < columns.Count; i++)
         {
             MatchRequests.Add(columns[i], i + 1, 0);
-            
+
         }
     }
     private void AcceptButton_OnClicked(object sender, EventArgs e)
