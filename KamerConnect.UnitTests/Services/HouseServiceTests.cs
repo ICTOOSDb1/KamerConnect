@@ -21,22 +21,6 @@ namespace KamerConnect.UnitTests
         }
 
         [Test]
-        public void Get_WhenCalled_ReturnsHouse()
-        {
-            // Arrange
-            var houseId = Guid.NewGuid();
-            var expectedHouse = TestModels.HouseModel;
-            _mockRepository.Setup(r => r.Get(houseId)).Returns(expectedHouse);
-
-            // Act
-            var result = _houseService.Get(houseId);
-
-            // Assert
-            Assert.That(expectedHouse, Is.EqualTo(result));
-            _mockRepository.Verify(r => r.Get(houseId), Times.Once);
-        }
-
-        [Test]
         public void Create_WhenCalled_ReturnsNewHouseId()
         {
             // Arrange

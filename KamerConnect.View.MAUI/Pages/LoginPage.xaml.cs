@@ -1,4 +1,5 @@
-using KamerConnect.Exceptions;
+using KamerConnect.Models;
+using KamerConnect.Services;
 
 namespace KamerConnect.View.MAUI.Pages;
 
@@ -12,9 +13,9 @@ public partial class LoginPage : ContentPage
         this.authService = authService;
         _serviceProvider = serviceProvider;
 
-    
+
         NavigationPage.SetHasNavigationBar(this, false);
-        
+
         InitializeComponent();
     }
 
