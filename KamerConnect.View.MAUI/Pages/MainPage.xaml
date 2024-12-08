@@ -19,6 +19,7 @@
                 <HorizontalStackLayout Spacing="15">
                     <Label FontSize="Title"
                            Padding="0, 25">Woningen gebaseerd op jouw voorkeuren</Label>
+
                     <Border Stroke="Gray"
                             StrokeShape="RoundRectangle 20"
                             HorizontalOptions="Center"
@@ -27,7 +28,27 @@
                         <Label Text="{Binding Houses.Count}"
                                FontSize="Large"/>
                     </Border>
+
+                    <Label FontSize="Medium"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           TextColor="Gray">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="NavigateToProfile"/>
+                        </Label.GestureRecognizers>
+                        Woningvoorkeur aanpassen
+                    </Label>
                 </HorizontalStackLayout>
+
+                <Label
+                    FontSize="Large"
+                    Grid.Row="1"
+                    IsVisible="{Binding AreHousesEmpty}">
+                    Geen woningen gevonden op basis van jouw voorkeuren.
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="NavigateToProfile"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <CollectionView Grid.Row="1"
                                 ItemsSource="{Binding Houses}"
                                 BackgroundColor="Transparent">

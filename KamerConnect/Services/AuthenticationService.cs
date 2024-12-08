@@ -74,7 +74,7 @@ public class AuthenticationService
             var session = _repository.GetSessionWithLocalToken(sessionToken);
             if (session == null || DateTime.Now >= session.startingDate.AddMonths(6))
             {
-                RemoveSession(session.sessionToken);
+                RemoveSession(sessionToken);
                 return null;
             }
             return session;

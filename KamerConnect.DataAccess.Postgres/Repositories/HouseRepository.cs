@@ -28,7 +28,8 @@ public class HouseRepository : IHouseRepository
                                                         postal_code,
                                                         house_number,
                                                         house_number_addition,
-                                                        house_geolocation
+                                                        house_geolocation,
+                                                        available
                                                     )
                                                     VALUES (
                                                         @type::house_type,
@@ -41,7 +42,8 @@ public class HouseRepository : IHouseRepository
                                                         @postalCode,
                                                         @houseNumber,
                                                         @houseNumberAddition,
-                                                        ST_SetSRID(ST_MakePoint(@x, @y), 4326)
+                                                        ST_SetSRID(ST_MakePoint(@x, @y), 4326),
+                                                        @available
                                                     ) RETURNING id;
                                                     """, connection))
             {
@@ -57,6 +59,7 @@ public class HouseRepository : IHouseRepository
                 command.Parameters.AddWithValue("@houseNumberAddition", house.HouseNumberAddition);
                 command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
                 command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
+                command.Parameters.AddWithValue("@available", house.Available);
 
                 var houseId = command.ExecuteScalar() as Guid?;
                 if (!houseId.HasValue)
@@ -199,7 +202,7 @@ public class HouseRepository : IHouseRepository
                    new NpgsqlCommand($"""
                                       SELECT h.id, h.type, h.price, h.description, h.surface,
                                              h.residents, h.city, h.street, h.postal_code,
-                                             h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation)
+                                             h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation), h.available
                                       FROM house h
                                       INNER JOIN person p ON p.house_id = h.id
                                       WHERE p.id = @PersonId;
@@ -241,7 +244,8 @@ public class HouseRepository : IHouseRepository
             reader.GetInt32(9),
             reader.GetString(10),
             new WKTReader().Read(reader.GetString(11)) as Point,
-            new List<HouseImage>()
+            new List<HouseImage>(),
+            reader.GetBoolean(12)
         );
     }
 
@@ -272,7 +276,8 @@ public class HouseRepository : IHouseRepository
                                                                         postal_code = @postalCode,
                                                                         house_number = @houseNumber,
                                                                         house_number_addition = @houseNumberAddition,
-                                                                        ST_SetSRID(ST_MakePoint(@x, @y), 4326)
+                                                                        house_geolocation = ST_SetSRID(ST_MakePoint(@x, @y), 4326),
+                                                                        available = @available
                                                                     WHERE id = @id::uuid;
                                                                 """, connection))
                         {
@@ -289,6 +294,7 @@ public class HouseRepository : IHouseRepository
                             command.Parameters.AddWithValue("@houseNumberAddition", house.HouseNumberAddition);
                             command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
                             command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
+                            command.Parameters.AddWithValue("@available", house.Available);
 
                             command.ExecuteNonQuery();
                         }
@@ -366,10 +372,10 @@ public class HouseRepository : IHouseRepository
                 connection.Open();
 
                 using (var command = new NpgsqlCommand($"""
-            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition, ST_AsText(house_geolocation)
+            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition, ST_AsText(house_geolocation), available
             FROM house WHERE ST_DWithin(
                 house.house_geolocation,
-                (SELECT city_geolocation FROM house_preferences WHERE id = @housePreferenceId::uuid),
+                (SELECT city_geolocation FROM house_preferences WHERE id = @housePreferenceId::uuid AND available = true),
                 0.06
             );
         """, connection))
