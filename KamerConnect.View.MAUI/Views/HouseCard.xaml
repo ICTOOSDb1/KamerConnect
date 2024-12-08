@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KamerConnect.View.MAUI.Views.HouseCard"
+             xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
              BackgroundColor="{StaticResource BackgroundColor}">
     <Frame CornerRadius="10"
            HeightRequest="400"
@@ -19,7 +20,8 @@
                    WidthRequest="500"/>
 
             <VerticalStackLayout Padding="5">
-                <HorizontalStackLayout Spacing="5">
+                <HorizontalStackLayout Spacing="5"
+                                       Padding="3">
                     <Label Text="{Binding Street}"
                            FontSize="Large"
                            TextColor="Black"></Label>
@@ -31,9 +33,44 @@
                            TextColor="Black"></Label>
                 </HorizontalStackLayout>
 
-                <HorizontalStackLayout Spacing="5">
-                    <Label Text="{Binding PostalCode}"/>
-                    <Label Text="{Binding City}"/>
+                <HorizontalStackLayout Spacing="5"
+                                       Padding="3">
+                    <Label Text="{Binding PostalCode}"
+                           FontSize="Medium"/>
+                    <Label Text="{Binding City}"
+                           FontSize="Medium"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="10"
+                                       Padding="3">
+
+                    <HorizontalStackLayout Spacing="5"
+                                           VerticalOptions="Center">
+                        <Label Text="{x:Static Utils:Icon.UserGroup}"
+                               FontFamily="FaIcons"
+                               FontSize="Medium"/>
+                        <Label Text="{Binding Residents}"
+                               FontSize="Medium"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="5"
+                                           VerticalOptions="Center">
+                        <Label Text="{x:Static Utils:Icon.RulerCombined}"
+                               FontFamily="FaIcons"
+                               FontSize="Medium"/>
+                        <Label Text="{Binding Surface}"
+                               FontSize="Medium"/>
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="5"
+                                           VerticalOptions="Center">
+                        <Label Text="{x:Static Utils:Icon.EuroSign}"
+                               FontFamily="FaIcons"
+                               FontSize="Medium"/>
+                        <Label Text="{Binding Price}"
+                               FontSize="Medium"/>
+                    </HorizontalStackLayout>
+
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>

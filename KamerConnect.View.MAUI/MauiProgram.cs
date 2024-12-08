@@ -34,6 +34,7 @@ public static class MauiProgram
 				fonts.AddFont("Inter-Regular.ttf", "InterRegular");
 				fonts.AddFont("Inter-SemiBold.ttf", "InterSemiBold");
 				fonts.AddFont("Inter-Thin.ttf", "InterThin");
+				fonts.AddFont("fa-light-300.ttf", "FaIcons");
 			});
 
 #if DEBUG
