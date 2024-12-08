@@ -1,6 +1,8 @@
+using System.ComponentModel;
+
 namespace KamerConnect.Utils;
 
-public class EnumUtils
+public static class EnumUtils
 {
     public static T Validate<T>(string value) where T : struct
     {
