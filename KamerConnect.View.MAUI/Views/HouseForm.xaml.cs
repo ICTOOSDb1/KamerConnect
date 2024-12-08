@@ -148,7 +148,8 @@ public partial class HouseForm : ContentView
                     houseNumber,
                     addition,
                     await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
-                    houseImages.ToList()
+                    houseImages.ToList(),
+                    House.Available == null ? true : House.Available
                 ),
                 _person.Id
             );
@@ -168,7 +169,8 @@ public partial class HouseForm : ContentView
                 houseNumber,
                 addition,
                 await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
-                houseImages.ToList()
+                houseImages.ToList(),
+                House.Available == null ? true : House.Available
             ));
         }
 

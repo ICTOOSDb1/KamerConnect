@@ -89,7 +89,11 @@
 							</Picker.Items>
 						</Picker>
 						<Label Text="{x:Static Utils:Icon.ChevronDown}"
-							   FontFamily="FaIcons"/>
+							   FontFamily="FaIcons"
+							   Grid.Column="1"
+							   VerticalOptions="Center"
+							   HorizontalOptions="End"
+							   Margin="0,0,10,0"/>
 					</Grid>
 				</Frame>
 			</VerticalStackLayout>
@@ -139,13 +143,25 @@
 								   Text="{Binding House.Description}"
 								   Grid.Row="4"/>
 
+			<HorizontalStackLayout Grid.Row="5"
+								   Spacing="5">
+				<Label Text="Beschikbaar"
+					   FontSize="14"
+					   VerticalOptions="Center"/>
+
+				<CheckBox IsChecked="{Binding House.Available, Mode=TwoWay, TargetNullValue=True}"
+						  VerticalOptions="Center"
+						  x:Name="availableEntry"
+						  HorizontalOptions="Start"/>
+			</HorizontalStackLayout>
+
 			<Button Text="Kies foto's"
 					Style="{StaticResource SecondaryButton}"
 					Clicked="OnPickFilesClicked"
-					Grid.Row="5"/>
+					Grid.Row="6"/>
 
 			<CollectionView ItemsSource="{Binding houseImages}"
-							Grid.Row="6">
+							Grid.Row="7">
 				<CollectionView.ItemTemplate>
 					<DataTemplate>
 						<StackLayout Orientation="Vertical"
