@@ -90,12 +90,6 @@ public partial class ImageSlideShow : ContentView
         if (sender is ImageButton imageButton && imageButton.CommandParameter is int index)
         {
             CurrentImageIndex = (int)imageButton.CommandParameter;
-            var grayOverlay = imageButton.BindingContext as BoxView;
-            
-            if (grayOverlay != null)
-            {
-                grayOverlay.Opacity = 0.5;
-            }
         }
     }
 
@@ -111,6 +105,7 @@ public partial class ImageSlideShow : ContentView
             {
                 CornerRadius = 15,
                 Margin = 5,
+                Padding = 0,
                 HasShadow = false,
                 HeightRequest = 150,
                 WidthRequest = 150
@@ -121,18 +116,14 @@ public partial class ImageSlideShow : ContentView
                 Source = imageSource.FullPath,
                 Aspect = Aspect.AspectFill,
                 CommandParameter = index,
-                HeightRequest = 150,
-                WidthRequest = 150,
             };
 
             imageButton.Clicked += SelectImage;
-
-          
+            
             imageFrame.Content = imageButton;
-
             imageGrid.Children.Add(imageFrame);
-
             PreviewImages.Children.Add(imageGrid);
+            
             index++;
         }
     }

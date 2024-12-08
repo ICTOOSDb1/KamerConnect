@@ -58,6 +58,56 @@ public class PersonRepository : IPersonRepository
         return null;
     }
 
+    public Person? GetPersonByHouseId(Guid id)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var command =
+                       new NpgsqlCommand("""
+                                         SELECT 
+                                             person.id,                        
+                                             person.email,                     
+                                             person.first_name,                
+                                             person.middle_name,               
+                                             person.surname,                   
+                                             person.phone_number,              
+                                             person.birth_date,                
+                                             person.gender,                    
+                                             person.role,                      
+                                             person.profile_picture_path,
+                                             personality.id,            
+                                             personality.school,               
+                                             personality.study,                
+                                             personality.description 
+                                         FROM person
+                                         LEFT JOIN personality ON person.id = personality.person_id
+                                         LEFT JOIN house ON person.house_id = house.id
+                                         WHERE person.house_id = @id::uuid;
+                                         """,
+                           connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read()) return ReadToPerson(reader);
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        return null;
+    }
+
     public Person? GetPersonByEmail(string email)
     {
         using (var connection = new NpgsqlConnection(connectionString))
@@ -125,7 +175,6 @@ public class PersonRepository : IPersonRepository
                                           """,
                            connection))
                 {
-
                     command.Parameters.AddWithValue("@Id", person.Id);
                     command.Parameters.AddWithValue("@Email", person.Email);
                     command.Parameters.AddWithValue("@FirstName", person.FirstName);
@@ -254,6 +303,7 @@ public class PersonRepository : IPersonRepository
                             insertCommand.ExecuteNonQuery();
                         }
                 }
+
                 transaction.Commit();
             }
         }

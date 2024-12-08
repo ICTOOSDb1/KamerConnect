@@ -19,7 +19,7 @@
             HorizontalOptions="Fill" 
             Aspect="AspectFill"/>
         </Border>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="10, 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -31,6 +31,7 @@
                 Source="arrow_button_left.png"
                 HeightRequest="50"
                 WidthRequest="50"
+                BackgroundColor="Transparent"
                 HorizontalOptions="Start"
                 VerticalOptions="Center"/>
             <BoxView Grid.Column="1" WidthRequest="0" HorizontalOptions="FillAndExpand" />
@@ -40,12 +41,12 @@
                 Source="arrow_button_right.png"
                 HeightRequest="50"
                 WidthRequest="50"
+                BackgroundColor="Transparent"
                 HorizontalOptions="End"
                 VerticalOptions="Center"/>
         </Grid>
         <ScrollView Grid.Row="1" HorizontalOptions="Start" HorizontalScrollBarVisibility="Always" Orientation="Horizontal">
-            <StackLayout Orientation="Horizontal" x:Name="PreviewImages">
-            </StackLayout>
+            <StackLayout Orientation="Horizontal" x:Name="PreviewImages"/>
         </ScrollView>
     </Grid>
 </ContentView>

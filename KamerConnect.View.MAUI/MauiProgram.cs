@@ -7,6 +7,7 @@ using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 
+
 namespace KamerConnect.View.MAUI;
 
 public static class MauiProgram

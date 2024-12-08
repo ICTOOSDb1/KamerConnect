@@ -16,7 +16,7 @@ public partial class Navbar : ContentView
 	{
 		if (Application.Current.MainPage is NavigationPage navigationPage)
 		{
-			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+			App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
 		}
 	}
 
@@ -24,7 +24,7 @@ public partial class Navbar : ContentView
 	{
 		if (Application.Current.MainPage is NavigationPage navigationPage)
 		{
-			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MainPage>());
+			App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
 		}
 	}
 
@@ -32,7 +32,7 @@ public partial class Navbar : ContentView
 	{
 		if (Application.Current.MainPage is NavigationPage navigationPage)
 		{
-			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<UpdateAccount>());
+			App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
 		}
 	}
 }
