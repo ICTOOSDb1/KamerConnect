@@ -31,4 +31,9 @@ public class HouseService
     {
         return _repository.GetByPreferences(housePreferences);
     }
+
+    public House? Get(Guid id)
+    {
+        return _repository.Get(id);
+    }
 }

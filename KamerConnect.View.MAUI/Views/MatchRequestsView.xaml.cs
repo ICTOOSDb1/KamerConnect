@@ -57,8 +57,9 @@ public void GetMatchRequestsOffering()
 {
     Match[] matches;
     House house = _houseService.GetByPersonId(_person.Id);
+    if (house == null) return;
     matches = _matchService.GetMatchesById(house.Id);
-
+    if (matches == null) return;
     for (int i = 1; i < matches.Length + 1; i++)
     {
         Person person = _personService.GetPersonById(matches[i - 1].personId);
@@ -134,8 +135,11 @@ public void GetMatchRequestsOffering()
     public void GetMatchRequestsSeeking()
     {
         Match[] matches;
+        
         Person person = _personService.GetPersonById(_person.Id);
+        if (person == null) return;
         matches =_matchService.GetMatchesById(person.Id);
+        if (matches == null) return;
         
         for (int i = 1; i < matches.Length+1 ; i++)
         {
