@@ -37,9 +37,14 @@
                     </Grid.RowDefinitions>
 
                     <VerticalStackLayout Grid.Row="0">
-                        <HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="5">
                             <Label x:Name="StreetLabel"
                                 Text="{Binding Street}"
+                                   FontFamily="InterMedium"
+                                   FontSize="36"
+                                   VerticalTextAlignment="End" />
+                            <Label x:Name="NumberLabel"
+                                   Text="{Binding HouseNumber}"
                                    FontFamily="InterMedium"
                                    FontSize="36"
                                    VerticalTextAlignment="End" />
@@ -159,7 +164,6 @@
             </Grid>
 
             <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="#999999" HorizontalOptions="FillAndExpand" />
-            <BoxView Grid.Row="2" HeightRequest="380" BackgroundColor="Black" HorizontalOptions="FillAndExpand" />
         </Grid>
     </ScrollView>
         </Grid>
