@@ -35,19 +35,4 @@ public class PersonService
     {
         _repository.UpdatePersonality(personId, personality);
     }
-    
-    public void UpdateHousePreferences(HousePreferences housePreferences)
-    {
-        _repository.UpdateHousePreferences(housePreferences);
-    }
-
-    public Guid CreateHousePreferences(HousePreferences housePreferences)
-    {
-        return _repository.CreateHousePreferences(housePreferences);
-    }
-
-    public HousePreferences? GetHousePreferences(Guid personId)
-    {
-        return _repository.GetHousePreferences(personId);
-    }
 }

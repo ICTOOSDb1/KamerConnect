@@ -150,7 +150,7 @@ public partial class Entry : ContentView
 
     public void Validate()
     { 
-        if (string.IsNullOrWhiteSpace(Text) && InputType != EntryInputType.PhoneNumber && IsRequired)
+        if (string.IsNullOrWhiteSpace(Text) && IsRequired)
             {
                 SetValidation("dit veld is verplicht");
             }

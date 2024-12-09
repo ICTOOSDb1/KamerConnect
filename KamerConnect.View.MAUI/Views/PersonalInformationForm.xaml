@@ -3,6 +3,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:components="using:KamerConnect.View.MAUI.Components"
+             xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
              xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
              x:Class="KamerConnect.View.MAUI.PersonalInformationForm">
     <Grid RowSpacing="20">
@@ -112,13 +113,12 @@
                             <x:String>Anders</x:String>
                         </Picker.Items>
                     </Picker>
-                    <Image Source="sort_down.png"
+                    <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                           FontFamily="FaIcons"
                            Grid.Column="1"
                            VerticalOptions="Center"
                            HorizontalOptions="End"
-                           Margin="0,0,10,0"
-                           WidthRequest="20"
-                           HeightRequest="20"/>
+                           Margin="0,0,10,0"/>
                 </Grid>
             </Frame>
 

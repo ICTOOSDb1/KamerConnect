@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
              xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
-             x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm">
+             x:Class="KamerConnect.View.MAUI.RegisterHomePreferencesForm"
+             xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils">
     <Grid RowSpacing="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,8 +13,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -23,208 +25,221 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
-               
-              
-                <Grid  ColumnDefinitions="*,*" Grid.Row="1" Grid.Column="1" ColumnSpacing="20">
-                    <Components:Entry LabelText="Minimale beschikbaar budget per maand" 
-                                      x:Name="MinBudgetInput"
-                                      Placeholder="€"
-                                      Text="{Binding MinBudget, Mode=TwoWay}"
-                                      InputType="Decimal"
-                                      Grid.Column="0"
-                                      IsRequired="True"
-                    />
-                    <Components:Entry LabelText="Maximaal beschikbaar budget per maand" 
-                                      x:Name="MaxBudgetInput"
-                                      Placeholder="€" 
-                                      Text="{Binding MaxBudget, Mode=TwoWay}"
-                                      InputType="Decimal"
-                                      Grid.Column="1"
-                                      IsRequired="True"
-                                      />
+
+
+        <Grid  ColumnDefinitions="*,*"
+               Grid.Row="1"
+               Grid.Column="1"
+               ColumnSpacing="20">
+            <Components:Entry LabelText="Minimale beschikbaar budget per maand"
+                              x:Name="MinBudgetInput"
+                              Placeholder="€"
+                              Text="{Binding MinBudget, Mode=TwoWay}"
+                              InputType="Decimal"
+                              Grid.Column="0"
+                              IsRequired="True"/>
+            <Components:Entry LabelText="Maximaal beschikbaar budget per maand"
+                              x:Name="MaxBudgetInput"
+                              Placeholder="€"
+                              Text="{Binding MaxBudget, Mode=TwoWay}"
+                              InputType="Decimal"
+                              Grid.Column="1"
+                              IsRequired="True"/>
+        </Grid>
+        <Components:Entry LabelText="Oppervlak in vierkante meter"
+                          x:Name="AreaInput"
+                          Placeholder="m²"
+                          Text="{Binding SurfaceArea, Mode=TwoWay}"
+                          Grid.Row="2"
+                          Grid.Column="1"
+                          InputType="Number"
+                          IsRequired="True"/>
+
+        <Components:Entry LabelText="Stad om in te wonen"
+                          x:Name="CityInput"
+                          Text="{Binding City, Mode=TwoWay}"
+                          Grid.Row="3"
+                          Grid.Column="1"
+                          InputType="Text"
+                          IsRequired="True"/>
+
+        <VerticalStackLayout Grid.Row="4"
+                             Grid.Column="1"
+                             Spacing="5">
+            <Label Text="Type woning"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+
+            <Frame Style="{StaticResource EntryFrameStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="HouseTypePicker"
+                            SelectedIndex="0"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Transparent"
+                            TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Appartement</x:String>
+                            <x:String>Huis</x:String>
+                            <x:String>Studio</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                           FontFamily="FaIcons"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0"/>
                 </Grid>
-                <Components:Entry LabelText="Oppervlak in vierkante meter"
-                                  x:Name="AreaInput"
-                                  Placeholder="m²" 
-                                  Text="{Binding SurfaceArea, Mode=TwoWay}"
-                                  Grid.Row="2" 
-                                  Grid.Column="1" 
-                                  InputType="Number"
-                                  IsRequired="True"/>
-                
-                <VerticalStackLayout Grid.Row="3" Grid.Column="1" Spacing="5">
-                    <Label Text="Type woning" 
-                           FontSize="14"
-                           VerticalOptions="Center" />
-        
-                    <Frame Style="{StaticResource EntryFrameStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                            </Grid.ColumnDefinitions>
-                            <Picker x:Name="HouseTypePicker"
-                                    SelectedIndex="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="Transparent"
-                                    TextColor="Black" >
-                                <Picker.Items>
-                                    <x:String>Appartement</x:String>
-                                    <x:String>Huis</x:String>
-                                    <x:String>Studio</x:String>
-                                </Picker.Items>
-                            </Picker>
-                            <Image Source="sort_down.png"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End"
-                                   Margin="0,0,10,0"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                        </Grid>
-                    </Frame>
-                </VerticalStackLayout>
-                
-            <Components:Entry LabelText="Hoeveelheid kamergenoten"
-                   x:Name="ResidentsInput"
-                   Text="{Binding Residents, Mode=TwoWay}"
-                   Grid.Row="4" 
-                   Grid.Column="1" 
-                    InputType="Number"
-                   IsRequired="True"
-                   />
-                
-                <VerticalStackLayout Grid.Row="5" Grid.Column="1" Spacing="5">
-                    <Label Text="Roken in huis" 
-                           FontSize="14"
-                           VerticalOptions="Center" />
-        
-                    <Frame Style="{StaticResource EntryFrameStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                            </Grid.ColumnDefinitions>
-                            <Picker x:Name="SmokingTypePicker"
-                                    SelectedIndex="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="Transparent"
-                                    TextColor="Black">
-                                <Picker.Items>
-                                    <x:String>Ja</x:String>
-                                    <x:String>Nee</x:String>
-                                    <x:String>Geen voorkeur</x:String>
-                                </Picker.Items>
-                            </Picker>
-                            <Image Source="sort_down.png"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End"
-                                   Margin="0,0,10,0"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                        </Grid>
-                    </Frame>
-                </VerticalStackLayout>
-                
-                <VerticalStackLayout Grid.Row="6" Grid.Column="1" Spacing="5">
-                    <Label Text="Huisdieren in huis?" 
-                           FontSize="14"
-                           VerticalOptions="Center" />
-        
-                    <Frame Style="{StaticResource EntryFrameStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                            </Grid.ColumnDefinitions>
-                            <Picker x:Name="PetTypePicker"
-                                    SelectedIndex="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="Transparent"
-                                    TextColor="Black">
-                                <Picker.Items>
-                                    <x:String>Ja</x:String>
-                                    <x:String>Nee</x:String>
-                                    <x:String>Geen voorkeur</x:String>
-                                </Picker.Items>
-                            </Picker>
-                            <Image Source="sort_down.png"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End"
-                                   Margin="0,0,10,0"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                        </Grid>
-                    </Frame>
-                </VerticalStackLayout>
-                
-                <VerticalStackLayout Grid.Row="7" Grid.Column="1" Spacing="5">
-                    <Label Text="Moet er een fietsenstalling bij het huis zijn?" 
-                           FontSize="14"
-                           VerticalOptions="Center" />
-        
-                    <Frame Style="{StaticResource EntryFrameStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                            </Grid.ColumnDefinitions>
-                            <Picker x:Name="ParkingTypePicker"
-                                    SelectedIndex="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="Transparent"
-                                    TextColor="Black" >
-                                <Picker.Items>
-                                    <x:String>Ja</x:String>
-                                    <x:String>Nee</x:String>
-                                    <x:String>Geen voorkeur</x:String>
-                                </Picker.Items>
-                            </Picker>
-                            <Image Source="sort_down.png"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End"
-                                   Margin="0,0,10,0"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                        </Grid>
-                    </Frame>
-                </VerticalStackLayout>
-                
-                <VerticalStackLayout Grid.Row="8" Grid.Column="1" Spacing="5">
-                    <Label Text="Wilt u meubilair inbregrepen?" 
-                           FontSize="14"
-                           VerticalOptions="Center" />
-        
-                    <Frame Style="{StaticResource EntryFrameStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="25" />
-                            </Grid.ColumnDefinitions>
-                            <Picker x:Name="InteriorTypePicker"
-                                    SelectedIndex="0"
-                                    HorizontalOptions="FillAndExpand"
-                                    BackgroundColor="Transparent"
-                                    TextColor="Black" >
-                                <Picker.Items>
-                                    <x:String>Ja</x:String>
-                                    <x:String>Nee</x:String>
-                                    <x:String>Geen voorkeur</x:String>
-                                </Picker.Items>
-                            </Picker>
-                            <Image Source="sort_down.png"
-                                   Grid.Column="1"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="End"
-                                   Margin="0,0,10,0"
-                                   WidthRequest="20"
-                                   HeightRequest="20" />
-                        </Grid>
-                    </Frame>
-                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+
+        <Components:Entry LabelText="Hoeveelheid kamergenoten"
+                          x:Name="ResidentsInput"
+                          Text="{Binding Residents, Mode=TwoWay}"
+                          Grid.Row="5"
+                          Grid.Column="1"
+                          InputType="Number"
+                          IsRequired="True"/>
+
+        <VerticalStackLayout Grid.Row="6"
+                             Grid.Column="1"
+                             Spacing="5">
+            <Label Text="Roken in huis"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+
+            <Frame Style="{StaticResource EntryFrameStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="SmokingTypePicker"
+                            SelectedIndex="0"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Transparent"
+                            TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Ja</x:String>
+                            <x:String>Nee</x:String>
+                            <x:String>Geen voorkeur</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                           FontFamily="FaIcons"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0"/>
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="7"
+                             Grid.Column="1"
+                             Spacing="5">
+            <Label Text="Huisdieren in huis?"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+
+            <Frame Style="{StaticResource EntryFrameStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="PetTypePicker"
+                            SelectedIndex="0"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Transparent"
+                            TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Ja</x:String>
+                            <x:String>Nee</x:String>
+                            <x:String>Geen voorkeur</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                           FontFamily="FaIcons"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0"/>
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="8"
+                             Grid.Column="1"
+                             Spacing="5">
+            <Label Text="Moet er een fietsenstalling bij het huis zijn?"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+
+            <Frame Style="{StaticResource EntryFrameStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="ParkingTypePicker"
+                            SelectedIndex="0"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Transparent"
+                            TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Ja</x:String>
+                            <x:String>Nee</x:String>
+                            <x:String>Geen voorkeur</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                           FontFamily="FaIcons"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0"/>
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="9"
+                             Grid.Column="1"
+                             Spacing="5">
+            <Label Text="Wilt u meubilair inbregrepen?"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+
+            <Frame Style="{StaticResource EntryFrameStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="InteriorTypePicker"
+                            SelectedIndex="0"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Transparent"
+                            TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Ja</x:String>
+                            <x:String>Nee</x:String>
+                            <x:String>Geen voorkeur</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                           FontFamily="FaIcons"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0"/>
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
     </Grid>
 
 </ContentView>
