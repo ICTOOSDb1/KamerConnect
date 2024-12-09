@@ -1,33 +1,78 @@
 ﻿
 using KamerConnect.View.MAUI.Views;
+using KamerConnect.Models;
+using KamerConnect.Services;
+using System.Collections.ObjectModel;
 
 namespace KamerConnect.View.MAUI.Pages;
 
 public partial class MainPage : ContentPage
 {
-    private IServiceProvider _serviceProvider;
-    public MainPage(IServiceProvider serviceProvider)
+    private readonly IServiceProvider _serviceProvider;
+    private readonly AuthenticationService _authenticationService;
+    private readonly HouseService _houseService;
+    private readonly HousePreferenceService _housePreferenceService;
+    private readonly PersonService _personService;
+    private ObservableCollection<House> _houses = new ObservableCollection<House>();
+    public ObservableCollection<House> Houses
+    {
+        get => _houses;
+        set
+        {
+            if (_houses != value)
+            {
+                _houses = value;
+                OnPropertyChanged(nameof(Houses));
+            }
+        }
+    }
+    public bool AreHousesEmpty => Houses == null || Houses.Count == 0;
+    private Person _person;
+
+    public MainPage(IServiceProvider serviceProvider,
+        AuthenticationService authenticationService,
+        HouseService houseService,
+        PersonService personService,
+        HousePreferenceService housePreferenceService)
     {
         _serviceProvider = serviceProvider;
-        NavigationPage.SetHasNavigationBar(this, false);
+        _authenticationService = authenticationService;
+        _houseService = houseService;
+        _housePreferenceService = housePreferenceService;
+        _personService = personService;
+
+        GetCurrentPerson().GetAwaiter().GetResult();
+        LoadHouses();
 
         InitializeComponent();
 
-        var navbar = serviceProvider.GetRequiredService<Navbar>();
+        NavigationPage.SetHasNavigationBar(this, false);
+        var navbar = _serviceProvider.GetRequiredService<Navbar>();
         NavbarContainer.Content = navbar;
+
+        BindingContext = this;
     }
 
-    private async void Button_Clicked(object sender, EventArgs e)
+    private void LoadHouses()
     {
-        await Shell.Current.GoToAsync("UpdateAccount");
+        var housePreferences = _housePreferenceService.GetHousePreferences(_person.Id);
+        var houses = _houseService.GetByPreferences(housePreferences);
+        Houses = new ObservableCollection<House>(houses);
     }
 
-    private async void ToAccount(object sender, EventArgs e)
+    private async Task GetCurrentPerson()
+    {
+        var session = await _authenticationService.GetSession();
+        if (session != null)
+        {
+            _person = _personService.GetPersonById(session.personId);
+        }
+    }
+
+    public async void NavigateToProfile(object sender, TappedEventArgs e)
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
-        {
-            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<UpdateAccount>());
-        }
+            await navigationPage.Navigation.PushAsync(_serviceProvider.GetService<UpdateAccount>());
     }
 }
 

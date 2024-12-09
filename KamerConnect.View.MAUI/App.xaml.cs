@@ -1,5 +1,7 @@
 ﻿
 using KamerConnect.EnvironmentVariables;
+using KamerConnect.Models;
+using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 
 namespace KamerConnect.View.MAUI;
@@ -18,18 +20,26 @@ public partial class App : Application
 	private async Task InitializeAppAsync()
 	{
 		var authService = _serviceProvider.GetService<AuthenticationService>();
-		if (authService == null)
+		var personService = _serviceProvider.GetRequiredService<PersonService>();
+		if (authService == null && personService == null)
 		{
 			return;
 		}
 
-		if (await authService.CheckSession())
+		var session = await authService.GetSession();
+		if (session != null)
 		{
-			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
+			if (personService.GetPersonById(session.personId)?.Role == Role.Seeking)
+			{
+				MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
+			}
+			else MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
 		}
 		else
 		{
 			MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
 		}
+		
+		
 	}
 }

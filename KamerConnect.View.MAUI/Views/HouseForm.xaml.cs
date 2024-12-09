@@ -11,6 +11,7 @@ public partial class HouseForm : ContentView
     private const string bucketName = "house";
     private readonly FileService _fileService;
     private readonly HouseService _houseService;
+    private readonly GeoLocationService _geoLocationService;
     private readonly Person _person;
     private House? _house;
     public House? House
@@ -36,18 +37,19 @@ public partial class HouseForm : ContentView
     public HouseType Type;
 
     public HouseForm(FileService fileService, HouseService houseService,
-        Person person)
+        Person person, GeoLocationService geoLocationService)
     {
         _fileService = fileService;
         _houseService = houseService;
+        _geoLocationService = geoLocationService;
         _person = person;
+
         houseImages = new ObservableCollection<HouseImage>();
-        
-      
+
         GetCurrentHouse();
         InitializeComponent();
         BindingContext = this;
-        
+
         HouseTypePicker.SelectedItem = _house?.Type.GetDisplayName() ?? "Huis";
     }
 
@@ -128,6 +130,7 @@ public partial class HouseForm : ContentView
         int surface = int.Parse(surfaceEntry.Text);
         int residents = int.Parse(residentsEntry.Text);
         string description = descriptionEntry.Text;
+        bool available = availableEntry.IsChecked;
 
         HouseType houseType = Type;
 
@@ -145,7 +148,9 @@ public partial class HouseForm : ContentView
                     postalCode,
                     houseNumber,
                     addition,
-                    houseImages.ToList()
+                    await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
+                    houseImages.ToList(),
+                    available
                 ),
                 _person.Id
             );
@@ -164,13 +169,15 @@ public partial class HouseForm : ContentView
                 postalCode,
                 houseNumber,
                 addition,
-                houseImages.ToList()
+                await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
+                houseImages.ToList(),
+                available
             ));
         }
 
         await Application.Current?.MainPage?.DisplayAlert("Huis opgeslagen", "Succesvol opgeslagen!", "Ga verder");
     }
-    
+
     private async void HouseTypeChanged(object sender, EventArgs e)
     {
         switch ($"{HouseTypePicker.SelectedItem}")
