@@ -50,7 +50,7 @@ public class MatchRepository : IMatchRepository
     }
 
 
-    public void UpdateMatch(Match match, status status)
+    public void UpdateMatch(Match match, Status status)
     {
         try
         {
@@ -127,7 +127,7 @@ public class MatchRepository : IMatchRepository
             reader.GetGuid(0),
             reader.GetGuid(1),
             reader.GetGuid(2),
-            EnumUtils.Validate<status>(reader.GetString(3)),
+            EnumUtils.Validate<Status>(reader.GetString(3)),
             "Placeholder motivation"
         );
         return match;

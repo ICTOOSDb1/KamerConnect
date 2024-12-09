@@ -9,51 +9,49 @@ namespace KamerConnect.View.MAUI.Components;
 
 public partial class ImageSlideShow : ContentView
 {
- 
-    
-     public static readonly BindableProperty ImagesProperty = BindableProperty.Create(
-           nameof(Images),
-           typeof(List<HouseImage>),
-           typeof(ImageSlideShow),
-           null,
-           BindingMode.TwoWay,
-           propertyChanged: OnImagesChanged);
-   
-       public List<HouseImage> Images
-       {
-           get => (List<HouseImage>)GetValue(ImagesProperty);
-           set => SetValue(ImagesProperty, value);
-       }
-   
-       private int _currentImageIndex;
-   
-       public int CurrentImageIndex
-       {
-           get => _currentImageIndex;
-           set
-           {
-               if (_currentImageIndex != value)
-               {
-                   _currentImageIndex = value;
-                   SetCurrentImage(value);
-               }
-           }
-       }
-   
-       public ImageSlideShow()
-       {
-           InitializeComponent();
-           _currentImageIndex = 0;
-       }
-   
-       private static void OnImagesChanged(BindableObject bindable, object oldValue, object newValue)
-       {
-           if (bindable is ImageSlideShow slideshow && newValue is List<HouseImage> newImages)
-           {
-               slideshow.AddImagesToScrollView(newImages);
-               slideshow.SetCurrentImage(0);
-           }
-       }
+    public static readonly BindableProperty ImagesProperty = BindableProperty.Create(
+        nameof(Images),
+        typeof(List<HouseImage>),
+        typeof(ImageSlideShow),
+        null,
+        BindingMode.TwoWay,
+        propertyChanged: OnImagesChanged);
+
+    public List<HouseImage> Images
+    {
+        get => (List<HouseImage>)GetValue(ImagesProperty);
+        set => SetValue(ImagesProperty, value);
+    }
+
+    private int _currentImageIndex;
+
+    public int CurrentImageIndex
+    {
+        get => _currentImageIndex;
+        set
+        {
+            if (_currentImageIndex != value)
+            {
+                _currentImageIndex = value;
+                SetCurrentImage(value);
+            }
+        }
+    }
+
+    public ImageSlideShow()
+    {
+        InitializeComponent();
+        _currentImageIndex = 0;
+    }
+
+    private static void OnImagesChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is ImageSlideShow slideshow && newValue is List<HouseImage> newImages)
+        {
+            slideshow.AddImagesToScrollView(newImages);
+            slideshow.SetCurrentImage(0);
+        }
+    }
 
     private void SetCurrentImage(int index)
     {
@@ -70,7 +68,6 @@ public partial class ImageSlideShow : ContentView
         {
             CurrentImageIndex = 0;
         }
-        
     }
 
     private void Previous(object? sender, EventArgs eventArgs)
@@ -93,14 +90,13 @@ public partial class ImageSlideShow : ContentView
         }
     }
 
-    
     private void AddImagesToScrollView(List<HouseImage> imageSources)
     {
         int index = 0;
         foreach (var imageSource in imageSources)
         {
             var imageGrid = new Grid();
-            
+
             var imageFrame = new Frame
             {
                 CornerRadius = 15,
@@ -119,13 +115,12 @@ public partial class ImageSlideShow : ContentView
             };
 
             imageButton.Clicked += SelectImage;
-            
+
             imageFrame.Content = imageButton;
             imageGrid.Children.Add(imageFrame);
             PreviewImages.Children.Add(imageGrid);
-            
+
             index++;
         }
     }
-
 }

@@ -19,7 +19,7 @@ public class MatchService
         return _matchRepository.GetMatchesById(Id);
     }
     
-    public void UpdateMatch(Match match, status status)
+    public void UpdateMatch(Match match, Status status)
     {
         _matchRepository.UpdateMatch(match , status);
     }

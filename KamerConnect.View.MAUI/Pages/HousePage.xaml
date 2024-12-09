@@ -163,6 +163,11 @@
                             Grid.Row="4"
                             Clicked="MakeMatch"
                             HorizontalOptions="End" />
+                    <Label Grid.Row="4" 
+                           x:Name="StateLabel"
+                           Text="Aangevraagd"
+                           HorizontalOptions="End"
+                           IsVisible="False"/>
                 </Grid>
             </Grid>
 
