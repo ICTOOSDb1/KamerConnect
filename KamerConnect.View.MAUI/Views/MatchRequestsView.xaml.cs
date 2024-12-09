@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KamerConnect.Models;
 using KamerConnect.Services;
 using Microsoft.Maui.Controls.Shapes;
+using KamerConnect.View.MAUI.Utils;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -228,43 +229,41 @@ public void GetMatchRequestsOffering()
     
     public void DisplayStatus(int row, status status)
     {
-            var statusLabel = new Label
-            {
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                FontFamily = "OpenSansRegular",
-            };
-            var statusImage = new Image
-            {
-                Aspect = Aspect.AspectFit,
-                Scale = 0.2,
-                HorizontalOptions = LayoutOptions.End,
-                VerticalOptions = LayoutOptions.Center,
-                BackgroundColor = Colors.Transparent,
-            };
-            switch (status)
-            {
-                case status.Accepted:
-                    statusLabel.Text = "Geaccepteerd";
-                    statusImage.Source = "circleaccepted.png";
-                    break;
-                case status.Pending:
-                    statusLabel.Text = "In behandeling";
-                    statusImage.Source = "circlepending.png";
-                    break;
-                case status.Rejected:
-                    statusLabel.Text = "Geweigerd";
-                    statusImage.Source = "circlerejected.png";
-                    break;
-            }
-            var buttonContainer = new HorizontalStackLayout
-            {
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                Spacing = 5,
-            };
-            MatchRequests.Add(statusImage, 5, row);
-            MatchRequests.Add(statusLabel, 5, row);
+        var statusLabel = new Label
+        {
+            FontFamily = "InterRegular",
+            VerticalTextAlignment = TextAlignment.Center
+        };
+        var statusImage = new Label
+        {
+            Text = "\u25CF",
+            Scale = 3
+        };
+        switch (status)
+        {
+            case status.Accepted:
+                statusImage.TextColor = Colors.Green;
+                statusLabel.Text = "Geaccepteerd";
+                break;
+            case status.Pending:
+                statusImage.TextColor = Colors.Yellow;
+                statusLabel.Text = "In behandeling";
+                break;
+            case status.Rejected:
+                statusImage.TextColor = Colors.Red;
+                statusLabel.Text = "Geweigerd";
+                break;
+        }
+        var buttonContainer = new HorizontalStackLayout
+        {
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            Spacing = 20
+            
+        };
+        buttonContainer.Children.Add(statusImage);
+        buttonContainer.Children.Add(statusLabel);
+        MatchRequests.Add(buttonContainer, 5, row);
     }
     
     private BoxView CreateSeparator()
