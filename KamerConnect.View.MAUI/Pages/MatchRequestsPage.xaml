@@ -5,7 +5,7 @@
              xmlns:views="clr-namespace:KamerConnect.View.MAUI.Views"
              x:Class="KamerConnect.View.MAUI.Pages.MatchRequestsPage"
 
-    BackgroundColor="#E5ECEF">
+    BackgroundColor="White">
     <ContentPage.Content>
         <StackLayout Height="300" Width="1100">
             <ContentView x:Name="NavbarContainer"/>

@@ -67,7 +67,6 @@ public void GetMatchRequestsOffering()
         
 
         MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
-        AddBackGroundColor(i);
         
         var border = new Border
         {
@@ -180,14 +179,12 @@ public void GetMatchRequestsOffering()
                     houseTypeTranslation = "Studio";
                     break;
             }
-
             var separator = CreateSeparator();
             var label1 = new Label { Text = house.Street,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label2 = new Label { Text = house.City,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label3 = new Label { Text = houseTypeTranslation,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             var label4 = new Label { Text = "€"+house.Price,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
-            AddBackGroundColor(i);
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
             MatchRequests.Add(border, 0, i);
@@ -276,17 +273,4 @@ public void GetMatchRequestsOffering()
             VerticalOptions = LayoutOptions.End
         };
     }
-
-    private void AddBackGroundColor(int row)
-    {
-        var backgroundBox = new BoxView
-        {
-            Color = (Color)Application.Current.Resources["BackgroundColor"],
-            VerticalOptions = LayoutOptions.Fill,
-            HorizontalOptions = LayoutOptions.Fill
-        };
-        MatchRequests.Add(backgroundBox, 0, row);
-        Grid.SetColumnSpan(backgroundBox, 6); 
-    }
-
 }
