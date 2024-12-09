@@ -103,6 +103,8 @@ public partial class ImageSlideShow : ContentView
                 Margin = 5,
                 Padding = 0,
                 HasShadow = false,
+                BackgroundColor = Colors.Transparent,
+                BorderColor = Colors.Transparent,
                 HeightRequest = 150,
                 WidthRequest = 150
             };
@@ -111,6 +113,7 @@ public partial class ImageSlideShow : ContentView
             {
                 Source = imageSource.FullPath,
                 Aspect = Aspect.AspectFill,
+                BackgroundColor = Colors.Transparent,
                 CommandParameter = index,
             };
 
