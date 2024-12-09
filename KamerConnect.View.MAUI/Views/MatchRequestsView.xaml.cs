@@ -126,8 +126,6 @@ public void GetMatchRequestsOffering()
         MatchRequests.Add(label2, 2, i);
         MatchRequests.Add(label3, 3, i);
         MatchRequests.Add(label4, 4, i);
-        
-        DisplayStatus(i, matches[i - 1].Status);
     }
 }
 
@@ -192,6 +190,7 @@ public void GetMatchRequestsOffering()
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
             MatchRequests.Add(label4, 4, i);
+            DisplayStatus(i, matches[i - 1].Status);
         }
     }
 
