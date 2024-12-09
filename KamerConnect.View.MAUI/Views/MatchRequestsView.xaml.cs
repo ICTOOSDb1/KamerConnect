@@ -242,7 +242,7 @@ public void GetMatchRequestsOffering()
                 statusLabel.Text = "Geaccepteerd";
                 break;
             case status.Pending:
-                statusImage.TextColor = Colors.Yellow;
+                statusImage.TextColor = Colors.Orange;
                 statusLabel.Text = "In behandeling";
                 break;
             case status.Rejected:
