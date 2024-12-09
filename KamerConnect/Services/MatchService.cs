@@ -13,13 +13,13 @@ public class MatchService
     }
 
 
-    public List<Match> GetMatchesById(Guid Id)
+    public List<Match> GetPendingMatchesById(Guid Id)
     {
-        return _matchRepository.GetMatchesById(Id);
+        return _matchRepository.GetPendingMatchesById(Id);
     }
 
-    public void UpdateMatch(Match match, status status)
+    public void UpdateStatusMatch(Match match, status status)
     {
-        _matchRepository.UpdateMatch(match, status);
+        _matchRepository.UpdateStatusMatch(match, status);
     }
 }

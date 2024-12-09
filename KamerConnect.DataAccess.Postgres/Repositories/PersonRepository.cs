@@ -247,8 +247,7 @@ public class PersonRepository : IPersonRepository
                             insertCommand.Parameters.AddWithValue("@PersonalityId", personId);
                             insertCommand.Parameters.AddWithValue("@School", personality.School ?? string.Empty);
                             insertCommand.Parameters.AddWithValue("@Study", personality.Study ?? string.Empty);
-                            insertCommand.Parameters.AddWithValue("@Description",
-                                personality.Description ?? string.Empty);
+                            insertCommand.Parameters.AddWithValue("@Description", personality.Description ?? string.Empty);
 
                             insertCommand.ExecuteNonQuery();
                         }

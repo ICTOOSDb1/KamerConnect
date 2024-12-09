@@ -25,9 +25,9 @@ public partial class MatchRequestsView : ContentView
     {
         _houseService = serviceProvider.GetRequiredService<HouseService>();
         _serviceProvider = serviceProvider;
-        _fileService = serviceProvider.GetRequiredService<FileService>(); ;
+        _fileService = serviceProvider.GetRequiredService<FileService>();
         _matchService = serviceProvider.GetRequiredService<MatchService>();
-        _authenticationService = serviceProvider.GetRequiredService<AuthenticationService>(); ;
+        _authenticationService = serviceProvider.GetRequiredService<AuthenticationService>();
         _personService = serviceProvider.GetRequiredService<PersonService>();
         GetCurrentPerson().GetAwaiter().GetResult();
 
@@ -58,85 +58,88 @@ public partial class MatchRequestsView : ContentView
         House house = _houseService.GetByPersonId(_person.Id);
         if (house != null)
         {
-            matches = _matchService.GetMatchesById(house.Id);
-
-            for (int i = 1; i < matches.Count + 1; i++)
+            matches = _matchService.GetPendingMatchesById(house.Id);
+            if (matches.Count != 0)
             {
-                Person person = _personService.GetPersonById(matches[i - 1].personId);
 
-                var border = AddProfilePicture(person);
-                var FirstNameLabel = new Label
+                for (int i = 1; i < matches.Count + 1; i++)
                 {
-                    Text = person.FirstName,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
-                var SchoolLabel = new Label();
-                var StudyLabel = new Label();
-                if (person.Personality != null)
-                {
-                    SchoolLabel.Text = person.Personality.School;
-                    SchoolLabel.HorizontalOptions = LayoutOptions.Center;
-                    SchoolLabel.VerticalOptions = LayoutOptions.Center;
+                    Person person = _personService.GetPersonById(matches[i - 1].personId);
 
-                    StudyLabel.Text = person.Personality.Study;
-                    StudyLabel.HorizontalOptions = LayoutOptions.Center;
-                    StudyLabel.VerticalOptions = LayoutOptions.Center;
+                    var border = AddProfilePicture(person);
+                    var FirstNameLabel = new Label
+                    {
+                        Text = person.FirstName,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
+                    };
+                    var SchoolLabel = new Label();
+                    var StudyLabel = new Label();
+                    if (person.Personality != null)
+                    {
+                        SchoolLabel.Text = person.Personality.School;
+                        SchoolLabel.HorizontalOptions = LayoutOptions.Center;
+                        SchoolLabel.VerticalOptions = LayoutOptions.Center;
+
+                        StudyLabel.Text = person.Personality.Study;
+                        StudyLabel.HorizontalOptions = LayoutOptions.Center;
+                        StudyLabel.VerticalOptions = LayoutOptions.Center;
+                    }
+
+                    var BirthLabel = new Label
+                    {
+                        Text = person.BirthDate.ToShortDateString(),
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
+                    };
+
+                    var horizontalstack = new HorizontalStackLayout { HorizontalOptions = LayoutOptions.Center };
+                    Button rejectButton = new Button
+                    {
+                        Text = "✖",
+                        BackgroundColor = Color.FromRgb(255, 0, 0),
+                        TextColor = Color.FromRgb(255, 255, 255),
+                        CornerRadius = 20,
+                        WidthRequest = 20,
+                        HeightRequest = 20,
+                        HorizontalOptions = LayoutOptions.End,
+                        CommandParameter = matches[i - 1]
+
+                    };
+                    horizontalstack.Add(rejectButton);
+                    rejectButton.Clicked += RejectButton_OnClicked;
+
+
+                    Button acceptButton = new Button
+                    {
+                        Text = "✔",
+                        BackgroundColor = Color.FromRgb(0, 255, 0),
+                        TextColor = Color.FromRgb(255, 255, 255),
+                        CornerRadius = 20,
+                        WidthRequest = 20,
+                        HeightRequest = 20,
+                        HorizontalOptions = LayoutOptions.End,
+                        CommandParameter = matches[i - 1]
+                    };
+                    horizontalstack.Add(acceptButton);
+                    acceptButton.Clicked += AcceptButton_OnClicked;
+
+                    MatchRequests.RowDefinitions.Add(new RowDefinition
+                        { Height = new GridLength(100, GridUnitType.Absolute) });
+                    MatchRequests.Add(border, 0, i);
+                    MatchRequests.Add(FirstNameLabel, 1, i);
+                    MatchRequests.Add(SchoolLabel, 2, i);
+                    MatchRequests.Add(StudyLabel, 3, i);
+                    MatchRequests.Add(BirthLabel, 4, i);
+                    MatchRequests.Add(horizontalstack, 5, i);
+                    var tapGestureRecognizer = new TapGestureRecognizer
+                    {
+                        CommandParameter = matches[i - 1]
+                    };
+                    tapGestureRecognizer.Tapped += ToProfile_OnTapped;
+
+                    border.GestureRecognizers.Add(tapGestureRecognizer);
                 }
-
-                var BirthLabel = new Label
-                {
-                    Text = person.BirthDate.ToShortDateString(),
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
-                
-                var horizontalstack = new HorizontalStackLayout { HorizontalOptions = LayoutOptions.Center };
-                Button rejectButton = new Button
-                {
-                    Text = "✖",
-                    BackgroundColor = Color.FromRgb(255, 0, 0),
-                    TextColor = Color.FromRgb(255, 255, 255),
-                    CornerRadius = 20,
-                    WidthRequest = 20,
-                    HeightRequest = 20,
-                    HorizontalOptions = LayoutOptions.End,
-                    CommandParameter = matches[i - 1]
-
-                };
-                horizontalstack.Add(rejectButton);
-                rejectButton.Clicked += RejectButton_OnClicked;
-
-
-                Button acceptButton = new Button
-                {
-                    Text = "✔",
-                    BackgroundColor = Color.FromRgb(0, 255, 0),
-                    TextColor = Color.FromRgb(255, 255, 255),
-                    CornerRadius = 20,
-                    WidthRequest = 20,
-                    HeightRequest = 20,
-                    HorizontalOptions = LayoutOptions.End,
-                    CommandParameter = matches[i - 1]
-                };
-                horizontalstack.Add(acceptButton);
-                acceptButton.Clicked += AcceptButton_OnClicked;
-
-                MatchRequests.RowDefinitions.Add(new RowDefinition
-                { Height = new GridLength(100, GridUnitType.Absolute) });
-                MatchRequests.Add(border, 0, i);
-                MatchRequests.Add(FirstNameLabel, 1, i);
-                MatchRequests.Add(SchoolLabel, 2, i);
-                MatchRequests.Add(StudyLabel, 3, i);
-                MatchRequests.Add(BirthLabel, 4, i);
-                MatchRequests.Add(horizontalstack, 5, i);
-                var tapGestureRecognizer = new TapGestureRecognizer
-                {
-                    CommandParameter = matches[i - 1]
-                };
-                tapGestureRecognizer.Tapped += ToProfile_OnTapped;
-
-                border.GestureRecognizers.Add(tapGestureRecognizer);
             }
         }
         AddLegend("Voornaam", "School", "Opleiding", "Geboortedatum");
@@ -191,7 +194,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateMatch(match, status.Accepted);
+            _matchService.UpdateStatusMatch(match, status.Accepted);
             RefreshPage();
         }
     }
@@ -200,7 +203,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateMatch(match, status.Rejected);
+            _matchService.UpdateStatusMatch(match, status.Rejected);
             RefreshPage();
         }
     }

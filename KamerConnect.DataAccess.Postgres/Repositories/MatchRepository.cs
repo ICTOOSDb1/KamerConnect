@@ -15,7 +15,7 @@ public class MatchRepository : IMatchRepository
         _connectionString = EnvironmentUtils.GetConnectionString();
     }
 
-    public List<Match> GetMatchesById(Guid Id)
+    public List<Match> GetPendingMatchesById(Guid Id)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
         {
@@ -49,7 +49,7 @@ public class MatchRepository : IMatchRepository
         }
     }
 
-    public void UpdateMatch(Match match, status status)
+    public void UpdateStatusMatch(Match match, status status)
     {
         try
         {
@@ -58,32 +58,24 @@ public class MatchRepository : IMatchRepository
                 connection.Open();
 
                 string updateQuery = @"
-            UPDATE matchrequests
-            SET status = @status::matchrequest_status
-            WHERE id = @id";
+                UPDATE matchrequests
+                SET status = @status::matchrequest_status
+                WHERE id = @id";
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
                     command.Parameters.AddWithValue("@status", status.ToString());
                     command.Parameters.AddWithValue("@id", match.matchId);
 
-                    try
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error updating match request status: {ex.Message}");
-                    }
+                    command.ExecuteNonQuery();
                 }
             }
         }
-        catch (NpgsqlException e)
+        catch (Exception ex)
         {
-            Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
+            Console.WriteLine($"Error occurred while updating Match in DB: {ex.Message}");
             throw;
         }
-
     }
 
     public Match readToMatch(DbDataReader reader)

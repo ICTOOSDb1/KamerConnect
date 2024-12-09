@@ -32,13 +32,13 @@ public class MatchTests
             new (Guid.NewGuid(), mockId, Guid.NewGuid(), status.Pending, "test"),
 
         };
-        _mockRepository.Setup(repo => repo.GetMatchesById(mockId))
+        _mockRepository.Setup(repo => repo.GetPendingMatchesById(mockId))
             .Returns(expectedMatches);
         // Act
         var result = _matchService.GetMatchesById(mockId);
         // Assert
         Assert.That(result, Is.EquivalentTo(expectedMatches));
-        _mockRepository.Verify(repo => repo.GetMatchesById(mockId), Times.Once);
+        _mockRepository.Verify(repo => repo.GetPendingMatchesById(mockId), Times.Once);
     }
 
     
@@ -50,10 +50,10 @@ public class MatchTests
         var newStatus = status.Pending;
         
         // Act
-        _matchService.UpdateMatch(mockMatch, newStatus);
+        _matchService.UpdateStatusMatch(mockMatch, newStatus);
     
         // Assert
-        _mockRepository.Verify(repo => repo.UpdateMatch(mockMatch, newStatus), Times.Once);
+        _mockRepository.Verify(repo => repo.UpdateStatusMatch(mockMatch, newStatus), Times.Once);
     }
 
 
