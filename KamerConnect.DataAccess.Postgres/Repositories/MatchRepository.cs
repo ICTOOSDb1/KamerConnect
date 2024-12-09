@@ -8,11 +8,11 @@ namespace KamerConnect.DataAccess.Postgres.Repositories;
 
 public class MatchRepository : IMatchRepository
 {
-    private readonly string connectionString;
+    private readonly string _connectionString;
 
     public MatchRepository()
     {
-        connectionString = EnvironmentUtils.GetConnectionString();
+        _connectionString = EnvironmentUtils.GetConnectionString();
     }
 
     public List<Match>? GetMatchesById(Guid Id)

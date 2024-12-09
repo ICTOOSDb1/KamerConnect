@@ -155,7 +155,7 @@ public partial class MatchRequestsView : ContentView
     
     public void GetMatchRequestsSeeking()
     {
-        Match[] matches;
+        List<Match> matches;
         
         Person person = _personService.GetPersonById(_person.Id);
         if (person == null) { DisplayNoMatchRequests();
@@ -166,7 +166,7 @@ public partial class MatchRequestsView : ContentView
             return;
         }
         
-        for (int i = 1; i < matches.Length+1 ; i++)
+        for (int i = 1; i < matches.Count+1 ; i++)
         {
 
             AddLegend("Straat", "Stad", "Type","Prijs");
@@ -268,7 +268,7 @@ public partial class MatchRequestsView : ContentView
         }
     }
     
-    public void DisplayStatus(int row, status status)
+    public void DisplayStatus(int row, Status status)
     {
         var statusLabel = new Label
         {
@@ -282,15 +282,15 @@ public partial class MatchRequestsView : ContentView
         };
         switch (status)
         {
-            case status.Accepted:
+            case Status.Accepted:
                 statusImage.TextColor = Colors.Green;
                 statusLabel.Text = "Geaccepteerd";
                 break;
-            case status.Pending:
+            case Status.Pending:
                 statusImage.TextColor = Colors.Orange;
                 statusLabel.Text = "In behandeling";
                 break;
-            case status.Rejected:
+            case Status.Rejected:
                 statusImage.TextColor = Colors.Red;
                 statusLabel.Text = "Geweigerd";
                 break;
