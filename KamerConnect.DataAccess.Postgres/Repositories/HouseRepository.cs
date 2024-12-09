@@ -29,7 +29,11 @@ public class HouseRepository : IHouseRepository
                                                         house_number,
                                                         house_number_addition,
                                                         house_geolocation,
-                                                        available
+                                                        available,
+                                                        smoking,
+                                                        pet,
+                                                        interior,
+                                                        parking
                                                     )
                                                     VALUES (
                                                         @type::house_type,
@@ -43,7 +47,11 @@ public class HouseRepository : IHouseRepository
                                                         @houseNumber,
                                                         @houseNumberAddition,
                                                         ST_SetSRID(ST_MakePoint(@x, @y), 4326),
-                                                        @available
+                                                        @available,
+                                                        @smoking::preference_choice,
+                                                        @pet::preference_choice,
+                                                        @interior::preference_choice,
+                                                        @parking::preference_choice
                                                     ) RETURNING id;
                                                     """, connection))
             {
@@ -60,6 +68,10 @@ public class HouseRepository : IHouseRepository
                 command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
                 command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
                 command.Parameters.AddWithValue("@available", house.Available);
+                command.Parameters.AddWithValue("@smoking", house.Smoking.ToString());
+                command.Parameters.AddWithValue("@pet", house.Pet.ToString());
+                command.Parameters.AddWithValue("@interior", house.Interior.ToString());
+                command.Parameters.AddWithValue("@parking", house.Parking.ToString());
 
                 var houseId = command.ExecuteScalar() as Guid?;
                 if (!houseId.HasValue)
@@ -194,38 +206,46 @@ public class HouseRepository : IHouseRepository
 
     public House? GetByPersonId(Guid personId)
     {
-        using (var connection = new NpgsqlConnection(_connectionString))
+        try
         {
-            connection.Open();
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
 
-            using (var command =
-                   new NpgsqlCommand($"""
+                using (var command =
+                       new NpgsqlCommand($"""
                                       SELECT h.id, h.type, h.price, h.description, h.surface,
                                              h.residents, h.city, h.street, h.postal_code,
-                                             h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation), h.available
+                                             h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation), h.available, h.smoking, h.pet, h.interior, h.parking
                                       FROM house h
                                       INNER JOIN person p ON p.house_id = h.id
                                       WHERE p.id = @PersonId;
                                       """, connection))
-            {
-                command.Parameters.AddWithValue("@PersonId", personId);
-
-                using (var reader = command.ExecuteReader())
                 {
-                    if (reader.Read())
+                    command.Parameters.AddWithValue("@PersonId", personId);
+
+                    using (var reader = command.ExecuteReader())
                     {
-                        var house = ReadToHouse(reader);
-                        reader.Close();
+                        if (reader.Read())
+                        {
+                            var house = ReadToHouse(reader);
+                            reader.Close();
 
-                        house.HouseImages = GetHouseImages(house.Id, connection);
+                            house.HouseImages = GetHouseImages(house.Id, connection);
 
-                        return house;
+                            return house;
+                        }
                     }
                 }
             }
-        }
 
-        return null;
+            return null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private House ReadToHouse(DbDataReader reader)
@@ -245,7 +265,11 @@ public class HouseRepository : IHouseRepository
             reader.GetString(10),
             new WKTReader().Read(reader.GetString(11)) as Point,
             new List<HouseImage>(),
-            reader.GetBoolean(12)
+            reader.GetBoolean(12),
+            EnumUtils.Validate<PreferenceChoice>(reader.GetString(13)),
+            EnumUtils.Validate<PreferenceChoice>(reader.GetString(14)),
+            EnumUtils.Validate<PreferenceChoice>(reader.GetString(15)),
+            EnumUtils.Validate<PreferenceChoice>(reader.GetString(16))
         );
     }
 
@@ -277,7 +301,11 @@ public class HouseRepository : IHouseRepository
                                                                         house_number = @houseNumber,
                                                                         house_number_addition = @houseNumberAddition,
                                                                         house_geolocation = ST_SetSRID(ST_MakePoint(@x, @y), 4326),
-                                                                        available = @available
+                                                                        available = @available,
+                                                                        smoking = @smoking::preference_choice,
+                                                                        pet = @pet::preference_choice,
+                                                                        interior = @interior::preference_choice,
+                                                                        parking = @parking::preference_choice
                                                                     WHERE id = @id::uuid;
                                                                 """, connection))
                         {
@@ -295,6 +323,10 @@ public class HouseRepository : IHouseRepository
                             command.Parameters.AddWithValue("@x", house.HouseGeolocation.X);
                             command.Parameters.AddWithValue("@y", house.HouseGeolocation.Y);
                             command.Parameters.AddWithValue("@available", house.Available);
+                            command.Parameters.AddWithValue("@smoking", house.Smoking.ToString());
+                            command.Parameters.AddWithValue("@pet", house.Pet.ToString());
+                            command.Parameters.AddWithValue("@interior", house.Interior.ToString());
+                            command.Parameters.AddWithValue("@parking", house.Parking.ToString());
 
                             command.ExecuteNonQuery();
                         }
@@ -372,15 +404,61 @@ public class HouseRepository : IHouseRepository
                 connection.Open();
 
                 using (var command = new NpgsqlCommand($"""
-            SELECT id, type, price, description, surface, residents, city, street, postal_code, house_number, house_number_addition, ST_AsText(house_geolocation), available
-            FROM house WHERE ST_DWithin(
-                house.house_geolocation,
-                (SELECT city_geolocation FROM house_preferences WHERE id = @housePreferenceId::uuid AND available = true),
-                0.06
-            );
-        """, connection))
+    SELECT 
+        id, 
+        type, 
+        price, 
+        description, 
+        surface, 
+        residents, 
+        city, 
+        street, 
+        postal_code, 
+        house_number, 
+        house_number_addition, 
+        ST_AsText(house_geolocation) AS house_geolocation, 
+        available, 
+        smoking, 
+        pet, 
+        interior, 
+        parking
+    FROM 
+        house
+    WHERE 
+        ST_DWithin(
+            house.house_geolocation,
+            (
+                SELECT 
+                    city_geolocation 
+                FROM 
+                    house_preferences 
+                WHERE 
+                    id = @housePreferenceId::uuid
+            ),
+            0.06
+        )
+        AND available = true
+        AND residents <= @residents
+        AND (
+            smoking = 'No_preference' OR smoking = @smoking::preference_choice
+        )
+        AND (
+            pet = 'No_preference' OR pet = @pet::preference_choice
+        )
+        AND (
+            interior = 'No_preference' OR interior = @interior::preference_choice
+        )
+        AND (
+            parking = 'No_preference' OR parking = @parking::preference_choice
+        );
+    """, connection))
                 {
                     command.Parameters.AddWithValue("@housePreferenceId", housePreferences.Id);
+                    command.Parameters.AddWithValue("@residents", housePreferences.Residents);
+                    command.Parameters.AddWithValue("@smoking", housePreferences.Smoking.ToString());
+                    command.Parameters.AddWithValue("@pet", housePreferences.Pet.ToString());
+                    command.Parameters.AddWithValue("@interior", housePreferences.Interior.ToString());
+                    command.Parameters.AddWithValue("@parking", housePreferences.Parking.ToString());
 
                     using (var reader = command.ExecuteReader())
                     {
