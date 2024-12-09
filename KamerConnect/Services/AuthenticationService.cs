@@ -1,4 +1,3 @@
-﻿
 using System.Security.Cryptography;
 using System.Text;
 using KamerConnect.Exceptions;

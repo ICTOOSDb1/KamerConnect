@@ -4,6 +4,7 @@
 			 xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
 			 xmlns:local="clr-namespace:KamerConnect.View.MAUI.Views"
 			 xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
+			 xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
 			 x:Class="KamerConnect.View.MAUI.Views.HouseForm">
 	<ScrollView>
 
@@ -61,38 +62,34 @@
 								  InputType="PostalCode"
 								  Text="{Binding House.PostalCode}"
 								  IsRequired="True"/>
-				
+
 			</Grid>
-			
-			<VerticalStackLayout Grid.Row="2" Spacing="5">
-				<Label Text="Type woning" 
-				       FontSize="14"
-				       VerticalOptions="Center" />
-        
+
+			<VerticalStackLayout Grid.Row="2"
+								 Spacing="5">
+				<Label Text="Type woning"
+					   FontSize="14"
+					   VerticalOptions="Center"/>
+
 				<Frame Style="{StaticResource EntryFrameStyle}">
 					<Grid>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*" />
-							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
 						<Picker x:Name="HouseTypePicker"
-						        SelectedIndexChanged="HouseTypeChanged"
-						        HorizontalOptions="FillAndExpand"
-						        BackgroundColor="Transparent"
-						        TextColor="Black" >
+								SelectedIndexChanged="HouseTypeChanged"
+								HorizontalOptions="FillAndExpand"
+								BackgroundColor="Transparent"
+								TextColor="Black">
 							<Picker.Items>
 								<x:String>Appartement</x:String>
 								<x:String>Huis</x:String>
 								<x:String>Studio</x:String>
 							</Picker.Items>
 						</Picker>
-						<Image Source="sort_down.png"
-						       Grid.Column="1"
-						       VerticalOptions="Center"
-						       HorizontalOptions="End"
-						       Margin="0,0,10,0"
-						       WidthRequest="20"
-						       HeightRequest="20" />
+						<Label Text="{x:Static Utils:Icon.ChevronDown}"
+							   FontFamily="FaIcons"/>
 					</Grid>
 				</Frame>
 			</VerticalStackLayout>
@@ -100,36 +97,39 @@
 			<Grid ColumnSpacing="20"
 				  Grid.Row="3">
 				<Grid.RowDefinitions>
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
-				
+
 
 				<Components:Entry LabelText="Prijs per maand"
 								  InputType="Decimal"
-								  Grid.Row="5" Grid.Column="0"
+								  Grid.Row="5"
+								  Grid.Column="0"
 								  x:Name="priceEntry"
 								  Text="{Binding House.Price}"
 								  IsRequired="True"/>
 				<Components:Entry LabelText="Oppervlak"
 								  InputType="Number"
-								  Grid.Row="5" Grid.Column="1"
+								  Grid.Row="5"
+								  Grid.Column="1"
 								  x:Name="surfaceEntry"
 								  Text="{Binding House.Surface}"
 								  IsRequired="True"/>
 				<Components:Entry LabelText="Bewoners"
 								  InputType="Number"
-								  Grid.Row="5" Grid.Column="2"
+								  Grid.Row="5"
+								  Grid.Column="2"
 								  x:Name="residentsEntry"
 								  Text="{Binding House.Residents}"
 								  IsRequired="True"/>
