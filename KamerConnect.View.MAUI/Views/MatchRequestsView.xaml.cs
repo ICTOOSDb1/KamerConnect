@@ -90,6 +90,7 @@ public partial class MatchRequestsView : ContentView
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center
                 };
+                
                 var horizontalstack = new HorizontalStackLayout { HorizontalOptions = LayoutOptions.Center };
                 Button rejectButton = new Button
                 {
@@ -123,7 +124,7 @@ public partial class MatchRequestsView : ContentView
 
                 MatchRequests.RowDefinitions.Add(new RowDefinition
                 { Height = new GridLength(100, GridUnitType.Absolute) });
-                MatchRequests.Add(AddProfilePicture(person), 0, i);
+                MatchRequests.Add(border, 0, i);
                 MatchRequests.Add(FirstNameLabel, 1, i);
                 MatchRequests.Add(SchoolLabel, 2, i);
                 MatchRequests.Add(StudyLabel, 3, i);
@@ -147,6 +148,7 @@ public partial class MatchRequestsView : ContentView
         {
             WidthRequest = 100,
             HeightRequest = 100,
+            Stroke = Brush.Transparent,
             StrokeShape = new RoundRectangle
             {
                 CornerRadius = new CornerRadius(10)
