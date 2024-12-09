@@ -26,7 +26,7 @@ public partial class MainPage : ContentPage
             }
         }
     }
-
+    public bool AreHousesEmpty => Houses == null || Houses.Count == 0;
     private Person _person;
 
     public MainPage(IServiceProvider serviceProvider,
@@ -67,6 +67,12 @@ public partial class MainPage : ContentPage
         {
             _person = _personService.GetPersonById(session.personId);
         }
+    }
+
+    public async void NavigateToProfile(object sender, TappedEventArgs e)
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+            await navigationPage.Navigation.PushAsync(_serviceProvider.GetService<UpdateAccount>());
     }
 }
 
