@@ -130,6 +130,7 @@ public partial class HouseForm : ContentView
         int surface = int.Parse(surfaceEntry.Text);
         int residents = int.Parse(residentsEntry.Text);
         string description = descriptionEntry.Text;
+        bool available = availableEntry.IsChecked;
 
         HouseType houseType = Type;
 
@@ -149,7 +150,7 @@ public partial class HouseForm : ContentView
                     addition,
                     await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
                     houseImages.ToList(),
-                    House.Available == null ? true : House.Available
+                    available
                 ),
                 _person.Id
             );
@@ -170,7 +171,7 @@ public partial class HouseForm : ContentView
                 addition,
                 await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
                 houseImages.ToList(),
-                House.Available == null ? true : House.Available
+                available
             ));
         }
 

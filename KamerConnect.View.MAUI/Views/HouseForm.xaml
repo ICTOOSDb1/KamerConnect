@@ -149,7 +149,7 @@
 					   FontSize="14"
 					   VerticalOptions="Center"/>
 
-				<CheckBox IsChecked="{Binding House.Available, Mode=TwoWay, TargetNullValue=True}"
+				<CheckBox IsChecked="{Binding House.Available, TargetNullValue=True}"
 						  VerticalOptions="Center"
 						  x:Name="availableEntry"
 						  HorizontalOptions="Start"/>

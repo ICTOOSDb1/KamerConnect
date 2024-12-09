@@ -12,6 +12,7 @@ namespace KamerConnect.View.MAUI.Pages
         private readonly AuthenticationService _authenticationService;
         private readonly HousePreferenceService _housePreferenceService;
         private readonly GeoLocationService _geoLocationService;
+        private readonly IServiceProvider _serviceProvider;
         private Person _person;
 
         public UpdateAccount(FileService fileService, HouseService houseService, HousePreferenceService housePreferenceService,
@@ -27,6 +28,7 @@ namespace KamerConnect.View.MAUI.Pages
             _personService = personService;
             _housePreferenceService = housePreferenceService;
             _geoLocationService = geoLocationService;
+            _serviceProvider = serviceProvider;
 
             GetCurrentPerson().GetAwaiter().GetResult();
             FormsContainer.Content = new UpdateAccountsForm(_fileService, _personService, _person);
@@ -118,6 +120,14 @@ namespace KamerConnect.View.MAUI.Pages
             HouseButton.Style = (Style)Application.Current.Resources["SecondaryButton"];
 
             buttonSource.Style = (Style)Application.Current.Resources["PrimaryButton"];
+        }
+
+        private async void Logout(object? sender, EventArgs eventArgs)
+        {
+            var session = await _authenticationService.GetSession();
+            
+            _authenticationService.RemoveSession(session.sessionToken);
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
         }
     }
 }
