@@ -16,6 +16,11 @@ public class PersonService
     {
         return _repository.GetPersonById(id);
     }
+    
+    public Person? GetPersonByHouseId(Guid id)
+    {
+        return _repository.GetPersonByHouseId(id);
+    }
     public Person? GetPersonByEmail(string email)
     {
         return _repository.GetPersonByEmail(email);
@@ -35,4 +40,6 @@ public class PersonService
     {
         _repository.UpdatePersonality(personId, personality);
     }
+    
+    
 }

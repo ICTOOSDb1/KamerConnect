@@ -12,6 +12,7 @@ public class MatchService
         _matchRepository = matchRepository;
     }
 
+ 
 
     public List<Match> GetPendingMatchesById(Guid Id)
     {
@@ -22,4 +23,5 @@ public class MatchService
     {
         _matchRepository.UpdateStatusMatch(match, status);
     }
+    
 }

@@ -15,13 +15,18 @@ public class House
     public string PostalCode { get; set; }
     public int HouseNumber { get; set; }
     public string HouseNumberAddition { get; set; }
+    public bool Available { get; set; }
     public Point HouseGeolocation { get; set; }
     public List<HouseImage> HouseImages { get; set; }
-
+    public PreferenceChoice Smoking { get; set; }
+    public PreferenceChoice Pet { get; set; }
+    public PreferenceChoice Interior { get; set; }
+    public PreferenceChoice Parking { get; set; }
     public House(
         Guid id, HouseType type, double price, string? description, int surface, int residents,
         string city, string street, string postalCode, int houseNumber, string houseNumberAddition, Point houseGeolocation,
-        List<HouseImage> houseImages)
+        List<HouseImage> houseImages, bool available, PreferenceChoice smoking, PreferenceChoice pet, PreferenceChoice interior,
+        PreferenceChoice parking)
     {
         Id = id;
         Type = type;
@@ -36,6 +41,11 @@ public class House
         HouseNumberAddition = houseNumberAddition;
         HouseGeolocation = houseGeolocation;
         HouseImages = houseImages;
+        Available = available;
+        Smoking = smoking;
+        Pet = pet;
+        Interior = interior;
+        Parking = parking;
     }
 }
 

@@ -10,14 +10,18 @@
             <ContentView x:Name="NavbarContainer"
                          Grid.Row="0"/>
 
-            <ScrollView Grid.Row="1"
-                        BackgroundColor="Transparent"
-                        VerticalScrollBarVisibility="Never"
-                        HorizontalScrollBarVisibility="Never">
-                <StackLayout Padding="0, 50">
-                    <ContentView x:Name="MatchView"/>
-                </StackLayout>
-            </ScrollView>
+            <StackLayout Grid.Row="1" Height="300" Width="1100">
+                <Label Text="Matchverzoeken"
+                       FontSize="32"
+                       FontFamily="InterLight"
+                       HorizontalOptions="Start"
+                       VerticalOptions="End"
+                       TextColor="Black"/>
+                <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always">
+                    <ContentView x:Name="MatchView" WidthRequest="1100" HeightRequest="700"/>
+                </ScrollView>
+            </StackLayout>
         </Grid>
+        
     </ContentPage.Content>
 </ContentPage>
