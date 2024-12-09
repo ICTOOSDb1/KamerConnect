@@ -164,10 +164,47 @@ public class HouseRepository : IHouseRepository
         }
     }
 
+    public House? Get(Guid id)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                       new NpgsqlCommand("""
+                                         SELECT h.id, h.type, h.price, h.description, h.surface,
+                                                h.residents, h.city, h.street, h.postal_code,
+                                                h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation)
+                                         FROM house h
+                                         WHERE h.id = @id::uuid;
+                                         """,
+                           connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var house = ReadToHouse(reader);
+                        reader.Close();
+                        
+                        house.HouseImages = GetHouseImages(house.Id, connection);
+
+                        return house;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
     private List<HouseImage> GetHouseImages(Guid houseId, NpgsqlConnection connection)
     {
         var houseImages = new List<HouseImage>();
-
+   
         using (var command = new NpgsqlCommand($"""
                                                 SELECT path, bucket
                                                 FROM house_image
@@ -224,7 +261,6 @@ public class HouseRepository : IHouseRepository
                 }
             }
         }
-
         return null;
     }
 

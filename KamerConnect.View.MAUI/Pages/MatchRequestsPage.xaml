@@ -7,14 +7,17 @@
              BackgroundColor="{StaticResource BackgroundColor}">
     <ContentPage.Content>
         <StackLayout Height="300" Width="1100">
-            <Label Text="Matchverzoeken"
-                   FontSize="32"
-                   FontFamily="InterLight"
-                   HorizontalOptions="Start"
-                   VerticalOptions="End"
-                   TextColor="Black"/>
+            <ContentView x:Name="NavbarContainer"/>
+            <Label  Padding="50"
+                    Text="Matchverzoeken"
+                   TextColor="Black"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontFamily="Inter-Regular"
+                   FontSize="36"
+                   FontAttributes="Bold"/>
             <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always">
-                <ContentView x:Name="MatchView" WidthRequest="1100" HeightRequest="700"/>
+            <ContentView x:Name="MatchView"  WidthRequest="1100" HeightRequest="600"/>
             </ScrollView>
         </StackLayout>
     </ContentPage.Content>

@@ -24,8 +24,8 @@ public class MatchRepository : IMatchRepository
             using (var command = new NpgsqlCommand("""
                                                    SELECT *
                                                    FROM matchrequests
-                                                   WHERE (house_id = @id::uuid or person_id = @id::uuid) and status = 'Pending'
-                                                   """,
+                                                   WHERE house_id = @id::uuid or person_id = @id::uuid
+                                                   """, 
                        connection))
             {
                 command.Parameters.AddWithValue("@id", Id);
@@ -119,7 +119,6 @@ public class MatchRepository : IMatchRepository
             throw;
         }
     }
-
 
     public Match readToMatch(DbDataReader reader)
     {

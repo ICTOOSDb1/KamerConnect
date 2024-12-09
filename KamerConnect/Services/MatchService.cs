@@ -12,8 +12,6 @@ public class MatchService
         _matchRepository = matchRepository;
     }
 
- 
-
     public List<Match>? GetMatchesById(Guid Id)
     {
         return _matchRepository.GetMatchesById(Id);
