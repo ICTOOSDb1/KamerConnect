@@ -59,6 +59,11 @@
                                                 Clicked="House"
                                                 Style="{StaticResource SecondaryButton}"
                                                 HorizontalOptions="FillAndExpand"/>
+                                        <Button Text="Uitloggen"
+                                                x:Name="LogoutButton"
+                                                Clicked="Logout"
+                                                Style="{StaticResource PrimaryButton}"
+                                                HorizontalOptions="FillAndExpand"/>
                                 </StackLayout>
                                 <ScrollView Grid.Row="1"
                                             Grid.Column="1">

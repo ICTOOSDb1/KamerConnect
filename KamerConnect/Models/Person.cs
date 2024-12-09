@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace KamerConnect.Models;
 
@@ -45,10 +46,10 @@ public enum Role
 }
 public enum Gender
 {
-    [Description("Man")]
+    [Display(Name = "Man")]
     Male,
-    [Description("Vrouw")]
+    [Display(Name = "Vrouw")]
     Female,
-    [Description("Overig")]
+    [Display(Name = "Overig")]
     Other
 }

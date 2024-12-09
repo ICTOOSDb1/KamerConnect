@@ -2,9 +2,11 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+         
              x:Class="KamerConnect.View.MAUI.Pages.ProfilePage"
              BackgroundColor="{StaticResource BackgroundColor}">
 
+    
     <Grid RowDefinitions="Auto,Auto, Auto, Auto, Auto, *">
         <ContentView x:Name="NavbarContainer"
                      Grid.Row="0" />
@@ -20,7 +22,7 @@
                 <Grid ColumnDefinitions="auto,50,auto,*" RowDefinitions="*,*,*,*" RowSpacing="50">
                     <VerticalStackLayout Grid.Row="0" Grid.Column="0">
                         <Label Text="Telefoonnummer" FontSize="12" TextColor="Gray" />
-                        <Label x:Name="PhoneLabel" FontSize="16" TextColor="Black" />
+                        <Label x:Name="PhoneLabel" FontSize="16" TextColor="Black"  />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Row="1" Grid.Column="0">
@@ -30,7 +32,7 @@
 
                     <VerticalStackLayout Grid.Row="0" Grid.Column="2">
                         <Label Text="Geslacht" FontSize="12" TextColor="Gray" />
-                        <Label x:Name="GenderLabel" FontSize="16" TextColor="Black" />
+                        <Label x:Name="GenderLabel" FontSize="16" TextColor="Black"  />
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Row="1" Grid.Column="2">
                         <Label Text="geboorte datum" FontSize="12" TextColor="Gray"></Label>
@@ -48,6 +50,7 @@
                         <Label x:Name="CourseLabel" FontSize="16" TextColor="Black" />
                     </VerticalStackLayout>
                     <HorizontalStackLayout Grid.Row="3" Grid.Column="3" HorizontalOptions="End">
+                        <VerticalStackLayout>
                         <Button x:Name="RejectButton"
                                 Text="Afwijzen"
                                 BackgroundColor="Red"
@@ -55,16 +58,24 @@
                                 CornerRadius="20"
                                 WidthRequest="120"
                                 HeightRequest="40"
-                                HorizontalOptions="End" />
+                                HorizontalOptions="End"
+                                Clicked="RejectButton_OnClicked"/>
+                        <Label x:Name="RejectLabel" IsVisible="False"  Text="Afgewezen" FontSize="16"></Label>
+                        </VerticalStackLayout>
+                        
+                        <VerticalStackLayout>
+                            <Button x:Name="AcceptButton"
+                                    Text="Accepteren"
+                                    BackgroundColor="Green"
+                                    TextColor="White"
+                                    CornerRadius="20"
+                                    WidthRequest="120"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    Clicked="AcceptButton_OnClicked"/>
+                            <Label x:Name="AcceptLabel" IsVisible="False" Text="Geaccepteerd" FontSize="16"></Label>
+                        </VerticalStackLayout>
 
-                        <Button x:Name="AcceptButton"
-                                Text="Accepteren"
-                                BackgroundColor="Green"
-                                TextColor="White"
-                                CornerRadius="20"
-                                WidthRequest="120"
-                                HeightRequest="40"
-                                HorizontalOptions="End" />
                     </HorizontalStackLayout>
                 </Grid>
 
@@ -88,12 +99,7 @@
             </Grid>
         </ScrollView>
         <BoxView Grid.Row="4" Color="{StaticResource Gray100}" HeightRequest="1" Margin="50, 25"></BoxView>
-        <Label x:Name="MatchResultLabel" 
-               Grid.Row="5"
-               Text="Resultaten verschijnen hier..." 
-               FontSize="16" 
-               HorizontalOptions="Center" 
-               VerticalOptions="Center" />
+        
 
     </Grid>
 </ContentPage>

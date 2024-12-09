@@ -12,23 +12,19 @@ public class MatchService
         _matchRepository = matchRepository;
     }
 
-    public Match[]? GetMatchesById(Guid houseId)
+    public List<Match>? GetMatchesById(Guid Id)
     {
-        return _matchRepository.GetMatchesById(houseId);
+        return _matchRepository.GetMatchesById(Id);
+    }
+    
+    public void UpdateMatch(Match match, Status status)
+    {
+        _matchRepository.UpdateMatch(match , status);
     }
 
-    public void AddMatch(Match match)
+    public Guid CreateMatch(Match match)
     {
-        _matchRepository.AddMatch(match);
+        return _matchRepository.CreateMatch(match);
     }
-
-    public void UpdateMatch(Match match)
-    {
-        _matchRepository.UpdateMatch(match);
-    }
-
-    public void DeleteMatch(Match match)
-    {
-        _matchRepository.DeleteMatch(match);
-    }
+    
 }

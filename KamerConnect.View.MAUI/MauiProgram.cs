@@ -7,10 +7,13 @@ using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 
+
 namespace KamerConnect.View.MAUI;
 
 public static class MauiProgram
 {
+	public static IServiceProvider Services { get; private set; }
+	
 	public static MauiApp CreateMauiApp()
 	{
 		EnvVariables.Load();
@@ -56,12 +59,17 @@ public static class MauiProgram
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
 		builder.Services.AddTransient<Registration>();
+		builder.Services.AddTransient<HousePage>();
 		builder.Services.AddTransient<ProfilePage>();
 		builder.Services.AddTransient<MatchRequestsPage>();
 		builder.Services.AddTransient<MatchRequestsView>();
 
 		builder.Services.AddFilePicker();
+		
+		var app = builder.Build();
+		
+		Services = app.Services;
 
-		return builder.Build();
+		return app;
 	}
 }

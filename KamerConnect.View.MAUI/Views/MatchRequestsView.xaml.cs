@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using KamerConnect.Models;
 using KamerConnect.Services;
+using KamerConnect.View.MAUI.Pages;
 using Microsoft.Maui.Controls.Shapes;
 using KamerConnect.View.MAUI.Utils;
+using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -36,12 +38,10 @@ public partial class MatchRequestsView : ContentView
         {
             GetMatchRequestsOffering(); 
         }
-        else
+        else if (_person.Role == Role.Seeking)
         {
             GetMatchRequestsSeeking();
         }
-        
-     
     }
     private async Task GetCurrentPerson()
     {
@@ -52,87 +52,107 @@ public partial class MatchRequestsView : ContentView
         }
     }
 
-public void GetMatchRequestsOffering()
-{
-    Match[] matches;
-    House house = _houseService.GetByPersonId(_person.Id);
-    if (house == null) { DisplayNoMatchRequests();
-        return;
-    }
-    matches = _matchService.GetMatchesById(house.Id);
-    if (matches == null) { DisplayNoMatchRequests();
-        return;
-    }
-    for (int i = 1; i < matches.Length + 1; i++)
+    public void GetMatchRequestsOffering()
     {
-        Person person = _personService.GetPersonById(matches[i - 1].personId);
-        
-        AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
-        
-        MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
-        
-        var border = new Border
+        List<Match> matches;
+        House house = _houseService.GetByPersonId(_person.Id);
+        if (house != null)
         {
-            WidthRequest = 100,
-            HeightRequest = 100,
-            StrokeShape = new RoundRectangle
+            matches = _matchService.GetMatchesById(house.Id);
+
+            if (matches != null)
             {
-                CornerRadius = new CornerRadius(10)
-            },
-            VerticalOptions = LayoutOptions.Center,
-            HorizontalOptions = LayoutOptions.Center,
-            Content = new Image
-            {
-                Source = person.ProfilePicturePath != null
-                    ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
-                    : "user.png",
-                Aspect = Aspect.AspectFit,
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center
+                for (int i = 1; i < matches.Count + 1; i++)
+                {
+
+                    Person person = _personService.GetPersonById(matches[i - 1].personId);
+
+                    var border = AddProfilePicture(person);
+                    var FirstNameLabel = new Label
+                    {
+                        Text = person.FirstName, HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
+                    };
+                    var SchoolLabel = new Label();
+                    var StudyLabel = new Label();
+                    if (person.Personality != null)
+                    {
+                        SchoolLabel.Text = person.Personality.School;
+                        SchoolLabel.HorizontalOptions = LayoutOptions.Center;
+                        SchoolLabel.VerticalOptions = LayoutOptions.Center;
+
+                        StudyLabel.Text = person.Personality.Study;
+                        StudyLabel.HorizontalOptions = LayoutOptions.Center;
+                        StudyLabel.VerticalOptions = LayoutOptions.Center;
+                    }
+
+                    var BirthLabel = new Label
+                    {
+                        Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
+                    };
+                    var horizontalStack = new HorizontalStackLayout
+                    {
+                        HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Spacing = -30
+                    };
+                    Button rejectButton = new Button
+                    {
+                        ImageSource = "reject.png",
+                        Scale = 0.3,
+                        BackgroundColor = Colors.Transparent,
+                        CommandParameter = matches[i - 1],
+                        WidthRequest = 110,
+                        HeightRequest = 110
+                    };
+                    horizontalStack.Children.Add(rejectButton);
+                    rejectButton.Clicked += RejectButton_OnClicked;
+
+                    Button acceptButton = new Button
+                    {
+                        ImageSource = "accept.png",
+                        Scale = 0.3,
+                        BackgroundColor = Colors.Transparent,
+                        CommandParameter = matches[i - 1],
+                        WidthRequest = 110,
+                        HeightRequest = 110
+                    };
+                    horizontalStack.Children.Add(acceptButton);
+                    acceptButton.Clicked += AcceptButton_OnClicked;
+                    var separator = new BoxView
+                    {
+                        HeightRequest = 2,
+                        BackgroundColor = Colors.LightGray,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        VerticalOptions = LayoutOptions.End
+                    };
+
+                    MatchRequests.RowDefinitions.Add(new RowDefinition
+                        { Height = new GridLength(100, GridUnitType.Absolute) });
+                    MatchRequests.Add(separator, 0, i);
+                    Grid.SetColumnSpan(separator, 6);
+                    MatchRequests.Add(AddProfilePicture(person), 0, i);
+                    MatchRequests.Add(FirstNameLabel, 1, i);
+                    MatchRequests.Add(SchoolLabel, 2, i);
+                    MatchRequests.Add(StudyLabel, 3, i);
+                    MatchRequests.Add(BirthLabel, 4, i);
+                    MatchRequests.Add(horizontalStack, 5, i);
+                    var tapGestureRecognizer = new TapGestureRecognizer
+                    {
+                        CommandParameter = matches[i - 1]
+                    };
+                    tapGestureRecognizer.Tapped += ToProfile_OnTapped;
+
+                    border.GestureRecognizers.Add(tapGestureRecognizer);
+                }
             }
-        };
-        
-        var separator = CreateSeparator();
-        var label1 = new Label
-        {
-            Text = person.FirstName,
-            FontFamily = "OpenSansRegular",
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center
-        };
-        var label2 = new Label
-        {
-            Text = person.Personality?.School ?? "",
-            FontFamily = "OpenSansRegular",
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center
-        };
-        var label3 = new Label
-        {
-            Text = person.Personality?.Study ?? "",
-            FontFamily = "OpenSansRegular",
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center
-        };
-        var label4 = new Label
-        {
-            Text = person.BirthDate.ToShortDateString(),
-            FontFamily = "OpenSansRegular",
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center
-        };
-        
-        MatchRequests.Add(separator, 0, i);
-        Grid.SetColumnSpan(separator, 6);
-        MatchRequests.Add(border, 0, i);
-        MatchRequests.Add(label1, 1, i);
-        MatchRequests.Add(label2, 2, i);
-        MatchRequests.Add(label3, 3, i);
-        MatchRequests.Add(label4, 4, i);
+            else
+            {
+                DisplayNoMatchRequests();
+            }
+        }
     }
-}
-
-
+    
+    
     public void GetMatchRequestsSeeking()
     {
         Match[] matches;
@@ -202,6 +222,31 @@ public void GetMatchRequestsOffering()
         }
     }
 
+    public Border AddProfilePicture(Person person)
+    {
+        var border = new Border
+        {
+            WidthRequest = 100,
+            HeightRequest = 100,
+            StrokeShape = new RoundRectangle
+            {
+                CornerRadius = new CornerRadius(10)
+            },
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Center,
+            Content = new Image
+            {
+                Source = person.ProfilePicturePath != null
+                    ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
+                    : "geenProfiel.png",
+                Aspect = Aspect.AspectFit,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            }
+        };
+        return border;
+    }
+    
     public void AddLegend(string label1, string label2, string label3, string label4)
     {
         MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40, GridUnitType.Absolute) });
@@ -217,14 +262,6 @@ public void GetMatchRequestsOffering()
         for (int i = 0; i < columns.Count; i++)
         {
             MatchRequests.Add(columns[i], i + 1, 0);
-            /*MatchRequests.Add(new Image
-            {
-                Scale = 0.3,
-                Source = "arrowupdown.png",
-                Aspect = Aspect.AspectFit,
-                HorizontalOptions = LayoutOptions.End,
-                VerticalOptions = LayoutOptions.Center
-            }, i + 1, 0);*/
             var separator = CreateSeparator();
             MatchRequests.Add(separator, 0, 0);
             Grid.SetColumnSpan(separator, 6);
@@ -258,6 +295,13 @@ public void GetMatchRequestsOffering()
                 statusLabel.Text = "Geweigerd";
                 break;
         }
+        var separator = new BoxView
+        {
+            HeightRequest = 2,
+            BackgroundColor = Colors.LightGray,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.End
+        };
         var buttonContainer = new HorizontalStackLayout
         {
             HorizontalOptions = LayoutOptions.Center,
@@ -267,7 +311,46 @@ public void GetMatchRequestsOffering()
         };
         buttonContainer.Children.Add(statusImage);
         buttonContainer.Children.Add(statusLabel);
+        MatchRequests.Add(separator, 0, 0);
         MatchRequests.Add(buttonContainer, 5, row);
+        Grid.SetColumnSpan(separator, 6);
+    }
+    private void AcceptButton_OnClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is Match match)
+        {
+            _matchService.UpdateMatch(match, Status.Accepted);
+            RefreshPage();
+        }
+    }
+
+    private void RejectButton_OnClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is Match match)
+        {
+            _matchService.UpdateMatch(match, Status.Rejected);
+            RefreshPage();
+        }
+    }
+    private async void ToProfile_OnTapped(object? sender, TappedEventArgs e)
+    {
+        if (e.Parameter is Match match)
+        {
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
+                profilePage.BindingContext = match;
+                await navigationPage.Navigation.PushAsync(profilePage);
+            }
+        }
+    }
+
+    private async void RefreshPage()
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+        }
     }
     
     private BoxView CreateSeparator()

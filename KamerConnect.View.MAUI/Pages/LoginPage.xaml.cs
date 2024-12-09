@@ -1,15 +1,19 @@
 using KamerConnect.Exceptions;
+using KamerConnect.Models;
+using KamerConnect.Services;
 
 namespace KamerConnect.View.MAUI.Pages;
 
 public partial class LoginPage : ContentPage
 {
-    private readonly AuthenticationService authService;
+    private readonly AuthenticationService _authService;
+    private readonly PersonService _personService;
     private readonly IServiceProvider _serviceProvider;
 
-    public LoginPage(IServiceProvider serviceProvider, AuthenticationService authService)
+    public LoginPage(IServiceProvider serviceProvider, AuthenticationService authService, PersonService personService)
     {
-        this.authService = authService;
+        _authService = authService;
+        _personService = personService;
         _serviceProvider = serviceProvider;
 
     
@@ -24,14 +28,22 @@ public partial class LoginPage : ContentPage
         string email = emailEntry.Text;
         string password = passwordEntry.Text;
 
-        string? token = await authService.Authenticate(email, password);
+        string? token = await _authService.Authenticate(email, password);
 
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
             if (token != null)
             {
-                var page = _serviceProvider.GetRequiredService<MainPage>();
-                await navigationPage.Navigation.PushAsync(page);
+                var session = await _authService.GetSession();
+                if (session != null)
+                {
+                    if (_personService.GetPersonById(session.personId)?.Role == Role.Seeking)
+                    {
+                        App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
+                    }
+                    else  App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
+                }
+                
             }
             else
             {

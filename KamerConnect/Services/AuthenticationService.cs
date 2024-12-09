@@ -1,4 +1,3 @@
-﻿
 using System.Security.Cryptography;
 using System.Text;
 using KamerConnect.Exceptions;
@@ -77,6 +76,7 @@ public class AuthenticationService
                 RemoveSession(sessionToken);
                 return null;
             }
+
             return session;
         }
         return null;

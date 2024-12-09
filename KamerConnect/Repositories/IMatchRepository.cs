@@ -4,7 +4,7 @@ namespace KamerConnect.Repositories;
 
 public interface IMatchRepository
 {
-    Match[]? GetMatchesById(Guid houseId);
+    List<Match>? GetMatchesById(Guid Id);
     void AddMatch(Match match);
     void UpdateMatch(Match match);
     void DeleteMatch(Match match);
