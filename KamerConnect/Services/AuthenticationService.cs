@@ -70,29 +70,16 @@ public class AuthenticationService
         var sessionToken = await GetSessionToken().ConfigureAwait(false);
 
         if (sessionToken != null)
-            return _repository.GetSessionWithLocalToken(sessionToken);
-
-        return null;
-    }
-
-    public async Task<bool> CheckSession()
-    {
-        string? currentToken = await GetSessionToken();
-
-        if (!string.IsNullOrEmpty(currentToken))
         {
-            Session session = _repository.GetSessionWithLocalToken(currentToken);
-
+            var session = _repository.GetSessionWithLocalToken(sessionToken);
             if (session == null || DateTime.Now >= session.startingDate.AddMonths(6))
             {
-                RemoveSession(currentToken);
-                return false;
+                RemoveSession(session.sessionToken);
+                return null;
             }
-
-            return true;
+            return session;
         }
-
-        return false;
+        return null;
     }
 
     private async Task SaveSession(Guid personId, DateTime currentDate, string sessionToken)

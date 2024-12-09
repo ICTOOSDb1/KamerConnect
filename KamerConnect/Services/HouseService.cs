@@ -12,11 +12,6 @@ public class HouseService
         _repository = repository;
     }
 
-    public House? Get(Guid id)
-    {
-        return _repository.Get(id);
-    }
-
     public House? GetByPersonId(Guid personId)
     {
         return _repository.GetByPersonId(personId);
@@ -30,5 +25,10 @@ public class HouseService
     public void Update(House house)
     {
         _repository.Update(house);
+    }
+
+    public List<House> GetByPreferences(HousePreferences housePreferences)
+    {
+        return _repository.GetByPreferences(housePreferences);
     }
 }

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
+using NetTopologySuite.Geometries;
 namespace KamerConnect.Models;
 
 public class House
@@ -15,11 +15,12 @@ public class House
     public string PostalCode { get; set; }
     public int HouseNumber { get; set; }
     public string HouseNumberAddition { get; set; }
+    public Point HouseGeolocation { get; set; }
     public List<HouseImage> HouseImages { get; set; }
 
     public House(
         Guid id, HouseType type, double price, string? description, int surface, int residents,
-        string city, string street, string postalCode, int houseNumber, string houseNumberAddition,
+        string city, string street, string postalCode, int houseNumber, string houseNumberAddition, Point houseGeolocation,
         List<HouseImage> houseImages)
     {
         Id = id;
@@ -33,6 +34,7 @@ public class House
         PostalCode = postalCode;
         HouseNumber = houseNumber;
         HouseNumberAddition = houseNumberAddition;
+        HouseGeolocation = houseGeolocation;
         HouseImages = houseImages;
     }
 }
