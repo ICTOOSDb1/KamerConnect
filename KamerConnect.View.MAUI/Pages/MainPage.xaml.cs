@@ -72,7 +72,7 @@ public partial class MainPage : ContentPage
     public async void NavigateToProfile(object sender, TappedEventArgs e)
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
-            await navigationPage.Navigation.PushAsync(_serviceProvider.GetService<UpdateAccount>());
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
     }
 }
 

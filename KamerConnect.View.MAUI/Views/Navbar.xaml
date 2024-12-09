@@ -24,14 +24,16 @@
                                    Spacing="20"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center">
-                <Label Text="Chats"
-                       FontSize="18"
-                       TextColor="{StaticResource TextColor}">
+                <Label x:Name="Overview"
+                    Text="Overzicht"
+                    FontSize="18"
+                    TextColor="{StaticResource TextColor}">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnChatsTapped"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Text="Zoeken"
+                <Label x:Name="search"
+                    Text="Zoeken"
                        FontSize="18"
                        TextColor="{StaticResource TextColor}"
                        FontAttributes="Bold">
@@ -39,7 +41,8 @@
                         <TapGestureRecognizer Tapped="OnExploreTapped"/>
                     </Label.GestureRecognizers>
                 </Label>
-                <Label Text="Profile"
+                <Label x:Name="profile"
+                    Text="profiel"
                        FontSize="18"
                        TextColor="{StaticResource TextColor}">
                     <Label.GestureRecognizers>
