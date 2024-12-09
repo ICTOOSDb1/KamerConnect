@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:maui="using:KamerConnect.View.MAUI"
+             x:Class="KamerConnect.View.MAUI.Pages.HousePage"
+             BackgroundColor="White">
+    <Grid RowDefinitions="Auto,*">
+        <ContentView x:Name="NavbarContainer"
+                     Grid.Row="0"/>
+    <ScrollView Grid.Row="1" VerticalOptions="Start" VerticalScrollBarVisibility="Never" Orientation="Vertical" Margin="50, 0">
+        <Grid RowSpacing="50" Margin="0, 30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Components:ImageSlideShow x:Name="ImageSlideShow" Grid.Column="0" />
+                
+
+                <Grid Grid.Column="2" RowSpacing="30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <VerticalStackLayout Grid.Row="0">
+                        <HorizontalStackLayout Spacing="5">
+                            <Label x:Name="StreetLabel"
+                                Text="{Binding Street}"
+                                   FontFamily="InterMedium"
+                                   FontSize="36"
+                                   VerticalTextAlignment="End" />
+                            <Label x:Name="NumberLabel"
+                                   Text="{Binding HouseNumber}"
+                                   FontFamily="InterMedium"
+                                   FontSize="36"
+                                   VerticalTextAlignment="End" />
+                            <Label  x:Name="CityLabel" 
+                                    Text="{Binding City}"
+                                    FontFamily="InterRegular"
+                                    FontSize="20"
+                                    Padding="0"
+                                    VerticalTextAlignment="End" />
+                            <Label  x:Name="PostalcodeLabel"
+                                    Text="{Binding PostalCode}"
+                                    FontFamily="InterBold"
+                                    FontSize="16"
+                                    Padding="0"
+                                    VerticalTextAlignment="End" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout>
+                            <Label Text="van"
+                                   FontFamily="InterSemiBold"
+                                   FontSize="16" />
+                            <Label  x:Name="FullnameLabel"
+                                    Text=""
+                                    FontFamily="InterRegular"
+                                    FontSize="16"
+                                    TextColor="{StaticResource Primary}" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <Grid Grid.Row="1" ColumnSpacing="220" RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0"
+                               Text="Overzicht"
+                               FontFamily="InterSemiBold"
+                               FontSize="20" />
+
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="0">
+                            <Label
+                                Text="Prijs per maand"
+                                FontFamily="InterLight"
+                                FontSize="10"
+                                TextColor="#999999" />
+                            <Label
+                                x:Name="MonthlyPriceLabel"
+                                Text="{Binding Price, StringFormat='€ {0}'}"
+                                FontFamily="InterRegular"
+                                FontSize="16" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="3" Grid.Column="0">
+                            <Label
+                                Text="Oppervlakte"
+                                FontFamily="InterLight"
+                                FontSize="10"
+                                TextColor="#999999" />
+                            <Label  x:Name="SurfaceLabel"
+                                    Text="{Binding Surface, StringFormat='{0}m²'}"
+                                    FontFamily="InterRegular"
+                                    FontSize="16" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="1">
+                            <Label
+                                Text="Aantal kamer genoten"
+                                FontFamily="InterLight"
+                                FontSize="10"
+                                TextColor="#999999" />
+                            <Label  x:Name="ResidentsLabel"
+                                    Text="{Binding Residents}"
+                                    FontFamily="InterRegular"
+                                    FontSize="16" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="3" Grid.Column="1">
+                            <Label
+                                Text="Type woning"
+                                FontFamily="InterLight"
+                                FontSize="10"
+                                TextColor="#999999" />
+                            <Label  x:Name="HouseTypeLabel"
+                                    Text="{Binding Type}"
+                                    FontFamily="InterRegular"
+                                    FontSize="16" />
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                    <BoxView Grid.Row="2" HeightRequest="1" BackgroundColor="#999999" HorizontalOptions="FillAndExpand" />
+
+                    <VerticalStackLayout Grid.Row="3">
+                        <Label
+                            Text="Beschrijving"
+                            FontFamily="InterSemiBold"
+                            FontSize="20" />
+                        <Label  x:Name="DescriptionLabel"
+                                Text="{Binding Description}"                                
+                                FontFamily="InterLight"
+                                FontSize="16"
+                                LineBreakMode="WordWrap"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="Start" />
+                    </VerticalStackLayout>
+                    
+                    <Button x:Name="RegisterButton"
+                        Text="Aanvragen"
+                            Style="{StaticResource PrimaryButton}"
+                            Grid.Row="4"
+                            Clicked="MakeMatch"
+                            HorizontalOptions="End" />
+                    <Label Grid.Row="4" 
+                           x:Name="StateLabel"
+                           Text="Aangevraagd"
+                           HorizontalOptions="End"
+                           IsVisible="False"/>
+                </Grid>
+            </Grid>
+
+            <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="#999999" HorizontalOptions="FillAndExpand" />
+        </Grid>
+    </ScrollView>
+        </Grid>
+</ContentPage>
