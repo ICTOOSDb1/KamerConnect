@@ -9,7 +9,8 @@
     <ContentPage.Content>
         <StackLayout Height="300" Width="1100">
             <ContentView x:Name="NavbarContainer"/>
-            <Label Text="Matchverzoeken"
+            <Label  Padding="50"
+                    Text="Matchverzoeken"
                    TextColor="Black"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center"

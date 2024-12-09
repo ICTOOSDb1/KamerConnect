@@ -34,12 +34,10 @@ public partial class MatchRequestsView : ContentView
         GetCurrentPerson().GetAwaiter().GetResult();
         if (_person.Role == Role.Offering)
         {
-            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
             GetMatchRequestsOffering(); 
         }
         else
         {
-            AddLegend("Straat", "Stad", "Type","Prijs");
             GetMatchRequestsSeeking();
         }
         
@@ -58,14 +56,19 @@ public void GetMatchRequestsOffering()
 {
     Match[] matches;
     House house = _houseService.GetByPersonId(_person.Id);
-    if (house == null) return;
+    if (house == null) { DisplayNoMatchRequests();
+        return;
+    }
     matches = _matchService.GetMatchesById(house.Id);
-    if (matches == null) return;
+    if (matches == null) { DisplayNoMatchRequests();
+        return;
+    }
     for (int i = 1; i < matches.Length + 1; i++)
     {
         Person person = _personService.GetPersonById(matches[i - 1].personId);
         
-
+        AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+        
         MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
         
         var border = new Border
@@ -135,13 +138,18 @@ public void GetMatchRequestsOffering()
         Match[] matches;
         
         Person person = _personService.GetPersonById(_person.Id);
-        if (person == null) return;
+        if (person == null) { DisplayNoMatchRequests();
+            return;
+        }
         matches =_matchService.GetMatchesById(person.Id);
-        if (matches == null) return;
+        if (matches == null) { DisplayNoMatchRequests();
+            return;
+        }
         
         for (int i = 1; i < matches.Length+1 ; i++)
         {
 
+            AddLegend("Straat", "Stad", "Type","Prijs");
             House house = _houseService.Get(matches[i-1].houseId);
 
             var border = new Border
@@ -159,7 +167,7 @@ public void GetMatchRequestsOffering()
                     Source = house.HouseImages[0].Path != null
                         ? house.HouseImages[0].FullPath
                 : "house.png",
-                    Aspect = Aspect.AspectFit, 
+                    Aspect = Aspect.AspectFill, 
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center
                 }
@@ -203,7 +211,7 @@ public void GetMatchRequestsOffering()
             new Label { Text = label2, FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
             new Label { Text = label3, FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
             new Label { Text = label4, FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = "Match request", FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
+            new Label { Text = "Status", FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
         };
         
         for (int i = 0; i < columns.Count; i++)
@@ -271,5 +279,22 @@ public void GetMatchRequestsOffering()
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.End
         };
+    }
+    
+    public void DisplayNoMatchRequests()
+    {
+        var noMatchRequests = new Label
+        {
+            Text = "Er zijn geen matchverzoeken weer te geven.",
+            FontSize = 25,
+            FontFamily = "InterLight",
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            TextColor = Colors.Black
+        };
+        MatchRequests.RowDefinitions.Add(new RowDefinition
+            { Height = new GridLength(100, GridUnitType.Absolute) });
+        MatchRequests.Add(noMatchRequests, 0, 0);
+        Grid.SetColumnSpan(noMatchRequests, 6);
     }
 }
