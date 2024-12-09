@@ -168,9 +168,14 @@ public class HouseRepository : IHouseRepository
             connection.Open();
 
             using (var command =
-                   new NpgsqlCommand($"SELECT * FROM house " +
-                                     $"WHERE house.id = @id::uuid",
-                       connection))
+                       new NpgsqlCommand("""
+                                         SELECT h.id, h.type, h.price, h.description, h.surface,
+                                                h.residents, h.city, h.street, h.postal_code,
+                                                h.house_number, h.house_number_addition, ST_AsText(h.house_geolocation)
+                                         FROM house h
+                                         WHERE h.id = @id::uuid;
+                                         """,
+                           connection))
             {
                 command.Parameters.AddWithValue("@id", id);
 
