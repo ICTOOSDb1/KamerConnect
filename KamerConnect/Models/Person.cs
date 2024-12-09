@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 namespace KamerConnect.Models;
 
 public class Person
@@ -43,7 +46,10 @@ public enum Role
 }
 public enum Gender
 {
+    [Display(Name = "Man")]
     Male,
+    [Display(Name = "Vrouw")]
     Female,
+    [Display(Name = "Overig")]
     Other
 }

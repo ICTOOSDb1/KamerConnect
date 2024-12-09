@@ -12,15 +12,19 @@ public partial class Navbar : ContentView
 		InitializeComponent();
 	}
 
-	private void OnChatsTapped(object sender, TappedEventArgs e)
+	private async void OnChatsTapped(object sender, TappedEventArgs e)
 	{
+		if (Application.Current.MainPage is NavigationPage navigationPage)
+		{
+			App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+		}
 	}
 
 	private async void OnExploreTapped(object sender, TappedEventArgs e)
 	{
 		if (Application.Current.MainPage is NavigationPage navigationPage)
 		{
-			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MainPage>());
+			App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
 		}
 	}
 
@@ -28,7 +32,7 @@ public partial class Navbar : ContentView
 	{
 		if (Application.Current.MainPage is NavigationPage navigationPage)
 		{
-			await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<UpdateAccount>());
+			App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
 		}
 	}
 }

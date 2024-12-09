@@ -9,8 +9,8 @@
     <Grid RowDefinitions="Auto,*">
         <ContentView x:Name="NavbarContainer"
                      Grid.Row="0"/>
-    <ScrollView Grid.Row="1" VerticalOptions="Start" VerticalScrollBarVisibility="Never" Orientation="Vertical" Margin="50, 30">
-        <Grid RowSpacing="50">
+    <ScrollView Grid.Row="1" VerticalOptions="Start" VerticalScrollBarVisibility="Never" Orientation="Vertical" Margin="50, 0">
+        <Grid RowSpacing="50" Margin="0, 30">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -52,11 +52,13 @@
                                     Text="{Binding City}"
                                     FontFamily="InterRegular"
                                     FontSize="20"
+                                    Padding="0"
                                     VerticalTextAlignment="End" />
                             <Label  x:Name="PostalcodeLabel"
                                     Text="{Binding PostalCode}"
                                     FontFamily="InterBold"
                                     FontSize="16"
+                                    Padding="0"
                                     VerticalTextAlignment="End" />
                         </HorizontalStackLayout>
                         <HorizontalStackLayout>
@@ -64,7 +66,7 @@
                                    FontFamily="InterSemiBold"
                                    FontSize="16" />
                             <Label  x:Name="FullnameLabel"
-                                    Text=" Niek van den Berg"
+                                    Text=""
                                     FontFamily="InterRegular"
                                     FontSize="16"
                                     TextColor="{StaticResource Primary}" />
@@ -96,7 +98,7 @@
                                 TextColor="#999999" />
                             <Label
                                 x:Name="MonthlyPriceLabel"
-                                Text="{Binding Price}"
+                                Text="{Binding Price, StringFormat='€ {0}'}"
                                 FontFamily="InterRegular"
                                 FontSize="16" />
                         </VerticalStackLayout>
@@ -108,7 +110,7 @@
                                 FontSize="10"
                                 TextColor="#999999" />
                             <Label  x:Name="SurfaceLabel"
-                                    Text="{Binding Surface}"
+                                    Text="{Binding Surface, StringFormat='{0}m²'}"
                                     FontFamily="InterRegular"
                                     FontSize="16" />
                         </VerticalStackLayout>
@@ -155,7 +157,8 @@
                                 VerticalOptions="Start" />
                     </VerticalStackLayout>
                     
-                    <Button Text="Registreren"
+                    <Button x:Name="RegisterButton"
+                        Text="Aanvragen"
                             Style="{StaticResource PrimaryButton}"
                             Grid.Row="4"
                             Clicked="MakeMatch"
