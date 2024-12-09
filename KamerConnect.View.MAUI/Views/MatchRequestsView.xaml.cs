@@ -225,7 +225,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateStatusMatch(match, status.Accepted);
+            _matchService.UpdateStatusMatch(match, Status.Accepted);
             RefreshPage();
         }
     }
@@ -234,7 +234,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateStatusMatch(match, status.Rejected);
+            _matchService.UpdateStatusMatch(match, Status.Rejected);
             RefreshPage();
         }
     }

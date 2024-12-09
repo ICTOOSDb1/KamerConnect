@@ -14,6 +14,7 @@ public class MatchRepository : IMatchRepository
     {
         _connectionString = EnvironmentUtils.GetConnectionString();
     }
+    
 
     public List<Match> GetPendingMatchesById(Guid Id)
     {
@@ -49,7 +50,40 @@ public class MatchRepository : IMatchRepository
         }
     }
 
-    public void UpdateStatusMatch(Match match, status status)
+    public List<Match> GetMatchesById(Guid Id)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand("""
+                                                   SELECT *
+                                                   FROM matchrequests
+                                                   WHERE (house_id = @id::uuid or person_id = @id::uuid)
+                                                   """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@id", Id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    var matches = new List<Match>();
+
+                    while (reader.Read())
+                    {
+                        var match = readToMatch(reader);
+                        if (match != null)
+                        {
+                            matches.Add(match);
+                        }
+                    }
+
+                    return matches;
+                }
+            }
+        }
+    }
+    public void UpdateStatusMatch(Match match, Status status)
     {
         try
         {
@@ -78,13 +112,46 @@ public class MatchRepository : IMatchRepository
         }
     }
 
+    public Guid CreateMatch(Match match)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string updateQuery = $"""
+                                      INSERT INTO matchrequests (
+                                        person_id, house_id, status, description)
+                                        VALUES (@personId::uuid, @houseId::uuid, @status::matchrequest_status, @description
+                                      ) RETURNING id;
+                                      """;
+
+                using (var command = new NpgsqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@personId", match.personId);
+                    command.Parameters.AddWithValue("@houseId", match.houseId);
+                    command.Parameters.AddWithValue("@status", match.Status.ToString());
+                    command.Parameters.AddWithValue("@description", match.motivation);
+
+                    var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                    return (Guid)result;
+                }
+            }
+        }
+        catch (NpgsqlException e)
+        {
+            Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
+            throw;
+        }
+    }
     public Match readToMatch(DbDataReader reader)
     {
         var match = new Match(
             reader.GetGuid(0),
             reader.GetGuid(1),
             reader.GetGuid(2),
-            EnumUtils.Validate<status>(reader.GetString(3)),
+            EnumUtils.Validate<Status>(reader.GetString(3)),
             "Placeholder motivation"
         );
         return match;
