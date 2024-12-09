@@ -126,10 +126,10 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                                     ST_SetSRID(ST_MakePoint(@x, @y), 4326),
                                     @Surface,
                                     @Residents,
-                                    @Smoking::Preference_choice,
-                                    @Pet::Preference_choice,
-                                    @Interior::Preference_choice,
-                                    @Parking::Preference_choice)
+                                    @Smoking::preference_choice,
+                                    @Pet::preference_choice,
+                                    @Interior::preference_choice,
+                                    @Parking::preference_choice)
                             RETURNING id;
                            """, connection))
                 {
