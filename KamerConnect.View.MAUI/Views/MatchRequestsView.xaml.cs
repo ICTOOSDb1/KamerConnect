@@ -251,7 +251,7 @@ public partial class MatchRequestsView : ContentView
         };
         Button rejectButton = new Button
         {
-            ImageSource = "circle-xmark.png",
+            ImageSource = "circlexmark.png",
             Scale = 0.3,
             BackgroundColor = Colors.Transparent,
             CommandParameter = matches[iterator - 1],
