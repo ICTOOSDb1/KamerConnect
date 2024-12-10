@@ -144,6 +144,7 @@ public partial class MatchRequestsView : ContentView
 
                     border.GestureRecognizers.Add(tapGestureRecognizer);
                 }
+                AddLegend("Voornaam", "School", "Studie", "Geboorte datum" );
             }
             else
             {
@@ -169,7 +170,7 @@ public partial class MatchRequestsView : ContentView
         for (int i = 1; i < matches.Count+1 ; i++)
         {
 
-            AddLegend("Straat", "Stad", "Type","Prijs");
+            
             House house = _houseService.Get(matches[i-1].houseId);
 
             var border = new Border
@@ -206,10 +207,10 @@ public partial class MatchRequestsView : ContentView
                     break;
             }
             var separator = CreateSeparator();
-            var label1 = new Label { Text = house.Street,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label { Text = house.City,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label { Text = houseTypeTranslation,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label4 = new Label { Text = "€"+house.Price,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label1 = new Label { Text = house.Street, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label2 = new Label { Text = house.City, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label3 = new Label { Text = houseTypeTranslation, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label4 = new Label { Text = "€"+house.Price, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
@@ -220,6 +221,7 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(label4, 4, i);
             DisplayStatus(i, matches[i - 1].Status);
         }
+        AddLegend("Straat", "Stad", "Type","Prijs");
     }
 
     public Border AddProfilePicture(Person person)
