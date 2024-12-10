@@ -7,8 +7,6 @@ using KamerConnect.Models;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 using Microsoft.Maui.Controls.Shapes;
-using KamerConnect.View.MAUI.Utils;
-using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -41,6 +39,8 @@ public partial class MatchRequestsView : ContentView
         {
             GetMatchRequestsSeeking();
         }
+        
+     
     }
     private async Task GetCurrentPerson()
     {
@@ -55,10 +55,10 @@ public partial class MatchRequestsView : ContentView
     {
         List<Match> matches;
         House house = _houseService.GetByPersonId(_person.Id);
-        matches = _matchService.GetPendingMatchesById(house.Id);
-            if (matches.Count != 0)
-            {
-                AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+        if (house != null)
+        {
+            matches = _matchService.GetMatchesById(house.Id);
+            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
 
             for (int i = 1; i < matches.Count + 1; i++)
             {
@@ -87,7 +87,7 @@ public partial class MatchRequestsView : ContentView
                     StudyLabel.VerticalOptions = LayoutOptions.Center;
                     }
 
-                    var BirthLabel = new Label
+                    Label BirthLabel = new Label
                     {
                         Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
@@ -96,7 +96,7 @@ public partial class MatchRequestsView : ContentView
                     var separator = CreateSeparator();
 
                     MatchRequests.RowDefinitions.Add(new RowDefinition
-                        { Height = new GridLength(100, GridUnitType.Absolute) });
+                        { Height = new GridLength(120, GridUnitType.Absolute) });
                     MatchRequests.Add(separator, 0, i);
                     Grid.SetColumnSpan(separator, 6);
                     MatchRequests.Add(profilePicture, 0, i);
@@ -114,10 +114,10 @@ public partial class MatchRequestsView : ContentView
                     profilePicture.GestureRecognizers.Add(tapGestureRecognizer);
                 }
             }
-        else
-        {
-            DisplayNoMatchRequests();
-        }
+            else
+            {
+                DisplayNoMatchRequests();
+            }
     }
     
     
@@ -283,6 +283,7 @@ public partial class MatchRequestsView : ContentView
                 statusImage.TextColor = Colors.Red;
                 statusLabel.Text = "Geweigerd";
                 break;
+            
         }
         var separator = new BoxView
         {
@@ -352,6 +353,7 @@ public partial class MatchRequestsView : ContentView
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
             App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+
         }
     }
     
