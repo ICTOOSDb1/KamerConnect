@@ -55,98 +55,69 @@ public partial class MatchRequestsView : ContentView
     {
         List<Match> matches;
         House house = _houseService.GetByPersonId(_person.Id);
-        matches = _matchService.GetPendingMatchesById(house.Id);
-            if (matches.Count != 0)
-            {
-                AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+        if (house != null)
+        {
+            matches = _matchService.GetMatchesById(house.Id);
+            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
 
             for (int i = 1; i < matches.Count + 1; i++)
             {
 
                 Person person = _personService.GetPersonById(matches[i - 1].personId);
 
-                var border = AddProfilePicture(person);
-                var FirstNameLabel = new Label
-                {
-                    Text = person.FirstName, HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
-                var SchoolLabel = new Label();
-                var StudyLabel = new Label();
-                if (person.Personality != null)
-                {
-                    SchoolLabel.Text = person.Personality.School;
-                    SchoolLabel.HorizontalOptions = LayoutOptions.Center;
-                    SchoolLabel.VerticalOptions = LayoutOptions.Center;
+                    ImageSource imageSource = person.ProfilePicturePath != null
+                        ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
+                        : "user.png";
+                    Border profilePicture = AddPicture(imageSource);
+                    Label FirstNameLabel = new Label
+                    {
+                        Text = person.FirstName, HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
+                    };
+                    Label SchoolLabel = new Label();
+                    Label StudyLabel = new Label();
+                    if (person.Personality != null)
+                    {
+                        SchoolLabel.Text = person.Personality.School;
+                        SchoolLabel.HorizontalOptions = LayoutOptions.Center;
+                        SchoolLabel.VerticalOptions = LayoutOptions.Center;
 
                     StudyLabel.Text = person.Personality.Study;
                     StudyLabel.HorizontalOptions = LayoutOptions.Center;
                     StudyLabel.VerticalOptions = LayoutOptions.Center;
                     }
 
-                    var BirthLabel = new Label
+                    Label BirthLabel = new Label
                     {
                         Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
                     };
-                    var horizontalStack = new HorizontalStackLayout
-                    {
-                        HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Spacing = -30
-                    };
-                    Button rejectButton = new Button
-                    {
-                        ImageSource = "reject.png",
-                        Scale = 0.3,
-                        BackgroundColor = Colors.Transparent,
-                        CommandParameter = matches[i - 1],
-                        WidthRequest = 110,
-                        HeightRequest = 110
-                    };
-                    horizontalStack.Children.Add(rejectButton);
-                    rejectButton.Clicked += RejectButton_OnClicked;
-
-                    Button acceptButton = new Button
-                    {
-                        ImageSource = "accept.png",
-                        Scale = 0.3,
-                        BackgroundColor = Colors.Transparent,
-                        CommandParameter = matches[i - 1],
-                        WidthRequest = 110,
-                        HeightRequest = 110
-                    };
-                    horizontalStack.Children.Add(acceptButton);
-                    acceptButton.Clicked += AcceptButton_OnClicked;
-                    var separator = new BoxView
-                    {
-                        HeightRequest = 2,
-                        BackgroundColor = Colors.LightGray,
-                        HorizontalOptions = LayoutOptions.Fill,
-                        VerticalOptions = LayoutOptions.End
-                    };
+                    var horizontalButtonStack = CreateButtons(matches, i);
+                    var separator = CreateSeparator();
 
                     MatchRequests.RowDefinitions.Add(new RowDefinition
                         { Height = new GridLength(120, GridUnitType.Absolute) });
                     MatchRequests.Add(separator, 0, i);
                     Grid.SetColumnSpan(separator, 6);
-                    MatchRequests.Add(border, 0, i);
+                    MatchRequests.Add(profilePicture, 0, i);
                     MatchRequests.Add(FirstNameLabel, 1, i);
                     MatchRequests.Add(SchoolLabel, 2, i);
                     MatchRequests.Add(StudyLabel, 3, i);
                     MatchRequests.Add(BirthLabel, 4, i);
-                    MatchRequests.Add(horizontalStack, 5, i);
+                    MatchRequests.Add(horizontalButtonStack, 5, i);
                     var tapGestureRecognizer = new TapGestureRecognizer
                     {
                         CommandParameter = matches[i - 1]
                     };
                     tapGestureRecognizer.Tapped += ToProfile_OnTapped;
 
-                    border.GestureRecognizers.Add(tapGestureRecognizer);
+                    profilePicture.GestureRecognizers.Add(tapGestureRecognizer);
                 }
             }
-        else
-        {
-            DisplayNoMatchRequests();
-        }
+            else
+            {
+                DisplayNoMatchRequests();
+            }
     }
     
     
@@ -166,29 +137,14 @@ public partial class MatchRequestsView : ContentView
         for (int i = 1; i < matches.Count+1 ; i++)
         {
 
-            
+            AddLegend("Straat", "Stad", "Type","Prijs");
             House house = _houseService.Get(matches[i-1].houseId);
 
-            var border = new Border
-            {
-                WidthRequest = 100,
-                HeightRequest = 100,
-                StrokeShape = new RoundRectangle
-                {
-                    CornerRadius = new CornerRadius(10)
-                },
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-                Content = new Image
-                {
-                    Source = house.HouseImages[0].Path != null
-                        ? house.HouseImages[0].FullPath
-                : "house.png",
-                    Aspect = Aspect.AspectFill, 
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
-                }
-            };
+            ImageSource imageSource = house.HouseImages[0].Path != null
+                ? house.HouseImages[0].FullPath
+                : "house.png";
+            Border housePicture = AddPicture(imageSource);
+            
             string houseTypeTranslation = "";
             switch (house.Type)
             {
@@ -203,14 +159,14 @@ public partial class MatchRequestsView : ContentView
                     break;
             }
             var separator = CreateSeparator();
-            var label1 = new Label { Text = house.Street, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label { Text = house.City, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label { Text = houseTypeTranslation, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label4 = new Label { Text = "€"+house.Price, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label1 = new Label { Text = house.Street,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label2 = new Label { Text = house.City,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label3 = new Label { Text = houseTypeTranslation,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label4 = new Label { Text = "€"+house.Price,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
-            MatchRequests.Add(border, 0, i);
+            MatchRequests.Add(housePicture, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
@@ -222,30 +178,25 @@ public partial class MatchRequestsView : ContentView
             };
             tapGestureRecognizer.Tapped += ToHouse_OnTapped;
 
-            border.GestureRecognizers.Add(tapGestureRecognizer);
+            housePicture.GestureRecognizers.Add(tapGestureRecognizer);
         }
         AddLegend("Straat", "Stad", "Type","Prijs");
     }
 
-    public Border AddProfilePicture(Person person)
+    public Border AddPicture(ImageSource imageSource)
     {
         var border = new Border
         {
             WidthRequest = 100,
             HeightRequest = 100,
-            Stroke = Brush.Transparent,
-            StrokeShape = new RoundRectangle
-            {
-                CornerRadius = new CornerRadius(10)
-            },
+            Stroke = null,
+            StrokeThickness = 0,
             VerticalOptions = LayoutOptions.Center,
             HorizontalOptions = LayoutOptions.Center,
             Content = new Image
             {
-                Source = person.ProfilePicturePath != null
-                    ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
-                    : "geenProfiel.png",
-                Aspect = Aspect.AspectFit,
+                Source = imageSource,
+                Aspect = Aspect.AspectFill,
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center
             }
@@ -272,6 +223,38 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(separator, 0, 0);
             Grid.SetColumnSpan(separator, 6);
         }
+    }
+
+    private HorizontalStackLayout CreateButtons(List<Match> matches, int iterator)
+    {
+        var horizontalStack = new HorizontalStackLayout
+        {
+            HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Spacing = -30
+        };
+        Button rejectButton = new Button
+        {
+            ImageSource = "circlexmark.png",
+            Scale = 0.3,
+            BackgroundColor = Colors.Transparent,
+            CommandParameter = matches[iterator - 1],
+            WidthRequest = 110,
+            HeightRequest = 110
+        };
+        horizontalStack.Children.Add(rejectButton);
+        rejectButton.Clicked += RejectButton_OnClicked;
+
+        Button acceptButton = new Button
+        {
+            ImageSource = "accept.png",
+            Scale = 0.3,
+            BackgroundColor = Colors.Transparent,
+            CommandParameter = matches[iterator - 1],
+            WidthRequest = 110,
+            HeightRequest = 110
+        };
+        horizontalStack.Children.Add(acceptButton);
+        acceptButton.Clicked += AcceptButton_OnClicked;
+        return horizontalStack;
     }
     
     public void DisplayStatus(int row, Status status)
