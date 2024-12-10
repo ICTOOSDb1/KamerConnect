@@ -166,7 +166,7 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
-            MatchRequests.Add(border, 0, i);
+            MatchRequests.Add(housePicture, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
