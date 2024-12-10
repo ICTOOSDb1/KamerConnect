@@ -58,7 +58,7 @@ public partial class MatchRequestsView : ContentView
         if (house != null)
         {
             matches = _matchService.GetPendingMatchesById(house.Id);
-            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+            AddLegend("Voornaam", "School", "Opleiding", "Geboortedatum");
 
 
             for (int i = 1; i < matches.Count + 1; i++)
@@ -280,7 +280,7 @@ public partial class MatchRequestsView : ContentView
         var statusImage = new Label
         {
             Text = "\u25CF",
-            Scale = 3
+            FontSize = 32
         };
         switch (status)
         {
