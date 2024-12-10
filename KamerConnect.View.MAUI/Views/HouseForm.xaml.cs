@@ -60,10 +60,10 @@ public partial class HouseForm : ContentView
 
         House?.HouseImages?.ForEach(houseImages.Add);
 
-        SmokingTypePicker.SelectedItem = House.Smoking.GetDisplayName();
-        PetTypePicker.SelectedItem = House.Pet.GetDisplayName();
-        InteriorTypePicker.SelectedItem = House.Interior.GetDisplayName();
-        ParkingTypePicker.SelectedItem = House.Parking.GetDisplayName();
+        SmokingTypePicker.SelectedItem = House == null ? PreferenceChoice.No_preference.GetDisplayName() : House.Smoking.GetDisplayName();
+        PetTypePicker.SelectedItem = House == null ? PreferenceChoice.No_preference.GetDisplayName() : House.Pet.GetDisplayName();
+        InteriorTypePicker.SelectedItem = House == null ? PreferenceChoice.No_preference.GetDisplayName() : House.Interior.GetDisplayName();
+        ParkingTypePicker.SelectedItem = House == null ? PreferenceChoice.No_preference.GetDisplayName() : House.Parking.GetDisplayName();
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
