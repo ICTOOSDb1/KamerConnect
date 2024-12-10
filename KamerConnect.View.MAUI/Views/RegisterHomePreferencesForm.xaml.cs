@@ -71,8 +71,7 @@ public partial class RegisterHomePreferencesForm : ContentView
         _housePreferences.Interior = PreferenceChoiceTypeChanged(InteriorTypePicker);
         _housePreferences.Parking = PreferenceChoiceTypeChanged(ParkingTypePicker);
         _housePreferences.Type = HouseTypeChanged();
-
-
+        
         _housePreferences.CityGeolocation = await _geoLocationService.GetGeoCode(_housePreferences.City);
         _housePreferenceService.UpdateHousePreferences(_housePreferences);
         await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
