@@ -477,16 +477,16 @@ public class HouseRepository : IHouseRepository
         AND available = true
         AND residents <= @residents
         AND (
-            smoking = 'No_preference' OR smoking = @smoking::preference_choice
+            @smoking::preference_choice = 'No_preference' OR smoking = @smoking::preference_choice
         )
         AND (
-            pet = 'No_preference' OR pet = @pet::preference_choice
+            @pet::preference_choice = 'No_preference' OR pet = @pet::preference_choice
         )
         AND (
-            interior = 'No_preference' OR interior = @interior::preference_choice
+            @interior::preference_choice = 'No_preference' OR interior = @interior::preference_choice
         )
         AND (
-            parking = 'No_preference' OR parking = @parking::preference_choice
+            @parking::preference_choice = 'No_preference' OR parking = @parking::preference_choice
         );
     """, connection))
                 {

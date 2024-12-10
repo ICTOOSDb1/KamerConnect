@@ -21,8 +21,7 @@
 				<RowDefinition/>
 				<RowDefinition/>
 				<RowDefinition/>
-
-
+				<RowDefinition/>
 			</Grid.RowDefinitions>
 			<Grid ColumnSpacing="20"
 				  Grid.Row="0">
@@ -218,7 +217,7 @@
 			<VerticalStackLayout Grid.Row="7"
 								 Grid.Column="1"
 								 Spacing="5">
-				<Label Text="Moet er een fietsenstalling bij het huis zijn?"
+				<Label Text="Is er een fietsenstalling bij het huis?"
 					   FontSize="14"
 					   VerticalOptions="Center"/>
 
