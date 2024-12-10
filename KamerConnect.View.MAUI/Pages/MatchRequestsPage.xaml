@@ -6,22 +6,19 @@
              x:Class="KamerConnect.View.MAUI.Pages.MatchRequestsPage"
              BackgroundColor="{StaticResource BackgroundColor}">
     <ContentPage.Content>
-        <Grid RowDefinitions="Auto,*">
-            <ContentView x:Name="NavbarContainer"
-                         Grid.Row="0"/>
-
-            <StackLayout Grid.Row="1" Height="300" Width="1100">
-                <Label Text="Matchverzoeken"
-                       FontSize="32"
-                       FontFamily="InterLight"
-                       HorizontalOptions="Start"
-                       VerticalOptions="End"
-                       TextColor="Black"/>
-                <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always">
-                    <ContentView x:Name="MatchView" WidthRequest="1100" HeightRequest="700"/>
-                </ScrollView>
-            </StackLayout>
-        </Grid>
-        
+        <StackLayout Height="300" Width="1100">
+            <ContentView x:Name="NavbarContainer"/>
+            <Label  Padding="50"
+                    Text="Matchverzoeken"
+                   TextColor="Black"
+                   HorizontalTextAlignment="Start"
+                   VerticalTextAlignment="Center"
+                   FontFamily="Inter-Regular"
+                   FontSize="36"
+                   FontAttributes="Bold"/>
+            <ScrollView VerticalOptions="FillAndExpand" VerticalScrollBarVisibility="Always">
+            <ContentView x:Name="MatchView"  WidthRequest="1100" HeightRequest="600"/>
+            </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

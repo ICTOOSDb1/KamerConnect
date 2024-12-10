@@ -33,10 +33,12 @@ public partial class MatchRequestsView : ContentView
         GetCurrentPerson().GetAwaiter().GetResult();
         if (_person.Role == Role.Offering)
         {
+            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
             GetMatchRequestsOffering(); 
         }
         else if (_person.Role == Role.Seeking)
         {
+            GetMatchRequestsSeeking();
         }
         
      
@@ -127,7 +129,7 @@ public partial class MatchRequestsView : ContentView
                         { Height = new GridLength(100, GridUnitType.Absolute) });
                     MatchRequests.Add(separator, 0, i);
                     Grid.SetColumnSpan(separator, 6);
-                    MatchRequests.Add(border, 0, i);
+                    MatchRequests.Add(AddProfilePicture(person), 0, i);
                     MatchRequests.Add(FirstNameLabel, 1, i);
                     MatchRequests.Add(SchoolLabel, 2, i);
                     MatchRequests.Add(StudyLabel, 3, i);
@@ -146,7 +148,77 @@ public partial class MatchRequestsView : ContentView
         {
             DisplayNoMatchRequests();
         }
+    }
+    
+    
+    public void GetMatchRequestsSeeking()
+    {
+        List<Match> matches;
         
+        Person person = _personService.GetPersonById(_person.Id);
+        if (person == null) { DisplayNoMatchRequests();
+            return;
+        }
+        matches =_matchService.GetMatchesById(person.Id);
+        if (matches == null) { DisplayNoMatchRequests();
+            return;
+        }
+        
+        for (int i = 1; i < matches.Count+1 ; i++)
+        {
+
+            
+            House house = _houseService.Get(matches[i-1].houseId);
+
+            var border = new Border
+            {
+                WidthRequest = 100,
+                HeightRequest = 100,
+                StrokeShape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(10)
+                },
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+                Content = new Image
+                {
+                    Source = house.HouseImages[0].Path != null
+                        ? house.HouseImages[0].FullPath
+                : "house.png",
+                    Aspect = Aspect.AspectFill, 
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center
+                }
+            };
+            string houseTypeTranslation = "";
+            switch (house.Type)
+            {
+                case HouseType.Apartment:
+                    houseTypeTranslation = "Appartement";
+                    break;
+                case HouseType.House:
+                    houseTypeTranslation = "Huis";
+                    break;
+                case HouseType.Studio:
+                    houseTypeTranslation = "Studio";
+                    break;
+            }
+            var separator = CreateSeparator();
+            var label1 = new Label { Text = house.Street, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label2 = new Label { Text = house.City, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label3 = new Label { Text = houseTypeTranslation, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            var label4 = new Label { Text = "€"+house.Price, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
+            MatchRequests.Add(separator, 0, i);
+            Grid.SetColumnSpan(separator, 6);
+            MatchRequests.Add(border, 0, i);
+            MatchRequests.Add(label1, 1, i);
+            MatchRequests.Add(label2, 2, i);
+            MatchRequests.Add(label3, 3, i);
+            MatchRequests.Add(label4, 4, i);
+            DisplayStatus(i, matches[i - 1].Status);
+        }
+        AddLegend("Straat", "Stad", "Type","Prijs");
     }
 
     public Border AddProfilePicture(Person person)
@@ -174,38 +246,54 @@ public partial class MatchRequestsView : ContentView
         };
         return border;
     }
-
-    public void DisplayNoMatchRequests()
-    {
-        var noMatchRequests = new Label
-        {
-            Text = "Er zijn geen matchverzoeken te weergeven",
-            FontSize = 25,
-            FontFamily = "InterLight",
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center,
-            TextColor = Colors.Black
-        };
-        MatchRequests.RowDefinitions.Add(new RowDefinition
-            { Height = new GridLength(100, GridUnitType.Absolute) });
-        MatchRequests.Add(noMatchRequests, 0, 1);
-        MatchRequests.SetColumnSpan(noMatchRequests, 6);
-    }
-
+    
     public void AddLegend(string label1, string label2, string label3, string label4)
     {
+        MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40, GridUnitType.Absolute) });
         var columns = new List<Label>
         {
-            new Label { Text = label1, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = label2, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = label3, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = label4, FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
-            new Label { Text = "Match request", FontFamily = "OpenSansSemibold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
+            new Label { Text = label1, FontFamily= "InterBold", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label2, FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label3, FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = label4, FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new Label { Text = "Status", FontFamily= "InterBold",HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center }
         };
         
         for (int i = 0; i < columns.Count; i++)
         {
             MatchRequests.Add(columns[i], i + 1, 0);
+            var separator = CreateSeparator();
+            MatchRequests.Add(separator, 0, 0);
+            Grid.SetColumnSpan(separator, 6);
+        }
+    }
+    
+    public void DisplayStatus(int row, Status status)
+    {
+        var statusLabel = new Label
+        {
+            FontFamily = "InterRegular",
+            VerticalTextAlignment = TextAlignment.Center
+        };
+        var statusImage = new Label
+        {
+            Text = "\u25CF",
+            Scale = 3
+        };
+        switch (status)
+        {
+            case Status.Accepted:
+                statusImage.TextColor = Colors.Green;
+                statusLabel.Text = "Geaccepteerd";
+                break;
+            case Status.Pending:
+                statusImage.TextColor = Colors.Orange;
+                statusLabel.Text = "In behandeling";
+                break;
+            case Status.Rejected:
+                statusImage.TextColor = Colors.Red;
+                statusLabel.Text = "Geweigerd";
+                break;
             
         }
         var separator = new BoxView
@@ -215,7 +303,17 @@ public partial class MatchRequestsView : ContentView
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.End
         };
+        var buttonContainer = new HorizontalStackLayout
+        {
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            Spacing = 20
+            
+        };
+        buttonContainer.Children.Add(statusImage);
+        buttonContainer.Children.Add(statusLabel);
         MatchRequests.Add(separator, 0, 0);
+        MatchRequests.Add(buttonContainer, 5, row);
         Grid.SetColumnSpan(separator, 6);
     }
     private void AcceptButton_OnClicked(object sender, EventArgs e)
@@ -255,5 +353,33 @@ public partial class MatchRequestsView : ContentView
             App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
 
         }
+    }
+    
+    private BoxView CreateSeparator()
+    {
+        return new BoxView
+        {
+            HeightRequest = 2,
+            BackgroundColor = Colors.LightGray,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.End
+        };
+    }
+    
+    public void DisplayNoMatchRequests()
+    {
+        var noMatchRequests = new Label
+        {
+            Text = "Er zijn geen matchverzoeken weer te geven.",
+            FontSize = 25,
+            FontFamily = "InterLight",
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            TextColor = Colors.Black
+        };
+        MatchRequests.RowDefinitions.Add(new RowDefinition
+            { Height = new GridLength(100, GridUnitType.Absolute) });
+        MatchRequests.Add(noMatchRequests, 0, 0);
+        Grid.SetColumnSpan(noMatchRequests, 6);
     }
 }

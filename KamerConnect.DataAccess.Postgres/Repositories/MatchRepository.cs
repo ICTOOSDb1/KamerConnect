@@ -14,7 +14,6 @@ public class MatchRepository : IMatchRepository
     {
         _connectionString = EnvironmentUtils.GetConnectionString();
     }
-    
 
     public List<Match> GetPendingMatchesById(Guid Id)
     {

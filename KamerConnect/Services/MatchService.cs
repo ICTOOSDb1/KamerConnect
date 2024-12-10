@@ -13,7 +13,7 @@ public class MatchService
     }
     public List<Match> GetMatchesById(Guid Id)
     {
-        return _matchRepository.GetPendingMatchesById(Id);
+        return _matchRepository.GetMatchesById(Id);
     }
 
     public List<Match> GetPendingMatchesById(Guid Id)
@@ -25,10 +25,10 @@ public class MatchService
     {
         _matchRepository.UpdateStatusMatch(match, status);
     }
+
     public Guid CreateMatch(Match match)
     {
         return _matchRepository.CreateMatch(match);
     }
-
     
 }

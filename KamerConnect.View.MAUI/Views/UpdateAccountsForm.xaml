@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
 			 xmlns:models="clr-namespace:KamerConnect.Models;assembly=KamerConnect"
+			 xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
 			 x:Class="KamerConnect.View.MAUI.Views.UpdateAccountsForm">
 	<ScrollView>
 		<Grid RowSpacing="10">
@@ -13,7 +14,30 @@
 				<RowDefinition></RowDefinition>
 				<RowDefinition></RowDefinition>
 			</Grid.RowDefinitions>
-			<Border WidthRequest="100"
+			
+			<Border
+				WidthRequest="100"
+				HeightRequest="100"
+				VerticalOptions="Center"
+				HorizontalOptions="Center">
+				<Border.StrokeShape>
+					<RoundRectangle CornerRadius="10" />
+				</Border.StrokeShape>
+    
+				<Border.GestureRecognizers>
+					<TapGestureRecognizer Tapped="ImageTapped"/>
+				</Border.GestureRecognizers>
+    
+				<Image
+					Source="{Binding ProfilePicturePath}"
+					x:Name="profile_picture"
+					Aspect="AspectFit"
+					VerticalOptions="Center"
+					HorizontalOptions="Center" />
+			</Border>
+
+
+			<!--<Border WidthRequest="100"
 					HeightRequest="100"
 					Stroke="Black"
 					StrokeThickness="1"
@@ -27,7 +51,9 @@
 					   WidthRequest="98"
 					   HeightRequest="98"
 					   Aspect="AspectFill"/>
-			</Border>
+			</Border>-->
+			
+			
 
 			<Components:Entry InputType="Text"
 							  LabelText="Voornaam"
