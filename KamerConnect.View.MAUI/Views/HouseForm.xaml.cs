@@ -46,8 +46,9 @@ public partial class HouseForm : ContentView
 
         houseImages = new ObservableCollection<HouseImage>();
 
-        GetCurrentHouse();
         InitializeComponent();
+        GetCurrentHouse();
+
         BindingContext = this;
 
         HouseTypePicker.SelectedItem = _house?.Type.GetDisplayName() ?? "Huis";
@@ -58,6 +59,11 @@ public partial class HouseForm : ContentView
         House = _houseService.GetByPersonId(_person.Id);
 
         House?.HouseImages?.ForEach(houseImages.Add);
+
+        SmokingTypePicker.SelectedItem = House.Smoking.GetDisplayName();
+        PetTypePicker.SelectedItem = House.Pet.GetDisplayName();
+        InteriorTypePicker.SelectedItem = House.Interior.GetDisplayName();
+        ParkingTypePicker.SelectedItem = House.Parking.GetDisplayName();
     }
 
     private async void OnPickFilesClicked(object sender, EventArgs e)
@@ -132,13 +138,11 @@ public partial class HouseForm : ContentView
         string description = descriptionEntry.Text;
         bool available = availableEntry.IsChecked;
 
-        HouseType houseType = Type;
-
         if (House == null)
         {
             _houseService.Create(new House(
                     Guid.NewGuid(),
-                    houseType,
+                    Type,
                     price,
                     description,
                     surface,
@@ -150,7 +154,11 @@ public partial class HouseForm : ContentView
                     addition,
                     await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
                     houseImages.ToList(),
-                    available
+                    available,
+                    PreferenceChoiceTypeChanged(SmokingTypePicker),
+                    PreferenceChoiceTypeChanged(PetTypePicker),
+                    PreferenceChoiceTypeChanged(InteriorTypePicker),
+                    PreferenceChoiceTypeChanged(ParkingTypePicker)
                 ),
                 _person.Id
             );
@@ -159,7 +167,7 @@ public partial class HouseForm : ContentView
         {
             _houseService.Update(new House(
                 House.Id,
-                houseType,
+                Type,
                 price,
                 description,
                 surface,
@@ -171,11 +179,30 @@ public partial class HouseForm : ContentView
                 addition,
                 await _geoLocationService.GetGeoCode($"{street} {houseNumber}{addition} {city}"),
                 houseImages.ToList(),
-                available
+                available,
+                PreferenceChoiceTypeChanged(SmokingTypePicker),
+                PreferenceChoiceTypeChanged(PetTypePicker),
+                PreferenceChoiceTypeChanged(InteriorTypePicker),
+                PreferenceChoiceTypeChanged(ParkingTypePicker)
             ));
         }
 
         await Application.Current?.MainPage?.DisplayAlert("Huis opgeslagen", "Succesvol opgeslagen!", "Ga verder");
+    }
+
+    private PreferenceChoice PreferenceChoiceTypeChanged(Picker picker)
+    {
+        switch ($"{picker.SelectedItem}")
+        {
+            case "Ja":
+                return PreferenceChoice.Yes;
+            case "Nee":
+                return PreferenceChoice.No;
+            case "Geen voorkeur":
+                return PreferenceChoice.No_preference;
+        }
+
+        return PreferenceChoice.No_preference;
     }
 
     private async void HouseTypeChanged(object sender, EventArgs e)

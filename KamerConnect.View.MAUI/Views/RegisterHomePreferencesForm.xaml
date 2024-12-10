@@ -31,14 +31,14 @@
                Grid.Row="1"
                Grid.Column="1"
                ColumnSpacing="20">
-            <Components:Entry LabelText="Minimale beschikbaar budget per maand"
+            <Components:Entry LabelText="Minimale budget per maand"
                               x:Name="MinBudgetInput"
                               Placeholder="€"
                               Text="{Binding MinBudget, Mode=TwoWay}"
                               InputType="Decimal"
                               Grid.Column="0"
                               IsRequired="True"/>
-            <Components:Entry LabelText="Maximaal beschikbaar budget per maand"
+            <Components:Entry LabelText="Maximale budget per maand"
                               x:Name="MaxBudgetInput"
                               Placeholder="€"
                               Text="{Binding MaxBudget, Mode=TwoWay}"

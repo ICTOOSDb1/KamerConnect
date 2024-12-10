@@ -179,26 +179,26 @@ public partial class MatchRequestsView : ContentView
         }
     }
 
-public Border AddPicture(ImageSource imageSource)
-{
-    var border = new Border
+    public Border AddPicture(ImageSource imageSource)
     {
-        WidthRequest = 100,
-        HeightRequest = 100,
-        Stroke = null,
-        StrokeThickness = 0,
-        VerticalOptions = LayoutOptions.Center,
-        HorizontalOptions = LayoutOptions.Center,
-        Content = new Image
+        var border = new Border
         {
-            Source = imageSource,
-            Aspect = Aspect.AspectFill,
+            WidthRequest = 100,
+            HeightRequest = 100,
+            Stroke = null,
+            StrokeThickness = 0,
             VerticalOptions = LayoutOptions.Center,
-            HorizontalOptions = LayoutOptions.Center
-        }
-    };
-    return border;
-}
+            HorizontalOptions = LayoutOptions.Center,
+            Content = new Image
+            {
+                Source = imageSource,
+                Aspect = Aspect.AspectFill,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center
+            }
+        };
+        return border;
+    }
 
 
     
@@ -350,17 +350,6 @@ public Border AddPicture(ImageSource imageSource)
             VerticalOptions = LayoutOptions.End
         };
     }
-    
-    /*private BoxView CreateVerticalSeparator(BoxView.Horizontaloptions options)
-    {
-        return new BoxView
-        {
-            HeightRequest = 2,
-            BackgroundColor = Colors.LightGray,
-            VerticalOptions = LayoutOptions.Fill,
-            HorizontalOptions = LayoutOptions.End
-        };
-    }*/
     
     public void DisplayNoMatchRequests()
     {
