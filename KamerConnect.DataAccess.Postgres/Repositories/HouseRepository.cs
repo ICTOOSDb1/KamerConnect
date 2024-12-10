@@ -200,7 +200,7 @@ public class HouseRepository : IHouseRepository
                     {
                         var house = ReadToHouse(reader);
                         reader.Close();
-                        
+
                         house.HouseImages = GetHouseImages(house.Id, connection);
 
                         return house;
@@ -477,16 +477,16 @@ public class HouseRepository : IHouseRepository
         AND available = true
         AND residents <= @residents
         AND (
-            @smoking::preference_choice = 'No_preference' OR smoking = @smoking::preference_choice
+            @smoking::preference_choice = 'No_preference' OR smoking = @smoking::preference_choice OR smoking = 'No_preference'
         )
         AND (
-            @pet::preference_choice = 'No_preference' OR pet = @pet::preference_choice
+            @pet::preference_choice = 'No_preference' OR pet = @pet::preference_choice OR smoking = 'No_preference'
         )
         AND (
-            @interior::preference_choice = 'No_preference' OR interior = @interior::preference_choice
+            @interior::preference_choice = 'No_preference' OR interior = @interior::preference_choice OR smoking = 'No_preference'
         )
         AND (
-            @parking::preference_choice = 'No_preference' OR parking = @parking::preference_choice
+            @parking::preference_choice = 'No_preference' OR parking = @parking::preference_choice OR smoking = 'No_preference'
         );
     """, connection))
                 {
