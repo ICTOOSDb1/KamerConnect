@@ -30,8 +30,6 @@ public partial class HousePage : ContentPage
         NavbarContainer.Content = navbar;
 
         BindingContextChanged += OnBindingContextChanged;
-        
-        
     }
 
     private async void OnBindingContextChanged(object sender, System.EventArgs e)
