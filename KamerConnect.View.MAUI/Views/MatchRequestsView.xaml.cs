@@ -59,6 +59,7 @@ public partial class MatchRequestsView : ContentView
         if (house != null)
         {
             matches = _matchService.GetMatchesById(house.Id);
+            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
 
             if (matches != null)
             {
@@ -91,33 +92,7 @@ public partial class MatchRequestsView : ContentView
                         Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
                     };
-                    var horizontalStack = new HorizontalStackLayout
-                    {
-                        HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Spacing = -30
-                    };
-                    Button rejectButton = new Button
-                    {
-                        ImageSource = "reject.png",
-                        Scale = 0.3,
-                        BackgroundColor = Colors.Transparent,
-                        CommandParameter = matches[i - 1],
-                        WidthRequest = 110,
-                        HeightRequest = 110
-                    };
-                    horizontalStack.Children.Add(rejectButton);
-                    rejectButton.Clicked += RejectButton_OnClicked;
-
-                    Button acceptButton = new Button
-                    {
-                        ImageSource = "accept.png",
-                        Scale = 0.3,
-                        BackgroundColor = Colors.Transparent,
-                        CommandParameter = matches[i - 1],
-                        WidthRequest = 110,
-                        HeightRequest = 110
-                    };
-                    horizontalStack.Children.Add(acceptButton);
-                    acceptButton.Clicked += AcceptButton_OnClicked;
+                    var horizontalButtonStack = CreateButtons(matches, i);
                     var separator = new BoxView
                     {
                         HeightRequest = 2,
@@ -135,7 +110,7 @@ public partial class MatchRequestsView : ContentView
                     MatchRequests.Add(SchoolLabel, 2, i);
                     MatchRequests.Add(StudyLabel, 3, i);
                     MatchRequests.Add(BirthLabel, 4, i);
-                    MatchRequests.Add(horizontalStack, 5, i);
+                    MatchRequests.Add(horizontalButtonStack, 5, i);
                     var tapGestureRecognizer = new TapGestureRecognizer
                     {
                         CommandParameter = matches[i - 1]
@@ -266,6 +241,38 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(separator, 0, 0);
             Grid.SetColumnSpan(separator, 6);
         }
+    }
+
+    private HorizontalStackLayout CreateButtons(List<Match> matches, int iterator)
+    {
+        var horizontalStack = new HorizontalStackLayout
+        {
+            HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, Spacing = -30
+        };
+        Button rejectButton = new Button
+        {
+            ImageSource = "circle-xmark.png",
+            Scale = 0.3,
+            BackgroundColor = Colors.Transparent,
+            CommandParameter = matches[iterator - 1],
+            WidthRequest = 110,
+            HeightRequest = 110
+        };
+        horizontalStack.Children.Add(rejectButton);
+        rejectButton.Clicked += RejectButton_OnClicked;
+
+        Button acceptButton = new Button
+        {
+            ImageSource = "accept.png",
+            Scale = 0.3,
+            BackgroundColor = Colors.Transparent,
+            CommandParameter = matches[iterator - 1],
+            WidthRequest = 110,
+            HeightRequest = 110
+        };
+        horizontalStack.Children.Add(acceptButton);
+        acceptButton.Clicked += AcceptButton_OnClicked;
+        return horizontalStack;
     }
     
     public void DisplayStatus(int row, Status status)
