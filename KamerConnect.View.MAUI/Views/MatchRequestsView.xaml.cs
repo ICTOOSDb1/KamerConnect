@@ -23,6 +23,7 @@ public partial class MatchRequestsView : ContentView
 
     public MatchRequestsView(IServiceProvider serviceProvider)
     {
+        InitializeComponent();
         _houseService = serviceProvider.GetRequiredService<HouseService>();
         _serviceProvider = serviceProvider;
         _fileService = serviceProvider.GetRequiredService<FileService>();
@@ -32,12 +33,10 @@ public partial class MatchRequestsView : ContentView
         GetCurrentPerson().GetAwaiter().GetResult();
         if (_person.Role == Role.Offering)
         {
-            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
             GetMatchRequestsOffering(); 
         }
         else if (_person.Role == Role.Seeking)
         {
-            AddLegend("Straat", "Stad", "Type","Prijs");
         }
         
      
@@ -55,11 +54,10 @@ public partial class MatchRequestsView : ContentView
     {
         List<Match> matches;
         House house = _houseService.GetByPersonId(_person.Id);
-        if (house != null)
-        {
-            matches = _matchService.GetPendingMatchesById(house.Id);
+        matches = _matchService.GetPendingMatchesById(house.Id);
             if (matches.Count != 0)
             {
+                AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
 
             for (int i = 1; i < matches.Count + 1; i++)
             {
@@ -144,12 +142,11 @@ public partial class MatchRequestsView : ContentView
                     border.GestureRecognizers.Add(tapGestureRecognizer);
                 }
             }
-            else
-            {
-                DisplayNoMatchRequests();
-            }
+        else
+        {
+            DisplayNoMatchRequests();
         }
-        AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
+        
     }
 
     public Border AddProfilePicture(Person person)
@@ -192,7 +189,7 @@ public partial class MatchRequestsView : ContentView
         MatchRequests.RowDefinitions.Add(new RowDefinition
             { Height = new GridLength(100, GridUnitType.Absolute) });
         MatchRequests.Add(noMatchRequests, 0, 1);
-        Grid.SetColumnSpan(noMatchRequests, 6);
+        MatchRequests.SetColumnSpan(noMatchRequests, 6);
     }
 
     public void AddLegend(string label1, string label2, string label3, string label4)
@@ -246,7 +243,7 @@ public partial class MatchRequestsView : ContentView
             {
                 var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
                 profilePage.BindingContext = match;
-                await navigationPage.Navigation.PushAsync(profilePage);
+                Application.Current.MainPage = new NavigationPage(profilePage);
             }
         }
     }
@@ -255,7 +252,8 @@ public partial class MatchRequestsView : ContentView
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
-            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+
         }
     }
 }

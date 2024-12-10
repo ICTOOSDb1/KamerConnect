@@ -28,8 +28,8 @@ public class MatchTests
         var mockId = Guid.NewGuid();
         var expectedMatches = new List<MatchModel>
         {
-            new (Guid.NewGuid(), mockId, Guid.NewGuid(), status.Pending, "test"),
-            new (Guid.NewGuid(), mockId, Guid.NewGuid(), status.Pending, "test"),
+            new (Guid.NewGuid(), mockId, Guid.NewGuid(), Status.Pending, "test"),
+            new (Guid.NewGuid(), mockId, Guid.NewGuid(), Status.Pending, "test"),
 
         };
         _mockRepository.Setup(repo => repo.GetPendingMatchesById(mockId))
@@ -46,8 +46,8 @@ public class MatchTests
     public void UpdateMatch_WhenCalled_UpdatesMatchStatus()
     {
         // Arrange
-        var mockMatch = new MatchModel(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), status.Pending, "test");
-        var newStatus = status.Pending;
+        var mockMatch = new MatchModel(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Status.Pending, "test");
+        var newStatus = Status.Pending;
         
         // Act
         _matchService.UpdateStatusMatch(mockMatch, newStatus);
