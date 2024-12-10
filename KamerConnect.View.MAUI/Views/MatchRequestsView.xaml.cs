@@ -55,11 +55,10 @@ public partial class MatchRequestsView : ContentView
     {
         List<Match> matches;
         House house = _houseService.GetByPersonId(_person.Id);
-        if (house != null)
+        matches = _matchService.GetPendingMatchesById(house.Id);
+        if (matches.Count != 0)
         {
-            matches = _matchService.GetPendingMatchesById(house.Id);
             AddLegend("Voornaam", "School", "Opleiding", "Geboortedatum");
-
 
             for (int i = 1; i < matches.Count + 1; i++)
             {
