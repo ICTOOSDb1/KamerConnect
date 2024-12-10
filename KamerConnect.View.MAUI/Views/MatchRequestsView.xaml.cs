@@ -139,11 +139,10 @@ public partial class MatchRequestsView : ContentView
             DisplayNoMatchRequests();
             return;
         }
-
+        AddLegend("Straat", "Stad", "Type", "Prijs");
+        
         for (int i = 1; i < matches.Count + 1; i++)
         {
-
-            AddLegend("Straat", "Stad", "Type", "Prijs");
             House house = _houseService.Get(matches[i - 1].houseId);
 
             ImageSource imageSource = house.HouseImages[0].Path != null
@@ -186,7 +185,6 @@ public partial class MatchRequestsView : ContentView
 
             housePicture.GestureRecognizers.Add(tapGestureRecognizer);
         }
-        AddLegend("Straat", "Stad", "Type", "Prijs");
     }
 
     public Border AddPicture(ImageSource imageSource)
