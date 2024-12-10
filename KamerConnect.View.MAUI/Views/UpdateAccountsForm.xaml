@@ -36,25 +36,6 @@
 					HorizontalOptions="Center" />
 			</Border>
 
-
-			<!--<Border WidthRequest="100"
-					HeightRequest="100"
-					Stroke="Black"
-					StrokeThickness="1"
-					StrokeShape="RoundRectangle 50"
-					Grid.Row="0">
-				<Border.GestureRecognizers>
-					<TapGestureRecognizer Tapped="ImageTapped"/>
-				</Border.GestureRecognizers>
-				<Image Source="{Binding ProfilePicturePath}"
-					   x:Name="profile_picture"
-					   WidthRequest="98"
-					   HeightRequest="98"
-					   Aspect="AspectFill"/>
-			</Border>-->
-			
-			
-
 			<Components:Entry InputType="Text"
 							  LabelText="Voornaam"
 							  Text="{Binding FirstName, Mode=TwoWay}"

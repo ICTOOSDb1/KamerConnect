@@ -46,7 +46,7 @@
                               Grid.Column="1"
                               IsRequired="True"/>
         </Grid>
-        <Components:Entry LabelText="Oppervlak in vierkante meter"
+        <Components:Entry LabelText="Minimum oppervlak in vierkante meter"
                           x:Name="AreaInput"
                           Placeholder="m²"
                           Text="{Binding SurfaceArea, Mode=TwoWay}"
@@ -97,7 +97,7 @@
             </Frame>
         </VerticalStackLayout>
 
-        <Components:Entry LabelText="Hoeveelheid kamergenoten"
+        <Components:Entry LabelText="Maximum hoeveelheid kamergenoten"
                           x:Name="ResidentsInput"
                           Text="{Binding Residents, Mode=TwoWay}"
                           Grid.Row="5"
