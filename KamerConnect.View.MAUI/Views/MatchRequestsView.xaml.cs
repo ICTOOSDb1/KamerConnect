@@ -7,8 +7,6 @@ using KamerConnect.Models;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 using Microsoft.Maui.Controls.Shapes;
-using KamerConnect.View.MAUI.Utils;
-using AbsoluteLayout = Microsoft.Maui.Controls.Compatibility.AbsoluteLayout;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -22,17 +20,16 @@ public partial class MatchRequestsView : ContentView
     private IServiceProvider _serviceProvider;
     private Person _person;
     private readonly HouseService _houseService;
-    
-    public MatchRequestsView(HouseService houseService, FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
+
+    public MatchRequestsView(IServiceProvider serviceProvider)
     {
-         _houseService = houseService;
-        _serviceProvider = serviceProvider;
-        NavigationPage.SetHasNavigationBar(this, false);
         InitializeComponent();
-        _fileService = fileService;
-        _matchService = matchService;
-        _authenticationService = authenticationService;
-        _personService = personService;
+        _houseService = serviceProvider.GetRequiredService<HouseService>();
+        _serviceProvider = serviceProvider;
+        _fileService = serviceProvider.GetRequiredService<FileService>();
+        _matchService = serviceProvider.GetRequiredService<MatchService>();
+        _authenticationService = serviceProvider.GetRequiredService<AuthenticationService>();
+        _personService = serviceProvider.GetRequiredService<PersonService>();
         GetCurrentPerson().GetAwaiter().GetResult();
         if (_person.Role == Role.Offering)
         {
@@ -42,6 +39,8 @@ public partial class MatchRequestsView : ContentView
         {
             GetMatchRequestsSeeking();
         }
+        
+     
     }
     private async Task GetCurrentPerson()
     {
@@ -61,12 +60,10 @@ public partial class MatchRequestsView : ContentView
             matches = _matchService.GetMatchesById(house.Id);
             AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
 
-            if (matches != null)
+            for (int i = 1; i < matches.Count + 1; i++)
             {
-                for (int i = 1; i < matches.Count + 1; i++)
-                {
 
-                    Person person = _personService.GetPersonById(matches[i - 1].personId);
+                Person person = _personService.GetPersonById(matches[i - 1].personId);
 
                     ImageSource imageSource = person.ProfilePicturePath != null
                         ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
@@ -85,9 +82,9 @@ public partial class MatchRequestsView : ContentView
                         SchoolLabel.HorizontalOptions = LayoutOptions.Center;
                         SchoolLabel.VerticalOptions = LayoutOptions.Center;
 
-                        StudyLabel.Text = person.Personality.Study;
-                        StudyLabel.HorizontalOptions = LayoutOptions.Center;
-                        StudyLabel.VerticalOptions = LayoutOptions.Center;
+                    StudyLabel.Text = person.Personality.Study;
+                    StudyLabel.HorizontalOptions = LayoutOptions.Center;
+                    StudyLabel.VerticalOptions = LayoutOptions.Center;
                     }
 
                     Label BirthLabel = new Label
@@ -99,7 +96,7 @@ public partial class MatchRequestsView : ContentView
                     var separator = CreateSeparator();
 
                     MatchRequests.RowDefinitions.Add(new RowDefinition
-                        { Height = new GridLength(100, GridUnitType.Absolute) });
+                        { Height = new GridLength(120, GridUnitType.Absolute) });
                     MatchRequests.Add(separator, 0, i);
                     Grid.SetColumnSpan(separator, 6);
                     MatchRequests.Add(profilePicture, 0, i);
@@ -121,6 +118,9 @@ public partial class MatchRequestsView : ContentView
             {
                 DisplayNoMatchRequests();
             }
+        else
+        {
+            DisplayNoMatchRequests();
         }
     }
     
@@ -176,6 +176,13 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(label3, 3, i);
             MatchRequests.Add(label4, 4, i);
             DisplayStatus(i, matches[i - 1].Status);
+            var tapGestureRecognizer = new TapGestureRecognizer
+            {
+                CommandParameter = matches[i - 1]
+            };
+            tapGestureRecognizer.Tapped += ToHouse_OnTapped;
+
+            border.GestureRecognizers.Add(tapGestureRecognizer);
         }
     }
 
@@ -281,6 +288,7 @@ public partial class MatchRequestsView : ContentView
                 statusImage.TextColor = Colors.Red;
                 statusLabel.Text = "Geweigerd";
                 break;
+            
         }
         var separator = new BoxView
         {
@@ -306,7 +314,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateMatch(match, Status.Accepted);
+            _matchService.UpdateStatusMatch(match, Status.Accepted);
             RefreshPage();
         }
     }
@@ -315,7 +323,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateMatch(match, Status.Rejected);
+            _matchService.UpdateStatusMatch(match, Status.Rejected);
             RefreshPage();
         }
     }
@@ -327,16 +335,30 @@ public partial class MatchRequestsView : ContentView
             {
                 var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
                 profilePage.BindingContext = match;
-                await navigationPage.Navigation.PushAsync(profilePage);
+                Application.Current.MainPage = new NavigationPage(profilePage);
             }
         }
     }
 
+    private async void ToHouse_OnTapped(object? sender, TappedEventArgs e)
+    {
+        if (e.Parameter is Match match)
+        {
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                House house = _houseService.Get(match.houseId);
+                var housePage = _serviceProvider.GetRequiredService<HousePage>();
+                housePage.BindingContext = house;
+                Application.Current.MainPage = new NavigationPage(housePage);
+            }
+        }
+    }
     private async void RefreshPage()
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
-            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+
         }
     }
     

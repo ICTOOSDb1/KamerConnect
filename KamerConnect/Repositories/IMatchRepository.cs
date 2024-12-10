@@ -4,7 +4,12 @@ namespace KamerConnect.Repositories;
 
 public interface IMatchRepository
 {
-    List<Match>? GetMatchesById(Guid Id);
-    void UpdateMatch(Match match, Status status);
-    public Guid CreateMatch(Match match);
+
+    List<Match> GetPendingMatchesById(Guid Id);
+    List<Match> GetMatchesById(Guid Id);
+
+    void UpdateStatusMatch(Match match, Status status);
+    
+    Guid CreateMatch(Match match);
+
 }

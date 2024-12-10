@@ -7,7 +7,6 @@ using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
 
-
 namespace KamerConnect.View.MAUI;
 
 public static class MauiProgram
@@ -59,11 +58,11 @@ public static class MauiProgram
 		builder.Services.AddTransient<RegisterHomePreferencesForm>();
 		builder.Services.AddTransient<InterestsForm>();
 		builder.Services.AddTransient<Registration>();
-		builder.Services.AddTransient<HousePage>();
 		builder.Services.AddTransient<ProfilePage>();
 		builder.Services.AddTransient<MatchRequestsPage>();
 		builder.Services.AddTransient<MatchRequestsView>();
-
+		builder.Services.AddTransient<HousePage>();
+		
 		builder.Services.AddFilePicker();
 		
 		var app = builder.Build();
