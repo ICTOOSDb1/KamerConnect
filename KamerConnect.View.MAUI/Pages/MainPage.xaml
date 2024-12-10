@@ -30,10 +30,11 @@
                 </HorizontalStackLayout>
                 <CollectionView Grid.Row="1"
                                 ItemsSource="{Binding Houses}"
-                                BackgroundColor="Transparent">
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="Fill">
                     <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical"
-                                         Span="3"
+                        <GridItemsLayout Orientation="Vertical" 
+                                         Span="4"
                                          VerticalItemSpacing="20"
                                          HorizontalItemSpacing="20"/>
                     </CollectionView.ItemsLayout>
