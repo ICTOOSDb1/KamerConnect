@@ -20,15 +20,15 @@
     </ContentView.Resources>
     <ScrollView VerticalScrollBarVisibility="Always">
         <StackLayout>
-            <Grid x:Name="MatchRequests" RowSpacing="10" >
+            <Grid x:Name="MatchRequests" >
                 <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" ></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" ></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
         
     </Grid>
     </StackLayout>

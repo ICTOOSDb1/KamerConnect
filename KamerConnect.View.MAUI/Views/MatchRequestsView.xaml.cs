@@ -163,7 +163,7 @@ public partial class MatchRequestsView : ContentView
             Label label2 = new Label { Text = house.City,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             Label label3 = new Label { Text = houseTypeTranslation,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             Label label4 = new Label { Text = "€"+house.Price,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
+            MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(120, GridUnitType.Absolute) });
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
             MatchRequests.Add(housePicture, 0, i);
