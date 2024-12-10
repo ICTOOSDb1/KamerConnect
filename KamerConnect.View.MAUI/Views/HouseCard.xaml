@@ -4,9 +4,10 @@
              x:Class="KamerConnect.View.MAUI.Views.HouseCard"
              xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
              BackgroundColor="{StaticResource BackgroundColor}">
-    <Frame CornerRadius="10"
+    <Frame 
+           CornerRadius="10"
            HeightRequest="400"
-           WidthRequest="500"
+           HorizontalOptions="FillAndExpand"
            BorderColor="Transparent"
            BackgroundColor="#F8F8F8"
            Padding="0">
@@ -17,7 +18,7 @@
             <Image x:Name="ImageControl"
                    Aspect="AspectFill"
                    HeightRequest="300"
-                   WidthRequest="500"/>
+                   HorizontalOptions="FillAndExpand"/>
 
             <VerticalStackLayout Padding="5">
                 <HorizontalStackLayout Spacing="5"
