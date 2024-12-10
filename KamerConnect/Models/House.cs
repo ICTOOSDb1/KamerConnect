@@ -25,8 +25,10 @@ public class House
     public House(
         Guid id, HouseType type, double price, string? description, int surface, int residents,
         string city, string street, string postalCode, int houseNumber, string houseNumberAddition, Point houseGeolocation,
-        List<HouseImage> houseImages, bool available, PreferenceChoice smoking, PreferenceChoice pet, PreferenceChoice interior,
-        PreferenceChoice parking)
+        List<HouseImage> houseImages, bool available = true, PreferenceChoice smoking = PreferenceChoice.No_preference,
+        PreferenceChoice pet = PreferenceChoice.No_preference,
+        PreferenceChoice interior = PreferenceChoice.No_preference,
+        PreferenceChoice parking = PreferenceChoice.No_preference)
     {
         Id = id;
         Type = type;
