@@ -15,7 +15,7 @@ public class MatchRepository : IMatchRepository
         _connectionString = EnvironmentUtils.GetConnectionString();
     }
 
-    public List<Match>? GetMatchesById(Guid Id)
+    public List<Match> GetPendingMatchesById(Guid Id)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
         {
@@ -25,8 +25,7 @@ public class MatchRepository : IMatchRepository
                                                    SELECT *
                                                    FROM matchrequests
                                                    WHERE (house_id = @id::uuid or person_id = @id::uuid) and status = 'Pending'
-                                                                                                     
-                                                   """, 
+                                                   """,
                        connection))
             {
                 command.Parameters.AddWithValue("@id", Id);
@@ -44,14 +43,46 @@ public class MatchRepository : IMatchRepository
                         }
                     }
 
-                    return matches.Count > 0 ? matches : null;
+                    return matches;
                 }
             }
         }
     }
 
+    public List<Match> GetMatchesById(Guid Id)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
 
-    public void UpdateMatch(Match match, Status status)
+            using (var command = new NpgsqlCommand("""
+                                                   SELECT *
+                                                   FROM matchrequests
+                                                   WHERE (house_id = @id::uuid or person_id = @id::uuid)
+                                                   """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@id", Id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    var matches = new List<Match>();
+
+                    while (reader.Read())
+                    {
+                        var match = readToMatch(reader);
+                        if (match != null)
+                        {
+                            matches.Add(match);
+                        }
+                    }
+
+                    return matches;
+                }
+            }
+        }
+    }
+    public void UpdateStatusMatch(Match match, Status status)
     {
         try
         {
@@ -60,29 +91,22 @@ public class MatchRepository : IMatchRepository
                 connection.Open();
 
                 string updateQuery = @"
-            UPDATE matchrequests
-            SET status = @status::matchrequest_status
-            WHERE id = @id";
+                UPDATE matchrequests
+                SET status = @status::matchrequest_status
+                WHERE id = @id";
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
                     command.Parameters.AddWithValue("@status", status.ToString());
                     command.Parameters.AddWithValue("@id", match.matchId);
 
-                    try
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error updating match request status: {ex.Message}");
-                    }
+                    command.ExecuteNonQuery();
                 }
             }
         }
-        catch (NpgsqlException e)
+        catch (Exception ex)
         {
-            Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
+            Console.WriteLine($"Error occurred while updating Match in DB: {ex.Message}");
             throw;
         }
     }
@@ -120,7 +144,6 @@ public class MatchRepository : IMatchRepository
             throw;
         }
     }
-
     public Match readToMatch(DbDataReader reader)
     {
         var match = new Match(

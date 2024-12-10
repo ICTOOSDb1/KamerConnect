@@ -42,7 +42,7 @@
                     </Label.GestureRecognizers>
                 </Label>
                 <Label x:Name="profile"
-                    Text="profiel"
+                       Text="Profiel"
                        FontSize="18"
                        TextColor="{StaticResource TextColor}">
                     <Label.GestureRecognizers>

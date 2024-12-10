@@ -8,7 +8,7 @@ using KamerConnect.Services;
 using KamerConnect.Utils;
 using Microsoft.Maui.Storage;
 
-namespace KamerConnect;
+namespace KamerConnect.Services;
 
 public class AuthenticationService
 {

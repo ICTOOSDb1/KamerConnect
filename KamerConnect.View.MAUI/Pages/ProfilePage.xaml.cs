@@ -79,7 +79,7 @@ public partial class ProfilePage : ContentPage
     private void AcceptButton_OnClicked(object? sender, EventArgs e)
     {
         
-        _matchService.UpdateMatch(_match, Status.Accepted);
+        _matchService.UpdateStatusMatch(_match, Status.Accepted);
         AcceptButton.IsVisible = false;
         RejectButton.IsVisible = false;
         AcceptLabel.IsVisible = true;
@@ -87,7 +87,7 @@ public partial class ProfilePage : ContentPage
 
     private void RejectButton_OnClicked(object? sender, EventArgs e)
     {
-        _matchService.UpdateMatch(_match, Status.Rejected);
+        _matchService.UpdateStatusMatch(_match, Status.Rejected);
         AcceptButton.IsVisible = false;
         RejectButton.IsVisible = false;
         RejectLabel.IsVisible = true;

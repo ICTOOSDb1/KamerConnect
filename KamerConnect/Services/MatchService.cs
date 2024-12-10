@@ -11,15 +11,19 @@ public class MatchService
     {
         _matchRepository = matchRepository;
     }
-
-    public List<Match>? GetMatchesById(Guid Id)
+    public List<Match> GetMatchesById(Guid Id)
     {
         return _matchRepository.GetMatchesById(Id);
     }
-    
-    public void UpdateMatch(Match match, Status status)
+
+    public List<Match> GetPendingMatchesById(Guid Id)
     {
-        _matchRepository.UpdateMatch(match , status);
+        return _matchRepository.GetPendingMatchesById(Id);
+    }
+
+    public void UpdateStatusMatch(Match match, Status status)
+    {
+        _matchRepository.UpdateStatusMatch(match, status);
     }
 
     public Guid CreateMatch(Match match)

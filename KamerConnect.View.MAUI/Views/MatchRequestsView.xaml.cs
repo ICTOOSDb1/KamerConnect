@@ -22,17 +22,16 @@ public partial class MatchRequestsView : ContentView
     private IServiceProvider _serviceProvider;
     private Person _person;
     private readonly HouseService _houseService;
-    
-    public MatchRequestsView(HouseService houseService, FileService fileService, AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, MatchService matchService)
+
+    public MatchRequestsView(IServiceProvider serviceProvider)
     {
-         _houseService = houseService;
-        _serviceProvider = serviceProvider;
-        NavigationPage.SetHasNavigationBar(this, false);
         InitializeComponent();
-        _fileService = fileService;
-        _matchService = matchService;
-        _authenticationService = authenticationService;
-        _personService = personService;
+        _houseService = serviceProvider.GetRequiredService<HouseService>();
+        _serviceProvider = serviceProvider;
+        _fileService = serviceProvider.GetRequiredService<FileService>();
+        _matchService = serviceProvider.GetRequiredService<MatchService>();
+        _authenticationService = serviceProvider.GetRequiredService<AuthenticationService>();
+        _personService = serviceProvider.GetRequiredService<PersonService>();
         GetCurrentPerson().GetAwaiter().GetResult();
         if (_person.Role == Role.Offering)
         {
@@ -56,17 +55,15 @@ public partial class MatchRequestsView : ContentView
     {
         List<Match> matches;
         House house = _houseService.GetByPersonId(_person.Id);
-        if (house != null)
-        {
-            matches = _matchService.GetMatchesById(house.Id);
-            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
-
-            if (matches != null)
+        matches = _matchService.GetPendingMatchesById(house.Id);
+            if (matches.Count != 0)
             {
-                for (int i = 1; i < matches.Count + 1; i++)
-                {
+                AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
 
-                    Person person = _personService.GetPersonById(matches[i - 1].personId);
+            for (int i = 1; i < matches.Count + 1; i++)
+            {
+
+                Person person = _personService.GetPersonById(matches[i - 1].personId);
 
                     ImageSource imageSource = person.ProfilePicturePath != null
                         ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
@@ -85,12 +82,12 @@ public partial class MatchRequestsView : ContentView
                         SchoolLabel.HorizontalOptions = LayoutOptions.Center;
                         SchoolLabel.VerticalOptions = LayoutOptions.Center;
 
-                        StudyLabel.Text = person.Personality.Study;
-                        StudyLabel.HorizontalOptions = LayoutOptions.Center;
-                        StudyLabel.VerticalOptions = LayoutOptions.Center;
+                    StudyLabel.Text = person.Personality.Study;
+                    StudyLabel.HorizontalOptions = LayoutOptions.Center;
+                    StudyLabel.VerticalOptions = LayoutOptions.Center;
                     }
 
-                    Label BirthLabel = new Label
+                    var BirthLabel = new Label
                     {
                         Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
@@ -117,10 +114,9 @@ public partial class MatchRequestsView : ContentView
                     profilePicture.GestureRecognizers.Add(tapGestureRecognizer);
                 }
             }
-            else
-            {
-                DisplayNoMatchRequests();
-            }
+        else
+        {
+            DisplayNoMatchRequests();
         }
     }
     
@@ -170,13 +166,21 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
-            MatchRequests.Add(housePicture, 0, i);
+            MatchRequests.Add(border, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
             MatchRequests.Add(label4, 4, i);
             DisplayStatus(i, matches[i - 1].Status);
+            var tapGestureRecognizer = new TapGestureRecognizer
+            {
+                CommandParameter = matches[i - 1]
+            };
+            tapGestureRecognizer.Tapped += ToHouse_OnTapped;
+
+            housePicture.GestureRecognizers.Add(tapGestureRecognizer);
         }
+        AddLegend("Straat", "Stad", "Type","Prijs");
     }
 
     public Border AddPicture(ImageSource imageSource)
@@ -199,8 +203,6 @@ public partial class MatchRequestsView : ContentView
         };
         return border;
     }
-
-
     
     public void AddLegend(string label1, string label2, string label3, string label4)
     {
@@ -306,7 +308,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateMatch(match, Status.Accepted);
+            _matchService.UpdateStatusMatch(match, Status.Accepted);
             RefreshPage();
         }
     }
@@ -315,7 +317,7 @@ public partial class MatchRequestsView : ContentView
     {
         if (sender is Button button && button.CommandParameter is Match match)
         {
-            _matchService.UpdateMatch(match, Status.Rejected);
+            _matchService.UpdateStatusMatch(match, Status.Rejected);
             RefreshPage();
         }
     }
@@ -327,16 +329,29 @@ public partial class MatchRequestsView : ContentView
             {
                 var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
                 profilePage.BindingContext = match;
-                await navigationPage.Navigation.PushAsync(profilePage);
+                Application.Current.MainPage = new NavigationPage(profilePage);
             }
         }
     }
 
+    private async void ToHouse_OnTapped(object? sender, TappedEventArgs e)
+    {
+        if (e.Parameter is Match match)
+        {
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                House house = _houseService.Get(match.houseId);
+                var housePage = _serviceProvider.GetRequiredService<HousePage>();
+                housePage.BindingContext = house;
+                Application.Current.MainPage = new NavigationPage(housePage);
+            }
+        }
+    }
     private async void RefreshPage()
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
-            await navigationPage.Navigation.PushAsync(_serviceProvider.GetRequiredService<MatchRequestsPage>());
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
         }
     }
     
