@@ -68,14 +68,17 @@ public partial class MatchRequestsView : ContentView
 
                     Person person = _personService.GetPersonById(matches[i - 1].personId);
 
-                    var border = AddProfilePicture(person);
-                    var FirstNameLabel = new Label
+                    ImageSource imageSource = person.ProfilePicturePath != null
+                        ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
+                        : "user.png";
+                    Border profilePicture = AddPicture(imageSource);
+                    Label FirstNameLabel = new Label
                     {
                         Text = person.FirstName, HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
                     };
-                    var SchoolLabel = new Label();
-                    var StudyLabel = new Label();
+                    Label SchoolLabel = new Label();
+                    Label StudyLabel = new Label();
                     if (person.Personality != null)
                     {
                         SchoolLabel.Text = person.Personality.School;
@@ -87,25 +90,19 @@ public partial class MatchRequestsView : ContentView
                         StudyLabel.VerticalOptions = LayoutOptions.Center;
                     }
 
-                    var BirthLabel = new Label
+                    Label BirthLabel = new Label
                     {
                         Text = person.BirthDate.ToShortDateString(), HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
                     };
                     var horizontalButtonStack = CreateButtons(matches, i);
-                    var separator = new BoxView
-                    {
-                        HeightRequest = 2,
-                        BackgroundColor = Colors.LightGray,
-                        HorizontalOptions = LayoutOptions.Fill,
-                        VerticalOptions = LayoutOptions.End
-                    };
+                    var separator = CreateSeparator();
 
                     MatchRequests.RowDefinitions.Add(new RowDefinition
                         { Height = new GridLength(100, GridUnitType.Absolute) });
                     MatchRequests.Add(separator, 0, i);
                     Grid.SetColumnSpan(separator, 6);
-                    MatchRequests.Add(AddProfilePicture(person), 0, i);
+                    MatchRequests.Add(profilePicture, 0, i);
                     MatchRequests.Add(FirstNameLabel, 1, i);
                     MatchRequests.Add(SchoolLabel, 2, i);
                     MatchRequests.Add(StudyLabel, 3, i);
@@ -117,7 +114,7 @@ public partial class MatchRequestsView : ContentView
                     };
                     tapGestureRecognizer.Tapped += ToProfile_OnTapped;
 
-                    border.GestureRecognizers.Add(tapGestureRecognizer);
+                    profilePicture.GestureRecognizers.Add(tapGestureRecognizer);
                 }
             }
             else
@@ -147,26 +144,11 @@ public partial class MatchRequestsView : ContentView
             AddLegend("Straat", "Stad", "Type","Prijs");
             House house = _houseService.Get(matches[i-1].houseId);
 
-            var border = new Border
-            {
-                WidthRequest = 100,
-                HeightRequest = 100,
-                StrokeShape = new RoundRectangle
-                {
-                    CornerRadius = new CornerRadius(10)
-                },
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center,
-                Content = new Image
-                {
-                    Source = house.HouseImages[0].Path != null
-                        ? house.HouseImages[0].FullPath
-                : "house.png",
-                    Aspect = Aspect.AspectFill, 
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center
-                }
-            };
+            ImageSource imageSource = house.HouseImages[0].Path != null
+                ? house.HouseImages[0].FullPath
+                : "house.png";
+            Border housePicture = AddPicture(imageSource);
+            
             string houseTypeTranslation = "";
             switch (house.Type)
             {
@@ -181,14 +163,14 @@ public partial class MatchRequestsView : ContentView
                     break;
             }
             var separator = CreateSeparator();
-            var label1 = new Label { Text = house.Street,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label2 = new Label { Text = house.City,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label3 = new Label { Text = houseTypeTranslation,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
-            var label4 = new Label { Text = "€"+house.Price,  FontFamily = "OpenSansRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label1 = new Label { Text = house.Street,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label2 = new Label { Text = house.City,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label3 = new Label { Text = houseTypeTranslation,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
+            Label label4 = new Label { Text = "€"+house.Price,  FontFamily = "InterRegular", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             MatchRequests.RowDefinitions.Add(new RowDefinition { Height = new GridLength(100, GridUnitType.Absolute) });
             MatchRequests.Add(separator, 0, i);
             Grid.SetColumnSpan(separator, 6);
-            MatchRequests.Add(border, 0, i);
+            MatchRequests.Add(housePicture, 0, i);
             MatchRequests.Add(label1, 1, i);
             MatchRequests.Add(label2, 2, i);
             MatchRequests.Add(label3, 3, i);
@@ -197,30 +179,28 @@ public partial class MatchRequestsView : ContentView
         }
     }
 
-    public Border AddProfilePicture(Person person)
+public Border AddPicture(ImageSource imageSource)
+{
+    var border = new Border
     {
-        var border = new Border
+        WidthRequest = 100,
+        HeightRequest = 100,
+        Stroke = null,
+        StrokeThickness = 0,
+        VerticalOptions = LayoutOptions.Center,
+        HorizontalOptions = LayoutOptions.Center,
+        Content = new Image
         {
-            WidthRequest = 100,
-            HeightRequest = 100,
-            StrokeShape = new RoundRectangle
-            {
-                CornerRadius = new CornerRadius(10)
-            },
+            Source = imageSource,
+            Aspect = Aspect.AspectFill,
             VerticalOptions = LayoutOptions.Center,
-            HorizontalOptions = LayoutOptions.Center,
-            Content = new Image
-            {
-                Source = person.ProfilePicturePath != null
-                    ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
-                    : "geenProfiel.png",
-                Aspect = Aspect.AspectFit,
-                VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.Center
-            }
-        };
-        return border;
-    }
+            HorizontalOptions = LayoutOptions.Center
+        }
+    };
+    return border;
+}
+
+
     
     public void AddLegend(string label1, string label2, string label3, string label4)
     {
@@ -370,6 +350,17 @@ public partial class MatchRequestsView : ContentView
             VerticalOptions = LayoutOptions.End
         };
     }
+    
+    /*private BoxView CreateVerticalSeparator(BoxView.Horizontaloptions options)
+    {
+        return new BoxView
+        {
+            HeightRequest = 2,
+            BackgroundColor = Colors.LightGray,
+            VerticalOptions = LayoutOptions.Fill,
+            HorizontalOptions = LayoutOptions.End
+        };
+    }*/
     
     public void DisplayNoMatchRequests()
     {

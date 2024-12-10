@@ -62,7 +62,7 @@
                                         <Button Text="Uitloggen"
                                                 x:Name="LogoutButton"
                                                 Clicked="Logout"
-                                                Style="{StaticResource PrimaryButton}"
+                                                Style="{StaticResource SecondaryButton}"
                                                 HorizontalOptions="FillAndExpand"/>
                                 </StackLayout>
                                 <ScrollView Grid.Row="1"
