@@ -57,6 +57,7 @@ Global
 		{171E740F-0913-497D-98CD-B237ECAF2520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{171E740F-0913-497D-98CD-B237ECAF2520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{171E740F-0913-497D-98CD-B237ECAF2520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171E740F-0913-497D-98CD-B237ECAF2520}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -33,7 +33,6 @@ public partial class MatchRequestsView : ContentView
         GetCurrentPerson().GetAwaiter().GetResult();
         if (_person.Role == Role.Offering)
         {
-            AddLegend("Voornaam", "School", "Opleiding","Geboortedatum");
             GetMatchRequestsOffering(); 
         }
         else if (_person.Role == Role.Seeking)
@@ -126,10 +125,10 @@ public partial class MatchRequestsView : ContentView
                     };
 
                     MatchRequests.RowDefinitions.Add(new RowDefinition
-                        { Height = new GridLength(100, GridUnitType.Absolute) });
+                        { Height = new GridLength(120, GridUnitType.Absolute) });
                     MatchRequests.Add(separator, 0, i);
                     Grid.SetColumnSpan(separator, 6);
-                    MatchRequests.Add(AddProfilePicture(person), 0, i);
+                    MatchRequests.Add(border, 0, i);
                     MatchRequests.Add(FirstNameLabel, 1, i);
                     MatchRequests.Add(SchoolLabel, 2, i);
                     MatchRequests.Add(StudyLabel, 3, i);
@@ -217,6 +216,13 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(label3, 3, i);
             MatchRequests.Add(label4, 4, i);
             DisplayStatus(i, matches[i - 1].Status);
+            var tapGestureRecognizer = new TapGestureRecognizer
+            {
+                CommandParameter = matches[i - 1]
+            };
+            tapGestureRecognizer.Tapped += ToHouse_OnTapped;
+
+            border.GestureRecognizers.Add(tapGestureRecognizer);
         }
         AddLegend("Straat", "Stad", "Type","Prijs");
     }
@@ -346,6 +352,19 @@ public partial class MatchRequestsView : ContentView
         }
     }
 
+    private async void ToHouse_OnTapped(object? sender, TappedEventArgs e)
+    {
+        if (e.Parameter is Match match)
+        {
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                House house = _houseService.Get(match.houseId);
+                var housePage = _serviceProvider.GetRequiredService<HousePage>();
+                housePage.BindingContext = house;
+                Application.Current.MainPage = new NavigationPage(housePage);
+            }
+        }
+    }
     private async void RefreshPage()
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
