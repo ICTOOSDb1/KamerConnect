@@ -69,12 +69,19 @@ public partial class MatchRequestsView : ContentView
                     ? _fileService.GetFilePath(_bucketName, person.ProfilePicturePath)
                     : "user.png";
                 Border profilePicture = AddPicture(imageSource);
-                Label FirstNameLabel = new Label
+                Label FullNameLabel = new Label
                 {
-                    Text = person.FirstName,
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center
                 };
+                if (person.Surname != null)
+                {
+                    FullNameLabel.Text = person.FirstName + " " + person.MiddleName + " " + person.Surname;
+                }
+                else
+                {
+                    FullNameLabel.Text = person.FirstName+" "+person.Surname;
+                }
                 Label SchoolLabel = new Label();
                 Label StudyLabel = new Label();
                 if (person.Personality != null)
@@ -102,7 +109,7 @@ public partial class MatchRequestsView : ContentView
                 MatchRequests.Add(separator, 0, i);
                 Grid.SetColumnSpan(separator, 6);
                 MatchRequests.Add(profilePicture, 0, i);
-                MatchRequests.Add(FirstNameLabel, 1, i);
+                MatchRequests.Add(FullNameLabel, 1, i);
                 MatchRequests.Add(SchoolLabel, 2, i);
                 MatchRequests.Add(StudyLabel, 3, i);
                 MatchRequests.Add(BirthLabel, 4, i);
