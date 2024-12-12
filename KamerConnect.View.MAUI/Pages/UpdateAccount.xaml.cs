@@ -125,7 +125,7 @@ namespace KamerConnect.View.MAUI.Pages
         private async void Logout(object? sender, EventArgs eventArgs)
         {
             var session = await _authenticationService.GetSession();
-            
+
             _authenticationService.RemoveSession(session.sessionToken);
             App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
         }

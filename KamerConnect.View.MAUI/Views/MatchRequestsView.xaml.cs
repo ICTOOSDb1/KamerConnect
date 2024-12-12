@@ -80,7 +80,7 @@ public partial class MatchRequestsView : ContentView
                 }
                 else
                 {
-                    FullNameLabel.Text = person.FirstName+" "+person.Surname;
+                    FullNameLabel.Text = person.FirstName + " " + person.Surname;
                 }
                 Label SchoolLabel = new Label();
                 Label StudyLabel = new Label();
@@ -147,7 +147,7 @@ public partial class MatchRequestsView : ContentView
             return;
         }
         AddLegend("Straat", "Stad", "Type", "Prijs");
-        
+
         for (int i = 1; i < matches.Count + 1; i++)
         {
             House house = _houseService.Get(matches[i - 1].houseId);

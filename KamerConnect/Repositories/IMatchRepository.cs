@@ -9,7 +9,7 @@ public interface IMatchRepository
     List<Match> GetMatchesById(Guid Id);
 
     void UpdateStatusMatch(Match match, Status status);
-    
+
     Guid CreateMatch(Match match);
 
 }

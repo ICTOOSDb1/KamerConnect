@@ -8,7 +8,7 @@ namespace KamerConnect.Utils;
 
 public static class GetAttribute
 {
-    public static TAttribute GetAttributes<TAttribute>(this Enum enumValue) 
+    public static TAttribute GetAttributes<TAttribute>(this Enum enumValue)
         where TAttribute : Attribute
     {
         return enumValue.GetType()
@@ -16,7 +16,7 @@ public static class GetAttribute
             .First()
             .GetCustomAttribute<TAttribute>();
     }
-    
+
     public static string GetDisplayName(this Enum value)
     {
         var field = value.GetType().GetField(value.ToString());

@@ -17,9 +17,9 @@ public class MatchTests
         _mockRepository = new Mock<IMatchRepository>();
         _matchService = new MatchService(_mockRepository.Object);
     }
-    
-        
-  
+
+
+
 
     [Test]
     public void GetMatchesById_WhenCalled_ReturnsMatchingResults()
@@ -41,17 +41,17 @@ public class MatchTests
         _mockRepository.Verify(repo => repo.GetPendingMatchesById(mockId), Times.Once);
     }
 
-    
+
     [Test]
     public void UpdateMatch_WhenCalled_UpdatesMatchStatus()
     {
         // Arrange
         var mockMatch = new MatchModel(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Status.Pending, "test");
         var newStatus = Status.Pending;
-        
+
         // Act
         _matchService.UpdateStatusMatch(mockMatch, newStatus);
-    
+
         // Assert
         _mockRepository.Verify(repo => repo.UpdateStatusMatch(mockMatch, newStatus), Times.Once);
     }

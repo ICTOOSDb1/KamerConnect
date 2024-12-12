@@ -44,26 +44,26 @@ public partial class ProfilePage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        
+
         if (BindingContext is Match match)
         {
             _match = match;
             _selectedPerson = _personService.GetPersonById(match.personId);
-            
+
             ProfileImage.Source = !string.IsNullOrEmpty(_selectedPerson.ProfilePicturePath)
                 ? _fileService.GetFilePath(_bucketName, _selectedPerson.ProfilePicturePath)
                 : "geenProfiel.png";
-            
+
             NameLabel.Text = $"{_selectedPerson.FirstName} {_selectedPerson.MiddleName} {_selectedPerson.Surname}".Trim();
             PhoneLabel.Text = _selectedPerson.PhoneNumber ?? "Geen telefoonnummer beschikbaar";
             EmailLabel.Text = _selectedPerson.Email;
             GenderLabel.Text = _selectedPerson.Gender.GetDisplayName();
-            BirthLabel.Text =  _selectedPerson.BirthDate.ToShortDateString();
+            BirthLabel.Text = _selectedPerson.BirthDate.ToShortDateString();
             SchoolLabel.Text = _selectedPerson.Personality?.School ?? "Geen school opgegeven";
             CourseLabel.Text = _selectedPerson.Personality?.Study ?? "Geen studie opgegeven";
             DescriptionLabel.Text = _selectedPerson.Personality?.Description ?? "Geen beschrijving beschikbaar";
             MotivationLabel.Text = "ik vind het gewelig huis waar ik graag zou willen wonen: ...";
-             
+
 
         }
     }
@@ -78,7 +78,7 @@ public partial class ProfilePage : ContentPage
 
     private void AcceptButton_OnClicked(object? sender, EventArgs e)
     {
-        
+
         _matchService.UpdateStatusMatch(_match, Status.Accepted);
         AcceptButton.IsVisible = false;
         RejectButton.IsVisible = false;

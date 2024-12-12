@@ -16,9 +16,9 @@ public partial class LoginPage : ContentPage
         _personService = personService;
         _serviceProvider = serviceProvider;
 
-    
+
         NavigationPage.SetHasNavigationBar(this, false);
-        
+
         InitializeComponent();
     }
 
@@ -41,9 +41,9 @@ public partial class LoginPage : ContentPage
                     {
                         App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MainPage>());
                     }
-                    else  App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
+                    else App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
                 }
-                
+
             }
             else
             {
