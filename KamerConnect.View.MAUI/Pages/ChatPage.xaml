@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KamerConnect.View.MAUI.Pages.ChatPage">
+    <ScrollView>
+        <VerticalStackLayout x:Name="StackLayout">
+            <Label x:Name="ChatMessages" TextColor="White" Text="heyy"></Label>
+            <Entry x:Name="myChatMessage" TextColor="White" Placeholder="type your message"></Entry>
+            <Button x:Name="SendButton" Text="send" Clicked="SendButton_OnClicked" ></Button>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

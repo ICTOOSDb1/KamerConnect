@@ -11,6 +11,11 @@ public class MatchService
     {
         _matchRepository = matchRepository;
     }
+
+    public Match GetMatchById(Guid matchId)
+    {
+        return _matchRepository.GetMatchById(matchId);
+    }
     public List<Match> GetMatchesById(Guid Id)
     {
         return _matchRepository.GetMatchesById(Id);

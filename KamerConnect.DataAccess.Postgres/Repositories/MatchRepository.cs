@@ -15,6 +15,32 @@ public class MatchRepository : IMatchRepository
         _connectionString = EnvironmentUtils.GetConnectionString();
     }
 
+
+    public Match GetMatchById(Guid id)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand("""
+                                                   SELECT *
+                                                   FROM matchrequests
+                                                   WHERE (id = @id::uuid
+                                                   """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read()) return readToMatch(reader);
+                }
+            }
+        }
+
+        return null;
+    }
+
     public List<Match> GetPendingMatchesById(Guid Id)
     {
         using (var connection = new NpgsqlConnection(_connectionString))

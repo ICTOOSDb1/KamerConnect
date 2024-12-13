@@ -27,7 +27,7 @@ public class ChatRepository : IChatRepository
             using (var command = new NpgsqlCommand("""
                                                    select *
                                                    from chatmessages
-                                                   where sender = @personId and match = @matchId")"
+                                                   where match = @matchId;
                                                    """,
                        connection))
             {
@@ -92,9 +92,9 @@ public class ChatRepository : IChatRepository
         var chatMessage = new ChatMessage(
             reader.GetGuid(0),
             reader.GetGuid(1),
-            reader.GetGuid(2),
-            reader.GetString(3),
-            reader.GetDateTime(4)
+            reader.GetGuid(4),
+            reader.GetString(2),
+            reader.GetDateTime(3)
         );
         return chatMessage;
     }

@@ -25,7 +25,7 @@ public partial class App : Application
         {
             return;
         }
-
+    
         var session = await authService.GetSession();
         if (session != null)
         {
@@ -39,7 +39,7 @@ public partial class App : Application
         {
             MainPage = new NavigationPage(_serviceProvider.GetRequiredService<LoginPage>());
         }
-
-
+    
+    
     }
 }
