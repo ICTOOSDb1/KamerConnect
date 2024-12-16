@@ -1,11 +1,11 @@
 
 
 using System.Text.Json.Nodes;
+using KamerConnect.Models;
 using KamerConnect.Repositories;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using Location = KamerConnect.Models.Location;
 
 namespace KamerConnect.DataAccess.GeoLocation.Repositories;
 
@@ -37,7 +37,7 @@ public class GeoLocationRepository : IGeoLocationRepository
         }
     }
     
-    public async Task<string> Get(Location location, double range)
+    public async Task<string> Get(Isochrone isochrone, double range)
     {
         return "";
     }

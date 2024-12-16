@@ -18,8 +18,9 @@ namespace KamerConnect.Models
         public PreferenceChoice Pet { get; set; }
         public PreferenceChoice Interior { get; set; }
         public PreferenceChoice Parking { get; set; }
+        public Isochrone Isochrone { get; set; }
 
-        public HousePreferences(double minBudget, double maxBudget, string city, Point? cityGeolocation, double surfaceArea, HouseType type, int residents, PreferenceChoice smoking, PreferenceChoice pet, PreferenceChoice interior, PreferenceChoice parking, Guid id)
+        public HousePreferences(double minBudget, double maxBudget, string city, Point? cityGeolocation, double surfaceArea, HouseType type, int residents, PreferenceChoice smoking, PreferenceChoice pet, PreferenceChoice interior, PreferenceChoice parking, Guid id, Isochrone isochrone)
         {
             Id = id;
             MinBudget = minBudget;
@@ -33,6 +34,7 @@ namespace KamerConnect.Models
             Pet = pet;
             Interior = interior;
             Parking = parking;
+            Isochrone = isochrone;
         }
     }
 }

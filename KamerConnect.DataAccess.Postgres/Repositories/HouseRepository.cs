@@ -462,18 +462,7 @@ public class HouseRepository : IHouseRepository
     FROM 
         house
     WHERE 
-        ST_DWithin(
-            house.house_geolocation,
-            (
-                SELECT 
-                    city_geolocation 
-                FROM 
-                    house_preferences 
-                WHERE 
-                    id = @housePreferenceId::uuid
-            ),
-            0.06
-        )
+        ST_Contains(@isochrone::geometry, ST_SetSRID(house.house_geolocation, 4326)))
         AND available = true
         AND residents <= @residents
         AND (
@@ -496,6 +485,7 @@ public class HouseRepository : IHouseRepository
                     command.Parameters.AddWithValue("@pet", housePreferences.Pet.ToString());
                     command.Parameters.AddWithValue("@interior", housePreferences.Interior.ToString());
                     command.Parameters.AddWithValue("@parking", housePreferences.Parking.ToString());
+                    command.Parameters.AddWithValue("@isochrone", housePreferences.Isochrone.Geometry);
 
                     using (var reader = command.ExecuteReader())
                     {

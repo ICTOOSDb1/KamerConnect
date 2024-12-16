@@ -9,5 +9,6 @@ public interface IHousePreferenceRepository
     Guid CreateHousePreferences(HousePreferences housePreferences);
     HousePreferences? GetHousePreferences(Guid personId);
     void AddHousePreferences(Guid personId, Guid housePreferencesId);
+    Task<Guid> SaveIsochrone(Isochrone isochrone);
 
 }

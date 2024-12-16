@@ -1,13 +1,16 @@
+using NetTopologySuite.Geometries;
+
 namespace KamerConnect.Models;
 
-public class Location
+public class Isochrone
 {
     public int Range { get; set; }
     public Profile Profile { get; set; }
-    public List<Coordinate> Geometry { get; set; }
+    public Polygon Geometry { get; set; }
     
-    public Location(string name, Profile profile, List<Coordinate> geometry)
+    public Isochrone(int range, Profile profile, Polygon geometry)
     {
+        Range = range;
         Profile = profile;
         Geometry = geometry;
     }
@@ -16,5 +19,5 @@ public class Location
 
 public enum Profile
 {
-    DrivingCar
+    Driving_Car
 }

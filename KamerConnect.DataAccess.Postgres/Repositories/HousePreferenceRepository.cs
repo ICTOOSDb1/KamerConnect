@@ -68,9 +68,10 @@ public class HousePreferenceRepository : IHousePreferenceRepository
 
                 using (var command = new NpgsqlCommand(
                            """
-                   SELECT hp.min_price, hp.max_price, hp.city, ST_AsText(hp.city_geolocation), hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id
+                   SELECT hp.min_price, hp.max_price, hp.city, ST_AsText(hp.city_geolocation), hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id, ST_AsText(i.geometry)
                    FROM house_preferences hp
                    INNER JOIN person p ON p.house_preferences_id = hp.id
+                   LEFT JOIN isochrone i ON hp.isochrone_id = isochrone.id
                    WHERE p.id = @PersonId;
                    """, connection))
                 {
@@ -92,7 +93,8 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                                 EnumUtils.Validate<PreferenceChoice>(reader.GetString(8)),
                                 EnumUtils.Validate<PreferenceChoice>(reader.GetString(9)),
                                 EnumUtils.Validate<PreferenceChoice>(reader.GetString(10)),
-                                reader.GetGuid(11)
+                                reader.GetGuid(11),
+                                new Isochrone(1600, Profile.Driving_Car, new WKTReader().Read(reader.GetString(12)) as Polygon)
                             );
                         }
                     }
@@ -117,7 +119,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                 connection.Open();
                 using (var command = new NpgsqlCommand(
                            """
-                            INSERT INTO house_preferences (id, type, min_price, max_price, city, city_geolocation, surface, residents, smoking, pet, interior, parking)
+                            INSERT INTO house_preferences (id, type, min_price, max_price, city, city_geolocation, surface, residents, smoking, pet, interior, parking, isochrone_id)
                             VALUES (@Id::uuid,
                                     @Type::house_type,
                                     @MinPrice,
@@ -178,6 +180,45 @@ public class HousePreferenceRepository : IHousePreferenceRepository
 
                 updateCommand.ExecuteNonQuery();
             }
+        }
+    }
+    
+    public async Task<Guid> SaveIsochrone(Isochrone isochrone)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand($"""
+                                                        INSERT INTO isochrone (
+                                                            range,
+                                                            profile,
+                                                            geometry,
+                                                        )
+                                                        VALUES (
+                                                            @range,
+                                                            @profile::travel_profile,
+                                                            ST_SetSRID(ST_GeomFromText(@geometry), 4326),
+                                                        ) RETURNING id;
+                                                        """, connection))
+                {
+                    command.Parameters.AddWithValue("@range", isochrone.Range);
+                    command.Parameters.AddWithValue("@profile", isochrone.Profile);
+                    command.Parameters.AddWithValue("@geometry", isochrone.Geometry);
+
+                    var isochroneId = command.ExecuteScalar() as Guid?;
+                    if (!isochroneId.HasValue)
+                        throw new InvalidOperationException("Failed to retrieve the ID of the created isochrone.");
+
+                    return isochroneId.Value;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }

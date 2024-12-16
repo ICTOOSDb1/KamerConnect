@@ -1,11 +1,14 @@
 using KamerConnect.Models;
 using KamerConnect.Repositories;
+using NetTopologySuite.Geometries;
 
 namespace KamerConnect.Services;
 
 public class HousePreferenceService
 {
     private IHousePreferenceRepository _repository;
+    private GeoLocationService _geoLocationService;
+  
 
     public HousePreferenceService(IHousePreferenceRepository repository)
     {
