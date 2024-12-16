@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS postgis;
+
 CREATE TYPE user_role AS ENUM ('Seeking', 'Offering');
 CREATE TYPE gender AS ENUM ('Male', 'Female', 'Other');
 CREATE TYPE house_type AS ENUM ('Apartment', 'House', 'Studio');
@@ -17,6 +19,7 @@ CREATE TABLE IF NOT EXISTS house (
     house_number_addition text NOT NULL,
     house_geolocation GEOMETRY(Point, 4326) NOT NULL
 );
+
 CREATE TABLE IF NOT EXISTS house_preferences (
     id UUID PRIMARY KEY default gen_random_uuid(),
 	type house_type,
@@ -31,6 +34,7 @@ CREATE TABLE IF NOT EXISTS house_preferences (
     interior preference_choice,
     parking preference_choice
 );
+
 CREATE TABLE IF NOT EXISTS person (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT NOT NULL UNIQUE,
@@ -65,8 +69,6 @@ CREATE TABLE IF NOT EXISTS session (
     PRIMARY KEY (SessionToken),
     CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
 );
-
-
 
 CREATE TABLE IF NOT EXISTS personality (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
