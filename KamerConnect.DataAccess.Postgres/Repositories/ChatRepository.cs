@@ -18,21 +18,20 @@ public class ChatRepository : IChatRepository
         _connectionString = EnvironmentUtils.GetConnectionString();
     }
 
-    public List<ChatMessage> getChatMessages(Guid matchId, Guid personId)
+    public List<ChatMessage> GetChatMessages(Guid chatId)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
         {
             connection.Open();
 
             using (var command = new NpgsqlCommand("""
-                                                   select *
-                                                   from chatmessages
-                                                   where sender = @personId and match = @matchId")"
+                                                   SELECT *
+                                                   FROM chatmessages
+                                                   WHERE chat = @chatId
                                                    """,
                        connection))
             {
-                command.Parameters.AddWithValue("@personId", personId);
-                command.Parameters.AddWithValue("@matchId", matchId);
+                command.Parameters.AddWithValue("@chatId", chatId);
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -54,7 +53,7 @@ public class ChatRepository : IChatRepository
     }
 
 
-    public void SendMessage(ChatMessage message)
+    public void CreateMessage(ChatMessage message)
     {
         try
         {
@@ -64,15 +63,15 @@ public class ChatRepository : IChatRepository
 
                 string updateQuery = $"""
                                       INSERT INTO chatmessages (
-                                        sender, match, message)
-                                        VALUES (@personId::uuid, @matchId::uuid, @message::text
+                                        sender, chat, message)
+                                        VALUES (@personId::uuid, @chat::uuid, @message::text
                                       )
                                       """;
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
-                    command.Parameters.AddWithValue("@personId", message.senderId);
-                    command.Parameters.AddWithValue("@matchId", message.MatchId);
+                    command.Parameters.AddWithValue("@personId", message.SenderId);
+                    command.Parameters.AddWithValue("@chatId", message.ChatId);
                     command.Parameters.AddWithValue("@message", message.Message);
               
 
@@ -82,20 +81,19 @@ public class ChatRepository : IChatRepository
         }
         catch (NpgsqlException e)
         {
-            Console.WriteLine($"Error occurred while updating Match in DB: {e.Message}");
+            Console.WriteLine($"Error occurred while updating chatmessage in DB: {e.Message}");
             throw;
         }
     }
     
     private ChatMessage ReadToChatMessage(DbDataReader reader)
     {
-        var chatMessage = new ChatMessage(
+        return  new ChatMessage(
             reader.GetGuid(0),
             reader.GetGuid(1),
             reader.GetGuid(2),
             reader.GetString(3),
             reader.GetDateTime(4)
         );
-        return chatMessage;
     }
 }

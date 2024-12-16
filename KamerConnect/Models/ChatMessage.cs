@@ -3,17 +3,17 @@
 public class ChatMessage
 {
     public Guid Id { get; set; }
-    public Guid MatchId { get; set; }
-    public Guid senderId { get; set; }
+    public Guid ChatId { get; set; }
+    public Guid SenderId { get; set; }
     public string Message { get; set; }
-    public DateTime SentAt { get; set; }
+    public DateTime SendAt { get; set; }
 
-    public ChatMessage(Guid id, Guid matchId, Guid senderId, string message, DateTime sentAt)
+    public ChatMessage(Guid id, Guid chatId, Guid senderId, string message, DateTime sendAt)
     {
         Id = id;
-        MatchId = matchId;
-        this.senderId = senderId;
+        ChatId = chatId;
+        SenderId = senderId;
         Message = message;
-        SentAt = sentAt;
+        SendAt = sendAt;
     }
 }

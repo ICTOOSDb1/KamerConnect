@@ -12,12 +12,12 @@ public class ChatService
         _chatRepository = chatRepository;
     }
 
-    public List<ChatMessage> getChatMessages(Guid matchId, Guid personId)
+    public List<ChatMessage> GetChatMessages(Guid chatId)
     {
-        return _chatRepository.getChatMessages(matchId, personId);
+        return _chatRepository.GetChatMessages(chatId);
     }
-    public void sendMessage(ChatMessage message)
+    public void CreateMessage(ChatMessage message)
     { 
-        _chatRepository.SendMessage(message);
+        _chatRepository.CreateMessage(message);
     }   
 }

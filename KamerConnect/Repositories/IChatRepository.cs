@@ -4,8 +4,7 @@ namespace KamerConnect.Repositories;
 
 public interface IChatRepository
 {
-    List<ChatMessage> getChatMessages(Guid matchId, Guid personId);
+    List<ChatMessage> GetChatMessages(Guid chatId);
     
-    void SendMessage(ChatMessage message);
-    
+    void CreateMessage(ChatMessage message);
 }
