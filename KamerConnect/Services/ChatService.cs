@@ -16,4 +16,9 @@ public class ChatService
     {
         return _chatRepository.getChatMessages(matchId, personId);
     }
+
+    public void sendMessage(ChatMessage message)
+    { 
+        _chatRepository.SendMessage(message);
+    }
 }

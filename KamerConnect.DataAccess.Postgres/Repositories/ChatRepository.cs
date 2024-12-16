@@ -71,12 +71,12 @@ public class ChatRepository : IChatRepository
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
-                    command.Parameters.AddWithValue("@personId", message.senderId);
+                    command.Parameters.AddWithValue("@personId", message.SenderId);
                     command.Parameters.AddWithValue("@matchId", message.MatchId);
                     command.Parameters.AddWithValue("@message", message.Message);
               
 
-                    var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                    var result = command.ExecuteNonQuery();
                 }
             }
         }

@@ -1,13 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KamerConnect.View.MAUI.Pages.ChatPage">
-    <ScrollView>
-        <VerticalStackLayout x:Name="StackLayout">
-            <Label x:Name="ChatMessages" TextColor="White" Text="heyy"></Label>
-            <Entry x:Name="myChatMessage" TextColor="White" Placeholder="type your message"></Entry>
-            <Button x:Name="SendButton" Text="send" Clicked="SendButton_OnClicked" ></Button>
-        </VerticalStackLayout>
-    </ScrollView>
+             
+    <ContentPage.Content>
+        <Grid Padding="10" RowDefinitions="*, Auto" ColumnDefinitions="*, *">
+            <CollectionView ItemsSource="{Binding Messages}" Margin="0,10,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="5" BackgroundColor="LightGray" CornerRadius="10">
+                            <Label Text="{Binding .}" TextColor="Black" />
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+            <HorizontalStackLayout Grid.Row="1">
+                <Entry x:Name="myChatMessage"
+                       Placeholder="Type your message here..."
+                       VerticalOptions="Center"
+                       HorizontalOptions="FillAndExpand"
+                       TextColor="Black"
+                       BackgroundColor="White"
+                       Margin="0,0,10,0" />
+
+                <Button Text="Send"
+                        VerticalOptions="Center"
+                        Command="{Binding SendCommand}"
+                        Clicked="SendButton_OnClicked"
+                        BackgroundColor="DodgerBlue"
+                        TextColor="White"
+                        />
+            </HorizontalStackLayout>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

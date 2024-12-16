@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using KamerConnect.Models;
 using KamerConnect.Services;
@@ -19,50 +17,99 @@ public partial class ChatPage : ContentPage
     private IServiceProvider _serviceProvider;
     private Person _person;
     private Match _match;
-    public ChatPage(AuthenticationService authenticationService, PersonService personService, MatchService matchService, IServiceProvider serviceProvider, ChatService chatService)
+
+    public ObservableCollection<ChatMessage> Messages { get; set; } = new();
+
+    public ChatPage(AuthenticationService authenticationService, PersonService personService, MatchService matchService,
+        IServiceProvider serviceProvider, ChatService chatService)
     {
         InitializeComponent();
+        BindingContext = this;
         _authenticationService = authenticationService;
         _personService = personService;
         _matchService = matchService;
         _serviceProvider = serviceProvider;
         _chatService = chatService;
-        GetCurrentPerson().GetAwaiter().GetResult();
 
+        // Initialize SignalR connection
         _connection = new HubConnectionBuilder()
             .WithUrl("http://localhost:5068/chat")
             .WithAutomaticReconnect()
+            .AddJsonProtocol(options =>
+            {
+                options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+            })
             .Build();
 
-        _connection.On<string>("MessageReceived", message =>
+        // Load current user and initialize chat connection
+        GetCurrentPerson().GetAwaiter().GetResult();
+        InitializeChatConnection();
+    }
+
+    private async Task GetCurrentPerson()
+    {
+        var session = await _authenticationService.GetSession();
+        if (session != null)
+        {
+            _person = _personService.GetPersonById(session.personId);
+        }
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is Match match)
+        {
+            _match = match;
+        }
+    }
+
+    private async void SendButton_OnClicked(object? sender, EventArgs e)
+    {
+        string messageText = myChatMessage.Text;
+        if (!string.IsNullOrWhiteSpace(messageText))
+        {
+            var chatMessage = new ChatMessage(_match.matchId, _person.Id, messageText);
+
+            try
+            {
+                await _connection.SendAsync("SendMessage", chatMessage);
+                _chatService.sendMessage(chatMessage);
+                Messages.Add(chatMessage);
+                int aantal = Messages.Count;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending message: {ex.Message}");
+            }
+
+            myChatMessage.Text = string.Empty;
+        }
+    }
+
+    private void InitializeChatConnection()
+    {
+        _connection.On<ChatMessage>("ReceiveMessage", message =>
         {
             Dispatcher.Dispatch(() =>
             {
-                if (ChatMessages != null)
-                {
-                    List<ChatMessage> messages = _chatService.getChatMessages(_match.matchId, _person.Id);
-                    foreach (ChatMessage message in messages)
-                    {
-                        if (message.senderId == _person.Id)
-                        {
-                            Label label1 = new Label { Text = message.Message, TextColor = Colors.Red};
-                            StackLayout.Children.Add(label1);
-                        }
-                        else
-                        {
-                            Label label1 = new Label { Text = message.Message, TextColor = Colors.Blue};
-                            StackLayout.Children.Add(label1);
-                        }
-                    }
-                    
-                }
+                Messages.Add(message);
             });
         });
+
         _connection.Closed += async (error) =>
         {
             Console.WriteLine($"Connection closed: {error?.Message}");
             await Task.Delay(5000); // Wait 5 seconds before reconnecting
-            await _connection.StartAsync();
+            try
+            {
+                await _connection.StartAsync();
+                Console.WriteLine("Reconnected successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Reconnection failed: {ex.Message}");
+            }
         };
 
         Task.Run(async () =>
@@ -77,29 +124,5 @@ public partial class ChatPage : ContentPage
                 Console.WriteLine($"Connection failed: {ex.Message}");
             }
         });
-    }
-    private async Task GetCurrentPerson()
-    {
-        var session = await _authenticationService.GetSession();
-        if (session != null)
-        {
-            _person = _personService.GetPersonById(session.personId);
-        }
-    }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-
-        if (BindingContext is Match match)
-        {
-            _match = match;
-        }
-    }
-
-    private async void SendButton_OnClicked(object? sender, EventArgs e)
-    {
-        await _connection.InvokeCoreAsync("sendMessage", args: new[] { myChatMessage.Text });
-        myChatMessage.Text = string.Empty;
     }
 }
