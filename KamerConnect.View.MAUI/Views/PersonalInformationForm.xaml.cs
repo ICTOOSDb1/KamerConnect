@@ -4,14 +4,14 @@ namespace KamerConnect.View.MAUI;
 
 public partial class PersonalInformationForm : ContentView
 {
-    
+
     public PersonalInformationForm()
     {
         InitializeComponent();
         BindingContext = this;
         HousetypePicker.SelectedItem = "Anders";
     }
-    
+
     public string? Email => emailEntry.Text;
     public string? FirstName => firstNameEntry.Text;
     public string? MiddleName => middleNameEntry.Text;
@@ -46,12 +46,12 @@ public partial class PersonalInformationForm : ContentView
         phoneNumberEntry?.Validate();
         birthDateEntry?.Validate();
         passwordEntry?.Validate();
-        
+
         if (!string.IsNullOrEmpty(ConfirmPassword) && Password != ConfirmPassword)
         {
-            confirmPasswordEntry.SetValidation("Wachtwoord komt niet overeen."); 
+            confirmPasswordEntry.SetValidation("Wachtwoord komt niet overeen.");
         }
-        
+
         return (emailEntry?.IsValid ?? true) &&
                (firstNameEntry?.IsValid ?? true) &&
                (surnameEntry?.IsValid ?? true) &&

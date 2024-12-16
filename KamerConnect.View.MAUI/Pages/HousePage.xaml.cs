@@ -37,17 +37,17 @@ public partial class HousePage : ContentPage
         if (BindingContext is House house)
         {
             owner = _personService.GetPersonByHouseId(house.Id);
-                
+
             await CheckIfAlreadyMatched();
-            
+
             HouseTypeLabel.Text = house.Type.GetDisplayName();
-            
+
             FullnameLabel.Text = $" {owner.FirstName} {owner.MiddleName} {owner.Surname}";
 
             ImageSlideShow.Images = house.HouseImages?.Any() == true ? house.HouseImages : null;
         }
     }
-    
+
     private async Task CheckIfAlreadyMatched()
     {
         var session = await _authenticationService.GetSession();
@@ -65,9 +65,9 @@ public partial class HousePage : ContentPage
             if (list.Any(m => m.personId == session.personId))
             {
                 RegisterButton.IsVisible = false;
-                
+
                 Match currentMatch = list.SingleOrDefault(m => m.personId == session.personId);
-                
+
                 StateLabel.Text = currentMatch.Status.GetDisplayName();
                 StateLabel.IsVisible = true;
             }
@@ -84,9 +84,9 @@ public partial class HousePage : ContentPage
             if (session != null)
                 _matchService.CreateMatch(new Match(
                     Guid.Empty, session.personId, house.Id, Status.Pending, ""));
-            
+
             RegisterButton.IsVisible = false;
-            
+
             StateLabel.Text = Status.Pending.GetDisplayName();
             StateLabel.IsVisible = true;
         }

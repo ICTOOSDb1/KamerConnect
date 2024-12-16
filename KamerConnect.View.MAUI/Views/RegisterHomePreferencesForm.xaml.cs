@@ -27,7 +27,7 @@ public partial class RegisterHomePreferencesForm : ContentView
         InitializeComponent();
 
         SmokingTypePicker.SelectedItem = "Geen voorkeur";
-        
+
         PetTypePicker.SelectedItem = "Geen voorkeur";
         InteriorTypePicker.SelectedItem = "Geen voorkeur";
         ParkingTypePicker.SelectedItem = "Geen voorkeur";
@@ -49,7 +49,7 @@ public partial class RegisterHomePreferencesForm : ContentView
         HouseTypePicker.SelectedItem = _housePreferences?.Type.GetDisplayName();
     }
 
-    private  PreferenceChoice PreferenceChoiceTypeChanged(Picker picker)
+    private PreferenceChoice PreferenceChoiceTypeChanged(Picker picker)
     {
         switch ($"{picker.SelectedItem}")
         {
@@ -71,7 +71,7 @@ public partial class RegisterHomePreferencesForm : ContentView
         _housePreferences.Interior = PreferenceChoiceTypeChanged(InteriorTypePicker);
         _housePreferences.Parking = PreferenceChoiceTypeChanged(ParkingTypePicker);
         _housePreferences.Type = HouseTypeChanged();
-        
+
         _housePreferences.CityGeolocation = await _geoLocationService.GetGeoCode(_housePreferences.City);
         _housePreferenceService.UpdateHousePreferences(_housePreferences);
         await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
