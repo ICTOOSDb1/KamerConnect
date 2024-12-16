@@ -20,8 +20,8 @@
 4. **Starting application**  
     Open the project in your preferred IDE and start the .NET application.
 
-### Adding a migration
-   If you want to create a new upscript you can just add a file in the scripts folder in the KamerConnect.Migrate.Postgres project. To add a new upscript for a change in the database we have a few rules.
+## Adding a migration
+   If you want to create a new upscript you can just add a .sql file in the scripts folder in the KamerConnect.Migrate.Postgres project. To add a new upscript for a change in the database we have a few rules:
    1. Add a version number in the upscript name like this: V1_DESCRIPTION_HERE.
    2. If possible make the upscript reusable for example add a IF NOT EXISTS.
    3. Never change an already existing migration.
