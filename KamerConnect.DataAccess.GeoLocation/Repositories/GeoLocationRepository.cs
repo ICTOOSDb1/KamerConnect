@@ -5,6 +5,7 @@ using KamerConnect.Repositories;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using Location = KamerConnect.Models.Location;
 
 namespace KamerConnect.DataAccess.GeoLocation.Repositories;
 
@@ -35,4 +36,11 @@ public class GeoLocationRepository : IGeoLocationRepository
             throw;
         }
     }
+    
+    public async Task<string> Get(Location location, double range)
+    {
+        return "";
+    }
+    
+  
 }
