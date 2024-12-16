@@ -76,7 +76,7 @@ public class ChatRepository : IChatRepository
                     command.Parameters.AddWithValue("@message", message.Message);
               
 
-                    var result = command.ExecuteScalar() ?? throw new InvalidOperationException();
+                    var result = command.ExecuteNonQuery();
                 }
             }
         }
