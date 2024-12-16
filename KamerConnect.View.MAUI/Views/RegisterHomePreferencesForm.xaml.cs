@@ -73,6 +73,7 @@ public partial class RegisterHomePreferencesForm : ContentView
         _housePreferences.Type = HouseTypeChanged();
 
         _housePreferences.CityGeolocation = await _geoLocationService.GetGeoCode(_housePreferences.City);
+        _housePreferences.Isochrone = new Isochrone(Guid.NewGuid(), 1600, Profile.driving_car, await _geoLocationService.GetRangePolygon(1600, _housePreferences.CityGeolocation));
         _housePreferenceService.UpdateHousePreferences(_housePreferences);
         await Application.Current?.MainPage?.DisplayAlert("Voorkeuren opgeslagen", "Succesvol opgeslagen!", "Ga verder");
 

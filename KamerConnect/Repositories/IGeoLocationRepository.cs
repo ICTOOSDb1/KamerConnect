@@ -7,4 +7,5 @@ namespace KamerConnect.Repositories;
 public interface IGeoLocationRepository
 {
     Task<Point> GetGeoCode(string search);
+    Task<Polygon> GetRangePolygon(double timeRange, Point startLocation);
 }

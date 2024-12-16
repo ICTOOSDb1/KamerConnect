@@ -6,6 +6,8 @@ using KamerConnect.Repositories;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace KamerConnect.DataAccess.GeoLocation.Repositories;
 
@@ -36,11 +38,44 @@ public class GeoLocationRepository : IGeoLocationRepository
             throw;
         }
     }
-    
-    public async Task<string> Get(Isochrone isochrone, double range)
+
+    public async Task<Polygon> GetRangePolygon(double timeRange, Point startLocation)
     {
-        return "";
+        string requestUrl = $"http://localhost:8081/ors/v2/isochrones/driving-car";
+
+        try
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var requestBody = new
+                {
+                    locations = new[] { new[] { startLocation.X, startLocation.Y } },
+                    range = new[] { timeRange },
+                    interval = timeRange
+                };
+
+                var jsonBody = JsonConvert.SerializeObject(requestBody);
+                var content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(requestUrl, content);
+                response.EnsureSuccessStatusCode();
+
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                var jsonObject = JObject.Parse(jsonResponse);
+                var coordinates = jsonObject["features"][0]["geometry"]["coordinates"][0]
+                       .Select(coord => new NetTopologySuite.Geometries.Coordinate((double)coord[0], (double)coord[1]))
+                       .ToArray();
+
+                var geometryFactory = new GeometryFactory();
+                return geometryFactory.CreatePolygon(coordinates);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
-    
-  
+
+
 }

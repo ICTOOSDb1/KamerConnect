@@ -485,8 +485,8 @@ $RECYCLE.BIN/
 KamerConnect.EnvironmentVariables/local.env
 
 # ORS
-/ors-docker/graphs/**
+/ors-docker/graphs
 /ors-docker/config/example-ors-config.env
 /ors-docker/config/example-ors-config.yml
 /ors-docker/files/example-heidelberg.osm.gz
-
+/ors-docker/elevation_cache

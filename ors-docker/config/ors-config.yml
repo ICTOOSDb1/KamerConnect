@@ -5,7 +5,7 @@ ors:
     isochrones:
       enabled: true
   engine:
-    source_file: ./ors-docker/home/ors/files/netherlands-latest.osm.pbf
+    source_file: ./files/netherlands-latest.osm.pbf
     profiles:
       car:
         enabled: true

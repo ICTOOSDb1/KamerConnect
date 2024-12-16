@@ -16,4 +16,9 @@ public class GeoLocationService
     {
         return await _geoLocationRepository.GetGeoCode(search);
     }
+
+    public async Task<Polygon> GetRangePolygon(double timeRange, Point startLocation)
+    {
+        return await _geoLocationRepository.GetRangePolygon(timeRange, startLocation);
+    }
 }
