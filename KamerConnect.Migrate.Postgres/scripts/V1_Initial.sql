@@ -80,6 +80,20 @@ CREATE TABLE IF NOT EXISTS personality (
     CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS interest (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS personality_interest (
+    personality_id UUID NOT NULL,
+    interest_id UUID NOT NULL,
+
+    PRIMARY KEY (personality_id, interest_id),
+    CONSTRAINT fk_personality FOREIGN KEY (personality_id) REFERENCES personality(id) ON DELETE CASCADE,
+    CONSTRAINT fk_interest FOREIGN KEY (interest_id) REFERENCES interest(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS house_image (
 	id UUID PRIMARY KEY default gen_random_uuid(),
 	house_id uuid NOT NULL,
