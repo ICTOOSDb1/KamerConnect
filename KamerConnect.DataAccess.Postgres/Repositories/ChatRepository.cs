@@ -51,9 +51,10 @@ public class ChatRepository : IChatRepository
             }
         }
     }
+    
 
 
-    public void CreateMessage(ChatMessage message)
+    public void CreateMessage(ChatMessage message, Guid chatId)
     {
         try
         {
@@ -71,7 +72,7 @@ public class ChatRepository : IChatRepository
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
                     command.Parameters.AddWithValue("@personId", message.SenderId);
-                    command.Parameters.AddWithValue("@chatId", message.ChatId);
+                    command.Parameters.AddWithValue("@chatId",chatId );
                     command.Parameters.AddWithValue("@message", message.Message);
               
 
@@ -90,7 +91,6 @@ public class ChatRepository : IChatRepository
     {
         return  new ChatMessage(
             reader.GetGuid(0),
-            reader.GetGuid(1),
             reader.GetGuid(2),
             reader.GetString(3),
             reader.GetDateTime(4)

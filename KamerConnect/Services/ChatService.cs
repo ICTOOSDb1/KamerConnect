@@ -16,8 +16,8 @@ public class ChatService
     {
         return _chatRepository.GetChatMessages(chatId);
     }
-    public void CreateMessage(ChatMessage message)
+    public void CreateMessage(ChatMessage message, Guid chatId)
     { 
-        _chatRepository.CreateMessage(message);
+        _chatRepository.CreateMessage(message, chatId);
     }   
 }
