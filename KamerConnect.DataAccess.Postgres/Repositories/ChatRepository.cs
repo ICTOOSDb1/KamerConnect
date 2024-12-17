@@ -96,4 +96,102 @@ public class ChatRepository : IChatRepository
             reader.GetDateTime(4)
         );
     }
+        
+    public void CreateChat(Guid chatId)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+                string updateQuery = $"""
+                                      INSERT INTO chat (
+                                        chat_id, match_id)
+                                        VALUES (@chatId::uuid, @match_id::uuid
+                                      )
+                                      """;
+
+                using (var command = new NpgsqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@chatId", chatId);
+                    command.Parameters.AddWithValue("@matchId", null);
+                    var result = command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (NpgsqlException e)
+        {
+            Console.WriteLine($"Error occurred while updating createChat in DB: {e.Message}");
+            throw;
+        }
+    }
+
+    public void AddPersonToChat(Guid chatId, Guid personId)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+                string updateQuery = $"""
+                                      INSERT INTO person_chat (
+                                        person_id, chat_id)
+                                        VALUES (@person_id::uuid, @chat_id::uuid
+                                      )
+                                      """;
+
+                using (var command = new NpgsqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@person_id", personId);
+                    command.Parameters.AddWithValue("@chatId", chatId);
+                    var result = command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (NpgsqlException e)
+        {
+            Console.WriteLine($"Error occurred while adding person to chat in DB: {e.Message}");
+            throw;
+        }
+    }
+
+    public void CreateChatWithPersons(List<Guid> personIds)
+    {
+        Guid chatId = Guid.NewGuid();
+        CreateChat(chatId);
+        foreach (var personId in personIds)
+        {
+            AddPersonToChat(chatId, personId);
+        }
+    }
+    
+    public List<Guid> GetPersonIdsFromChat(Guid chatId)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand("""
+                                                   SELECT *
+                                                   FROM person_chat
+                                                   WHERE (chat_id = @chatId::uuid)
+                                                   """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@chatId", chatId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    List<Guid> personIds = new List<Guid>();
+
+                    while (reader.Read())
+                    {
+                            personIds.Add(reader.GetGuid(0));
+                    }
+
+                    return personIds;
+                }
+            }
+        }
+    }
 }
