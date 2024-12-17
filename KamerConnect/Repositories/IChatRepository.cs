@@ -9,4 +9,5 @@ public interface IChatRepository
     void CreateChat(Guid chatId);
     void AddPersonToChat(Guid chatId, Guid personId);
     void CreateChatWithPersons(List<Guid> personIds);
+    List<Guid> GetPersonIdsFromChat(Guid chatId);
 }
