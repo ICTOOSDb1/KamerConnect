@@ -1,9 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="KamerConnect.View.MAUI.Pages.ChatPage">
-    <ContentPage.Content>
-        
-    </ContentPage.Content>
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:Views="clr-namespace:KamerConnect.View.MAUI.Views"
+             x:Class="KamerConnect.View.MAUI.Pages.ChatPage"
+             BackgroundColor="{StaticResource BackgroundColor}">
+
+    <Grid RowDefinitions="Auto,*">
+        <ContentView x:Name="NavbarContainer"
+                     Grid.Row="0"/>
+
+        <ScrollView Grid.Row="1"
+                    BackgroundColor="Transparent"
+                    VerticalScrollBarVisibility="Never"
+                    HorizontalScrollBarVisibility="Never">
+            <Grid RowDefinitions="Auto,*"
+                  Padding="50, 50">
+                <CollectionView Grid.Row="1"
+                                ItemsSource="{Binding Chats}"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="Fill">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" 
+                                         Span="4"
+                                         VerticalItemSpacing="20"
+                                         HorizontalItemSpacing="20"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Views:ChatPerson BindingContext="{Binding}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+    </Grid>
+
 </ContentPage>
