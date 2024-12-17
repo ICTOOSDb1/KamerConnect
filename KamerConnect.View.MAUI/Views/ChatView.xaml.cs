@@ -1,11 +1,13 @@
-﻿
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using KamerConnect.Models;
 using KamerConnect.Services;
 using Microsoft.AspNetCore.SignalR.Client;
+using Syncfusion.Maui.Chat;
 
 namespace KamerConnect.View.MAUI.Views;
 
-public partial class ChatView : ContentView
+public partial class ChatView : ContentView, INotifyPropertyChanged
 {
     private HubConnection _connection;
     private readonly ChatService _chatService;
@@ -13,28 +15,74 @@ public partial class ChatView : ContentView
     private readonly PersonService _personService;
     private readonly MatchService _matchService;
     private readonly HouseService _houseService;
-    private readonly IServiceProvider _serviceProvider;
-    public Person Sender;
-    public Chat SelectedChat { get; set; }
 
-    public ChatView(IServiceProvider serviceProvider,HouseService houseService, MatchService matchService, ChatService chatService, AuthenticationService authenticationService, PersonService personService)
+    public Person Sender { get; private set; }
+    public Chat SelectedChat { get; private set; }
+    private ObservableCollection<object> _messages = new();
+   
+    public ObservableCollection<object> Messages
     {
+        get
+        {
+            return _messages;
+        }
+        set
+        {
+            _messages = value;
+        }
+    } 
+    private Author _currentUser;
+    public Author CurrentUser
+            {
+                get
+                {
+                    return _currentUser;
+                }
+                set
+                {
+                    _currentUser = value;
+                    RaisePropertyChanged("CurrentUser");
+                }
+            }
+    public event PropertyChangedEventHandler? PropertyChanged;
         
-        BindingContext = this;
-        _serviceProvider = serviceProvider;
+    public void RaisePropertyChanged(string propName)
+    {
+        if (PropertyChanged != null)
+        {
+            PropertyChanged(this, new PropertyChangedEventArgs(propName));
+        }
+    }  
+
+    public ChatView(HouseService houseService, MatchService matchService,
+                    ChatService chatService, AuthenticationService authenticationService,
+                    PersonService personService)
+    {
+        InitializeComponent();
+
         _houseService = houseService;
         _matchService = matchService;
         _authenticationService = authenticationService;
         _chatService = chatService;
         _personService = personService;
-        GetCurrentPerson().GetAwaiter().GetResult();
-        SelectedChat = _chatService.GetChatByMatchId(GetCurrentMatch());
-        LoadChatMessages(SelectedChat);
-       InitializeComponent();
-        InitializeSignalR();
-        
+
+        BindingContext = this;
+
+        InitializeChat();
     }
-    private async Task GetCurrentPerson()
+
+    private async void InitializeChat()
+    {
+        await LoadSender();
+        SelectedChat = _chatService.GetChatByMatchId(GetCurrentMatch());
+        CurrentUser = new Author { Name = Sender.FirstName };
+        LoadMessages();
+        InitializeSignalR();
+       
+    }
+    
+
+    private async Task LoadSender()
     {
         var session = await _authenticationService.GetSession();
         if (session != null)
@@ -43,23 +91,40 @@ public partial class ChatView : ContentView
         }
     }
 
-    private  Guid GetCurrentMatch()
+    private Guid GetCurrentMatch()
     {
         if (Sender.Role == Role.Offering)
         {
             var house = _houseService.GetByPersonId(Sender.Id);
-            List<Match> matches = _matchService.GetMatchesById(house.Id);
-            return matches.FirstOrDefault().matchId;
+            var matches = _matchService.GetMatchesById(house.Id);
+            return matches.FirstOrDefault()?.matchId ?? Guid.Empty;
         }
         else
         {
-             List<Match> matches = _matchService.GetMatchesById(Sender.Id);
-             return matches.FirstOrDefault().matchId;
+            var matches = _matchService.GetMatchesById(Sender.Id);
+            return matches.FirstOrDefault()?.matchId ?? Guid.Empty;
         }
-       
-       
     }
-    
+
+    private void LoadMessages()
+    {
+        var messages = _chatService.GetChatMessages(SelectedChat.ChatId);
+        foreach (var message in messages)
+        {
+            _messages.Add(ConvertToSyncfusionMessage(message));
+        }
+    }
+
+    private TextMessage ConvertToSyncfusionMessage(ChatMessage chatMessage)
+    {
+        Author incomingAuthor = new Author { Name = "Them" };
+        return new TextMessage
+        {
+            Text = chatMessage.Message,
+            Author = chatMessage.SenderId == Sender.Id ? CurrentUser : incomingAuthor,
+            DateTime = chatMessage.SendAt
+        };
+    }
 
     private async void InitializeSignalR()
     {
@@ -71,25 +136,20 @@ public partial class ChatView : ContentView
         {
             Application.Current.Dispatcher.Dispatch(() =>
             {
-                var chatMessage = new ChatMessage(
-                    Guid.NewGuid(),
-                    senderId,   
-                    message,
-                    DateTime.Now
-                );
-                if (senderId == Sender.Id)
+                var isCurrentUser = senderId == Sender.Id;
+
+                var newMessage = new TextMessage
                 {
-                    chatMessage.Message = "you" + chatMessage.Message;
-                    SelectedChat.messages.Add(chatMessage);
-                }
-                else
-                {
-                    chatMessage.Message = "them" + chatMessage.Message;
-                    SelectedChat.messages.Add(chatMessage);
-                }
+                    Text = message,
+                    Author = isCurrentUser ? _currentUser : new Author { Name = "Them" },
+                    DateTime = DateTime.Now
+                };
+                if(isCurrentUser)
+                    return;
+                _messages.Add(newMessage);
             });
         });
-
+       
 
         try
         {
@@ -97,54 +157,45 @@ public partial class ChatView : ContentView
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Fout bij verbinden met SignalR: {ex.Message}");
+            Console.WriteLine($"Error connecting to SignalR: {ex.Message}");
         }
     }
 
-    public void LoadChatMessages(Chat chat)
+    
+
+    private void ChatControl_SendMessage(object? sender, SendMessageEventArgs e)
     {
-        List<ChatMessage> messages = _chatService.GetChatMessages(chat.ChatId);
         
-        foreach (var message in messages)
-        {
-            Application.Current.Dispatcher.Dispatch(() =>
-            {
-                if (message.SenderId == Sender.Id)
-                {
-                    message.Message = "you" + message.Message;
-                    SelectedChat.messages.Add(message);
-                }
-                else
-                {
-                    message.Message = "them" + message.Message;
-                    SelectedChat.messages.Add(message);
-                }
-                
-            });
-        }
-    }
-
-    private async void OnSendMessageClicked(object sender, EventArgs e)
-    {
-        if (SelectedChat == null || string.IsNullOrWhiteSpace(MessageEntry.Text))
-        {
+        if (string.IsNullOrWhiteSpace(e.Message.Text))
             return;
-        }
 
-        var newMessage = new ChatMessage(
+        var messageText = e.Message.Text;
+
+        var chatMessage = new ChatMessage(
+            Guid.NewGuid(), Sender.Id, messageText, DateTime.Now);
+        
+        var newChatMessage = new ChatMessage
+        (
             Guid.NewGuid(),
             Sender.Id,
-            MessageEntry.Text,
-            DateTime.Now);
-        
-        await _connection.InvokeAsync(
-            "SendMessage", 
-            Sender.Id.ToString(),
-            SelectedChat.ChatId, 
-            newMessage.Message 
+            messageText,
+            DateTime.Now
         );
+        
 
-        _chatService.CreateMessage(newMessage, SelectedChat.ChatId);
-        MessageEntry.Text = string.Empty;
+        try
+        {
+            // Explicitly match SignalR's InvokeAsync overload
+             _connection.InvokeAsync("SendMessage", 
+                Sender.Id.ToString(), 
+                SelectedChat.ChatId.ToString(), 
+                messageText);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending message: {ex.Message}");
+        }
+
+        _chatService.CreateMessage(newChatMessage, SelectedChat.ChatId);
     }
 }

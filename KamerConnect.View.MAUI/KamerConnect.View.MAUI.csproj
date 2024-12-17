@@ -58,6 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Syncfusion.Maui.Chat" Version="28.1.33" />
 		<ProjectReference Include="..\KamerConnect.DataAccess.GeoLocation\KamerConnect.DataAccess.GeoLocation.csproj" />
 		<ProjectReference Include="..\KamerConnect.DataAccess.Postgres\KamerConnect.DataAccess.Postgres.csproj" />
 		<ProjectReference Include="..\KamerConnect.DataAccess.Minio\KamerConnect.DataAccess.Minio.csproj" />
