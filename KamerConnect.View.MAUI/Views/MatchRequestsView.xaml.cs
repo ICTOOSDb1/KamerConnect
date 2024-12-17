@@ -46,13 +46,13 @@ public partial class MatchRequestsView : ContentView
         FilteredMatchRequests.CollectionChanged += (s, e) => OnPropertyChanged(nameof(IsEmpty));
 
         InitializeComponent();
-        
+
         if (session != null)
         {
             _person = _personService.GetPersonById(session.personId);
             LoadMatchRequests();
         }
-        
+
         StatusPicker.SelectedItem = "In behandeling";
 
         BindingContext = this;
@@ -113,13 +113,13 @@ public partial class MatchRequestsView : ContentView
 
     private void OnStatusFilterChanged(object sender, EventArgs e)
     {
-       FilterStatus();
+        FilterStatus();
     }
 
     private void FilterStatus()
     {
         var filtered = new List<MatchRequestItem>();
-        
+
         FilteredMatchRequests.Clear();
         foreach (var matchRequest in MatchRequests)
         {
@@ -236,6 +236,5 @@ public class MatchRequestItem
             _parentCollection.Remove(this);
             match.Status = status;
         }
-        
     }
 }
