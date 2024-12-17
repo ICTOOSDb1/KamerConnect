@@ -345,9 +345,9 @@ public partial class MatchRequestsView : ContentView
         {
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {
-                var profilePage = _serviceProvider.GetRequiredService<ProfilePage>();
-                profilePage.BindingContext = match;
-                Application.Current.MainPage = new NavigationPage(profilePage);
+                var chatpage = _serviceProvider.GetRequiredService<ChatPage>();
+                chatpage.BindingContext = match;
+                Application.Current.MainPage = new NavigationPage(chatpage);
             }
         }
     }
@@ -358,10 +358,10 @@ public partial class MatchRequestsView : ContentView
         {
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {
-                House house = _houseService.Get(match.houseId);
-                var housePage = _serviceProvider.GetRequiredService<HousePage>();
-                housePage.BindingContext = house;
-                Application.Current.MainPage = new NavigationPage(housePage);
+               
+                var chatpage = _serviceProvider.GetRequiredService<ChatPage>();
+                chatpage.BindingContext = match;
+                Application.Current.MainPage = new NavigationPage(chatpage);
             }
         }
     }
