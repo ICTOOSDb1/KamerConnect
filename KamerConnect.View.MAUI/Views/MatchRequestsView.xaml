@@ -2,35 +2,119 @@
 
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
              x:Class="KamerConnect.View.MAUI.Views.MatchRequestsView">
-    
-    <ContentView.Resources>
-        <ResourceDictionary>
-            <Style TargetType="ContentView">
-                <Setter Property="BackgroundColor" Value="#F9FBFD"/>
-            </Style>
-            <Style TargetType="Label">
-                <Setter Property="FontFamily" Value="Arial"/>
-                <Setter Property="TextColor"
-                        Value="{StaticResource TextColor}"/>
-            </Style>
-            
-        </ResourceDictionary>
-    </ContentView.Resources>
-    <ScrollView VerticalScrollBarVisibility="Always">
-        <StackLayout>
-            <Grid x:Name="MatchRequests" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" ></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-        
+    <Grid RowDefinitions="*, *">
+        <Grid HorizontalOptions="Fill">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Padding="0,20" ColumnDefinitions="*, *, *, *, *, *" Grid.Row="0">
+                <!-- Role: Seeking -->
+                <Label Text="Afbeelding" FontFamily="InterBold" HorizontalOptions="Start" VerticalOptions="Center" />
+                <Label x:Name="LegendField1" Text="Street" Grid.Column="1" FontFamily="InterBold"
+                       HorizontalOptions="Start" VerticalOptions="Center" />
+                <Label x:Name="LegendField2" Text="City" Grid.Column="2" FontFamily="InterBold"
+                       HorizontalOptions="Start" VerticalOptions="Center" />
+                <Label x:Name="LegendField3" Text="Type" Grid.Column="3" FontFamily="InterBold"
+                       HorizontalOptions="Start" VerticalOptions="Center" />
+                <Label x:Name="LegendField4" Text="Price" Grid.Column="4" FontFamily="InterBold"
+                       HorizontalOptions="Start" VerticalOptions="Center" />
+
+
+                <Grid Grid.Column="5" HorizontalOptions="Start" VerticalOptions="Start">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="25" />
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="StatusPicker"
+                            SelectedIndexChanged="OnStatusFilterChanged"
+                            HorizontalOptions="FillAndExpand"
+                            TextColor="Black">
+                        <Picker.Items>
+                            <x:String>Accepted</x:String>
+                            <x:String>Pending</x:String>
+                            <x:String>Rejected</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                           FontFamily="FaIcons"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           Margin="0,0,10,0" />
+                </Grid>
+            </Grid>
+            <BoxView Grid.Row="1"
+                     HeightRequest="2"
+                     BackgroundColor="LightGray"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="End">
+            </BoxView>
+        </Grid>
+
+        <CollectionView x:Name="MatchRequestsCollection"
+                        ItemsSource="{Binding FilteredMatchRequests}"
+                        SelectionMode="None"
+                        Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid RowDefinitions="*, *">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToPage}" />
+                        </Grid.GestureRecognizers>
+
+                        <Grid Grid.Row="0" Padding="0, 10" RowDefinitions="Auto" ColumnDefinitions="*, *, *, *, *, *">
+
+                            <Frame Grid.Row="0" Grid.Column="0" WidthRequest="100" HeightRequest="100"
+                                   CornerRadius="15" Padding="0" HorizontalOptions="Start">
+                                <Image Source="{Binding ProfilePicturePath}" Aspect="AspectFill" />
+                            </Frame>
+
+                            <Label Grid.Column="1" Text="{Binding Field1}"
+                                   VerticalOptions="Center" HorizontalOptions="Start" />
+                            <Label Grid.Column="2" Text="{Binding Field2}"
+                                   VerticalOptions="Center" HorizontalOptions="Start" />
+                            <Label Grid.Column="3" Text="{Binding Field3}"
+                                   VerticalOptions="Center" HorizontalOptions="Start" />
+                            <Label Grid.Column="4" Text="{Binding Field4}"
+                                   VerticalOptions="Center" HorizontalOptions="Start" />
+
+                            <HorizontalStackLayout Grid.Column="5" Spacing="20"
+                                                   HorizontalOptions="Start" VerticalOptions="Center">
+                                <Label Text="●" TextColor="{Binding StatusColor}" FontSize="32" />
+                                <Label Text="{Binding StatusText}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout x:Name="StatusButtons"
+                                                   Grid.Column="5"
+                                                   Spacing="0"
+                                                   HorizontalOptions="Start"
+                                                   VerticalOptions="Center"
+                                                   IsVisible="{Binding ShowStatusButtons}">
+                                <Button Text="⨉" TextColor="Red" BackgroundColor="Transparent"
+                                        Command="{Binding RejectCommand}" />
+                                <Button Text="✓" TextColor="Green" BackgroundColor="Transparent"
+                                        Command="{Binding AcceptCommand}" />
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                        <BoxView Grid.Row="1"
+                                 HeightRequest="2"
+                                 BackgroundColor="LightGray"
+                                 HorizontalOptions="Fill"
+                                 VerticalOptions="End">
+                        </BoxView>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label Grid.Row="1" x:Name="NoMatchRequestsLabel"
+               Text="Er zijn geen matchverzoeken weer te geven."
+               FontSize="25" FontFamily="InterLight"
+               HorizontalOptions="Center" VerticalOptions="Center"
+               IsVisible="{Binding IsEmpty}" />
     </Grid>
-    </StackLayout>
-    </ScrollView>
 </ContentView>
