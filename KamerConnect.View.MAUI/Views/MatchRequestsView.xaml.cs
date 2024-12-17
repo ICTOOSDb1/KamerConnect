@@ -53,7 +53,7 @@ public partial class MatchRequestsView : ContentView
             LoadMatchRequests();
         }
         
-        StatusPicker.SelectedItem = "Pending";
+        StatusPicker.SelectedItem = "In behandeling";
 
         BindingContext = this;
     }
@@ -128,13 +128,13 @@ public partial class MatchRequestsView : ContentView
 
         switch ($"{StatusPicker.SelectedItem}")
         {
-            case "Accepted":
+            case "Geaccepteerd":
                 filtered = FilteredMatchRequests.Where(match => match.Match.Status == Status.Accepted).ToList();
                 break;
-            case "Pending":
+            case "In behandeling":
                 filtered = FilteredMatchRequests.Where(match => match.Match.Status == Status.Pending).ToList();
                 break;
-            case "Rejected":
+            case "Geweigerd":
                 filtered = FilteredMatchRequests.Where(match => match.Match.Status == Status.Rejected).ToList();
                 break;
         }

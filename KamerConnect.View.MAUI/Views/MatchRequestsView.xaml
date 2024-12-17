@@ -11,7 +11,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid Padding="0,20" ColumnDefinitions="*, *, *, *, *, *" Grid.Row="0">
-                <!-- Role: Seeking -->
+             
                 <Label Text="Afbeelding" FontFamily="InterBold" HorizontalOptions="Start" VerticalOptions="Center" />
                 <Label x:Name="LegendField1" Text="Street" Grid.Column="1" FontFamily="InterBold"
                        HorizontalOptions="Start" VerticalOptions="Center" />
@@ -33,9 +33,9 @@
                             HorizontalOptions="FillAndExpand"
                             TextColor="Black">
                         <Picker.Items>
-                            <x:String>Accepted</x:String>
-                            <x:String>Pending</x:String>
-                            <x:String>Rejected</x:String>
+                            <x:String>Geaccepteerd</x:String>
+                            <x:String>In behandeling</x:String>
+                            <x:String>Geweigerd</x:String>
                         </Picker.Items>
                     </Picker>
                     <Label Text="{x:Static Utils:Icon.ChevronDown}"
