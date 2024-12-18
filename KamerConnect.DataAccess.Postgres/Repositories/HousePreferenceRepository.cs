@@ -84,7 +84,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                    SELECT hp.min_price, hp.max_price, hp.city, ST_AsText(hp.city_geolocation), hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id, sa.id, sa.range, sa.profile, ST_AsText(sa.geometry)
                    FROM house_preferences hp
                    INNER JOIN person p ON p.house_preferences_id = hp.id
-                   LEFT JOIN search_area sa ON hp.search_area_id = i.id
+                   LEFT JOIN search_area sa ON hp.search_area_id = sa.id
                    WHERE p.id = @PersonId;
                    """, connection))
                 {
