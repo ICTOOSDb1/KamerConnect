@@ -56,7 +56,7 @@ public partial class RegisterHomePreferencesPage : ContentPage
                 homePreferencesForm.InteriorPreference,
                 homePreferencesForm.ParkingPreference,
                 Guid.NewGuid(),
-                new Isochrone(Guid.NewGuid(), 1600, Profile.driving_car, await _geoLocationService.GetRangePolygon(1600, geoLocation))
+                new SearchArea(Guid.NewGuid(), 1600, Profile.driving_car, await _geoLocationService.GetRangePolygon(1600, geoLocation))
             );
 
             _authenticationService.Register(_person, _password);

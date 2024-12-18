@@ -37,11 +37,11 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                         pet = @Pet::preference_choice,
                         interior = @Interior::preference_choice,
                         parking = @Parking::preference_choice,
-                        isochrone_id = @IsochroneId::uuid
+                        search_area_id = @SearchAreaId::uuid
                     WHERE id = @Id::uuid;
                     """, connection))
                 {
-                    Guid newIsochroneId = CreateIsochrone(housePreferences.Isochrone, connection);
+                    Guid newSearchAreaId = CreateSearchArea(housePreferences.SearchArea, connection);
 
                     updateCommand.Parameters.AddWithValue("@Type", housePreferences.Type.ToString());
                     updateCommand.Parameters.AddWithValue("@MinPrice", housePreferences.MinBudget);
@@ -55,12 +55,12 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                     updateCommand.Parameters.AddWithValue("@Pet", housePreferences.Pet.ToString());
                     updateCommand.Parameters.AddWithValue("@Interior", housePreferences.Interior.ToString());
                     updateCommand.Parameters.AddWithValue("@Parking", housePreferences.Parking.ToString());
-                    updateCommand.Parameters.AddWithValue("@IsochroneId", newIsochroneId);
+                    updateCommand.Parameters.AddWithValue("@SearchAreaId", newSearchAreaId);
 
                     updateCommand.Parameters.AddWithValue("@Id", housePreferences.Id);
 
                     updateCommand.ExecuteNonQuery();
-                    RemoveOldIsochrone(housePreferences.Isochrone.Id, connection);
+                    RemoveSearchArea(housePreferences.SearchArea.Id, connection);
                 }
             }
         }
@@ -81,10 +81,10 @@ public class HousePreferenceRepository : IHousePreferenceRepository
 
                 using (var command = new NpgsqlCommand(
                            """
-                   SELECT hp.min_price, hp.max_price, hp.city, ST_AsText(hp.city_geolocation), hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id, i.id, i.range, i.profile, ST_AsText(i.geometry)
+                   SELECT hp.min_price, hp.max_price, hp.city, ST_AsText(hp.city_geolocation), hp.surface, hp.type, hp.residents, hp.smoking, hp.pet, hp.interior, hp.parking, hp.id, sa.id, sa.range, sa.profile, ST_AsText(sa.geometry)
                    FROM house_preferences hp
                    INNER JOIN person p ON p.house_preferences_id = hp.id
-                   LEFT JOIN isochrone i ON hp.isochrone_id = i.id
+                   LEFT JOIN search_area sa ON hp.search_area_id = i.id
                    WHERE p.id = @PersonId;
                    """, connection))
                 {
@@ -107,7 +107,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                                 EnumUtils.Validate<PreferenceChoice>(reader.GetString(9)),
                                 EnumUtils.Validate<PreferenceChoice>(reader.GetString(10)),
                                 reader.GetGuid(11),
-                                new Isochrone(reader.GetGuid(12), reader.GetInt32(13), EnumUtils.Validate<Profile>(reader.GetString(14)), new WKTReader().Read(reader.GetString(15)) as Polygon)
+                                new SearchArea(reader.GetGuid(12), reader.GetInt32(13), EnumUtils.Validate<Profile>(reader.GetString(14)), new WKTReader().Read(reader.GetString(15)) as Polygon)
                             );
                         }
                     }
@@ -135,7 +135,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                 {
                     try
                     {
-                        Guid iscochroneId = CreateIsochrone(housePreferences.Isochrone, connection);
+                        Guid iscochroneId = CreateSearchArea(housePreferences.SearchArea, connection);
                         Guid housePreferenceId = CreateHousePreferencesRecord(housePreferences, iscochroneId, connection);
                         AddHousePreferencesToPerson(personId, housePreferenceId, connection);
 
@@ -169,7 +169,7 @@ public class HousePreferenceRepository : IHousePreferenceRepository
         {
             using (var command = new NpgsqlCommand(
                        """
-                            INSERT INTO house_preferences (id, type, min_price, max_price, city, city_geolocation, surface, residents, smoking, pet, interior, parking, isochrone_id)
+                            INSERT INTO house_preferences (id, type, min_price, max_price, city, city_geolocation, surface, residents, smoking, pet, interior, parking, search_area_id)
                             VALUES (@Id::uuid,
                                     @Type::house_type,
                                     @MinPrice,
@@ -230,12 +230,12 @@ public class HousePreferenceRepository : IHousePreferenceRepository
         }
     }
 
-    private Guid CreateIsochrone(Isochrone isochrone, NpgsqlConnection connection)
+    private Guid CreateSearchArea(SearchArea searchArea, NpgsqlConnection connection)
     {
         try
         {
             using (var command = new NpgsqlCommand($"""
-                                                        INSERT INTO isochrone (
+                                                        INSERT INTO search_area (
                                                             range,
                                                             profile,
                                                             geometry
@@ -247,15 +247,15 @@ public class HousePreferenceRepository : IHousePreferenceRepository
                                                         ) RETURNING id;
                                                         """, connection))
             {
-                command.Parameters.AddWithValue("@range", isochrone.Range);
-                command.Parameters.AddWithValue("@profile", isochrone.Profile.ToString());
-                command.Parameters.AddWithValue("@geometry", isochrone.Geometry.ToText());
+                command.Parameters.AddWithValue("@range", searchArea.Range);
+                command.Parameters.AddWithValue("@profile", searchArea.Profile.ToString());
+                command.Parameters.AddWithValue("@geometry", searchArea.Geometry.ToText());
 
-                var isochroneId = command.ExecuteScalar() as Guid?;
-                if (!isochroneId.HasValue)
-                    throw new InvalidOperationException("Failed to retrieve the ID of the created isochrone.");
+                var searchAreaId = command.ExecuteScalar() as Guid?;
+                if (!searchAreaId.HasValue)
+                    throw new InvalidOperationException("Failed to retrieve the ID of the created search area.");
 
-                return isochroneId.Value;
+                return searchAreaId.Value;
             }
         }
         catch (Exception e)
@@ -265,23 +265,23 @@ public class HousePreferenceRepository : IHousePreferenceRepository
         }
     }
 
-    private void RemoveOldIsochrone(Guid isochroneId, NpgsqlConnection connection)
+    private void RemoveSearchArea(Guid searchAreaId, NpgsqlConnection connection)
     {
         try
         {
             using (var command = new NpgsqlCommand(
                 """
-            DELETE FROM isochrone
-            WHERE id = @IsochroneId;
+            DELETE FROM search_area
+            WHERE id = @SearchAreaId;
             """, connection))
             {
-                command.Parameters.AddWithValue("@IsochroneId", isochroneId);
+                command.Parameters.AddWithValue("@SearchAreaId", searchAreaId);
                 command.ExecuteNonQuery();
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error occurred while removing old isochrone: {e.Message}");
+            Console.WriteLine($"Error occurred while removing searchArea: {e.Message}");
             throw;
         }
     }

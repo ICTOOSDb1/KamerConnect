@@ -1,6 +1,6 @@
 CREATE TYPE travel_profile AS ENUM ('driving_car', 'walking', 'cycling');
 
-CREATE TABLE IF NOT EXISTS isochrone (
+CREATE TABLE IF NOT EXISTS search_area (
     id UUID PRIMARY KEY default gen_random_uuid(),
     range int,
     profile travel_profile,
@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS isochrone (
 );
 
 ALTER TABLE house_preferences
-    ADD COLUMN IF NOT EXISTS isochrone_id uuid,
-    ADD CONSTRAINT fk_isochrone FOREIGN KEY (isochrone_id) REFERENCES isochrone(id);
+    ADD COLUMN IF NOT EXISTS search_area_id uuid,
+    ADD CONSTRAINT fk_search_area FOREIGN KEY (search_area_id) REFERENCES search_area(id);

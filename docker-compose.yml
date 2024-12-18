@@ -20,6 +20,7 @@ services:
     env_file: "KamerConnect.EnvironmentVariables/local.env"
 
   ors-app:
+    restart: unless-stopped
     build:
       context: ./
     container_name: ors-app
