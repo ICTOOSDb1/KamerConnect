@@ -10,4 +10,5 @@ public interface IPersonRepository
     Guid CreatePerson(Person person);
     void UpdatePerson(Person person);
     void UpdatePersonality(Guid personId, Personality personality);
+    public List<Person> GetPersonsFromChatId(Guid chatId);
 }
