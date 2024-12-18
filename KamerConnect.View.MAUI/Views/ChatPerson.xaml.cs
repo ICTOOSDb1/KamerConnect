@@ -16,8 +16,9 @@ public partial class ChatPerson : ContentView
     private const string _bucketName = "profilepictures";
     public ChatPerson(FileService fileService)
     {
-        InitializeComponent();
         this._fileService = fileService;
+        InitializeComponent();
+        BindingContextChanged += OnBindingContextChanged;
     }
     
     /*private void OnChatTapped(object sender, EventArgs e)
