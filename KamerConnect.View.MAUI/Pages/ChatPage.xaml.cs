@@ -15,6 +15,7 @@ public partial class ChatPage : ContentPage
     private readonly AuthenticationService _authenticationService;
     private readonly PersonService _personService;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ChatService _chatService;
     private Person _person;
     
     private ObservableCollection<Chat> _chats = new ObservableCollection<Chat>();
@@ -30,14 +31,14 @@ public partial class ChatPage : ContentPage
             }
         }
     }
-    public ChatPage(AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider)
+    public ChatPage(AuthenticationService authenticationService, PersonService personService, IServiceProvider serviceProvider, ChatService chatService)
     {
         _personService = personService;
         _authenticationService = authenticationService;
         _serviceProvider = serviceProvider;
+        _chatService = chatService;
         GetCurrentPerson().GetAwaiter().GetResult();
         InitializeComponent();
-        
         
         NavigationPage.SetHasNavigationBar(this, false);
         var navbar = _serviceProvider.GetRequiredService<Navbar>();
@@ -45,12 +46,11 @@ public partial class ChatPage : ContentPage
         BindingContext = this;
     }
     
-    /*private void LoadHouses()
+    private void LoadChats()
     {
-        var housePreferences = _housePreferenceService.GetHousePreferences(_person.Id);
-        var houses = _houseService.GetByPreferences(housePreferences);
-        Chats = new ObservableCollection<Chat>(houses);
-    }*/
+        List<Chat> chats = _chatService.GetChatsFromPersonId(_person.Id);
+        Chats = new ObservableCollection<Chat>(chats);
+    }
     
     private async Task GetCurrentPerson()
     {
