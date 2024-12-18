@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using KamerConnect.Models;
 using KamerConnect.Services;
 using KamerConnect.Utils;
 using KamerConnect.View.MAUI.Pages;
-using KamerConnect.View.MAUI.Utils;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace KamerConnect.View.MAUI.Views;
 
@@ -110,6 +103,7 @@ public partial class MatchRequestsView : ContentView
             MatchRequests.Add(new MatchRequestItem(person, match, _fileService, profilePage, FilteredMatchRequests));
         }
     }
+    
 
     private void OnStatusFilterChanged(object sender, EventArgs e)
     {
@@ -145,6 +139,7 @@ public partial class MatchRequestsView : ContentView
             FilteredMatchRequests.Add(match);
         }
 
+
         OnPropertyChanged(nameof(IsEmpty));
     }
 
@@ -152,6 +147,8 @@ public partial class MatchRequestsView : ContentView
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+    
+  
 }
 
 public class MatchRequestItem
@@ -166,11 +163,14 @@ public class MatchRequestItem
     public string StatusText { get; set; }
     public Color StatusColor { get; set; }
     public bool ShowStatusButtons { get; set; }
+    public bool ShowRevertButton { get; set; }
+    public string RevertButtonText { get; set; }
 
     public Match Match { get; set; }
 
     public ICommand AcceptCommand { get; }
     public ICommand RejectCommand { get; }
+    public ICommand RevertStatusCommand { get; }
     public ICommand GoToPage { get; }
 
     public MatchRequestItem(Person person, Match match, FileService fileService, ProfilePage profilePage,
@@ -189,9 +189,20 @@ public class MatchRequestItem
         Field4 = person.BirthDate.ToShortDateString();
 
         ShowStatusButtons = true;
+        ShowRevertButton = false;
 
         AcceptCommand = new Command(() => UpdateStatus(match, Status.Accepted));
         RejectCommand = new Command(() => UpdateStatus(match, Status.Rejected));
+        
+        RevertStatusCommand = new Command(() => UpdateStatus(match, match.Status == Status.Accepted ? Status.Rejected : Status.Accepted));
+
+        
+        
+        if (match.Status != Status.Pending)
+        {
+            ShowRevertButton = true;
+            RevertButtonText = match.Status == Status.Accepted ? "Afwijzen" : "Accepteren";
+        }
 
         GoToPage = new Command(() => { App.Current.MainPage = new NavigationPage(profilePage); });
     }
@@ -221,9 +232,9 @@ public class MatchRequestItem
     private static (string Text, Color Color) GetStatusDisplay(Status status) =>
         status switch
         {
-            Status.Accepted => ("Geaccepteerd", Colors.Green),
-            Status.Pending => ("In behandeling", Colors.Orange),
-            Status.Rejected => ("Geweigerd", Colors.Red),
+            Status.Accepted => (Status.Accepted.GetDisplayName(), Colors.Green),
+            Status.Pending => (Status.Pending.GetDisplayName(), Colors.Orange),
+            Status.Rejected => (Status.Rejected.GetDisplayName(), Colors.Red),
             _ => ("", Colors.Gray)
         };
 
@@ -235,6 +246,14 @@ public class MatchRequestItem
         {
             _parentCollection.Remove(this);
             match.Status = status;
+            
+            if (match.Status != Status.Pending)
+            {
+                ShowRevertButton = true;
+                RevertButtonText = match.Status == Status.Accepted ? "Afwijzen" : "Accepteren";
+            }
         }
+        
+        
     }
 }

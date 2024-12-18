@@ -3,8 +3,10 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
+             VerticalOptions="FillAndExpand"
+             HorizontalOptions="FillAndExpand"
              x:Class="KamerConnect.View.MAUI.Views.MatchRequestsView">
-    <Grid RowDefinitions="*, *">
+    <Grid RowDefinitions="Auto, *" HeightRequest="1200"  >
         <Grid HorizontalOptions="Fill">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -60,13 +62,12 @@
                         Grid.Row="1">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid RowDefinitions="*, *">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToPage}" />
-                        </Grid.GestureRecognizers>
-
-                        <Grid Grid.Row="0" Padding="0, 10" RowDefinitions="Auto" ColumnDefinitions="*, *, *, *, *, *">
-
+                    <Grid RowDefinitions="Auto, *" Padding="0">
+                        <Grid Grid.Row="0" Padding="0, 10" RowDefinitions="Auto" ColumnDefinitions="*, *, *, *, *, *" >
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToPage}" />
+                            </Grid.GestureRecognizers>
+                            
                             <Frame Grid.Row="0" Grid.Column="0" WidthRequest="100" HeightRequest="100"
                                    CornerRadius="15" Padding="0" HorizontalOptions="Start">
                                 <Image Source="{Binding ProfilePicturePath}" Aspect="AspectFill" />
@@ -98,6 +99,17 @@
                                 <Button Text="✓" TextColor="Green" BackgroundColor="Transparent"
                                         Command="{Binding AcceptCommand}" />
                             </HorizontalStackLayout>
+                            
+                            <Button Grid.Column="5" 
+                                    IsVisible="{Binding ShowRevertButton}" 
+                                    Text="{Binding RevertButtonText}" 
+                                    Padding="10"
+                                    Style="{StaticResource PrimaryButton}"
+                                    Command="{Binding RevertStatusCommand}"
+                                    
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="CenterAndExpand" />
+
                         </Grid>
 
                         <BoxView Grid.Row="1"
