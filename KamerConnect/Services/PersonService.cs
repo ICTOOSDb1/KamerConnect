@@ -41,5 +41,8 @@ public class PersonService
         _repository.UpdatePersonality(personId, personality);
     }
 
-
+    public List<Person> GetPersonsFromChatId(Guid chatId)
+    {
+        return _repository.GetPersonsFromChatId(chatId);
+    }
 }

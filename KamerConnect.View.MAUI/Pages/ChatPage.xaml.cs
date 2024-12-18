@@ -45,12 +45,12 @@ public partial class ChatPage : ContentPage
         BindingContext = this;
     }
     
-    private void LoadHouses()
+    /*private void LoadHouses()
     {
         var housePreferences = _housePreferenceService.GetHousePreferences(_person.Id);
         var houses = _houseService.GetByPreferences(housePreferences);
         Chats = new ObservableCollection<Chat>(houses);
-    }
+    }*/
     
     private async Task GetCurrentPerson()
     {

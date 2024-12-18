@@ -1,6 +1,6 @@
 ﻿CREATE TABLE chat
 (
-    chat_id  UUID NOT NULL
+    id  UUID NOT NULL
         CONSTRAINT chat_pk
             PRIMARY KEY,
     match_id UUID
@@ -15,7 +15,7 @@ CREATE TABLE person_chat
             REFERENCES person (id),
     chat_id   UUID
         CONSTRAINT person_chat_chat_id_fk
-            REFERENCES chat (chat_id),
+            REFERENCES chat (id),
     CONSTRAINT person_chat_pk
         PRIMARY KEY (chat_id, person_id)
 );

@@ -16,7 +16,7 @@ public partial class ChatPerson : ContentView
         
     }
     
-    private void OnChatTapped(object sender, EventArgs e)
+    /*private void OnChatTapped(object sender, EventArgs e)
     {
         if (BindingContext is Chat chat)
         {
@@ -25,5 +25,5 @@ public partial class ChatPerson : ContentView
 
             App.Current.MainPage = new NavigationPage(housePage);
         }
-    }
+    }*/
 }

@@ -12,7 +12,7 @@
         BackgroundColor="#F8F8F8"
         Padding="0">
         <Frame.GestureRecognizers>
-            <TapGestureRecognizer Tapped="OnChatTapped"/>
+            <!--<TapGestureRecognizer Tapped="OnChatTapped"/>-->
         </Frame.GestureRecognizers>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Image x:Name="ProfileImage"
