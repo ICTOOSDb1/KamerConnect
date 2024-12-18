@@ -19,5 +19,15 @@ public class ChatService
     public void CreateMessage(ChatMessage message, Guid chatId)
     { 
         _chatRepository.CreateMessage(message, chatId);
-    }   
+    }
+
+    public List<Person> GetPersons(Guid chatId)
+    {
+       return _chatRepository.GetPersons(chatId);
+    }
+
+    public Chat GetChatByMatchId(Guid matchId)
+    {
+        return _chatRepository.GetChatByMatchId(matchId);
+    }
 }
