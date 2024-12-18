@@ -76,6 +76,4 @@ public class GeoLocationRepository : IGeoLocationRepository
             throw;
         }
     }
-
-
 }
