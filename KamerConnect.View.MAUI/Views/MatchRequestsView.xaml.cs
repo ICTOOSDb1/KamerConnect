@@ -79,7 +79,7 @@ public partial class MatchRequestsView : ContentView
         LegendField1.Text = "Straat";
         LegendField2.Text = "Stad";
         LegendField3.Text = "Type";
-        LegendField4.Text = "Prijs";
+        LegendField4.Text = "Prijs per maand";
 
         var matches = _matchService.GetMatchesById(_person.Id);
         foreach (var match in matches)
@@ -93,8 +93,8 @@ public partial class MatchRequestsView : ContentView
 
     private void SetupOffering()
     {
-        LegendField1.Text = "Voornaam";
-        LegendField2.Text = "School";
+        LegendField1.Text = "Naam";
+        LegendField2.Text = "Geslacht";
         LegendField3.Text = "Opleiding";
         LegendField4.Text = "Geboortedatum";
 
@@ -183,8 +183,8 @@ public class MatchRequestItem
         ProfilePicturePath = person.ProfilePicturePath != null
             ? fileService.GetFilePath("profilepictures", person.ProfilePicturePath)
             : "user.png";
-        Field1 = person.FirstName;
-        Field2 = person.Personality?.School ?? "";
+        Field1 = string.Join(" ", [person.FirstName, person.MiddleName, person.Surname]);
+        Field2 = person.Gender.GetDisplayName();
         Field3 = person.Personality?.Study ?? "";
         Field4 = person.BirthDate.ToShortDateString();
 
@@ -206,10 +206,10 @@ public class MatchRequestItem
         ProfilePicturePath = house.HouseImages[0].Path != null
             ? house.HouseImages[0].FullPath
             : "house.png";
-        Field1 = house.Street;
+        Field1 = house.Street + " " + house.HouseNumber + house.HouseNumberAddition;
         Field2 = house.City ?? "";
         Field3 = house.Type.GetDisplayName() ?? "";
-        Field4 = house.Price.ToString();
+        Field4 = "€" + house.Price;
 
         ShowStatusButtons = false;
 
