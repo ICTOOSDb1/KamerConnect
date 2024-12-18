@@ -6,6 +6,9 @@
              x:Class="KamerConnect.View.MAUI.Views.ChatView">
         <syncfusion:SfChat x:Name="chatControl"
                            Width="600"
+                           ShowTimeBreak="True"
+                           StickyTimeBreak="True"
+                           CanAutoScrollToBottom="True"
                            Messages="{Binding Messages}"
                            CurrentUser="{Binding CurrentUser}"
                            SendMessage ="ChatControl_SendMessage"

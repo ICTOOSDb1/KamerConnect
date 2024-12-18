@@ -17,6 +17,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
     private readonly HouseService _houseService;
 
     public Person Sender { get; private set; }
+    private Author incomingAuthor;
     public Chat SelectedChat { get; private set; }
     private ObservableCollection<object> _messages = new();
    
@@ -67,7 +68,6 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         _personService = personService;
 
         BindingContext = this;
-
         InitializeChat();
     }
 
@@ -76,9 +76,19 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         await LoadSender();
         SelectedChat = _chatService.GetChatByMatchId(GetCurrentMatch());
         CurrentUser = new Author { Name = Sender.FirstName };
+        GetIncomingAuthor();
         LoadMessages();
         InitializeSignalR();
        
+    }
+    
+
+    private void GetIncomingAuthor()
+    {
+        incomingAuthor = _chatService.GetPersons(SelectedChat.ChatId)
+            .Where(person => person.Id != Sender.Id)
+            .Select(person => new Author { Name = person.FirstName })
+            .FirstOrDefault();
     }
     
 
@@ -117,13 +127,13 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
 
     private TextMessage ConvertToSyncfusionMessage(ChatMessage chatMessage)
     {
-        Author incomingAuthor = new Author { Name = "Them" };
-        return new TextMessage
+        TextMessage textMessage = new TextMessage
         {
             Text = chatMessage.Message,
             Author = chatMessage.SenderId == Sender.Id ? CurrentUser : incomingAuthor,
-            DateTime = chatMessage.SendAt
+            DateTime = chatMessage.SendAt,
         };
+        return textMessage;
     }
 
     private async void InitializeSignalR()
@@ -141,7 +151,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
                 var newMessage = new TextMessage
                 {
                     Text = message,
-                    Author = isCurrentUser ? _currentUser : new Author { Name = "Them" },
+                    Author = isCurrentUser ? _currentUser : incomingAuthor,
                     DateTime = DateTime.Now
                 };
                 if(isCurrentUser)
@@ -185,7 +195,6 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
 
         try
         {
-            // Explicitly match SignalR's InvokeAsync overload
              _connection.InvokeAsync("SendMessage", 
                 Sender.Id.ToString(), 
                 SelectedChat.ChatId.ToString(), 
