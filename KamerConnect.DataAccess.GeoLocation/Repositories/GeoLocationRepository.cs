@@ -15,7 +15,7 @@ public class GeoLocationRepository : IGeoLocationRepository
 {
     public async Task<Point> GetGeoCode(string search)
     {
-        string requestUrl = $"https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?rows=1&fq=bron:BAG&q={Uri.EscapeDataString(search)}";
+        string requestUrl = $"{Environment.GetEnvironmentVariable("PDOK_URL")}/search/v3_1/free?rows=1&fq=bron:BAG&q={Uri.EscapeDataString(search)}";
 
         try
         {
@@ -41,7 +41,7 @@ public class GeoLocationRepository : IGeoLocationRepository
 
     public async Task<Polygon> GetRangePolygon(double timeRange, Point startLocation)
     {
-        string requestUrl = $"http://localhost:8081/ors/v2/isochrones/driving-car";
+        string requestUrl = $"{Environment.GetEnvironmentVariable("ORS_URL")}/ors/v2/isochrones/driving-car";
 
         try
         {
