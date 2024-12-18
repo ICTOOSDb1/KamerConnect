@@ -252,7 +252,7 @@ public class ChatRepository : IChatRepository
         return null;
     }
 
-    public List<Chat> GetChatsFromPersonId(Guid personId)
+    public List<Chat> GetChatsByPersonId(Guid personId)
     {
         try
         {
@@ -266,13 +266,14 @@ public class ChatRepository : IChatRepository
                     {
                         List<Guid> chatIds = GetChatIdsFromPerson(personId);
                         List<Chat> chats = new List<Chat>();
+                        
+                        foreach (var chatId in chatIds){
 
-                        for (int i = 0; i < chatIds.Count; i++)
-                        {
-                            Guid? matchId = GetMatchIdFromChat(chatIds[i]);
-                            List<Person> personsInChat = _personRepository.GetPersonsFromChatId(chatIds[i]);
-
-                            chats[i] = new Chat(chatIds[i], matchId, personsInChat);
+                            Guid? matchId = GetMatchIdFromChat(chatId);
+                            List<Person> personsInChat = _personRepository.GetPersonsByChatId(chatId);
+                            List<ChatMessage> chatMessages = GetChatMessages(chatId);
+                            
+                            chats.Add(new Chat(chatId, matchId, personsInChat, chatMessages));
                         }
 
                         return chats;

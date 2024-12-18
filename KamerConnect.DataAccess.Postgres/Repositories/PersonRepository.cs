@@ -308,7 +308,7 @@ public class PersonRepository : IPersonRepository
         }
     }
 
-    public List<Person> GetPersonsFromChatId(Guid chatId)
+    public List<Person> GetPersonsByChatId(Guid chatId)
     {
         
         using (var connection = new NpgsqlConnection(connectionString))

@@ -8,10 +8,11 @@ public class Chat
     
     List<Person> PersonsInChat { get; set; }
 
-    public Chat(Guid chatId, Guid? matchId, List<Person> personsInChat)
+    public Chat(Guid chatId, Guid? matchId, List<Person> personsInChat, List<ChatMessage> messages)
     {
         ChatId = chatId;
         this.matchId = matchId;
         this.PersonsInChat = personsInChat;
+        this.messages = messages;
     }
 }
