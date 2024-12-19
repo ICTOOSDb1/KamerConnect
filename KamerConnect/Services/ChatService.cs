@@ -21,13 +21,13 @@ public class ChatService
         _chatRepository.CreateMessage(message, chatId);
     }
 
-    public List<Person> GetPersons(Guid chatId)
+    public void Create(List<Chat> chats)
     {
-       return _chatRepository.GetPersons(chatId);
+        _chatRepository.Create(chats);
     }
-
-    public Chat GetChatByMatchId(Guid matchId)
+    
+    public List<Chat> GetChatsFromPerson(Guid personId)
     {
-        return _chatRepository.GetChatByMatchId(matchId);
+        return _chatRepository.GetChatsFromPerson(personId);
     }
 }

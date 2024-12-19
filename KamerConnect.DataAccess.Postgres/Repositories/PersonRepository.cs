@@ -307,4 +307,50 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
+
+    public List<Person> GetPersonsByChatId(Guid chatId)
+    {
+        
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+
+            using (var command =
+                   new NpgsqlCommand("""
+                                     SELECT 
+                                         person.id,                        
+                                         person.email,                     
+                                         person.first_name,                
+                                         person.middle_name,               
+                                         person.surname,                   
+                                         person.phone_number,              
+                                         person.birth_date,                
+                                         person.gender,                    
+                                         person.role,                      
+                                         person.profile_picture_path,      
+                                         personality.id,            
+                                         personality.school,               
+                                         personality.study,                
+                                         personality.description           
+                                     FROM person
+                                     LEFT JOIN person_chat pc ON person.id = person_chat.person_id
+                                     LEFT JOIN personality ON person.id = personality.person_id
+                                     WHERE person_chat.chat_id = @chatId::uuid;
+
+                                     """,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@id", chatId);
+                List<Person> persons = new List<Person>();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        persons.Add(ReadToPerson(reader));
+                    }
+                }
+                return persons;
+            }
+        }
+    }
 }

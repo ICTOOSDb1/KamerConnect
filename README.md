@@ -7,17 +7,20 @@
 1. **Configure Environment Variables**  
    Locate the `.env.example` file in the KamerConnect.EnvironmentVariables directory. Copy this file and rename the copy to `local.env`. Then, open the `local.env` file and fill in the necessary variables to match your setup. MINIO_KEY and MINIO_SECRET can be left empty until one of the next steps.
 
-2. **Starting the application requirements**  
+2. **ORS Configuration**
+   For ORS we use a large file which we import. This file is currently stored with git lfs to get this up and running use https://git-lfs.com.
+
+3. **Starting the application requirements**
    Make sure Docker is running. Then, open a terminal in the project’s root directory and run the following command to start the required services for the application:
 
    ```bash
    docker-compose up -d
    ```
 
-3. **Exectute database migrations**
+4. **Exectute database migrations**
    To get your database up-to-date with the current database version we created a project KamerConnect.Migrate.Postgres. When executing this projects Program.cs it automatically runs all the database upscripts. If there is a change in the database later on you can just execute this project again, because it keeps track off your executed upscripts.
 
-4. **Starting application**  
+5. **Starting application**  
     Open the project in your preferred IDE and start the .NET application.
 
 ## Working on the project
