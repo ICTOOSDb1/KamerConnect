@@ -303,7 +303,7 @@ public class HouseRepository : IHouseRepository
             new WKTReader().Read(reader.GetString(11)) as Point,
             new List<HouseImage>(),
             reader.GetBoolean(12),
-            EnumUtils.Validate<PreferenceChoice>(reader.GetString(13)),
+        EnumUtils.Validate<PreferenceChoice>(reader.GetString(13)),
             EnumUtils.Validate<PreferenceChoice>(reader.GetString(14)),
             EnumUtils.Validate<PreferenceChoice>(reader.GetString(15)),
             EnumUtils.Validate<PreferenceChoice>(reader.GetString(16))
@@ -462,18 +462,7 @@ public class HouseRepository : IHouseRepository
     FROM 
         house
     WHERE 
-        ST_DWithin(
-            house.house_geolocation,
-            (
-                SELECT 
-                    city_geolocation 
-                FROM 
-                    house_preferences 
-                WHERE 
-                    id = @housePreferenceId::uuid
-            ),
-            0.06
-        )
+        ST_Contains(ST_SetSRID(ST_GeomFromText(@geometry), 4326), house.house_geolocation)
         AND available = true
         AND residents <= @residents
         AND (
@@ -496,6 +485,7 @@ public class HouseRepository : IHouseRepository
                     command.Parameters.AddWithValue("@pet", housePreferences.Pet.ToString());
                     command.Parameters.AddWithValue("@interior", housePreferences.Interior.ToString());
                     command.Parameters.AddWithValue("@parking", housePreferences.Parking.ToString());
+                    command.Parameters.AddWithValue("@geometry", housePreferences.SearchArea.Geometry.ToText());
 
                     using (var reader = command.ExecuteReader())
                     {

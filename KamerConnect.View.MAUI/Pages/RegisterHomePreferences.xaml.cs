@@ -2,6 +2,7 @@ using KamerConnect.DataAccess.GeoLocation.Repositories;
 using KamerConnect.Models;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
+using NetTopologySuite.Geometries;
 
 
 namespace KamerConnect.View.MAUI;
@@ -40,11 +41,13 @@ public partial class RegisterHomePreferencesPage : ContentPage
     {
         if (homePreferencesForm.ValidateAll())
         {
+            var geoLocation = await _geoLocationService.GetGeoCode(homePreferencesForm.City);
+
             HousePreferences preferences = new HousePreferences(
                 double.Parse(homePreferencesForm.MinBudget),
                 double.Parse(homePreferencesForm.MaxBudget),
                 homePreferencesForm.City,
-                await _geoLocationService.GetGeoCode(homePreferencesForm.City),
+                geoLocation,
                 double.Parse(homePreferencesForm.Area),
                 homePreferencesForm.Type,
                 int.Parse(homePreferencesForm.Residents),
@@ -52,13 +55,12 @@ public partial class RegisterHomePreferencesPage : ContentPage
                 homePreferencesForm.PetPreference,
                 homePreferencesForm.InteriorPreference,
                 homePreferencesForm.ParkingPreference,
-                Guid.NewGuid()
+                Guid.NewGuid(),
+                new SearchArea(Guid.NewGuid(), homePreferencesForm.TravelTime, homePreferencesForm.TravelProfile, await _geoLocationService.GetRangePolygon(homePreferencesForm.TravelTime, homePreferencesForm.TravelProfile, geoLocation))
             );
 
             _authenticationService.Register(_person, _password);
-
-            _housePreferenceService.CreateHousePreferences(preferences);
-            _housePreferenceService.AddHousePreferences(_person.Id, preferences.Id);
+            _housePreferenceService.Create(preferences, _person.Id);
 
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {

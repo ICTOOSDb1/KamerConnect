@@ -1,5 +1,6 @@
 using KamerConnect.Models;
 using KamerConnect.Repositories;
+using NetTopologySuite.Geometries;
 
 namespace KamerConnect.Services;
 
@@ -17,14 +18,9 @@ public class HousePreferenceService
         _repository.UpdateHousePreferences(housePreferences);
     }
 
-    public Guid CreateHousePreferences(HousePreferences housePreferences)
+    public Guid Create(HousePreferences housePreferences, Guid personId)
     {
-        return _repository.CreateHousePreferences(housePreferences);
-    }
-
-    public void AddHousePreferences(Guid personId, Guid housePreferencesId)
-    {
-        _repository.AddHousePreferences(personId, housePreferencesId);
+        return _repository.Create(housePreferences, personId);
     }
 
     public HousePreferences? GetHousePreferences(Guid personId)
