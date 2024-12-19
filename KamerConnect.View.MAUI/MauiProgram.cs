@@ -48,7 +48,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<HousePreferenceService>(sp => new HousePreferenceService(new HousePreferenceRepository()));
         builder.Services.AddSingleton<MatchService>(sp => new MatchService(new MatchRepository()));
         builder.Services.AddSingleton<GeoLocationService>(sp => new GeoLocationService(new GeoLocationRepository()));
-        /*builder.Services.AddSingleton<ChatService>(sp => new ChatService(new ChatRepository()));*/
+        builder.Services.AddSingleton<ChatService>(sp => new ChatService(new ChatRepository()));
 
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<MainPage>();

@@ -100,7 +100,7 @@ public class ChatRepository : IChatRepository
         );
     }
 
-    private void CreateChat(Guid chatId)
+    private void CreateChat(Guid chatId, Guid? matchId)
     {
         try
         {
@@ -117,7 +117,7 @@ public class ChatRepository : IChatRepository
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
                     command.Parameters.AddWithValue("@chatId", chatId);
-                    command.Parameters.AddWithValue("@matchId", null);
+                    command.Parameters.AddWithValue("@matchId", matchId);
                     var result = command.ExecuteNonQuery();
                 }
             }
@@ -157,8 +157,8 @@ public class ChatRepository : IChatRepository
             throw;
         }
     }
-
-    public void Create(List<Guid> personIds)
+    
+    public void Create(List<Chat> chats)
     {
         try
         {
@@ -170,11 +170,18 @@ public class ChatRepository : IChatRepository
                 {
                     try
                     {
-                        Guid chatId = Guid.NewGuid();
-                        CreateChat(chatId);
-                        foreach (var personId in personIds)
+                        foreach (Chat chat in chats)
                         {
-                            AddPersonToChat(chatId, personId);
+                            Guid chatId = Guid.NewGuid();
+                            CreateChat(chatId, chat.MatchId);
+
+                            List<Person> personInChat = chat.PersonsInChat;
+
+                            foreach (Person person in personInChat)
+                            {
+                                AddPersonToChat(chatId, person.Id);
+                            }
+
                         }
                     }
                     catch
@@ -193,14 +200,14 @@ public class ChatRepository : IChatRepository
         }
     }
 
-    private List<Guid> GetChatIdsFromPerson(Guid personId)
+    private List<Chat> GetEmptyChatsFromPerson(Guid personId)
     {
         using (var connection = new NpgsqlConnection(_connectionString))
         {
             connection.Open();
 
             using (var command = new NpgsqlCommand("""
-                                                   SELECT DISTINCT id
+                                                   SELECT DISTINCT id, match_id
                                                    FROM person_chat pc
                                                    LEFT JOIN chat c ON pc.chat_id = c.id
                                                    WHERE (pc.person_id = @personId::uuid)
@@ -211,48 +218,26 @@ public class ChatRepository : IChatRepository
 
                 using (var reader = command.ExecuteReader())
                 {
-                    List<Guid> chatIds = new List<Guid>();
-
+                    List<Chat> chats = new List<Chat>();
+                    
                     while (reader.Read())
                     {
-                        chatIds.Add(reader.GetGuid(0));
+                        Chat chat = new Chat(
+                            reader.GetGuid(0),
+                            reader.GetGuid(1),
+                            new List<Person>(),
+                            new List<ChatMessage>()
+                        );
+                        chats.Add(chat);
                     }
 
-                    return chatIds;
+                    return chats;
                 }
             }
         }
     }
-
-    private Guid? GetMatchIdFromChat(Guid chatId)
-    {
-        using (var connection = new NpgsqlConnection(_connectionString))
-        {
-            connection.Open();
-
-            using (var command = new NpgsqlCommand("""
-                                                   SELECT match_id
-                                                   FROM chat c
-                                                   WHERE (c.id = @chatId::uuid)
-                                                   """,
-                       connection))
-            {
-                command.Parameters.AddWithValue("@chatId", chatId);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        return reader.GetGuid(0);
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public List<Chat> GetChatsFromPersonId(Guid personId)
+    
+    private List<Chat> GetPersonsAndMessagesFromChats(List<Chat> chats)
     {
         try
         {
@@ -264,15 +249,12 @@ public class ChatRepository : IChatRepository
                 {
                     try
                     {
-                        List<Guid> chatIds = GetChatIdsFromPerson(personId);
-                        List<Chat> chats = new List<Chat>();
-
-                        for (int i = 0; i < chatIds.Count; i++)
-                        {
-                            Guid? matchId = GetMatchIdFromChat(chatIds[i]);
-                            List<Person> personsInChat = _personRepository.GetPersonsFromChatId(chatIds[i]);
-
-                            chats[i] = new Chat(chatIds[i], matchId, personsInChat);
+                        foreach (var chat in chats){
+                            List<Person> personsInChat = _personRepository.GetPersonsByChatId(chat.ChatId);
+                            List<ChatMessage> chatMessages = GetChatMessages(chat.ChatId);
+                            
+                            chat.PersonsInChat = personsInChat;
+                            chat.Messages = chatMessages;
                         }
 
                         return chats;
@@ -287,8 +269,39 @@ public class ChatRepository : IChatRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error while retrieving chats: {e.Message}");
+            Console.WriteLine($"Error while retrieving persons and messages for chat: {e.Message}");
             throw;
         }
+    }
+
+    public List<Chat> GetChatsFromPerson(Guid personId)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        List<Chat> chats = GetEmptyChatsFromPerson(personId);
+                        chats = GetPersonsAndMessagesFromChats(chats);
+                        return chats;
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            } 
+        }
+        catch (Exception e) 
+        { 
+            Console.WriteLine($"Error while retrieving chats from person Id: {e.Message}");
+        throw; 
+        } 
     }
 }
