@@ -21,9 +21,9 @@ public class ChatService
         _chatRepository.CreateMessage(message, chatId);
     }
 
-    public void Create(List<Guid> personIds, Guid? matchId)
+    public void Create(List<Chat> chats)
     {
-        _chatRepository.Create(personIds, matchId);
+        _chatRepository.Create(chats);
     }
     
     public List<Chat> GetChatsFromPerson(Guid personId)

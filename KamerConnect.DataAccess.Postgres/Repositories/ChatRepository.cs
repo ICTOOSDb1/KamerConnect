@@ -157,8 +157,8 @@ public class ChatRepository : IChatRepository
             throw;
         }
     }
-
-    public void Create(List<Guid> personIds, Guid? matchId)
+    
+    public void Create(List<Chat> chats)
     {
         try
         {
@@ -170,11 +170,18 @@ public class ChatRepository : IChatRepository
                 {
                     try
                     {
-                        Guid chatId = Guid.NewGuid();
-                        CreateChat(chatId, matchId);
-                        foreach (var personId in personIds)
+                        foreach (Chat chat in chats)
                         {
-                            AddPersonToChat(chatId, personId);
+                            Guid chatId = Guid.NewGuid();
+                            CreateChat(chatId, chat.MatchId);
+
+                            List<Person> personInChat = chat.PersonsInChat;
+
+                            foreach (Person person in personInChat)
+                            {
+                                AddPersonToChat(chatId, person.Id);
+                            }
+
                         }
                     }
                     catch
