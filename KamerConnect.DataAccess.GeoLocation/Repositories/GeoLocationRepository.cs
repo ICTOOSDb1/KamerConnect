@@ -39,9 +39,9 @@ public class GeoLocationRepository : IGeoLocationRepository
         }
     }
 
-    public async Task<Polygon> GetRangePolygon(double timeRange, Point startLocation)
+    public async Task<Polygon> GetRangePolygon(int timeRange, Profile travelProfile, Point startLocation)
     {
-        string requestUrl = $"{Environment.GetEnvironmentVariable("ORS_URL")}/ors/v2/isochrones/driving-car";
+        string requestUrl = $"{Environment.GetEnvironmentVariable("ORS_URL")}/ors/v2/isochrones/{travelProfile.ToString().Replace("_", "-")}";
 
         try
         {
@@ -50,8 +50,8 @@ public class GeoLocationRepository : IGeoLocationRepository
                 var requestBody = new
                 {
                     locations = new[] { new[] { startLocation.X, startLocation.Y } },
-                    range = new[] { timeRange },
-                    interval = timeRange
+                    range = new[] { timeRange * 60 },
+                    interval = timeRange * 60
                 };
 
                 var jsonBody = JsonConvert.SerializeObject(requestBody);

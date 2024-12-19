@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using NetTopologySuite.Geometries;
 
 namespace KamerConnect.Models;
@@ -20,5 +21,8 @@ public class SearchArea
 
 public enum Profile
 {
-    driving_car
+    [Display(Name = "Auto")]
+    driving_car,
+    [Display(Name = "Fiets")]
+    cycling_regular,
 }

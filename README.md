@@ -10,7 +10,7 @@
 2. **ORS Configuration**
    For ORS we use a large file which we import. This file is currently stored with git lfs to get this up and running use https://git-lfs.com.
 
-3. **Starting the application requirements**  
+3. **Starting the application requirements**
    Make sure Docker is running. Then, open a terminal in the project’s root directory and run the following command to start the required services for the application:
 
    ```bash

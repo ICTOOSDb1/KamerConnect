@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -61,7 +62,51 @@
                           InputType="Text"
                           IsRequired="True"/>
 
-        <VerticalStackLayout Grid.Row="4"
+        <Grid  ColumnDefinitions="*,*"
+               Grid.Row="4"
+               Grid.Column="1"
+               ColumnSpacing="20">
+            <Components:Entry LabelText="Minimal reistijd in minuten"
+                              x:Name="TravelTimeInput"
+                              Text="{Binding SearchArea.Range, Mode=TwoWay}"
+                              InputType="Number"
+                              Grid.Column="0"
+                              IsRequired="True"/>
+            <VerticalStackLayout Grid.Row="7"
+                                 Grid.Column="1"
+                                 Spacing="5">
+                <Label Text="Roken in huis"
+                       FontSize="14"
+                       VerticalOptions="Center"/>
+
+                <Frame Style="{StaticResource EntryFrameStyle}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="25"/>
+                        </Grid.ColumnDefinitions>
+                        <Picker x:Name="TravelProfileInput"
+                                SelectedIndex="0"
+                                HorizontalOptions="FillAndExpand"
+                                BackgroundColor="Transparent"
+                                TextColor="Black">
+                            <Picker.Items>
+                                <x:String>Auto</x:String>
+                                <x:String>Fiets</x:String>
+                            </Picker.Items>
+                        </Picker>
+                        <Label Text="{x:Static Utils:Icon.ChevronDown}"
+                               FontFamily="FaIcons"
+                               Grid.Column="1"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               Margin="0,0,10,0"/>
+                    </Grid>
+                </Frame>
+            </VerticalStackLayout>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="5"
                              Grid.Column="1"
                              Spacing="5">
             <Label Text="Type woning"
@@ -98,12 +143,12 @@
         <Components:Entry LabelText="Maximum hoeveelheid kamergenoten"
                           x:Name="ResidentsInput"
                           Text="{Binding Residents, Mode=TwoWay}"
-                          Grid.Row="5"
+                          Grid.Row="6"
                           Grid.Column="1"
                           InputType="Number"
                           IsRequired="True"/>
 
-        <VerticalStackLayout Grid.Row="6"
+        <VerticalStackLayout Grid.Row="7"
                              Grid.Column="1"
                              Spacing="5">
             <Label Text="Roken in huis"
@@ -137,7 +182,7 @@
             </Frame>
         </VerticalStackLayout>
 
-        <VerticalStackLayout Grid.Row="7"
+        <VerticalStackLayout Grid.Row="8"
                              Grid.Column="1"
                              Spacing="5">
             <Label Text="Huisdieren in huis?"
@@ -171,7 +216,7 @@
             </Frame>
         </VerticalStackLayout>
 
-        <VerticalStackLayout Grid.Row="8"
+        <VerticalStackLayout Grid.Row="9"
                              Grid.Column="1"
                              Spacing="5">
             <Label Text="Moet er een fietsenstalling bij het huis zijn?"
@@ -205,7 +250,7 @@
             </Frame>
         </VerticalStackLayout>
 
-        <VerticalStackLayout Grid.Row="9"
+        <VerticalStackLayout Grid.Row="10"
                              Grid.Column="1"
                              Spacing="5">
             <Label Text="Wilt u meubilair inbregrepen?"

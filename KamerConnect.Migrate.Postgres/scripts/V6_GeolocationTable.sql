@@ -1,4 +1,4 @@
-CREATE TYPE travel_profile AS ENUM ('driving_car', 'walking', 'cycling');
+CREATE TYPE travel_profile AS ENUM ('driving_car', 'cycling_regular');
 
 CREATE TABLE IF NOT EXISTS search_area (
     id UUID PRIMARY KEY default gen_random_uuid(),
