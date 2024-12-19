@@ -1,8 +1,8 @@
-using KamerConnect.Service.Chat;
+using KamerConnect.DataAccess.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace KamerConnect.Service.Chat;
+namespace KamerConnect.DataAccess.SignalR;
 
 public class ChatHub : Hub
 {
