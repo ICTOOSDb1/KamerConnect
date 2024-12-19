@@ -26,8 +26,8 @@ public class ChatService
         _chatRepository.Create(personIds, matchId);
     }
     
-    public List<Chat> GetChatsFromPerson(List<Chat> chats)
+    public List<Chat> GetChatsFromPerson(Guid personId)
     {
-        return _chatRepository.GetChatsFromPerson(chats);
+        return _chatRepository.GetChatsFromPerson(personId);
     }
 }

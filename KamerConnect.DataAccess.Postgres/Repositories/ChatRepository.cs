@@ -230,7 +230,7 @@ public class ChatRepository : IChatRepository
         }
     }
     
-    public List<Chat> GetChatsFromPerson(List<Chat> chats)
+    private List<Chat> GetPersonsAndMessagesFromChats(List<Chat> chats)
     {
         try
         {
@@ -262,8 +262,39 @@ public class ChatRepository : IChatRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error while retrieving chats: {e.Message}");
+            Console.WriteLine($"Error while retrieving persons and messages for chat: {e.Message}");
             throw;
         }
+    }
+
+    public List<Chat> GetChatsFromPerson(Guid personId)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        List<Chat> chats = GetEmptyChatsFromPerson(personId);
+                        chats = GetPersonsAndMessagesFromChats(chats);
+                        return chats;
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            } 
+        }
+        catch (Exception e) 
+        { 
+            Console.WriteLine($"Error while retrieving chats from person Id: {e.Message}");
+        throw; 
+        } 
     }
 }
