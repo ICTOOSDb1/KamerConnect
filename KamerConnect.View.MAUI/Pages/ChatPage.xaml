@@ -5,6 +5,11 @@
              xmlns:Views="clr-namespace:KamerConnect.View.MAUI.Views"
              x:Class="KamerConnect.View.MAUI.Pages.ChatPage">
     <ContentPage.Content>
-        <ContentView x:Name="chatMessages"></ContentView>
+        <VerticalStackLayout>
+            <HorizontalStackLayout x:Name="chats">
+                <Label Text="heyy"></Label>
+            </HorizontalStackLayout>
+            <ContentView x:Name="chatMessages"></ContentView>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

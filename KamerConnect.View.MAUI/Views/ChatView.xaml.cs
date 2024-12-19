@@ -74,7 +74,8 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
     private async void InitializeChat()
     {
         await LoadSender();
-        SelectedChat = _chatService.GetChatByMatchId(GetCurrentMatch());
+        List<Chat> chats = _chatService.GetChatsFromPerson(Sender.Id);
+        SelectedChat = chats.FirstOrDefault();
         CurrentUser = new Author { Name = Sender.FirstName };
         GetIncomingAuthor();
         LoadMessages();
@@ -85,10 +86,11 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
 
     private void GetIncomingAuthor()
     {
-        incomingAuthor = _chatService.GetPersons(SelectedChat.ChatId)
-            .Where(person => person.Id != Sender.Id)
-            .Select(person => new Author { Name = person.FirstName })
-            .FirstOrDefault();
+        incomingAuthor = new Author { Name = "hij" };
+        // incomingAuthor = _chatService.GetPersons(SelectedChat.ChatId)
+        //     .Where(person => person.Id != Sender.Id)
+        //     .Select(person => new Author { Name = person.FirstName })
+        //     .FirstOrDefault();
     }
     
 

@@ -24,12 +24,20 @@
                                    Spacing="20"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center">
-                <Label x:Name="Overview"
-                    Text="Overzicht"
-                    FontSize="18"
-                    TextColor="{StaticResource TextColor}">
+                <Label x:Name="chat"
+                       Text="gesprekken"
+                       FontSize="18"
+                       TextColor="{StaticResource TextColor}">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnChatsTapped"/>
+                        <TapGestureRecognizer Tapped="OnChatsTapped"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label x:Name="Overview"
+                       Text="Overzicht"
+                       FontSize="18"
+                       TextColor="{StaticResource TextColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOverviewTapped"/>
                     </Label.GestureRecognizers>
                 </Label>
                 <Label x:Name="search"
