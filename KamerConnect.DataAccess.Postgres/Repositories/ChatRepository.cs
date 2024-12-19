@@ -3,7 +3,7 @@ using System.Data.Common;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
 using KamerConnect.Utils;
-using KamerConnect.DataAccess.Postgres.Repositories;
+using KamerConnect.Services;
 using Npgsql;
 
 
@@ -13,12 +13,12 @@ public class ChatRepository : IChatRepository
 {
     private readonly string _connectionString;
 
-    private PersonRepository _personRepository;
+    private PersonService _personService;
 
-    public ChatRepository(PersonRepository personRepository)
+    public ChatRepository(PersonService personService)
     {
         _connectionString = EnvironmentUtils.GetConnectionString();
-        this._personRepository = personRepository;
+        _personService = personService;
     }
 
     public List<ChatMessage> GetChatMessages(Guid chatId)
@@ -250,7 +250,7 @@ public class ChatRepository : IChatRepository
                     try
                     {
                         foreach (var chat in chats){
-                            List<Person> personsInChat = _personRepository.GetPersonsByChatId(chat.ChatId);
+                            List<Person> personsInChat = _personService.GetPersonsByChatId(chat.ChatId);
                             List<ChatMessage> chatMessages = GetChatMessages(chat.ChatId);
                             
                             chat.PersonsInChat = personsInChat;
