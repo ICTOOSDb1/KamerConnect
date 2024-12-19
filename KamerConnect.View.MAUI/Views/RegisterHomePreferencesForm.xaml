@@ -66,15 +66,14 @@
                Grid.Row="4"
                Grid.Column="1"
                ColumnSpacing="20">
-            <Components:Entry LabelText="Minimal reistijd in minuten"
+            <Components:Entry LabelText="Maximale reistijd in minuten"
                               x:Name="TravelTimeInput"
                               Text="{Binding SearchArea.Range, Mode=TwoWay}"
                               InputType="Number"
                               Grid.Column="0"
                               IsRequired="True"/>
             <VerticalStackLayout Grid.Row="7"
-                                 Grid.Column="1"
-                                 Spacing="5">
+                                 Grid.Column="1">
                 <Label Text="Reis voorkeur"
                        FontSize="14"
                        VerticalOptions="Center"/>
@@ -149,8 +148,7 @@
                           IsRequired="True"/>
 
         <VerticalStackLayout Grid.Row="7"
-                             Grid.Column="1"
-                             Spacing="5">
+                             Grid.Column="1">
             <Label Text="Roken in huis"
                    FontSize="14"
                    VerticalOptions="Center"/>
@@ -161,7 +159,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="25"/>
                     </Grid.ColumnDefinitions>
-                    <Picker x:Name=" "
+                    <Picker x:Name="SmokingTypePicker"
                             SelectedIndex="0"
                             HorizontalOptions="FillAndExpand"
                             BackgroundColor="Transparent"
