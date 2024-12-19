@@ -14,12 +14,12 @@ public class ChatRepository : IChatRepository
 {
     private readonly string _connectionString;
 
-    private PersonService _personService;
+    private PersonService _personRepository;
 
-    public ChatRepository(PersonService personService)
+    public ChatRepository(PersonService personRepository)
     {
         _connectionString = EnvironmentUtils.GetConnectionString();
-        _personService = personService;
+        this._personRepository = personRepository;
     }
 
     public List<ChatMessage> GetChatMessages(Guid chatId)
@@ -30,8 +30,8 @@ public class ChatRepository : IChatRepository
 
             using (var command = new NpgsqlCommand("""
                                                    SELECT *
-                                                   FROM chatmessages
-                                                   WHERE chat = @chatId
+                                                   FROM chat_messages
+                                                   WHERE chat_id = @chatId
                                                    """,
                        connection))
             {
@@ -67,9 +67,9 @@ public class ChatRepository : IChatRepository
                 connection.Open();
 
                 string updateQuery = $"""
-                                      INSERT INTO chatmessages (
-                                        sender, chat, message)
-                                        VALUES (@personId::uuid, @chat::uuid, @message::text
+                                      INSERT INTO chat_messages (
+                                        sender, chat_id, message)
+                                        VALUES (@personId::uuid, @chatId::uuid, @message::text
                                       )
                                       """;
 
@@ -95,9 +95,9 @@ public class ChatRepository : IChatRepository
     {
         return new ChatMessage(
             reader.GetGuid(0),
-            reader.GetGuid(2),
-            reader.GetString(3),
-            reader.GetDateTime(4)
+            reader.GetGuid(4),
+            reader.GetString(2),
+            reader.GetDateTime(3)
         );
     }
 
@@ -110,7 +110,7 @@ public class ChatRepository : IChatRepository
                 connection.Open();
                 string updateQuery = $"""
                                       INSERT INTO chat (
-                                        chat_id, match_id)
+                                        id, match_id)
                                         VALUES (@chatId::uuid, @match_id::uuid
                                       )
                                       """;
@@ -251,7 +251,7 @@ public class ChatRepository : IChatRepository
                     try
                     {
                         foreach (var chat in chats){
-                            List<Person> personsInChat = _personService.GetPersonsByChatId(chat.ChatId);
+                            List<Person> personsInChat = _personRepository.GetPersonsByChatId(chat.ChatId);
                             List<ChatMessage> chatMessages = GetChatMessages(chat.ChatId);
                             
                             chat.PersonsInChat = personsInChat;

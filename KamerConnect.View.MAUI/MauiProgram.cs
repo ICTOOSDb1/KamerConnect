@@ -63,6 +63,7 @@ public static class MauiProgram
         builder.Services.AddTransient<MatchRequestsPage>();
         builder.Services.AddTransient<MatchRequestsView>();
         builder.Services.AddTransient<HousePage>();
+        builder.Services.AddTransient<ChatPage>();
 
         builder.Services.AddFilePicker();
 
