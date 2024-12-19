@@ -75,7 +75,7 @@
             <VerticalStackLayout Grid.Row="7"
                                  Grid.Column="1"
                                  Spacing="5">
-                <Label Text="Roken in huis"
+                <Label Text="Reis voorkeur"
                        FontSize="14"
                        VerticalOptions="Center"/>
 
@@ -161,7 +161,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="25"/>
                     </Grid.ColumnDefinitions>
-                    <Picker x:Name="SmokingTypePicker"
+                    <Picker x:Name=" "
                             SelectedIndex="0"
                             HorizontalOptions="FillAndExpand"
                             BackgroundColor="Transparent"
