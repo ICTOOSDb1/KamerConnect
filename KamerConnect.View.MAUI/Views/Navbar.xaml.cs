@@ -62,11 +62,11 @@ public partial class Navbar : ContentView
         }
     }
     
-    /*private async void OnChatPageTabbed(object sender, TappedEventArgs e)
+    private async void OnChatPageTabbed(object sender, TappedEventArgs e)
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
-            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<>());
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<ChatPage>());
         }
-    }*/
+    }
 }

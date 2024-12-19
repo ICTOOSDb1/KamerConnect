@@ -49,6 +49,14 @@
                         <TapGestureRecognizer Tapped="OnProfileTapped"/>
                     </Label.GestureRecognizers>
                 </Label>
+                <Label x:Name="chat"
+                       Text="Chat"
+                       FontSize="18"
+                       TextColor="{StaticResource TextColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnChatPageTabbed"/>
+                    </Label.GestureRecognizers>
+                </Label>
             </HorizontalStackLayout>
         </Grid>
     </ContentView.Content>
