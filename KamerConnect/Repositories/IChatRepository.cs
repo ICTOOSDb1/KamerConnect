@@ -6,6 +6,6 @@ public interface IChatRepository
 {
     List<ChatMessage> GetChatMessages(Guid chatId);
     void CreateMessage(ChatMessage message, Guid chatId);
-    void Create(List<Guid> personIds);
-    public List<Chat> GetChatsByPersonId(Guid personId);
+    void Create(List<Guid> personIds, Guid? matchId);
+    public List<Chat> GetChatsFromPerson(List<Chat> chats);
 }
