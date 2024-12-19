@@ -48,7 +48,7 @@ public partial class ChatPage : ContentPage
     
     private void LoadChats()
     {
-        List<Chat> chats = _chatService.GetChatsFromPersonId(_person.Id);
+        List<Chat> chats = _chatService.GetChatsFromPerson(_person.Id);
         Chats = new ObservableCollection<Chat>(chats);
     }
     

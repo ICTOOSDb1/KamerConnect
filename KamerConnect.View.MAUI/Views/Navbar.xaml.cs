@@ -61,4 +61,12 @@ public partial class Navbar : ContentView
             App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
         }
     }
+    
+    /*private async void OnChatPageTabbed(object sender, TappedEventArgs e)
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<>());
+        }
+    }*/
 }

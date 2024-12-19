@@ -20,7 +20,11 @@ public partial class ChatPerson : ContentView
         InitializeComponent();
         BindingContextChanged += OnBindingContextChanged;
     }
-    
+
+    public ChatPerson()
+    {
+        
+    }
     /*private void OnChatTapped(object sender, EventArgs e)
     {
         if (BindingContext is Chat chat)
