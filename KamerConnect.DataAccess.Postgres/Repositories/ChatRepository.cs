@@ -95,9 +95,9 @@ public class ChatRepository : IChatRepository
     {
         return new ChatMessage(
             reader.GetGuid(0),
-            reader.GetGuid(4),
-            reader.GetString(2),
-            reader.GetDateTime(3)
+            reader.GetGuid(3),
+            reader.GetString(1),
+            reader.GetDateTime(2)
         );
     }
 
