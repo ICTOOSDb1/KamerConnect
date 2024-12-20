@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KamerConnect.View.MAUI.Views.MotivationPopup"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components">
+    <Frame BackgroundColor="{StaticResource BackgroundColor}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="4*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Row="0" 
+                   Text="Motivatie" 
+                   FontSize="Large"></Label>
+            <Label Grid.Row="1" 
+                   Text="Wat spreekt u aan in bij dit huis?"
+                   FontSize="Medium"></Label>
+            
+            <Components:TextEditor Grid.Row="2"
+                                   x:Name="MotivationInput">
+                <Components:TextEditor.Resources>
+                    <Style TargetType="Frame" BasedOn="{StaticResource EntryFrameStyle}">
+                        <Setter Property="HeightRequest" Value="150" />
+                    </Style>
+                </Components:TextEditor.Resources>
+            </Components:TextEditor>
+            
+            <Button Text="Matchverzoek versturen"
+                    Style="{StaticResource PrimaryButton}"
+                    Clicked="OnSendMotivationButtonClicked"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Margin="20"
+                    Grid.Row="3"/>
+            
+            <Button Text="Annuleren"
+                    Style="{StaticResource SecondaryButton}"
+                    Clicked="OnCancelButtonClicked"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Margin="20"
+                    Grid.Row="3"/>
+        </Grid>
+    </Frame>
+</ContentView>

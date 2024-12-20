@@ -78,15 +78,18 @@ public partial class HousePage : ContentPage
     private async void MakeMatch(object sender, System.EventArgs e)
     {
         var session = await _authenticationService.GetSession();
-
+        
+        string result = await MotivationForm.DisplayMotivationPopup();
+        if (result == null) return;
+        
         if (BindingContext is House house)
         {
             if (session != null)
+            {   
                 _matchService.CreateMatch(new Match(
-                    Guid.Empty, session.personId, house.Id, Status.Pending, ""));
-
+                    Guid.Empty, session.personId, house.Id, Status.Pending, result));
+            }
             RegisterButton.IsVisible = false;
-
             StateLabel.Text = Status.Pending.GetDisplayName();
             StateLabel.IsVisible = true;
         }
