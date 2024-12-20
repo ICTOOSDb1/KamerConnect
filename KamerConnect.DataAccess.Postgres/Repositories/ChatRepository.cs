@@ -225,7 +225,7 @@ public class ChatRepository : IChatRepository
                     {
                         Chat chat = new Chat(
                             reader.GetGuid(0),
-                            reader.GetGuid(1),
+                            reader.IsDBNull(1) ? null : reader.GetGuid(1),
                             new List<Person>(),
                             new List<ChatMessage>()
                         );

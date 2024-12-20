@@ -13,7 +13,5 @@
                            CurrentUser="{Binding CurrentUser}"
                            SendMessage ="ChatControl_SendMessage"
                            />
-        
-   
-  
+    
 </ContentView>
