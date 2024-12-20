@@ -50,6 +50,14 @@ public partial class ChatPage : ContentPage
     private void LoadChats()
     {
         List<Chat> chats = _chatService.GetChatsFromPerson(_person.Id);
+        foreach (Chat chat in chats)
+        {
+            Guid targetPersonId = _person.Id; 
+            chat.PersonsInChat = chat.PersonsInChat
+                .Where(person => person.Id != targetPersonId)
+                .Concat(chat.PersonsInChat.Where(person => person.Id == targetPersonId))
+                .ToList(); // puts logged in person at the end of the list
+        }
         Chats = new ObservableCollection<Chat>(chats);
     }
     

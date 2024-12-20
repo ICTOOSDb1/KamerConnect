@@ -11,20 +11,17 @@ namespace KamerConnect.View.MAUI.Views;
 
 public partial class ChatPerson : ContentView
 {
-    
-    FileService _fileService;
     private const string _bucketName = "profilepictures";
-    public ChatPerson(FileService fileService)
+    public ChatPerson()
     {
-        this._fileService = fileService;
         InitializeComponent();
         BindingContextChanged += OnBindingContextChanged;
     }
 
-    public ChatPerson()
+    /*public ChatPerson()
     {
-        
-    }
+        InitializeComponent();
+    }*/
     /*private void OnChatTapped(object sender, EventArgs e)
     {
         if (BindingContext is Chat chat)
@@ -36,6 +33,17 @@ public partial class ChatPerson : ContentView
         }
     }*/
     
+    public string GetFilePath(string bucketName, string fileName)
+    {
+        var endpoint = Environment.GetEnvironmentVariable("MINIO_ENDPOINT");
+
+        if (string.IsNullOrEmpty(endpoint))
+        {
+            throw new InvalidOperationException("Minio environment variables are missing. Please check your .env file.");
+        }
+
+        return $"http://{endpoint}/{bucketName}/{fileName}";
+    }
     private void OnBindingContextChanged(object sender, EventArgs e)
     {
         if (BindingContext is Chat chat)
@@ -43,8 +51,8 @@ public partial class ChatPerson : ContentView
             if (chat.PersonsInChat.Count > 0)
             {
                 ProfileImage.Source = !string.IsNullOrEmpty(chat.PersonsInChat[0].ProfilePicturePath)
-                    ? _fileService.GetFilePath(_bucketName, chat.PersonsInChat[0].ProfilePicturePath)
-                    : "geenProfiel.png";
+                    ? GetFilePath(_bucketName, chat.PersonsInChat[0].ProfilePicturePath)
+                    : "user.png";
             }
             else
             {
