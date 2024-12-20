@@ -22,8 +22,10 @@ public partial class ChatPerson : ContentView
     {
         if (BindingContext is Chat chat)
         {
-            var chatView = MauiProgram.Services.GetRequiredService<ChatPage>();
-            chatView.BindingContext = chat;
+            var chatViewPlaceholder= new ChatViewPlaceholder();
+            chatViewPlaceholder.BackgroundColor = Colors.Red;
+            BindingContext = chatViewPlaceholder;
+            //implement event here that changes sends parameters and change to chatview in the chatpage
         }
     }
     

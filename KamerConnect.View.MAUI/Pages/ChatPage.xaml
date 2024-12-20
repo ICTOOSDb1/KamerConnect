@@ -6,7 +6,8 @@
              x:Class="KamerConnect.View.MAUI.Pages.ChatPage"
              BackgroundColor="{StaticResource BackgroundColor}">
 
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,*"
+          ColumnDefinitions="Auto, *">
         <ContentView x:Name="NavbarContainer"
                      Grid.Row="0"/>
         <!--<Label
@@ -19,11 +20,11 @@
                     </Label.GestureRecognizers>
         </Label>-->
 
-        <ScrollView Grid.Row="2"
+        <ScrollView Grid.Row="1" Grid.Column="0"
                     BackgroundColor="Transparent"
                     VerticalScrollBarVisibility="Never"
                     HorizontalScrollBarVisibility="Never">
-            <Grid RowDefinitions="Auto,*"
+            <Grid RowDefinitions="Auto,Auto,*"
                   Padding="50, 50">
                 <CollectionView Grid.Row="1"
                                 ItemsSource="{Binding Chats}"
@@ -32,7 +33,7 @@
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" 
                                          Span="1"
-                                         HorizontalItemSpacing="20"/>
+                                         />
                     </CollectionView.ItemsLayout>
 
                     <CollectionView.ItemTemplate>
@@ -43,6 +44,10 @@
                 </CollectionView>
             </Grid>
         </ScrollView>
+        <ContentView x:Name="ChatMessages"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     Content="{Binding SelectedChat}"/>
     </Grid>
 
 </ContentPage>
