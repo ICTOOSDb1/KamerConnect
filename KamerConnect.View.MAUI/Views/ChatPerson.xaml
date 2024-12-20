@@ -6,13 +6,13 @@
              BackgroundColor="{StaticResource BackgroundColor}">
     <Frame 
         CornerRadius="10"
-        HeightRequest="100"
+        HeightRequest="85"
         HorizontalOptions="Start"
         BorderColor="Transparent"
-        BackgroundColor="#F8F8F8"
+        BackgroundColor="{StaticResource BackgroundColor}"
         Padding="20">
         <Frame.GestureRecognizers>
-            <!--<TapGestureRecognizer Tapped="OnChatTapped"/>-->
+            <TapGestureRecognizer Tapped="OnChatTapped"/>
         </Frame.GestureRecognizers>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Image x:Name="ProfileImage"
@@ -20,7 +20,8 @@
                    HeightRequest="50"
                    HorizontalOptions="FillAndExpand"/>
             
-            <Label Text="{Binding PersonsInChat[0].FirstName}"
+            <Label Text="{Binding PersonsInChat[0].FullName}"
+                   FontFamily="Inter-Regular"
                    FontSize="Medium"
                    VerticalOptions="Center"
                    TextColor="Black"></Label>

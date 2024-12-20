@@ -17,21 +17,15 @@ public partial class ChatPerson : ContentView
         InitializeComponent();
         BindingContextChanged += OnBindingContextChanged;
     }
-
-    /*public ChatPerson()
-    {
-        InitializeComponent();
-    }*/
-    /*private void OnChatTapped(object sender, EventArgs e)
+    
+    private void OnChatTapped(object sender, EventArgs e)
     {
         if (BindingContext is Chat chat)
         {
-            var chatView = MauiProgram.Services.GetRequiredService<HousePage>();
+            var chatView = MauiProgram.Services.GetRequiredService<ChatPage>();
             chatView.BindingContext = chat;
-
-            App.Current.MainPage = new NavigationPage(housePage);
         }
-    }*/
+    }
     
     public string GetFilePath(string bucketName, string fileName)
     {

@@ -56,7 +56,7 @@ public partial class ChatPage : ContentPage
             chat.PersonsInChat = chat.PersonsInChat
                 .Where(person => person.Id != targetPersonId)
                 .Concat(chat.PersonsInChat.Where(person => person.Id == targetPersonId))
-                .ToList(); // puts logged in person at the end of the list
+                .ToList();
         }
         Chats = new ObservableCollection<Chat>(chats);
     }

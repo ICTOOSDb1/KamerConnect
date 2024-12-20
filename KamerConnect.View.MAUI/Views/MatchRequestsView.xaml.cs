@@ -72,16 +72,9 @@ public partial class MatchRequestsView : ContentView
                 Label FullNameLabel = new Label
                 {
                     HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
+                    VerticalOptions = LayoutOptions.Center,
+                    Text = person.FullName,
                 };
-                if (person.Surname != null)
-                {
-                    FullNameLabel.Text = person.FirstName + " " + person.MiddleName + " " + person.Surname;
-                }
-                else
-                {
-                    FullNameLabel.Text = person.FirstName + " " + person.Surname;
-                }
                 Label SchoolLabel = new Label();
                 Label StudyLabel = new Label();
                 if (person.Personality != null)

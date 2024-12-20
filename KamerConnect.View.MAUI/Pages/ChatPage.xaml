@@ -9,8 +9,17 @@
     <Grid RowDefinitions="Auto,*">
         <ContentView x:Name="NavbarContainer"
                      Grid.Row="0"/>
+        <!--<Label
+            FontSize="Large"
+            Grid.Row="1"
+                    IsVisible="{Binding AreHousesEmpty}">
+                    Geen woningen gevonden op basis van jouw voorkeuren.
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="NavigateToProfile"/>
+                    </Label.GestureRecognizers>
+        </Label>-->
 
-        <ScrollView Grid.Row="1"
+        <ScrollView Grid.Row="2"
                     BackgroundColor="Transparent"
                     VerticalScrollBarVisibility="Never"
                     HorizontalScrollBarVisibility="Never">
