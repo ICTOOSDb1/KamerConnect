@@ -17,7 +17,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
     private readonly HouseService _houseService;
 
     public Person Sender { get; private set; }
-    private Author incomingAuthor;
+    private Author _incomingAuthor;
     private Chat _selectedChat;
     public Chat SelectedChat
     {
@@ -91,7 +91,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
 
     private void GetIncomingAuthor()
     {
-        incomingAuthor = _selectedChat.PersonsInChat
+        _incomingAuthor = _selectedChat.PersonsInChat
             .Where(person => person.Id != Sender.Id)
             .Select(person => new Author { Name = person.FirstName })
             .FirstOrDefault();
@@ -111,7 +111,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         TextMessage textMessage = new TextMessage
         {
             Text = chatMessage.Message,
-            Author = chatMessage.SenderId == Sender.Id ? CurrentUser : incomingAuthor,
+            Author = chatMessage.SenderId == Sender.Id ? CurrentUser : _incomingAuthor,
             DateTime = chatMessage.SendAt,
         };
         return textMessage;
@@ -132,7 +132,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
                 var newMessage = new TextMessage
                 {
                     Text = message,
-                    Author = isCurrentUser ? _currentUser : incomingAuthor,
+                    Author = isCurrentUser ? _currentUser : _incomingAuthor,
                     DateTime = DateTime.Now
                 };
                 if (newMessage.Author == _currentUser)
