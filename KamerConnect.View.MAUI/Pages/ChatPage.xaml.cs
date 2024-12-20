@@ -38,6 +38,7 @@ public partial class ChatPage : ContentPage
         _serviceProvider = serviceProvider;
         _chatService = chatService;
         GetCurrentPerson().GetAwaiter().GetResult();
+        LoadChats();
         InitializeComponent();
         
         NavigationPage.SetHasNavigationBar(this, false);
