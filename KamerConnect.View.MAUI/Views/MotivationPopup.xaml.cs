@@ -13,14 +13,14 @@ public partial class MotivationPopup : ContentView
     public MotivationPopup()
     {
         InitializeComponent();
-        IsVisible = false; 
+        IsVisible = false;
     }
 
     public Task<string?> DisplayMotivationPopup()
     {
         _taskCompletionSource = new TaskCompletionSource<string?>();
 
-        IsVisible = true; 
+        IsVisible = true;
         return _taskCompletionSource.Task;
     }
 
@@ -28,12 +28,12 @@ public partial class MotivationPopup : ContentView
     {
         MotivationInput.Text = string.Empty;
         _taskCompletionSource.SetResult(null);
-        IsVisible = false; 
+        IsVisible = false;
     }
 
     private void OnSendMotivationButtonClicked(object sender, EventArgs e)
     {
         _taskCompletionSource.SetResult(MotivationInput.Text);
-        IsVisible = false; 
+        IsVisible = false;
     }
 }
