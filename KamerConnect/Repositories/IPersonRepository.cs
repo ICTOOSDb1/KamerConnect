@@ -11,4 +11,5 @@ public interface IPersonRepository
     void UpdatePerson(Person person);
     void UpdatePersonality(Guid personId, Personality personality);
     public List<Person> GetPersonsByChatId(Guid chatId);
+    bool CheckIfEmailExists(string email);
 }
