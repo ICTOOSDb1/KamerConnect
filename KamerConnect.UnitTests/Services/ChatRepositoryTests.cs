@@ -18,5 +18,5 @@ public class ChatRepositoryTests
         _mockRepository = new Mock<IChatRepository>();
         _chatService = new ChatService(_mockRepository.Object);
     }
-    
+
 }

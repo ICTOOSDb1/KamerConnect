@@ -68,7 +68,7 @@ public class ChatRepository : IChatRepository
 
                 string updateQuery = $"""
                                       INSERT INTO chat_messages (
-                                        sender, chat_id, message)
+                                        sender_id, chat_id, message)
                                         VALUES (@personId::uuid, @chatId::uuid, @message::text
                                       )
                                       """;
@@ -158,7 +158,7 @@ public class ChatRepository : IChatRepository
             throw;
         }
     }
-    
+
     public void Create(List<Chat> chats)
     {
         try
@@ -220,7 +220,7 @@ public class ChatRepository : IChatRepository
                 using (var reader = command.ExecuteReader())
                 {
                     List<Chat> chats = new List<Chat>();
-                    
+
                     while (reader.Read())
                     {
                         Chat chat = new Chat(
@@ -237,7 +237,7 @@ public class ChatRepository : IChatRepository
             }
         }
     }
-    
+
     private List<Chat> GetPersonsAndMessagesFromChats(List<Chat> chats)
     {
         try
@@ -250,10 +250,11 @@ public class ChatRepository : IChatRepository
                 {
                     try
                     {
-                        foreach (var chat in chats){
+                        foreach (var chat in chats)
+                        {
                             List<Person> personsInChat = _personRepository.GetPersonsByChatId(chat.ChatId);
                             List<ChatMessage> chatMessages = GetChatMessages(chat.ChatId);
-                            
+
                             chat.PersonsInChat = personsInChat;
                             chat.Messages = chatMessages;
                         }
@@ -297,12 +298,12 @@ public class ChatRepository : IChatRepository
                         throw;
                     }
                 }
-            } 
+            }
         }
-        catch (Exception e) 
-        { 
+        catch (Exception e)
+        {
             Console.WriteLine($"Error while retrieving chats from person Id: {e.Message}");
-        throw; 
-        } 
+            throw;
+        }
     }
 }

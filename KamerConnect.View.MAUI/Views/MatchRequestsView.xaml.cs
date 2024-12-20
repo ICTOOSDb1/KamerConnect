@@ -358,7 +358,7 @@ public partial class MatchRequestsView : ContentView
         {
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {
-               
+
                 var chatpage = _serviceProvider.GetRequiredService<ChatPage>();
                 chatpage.BindingContext = match;
                 Application.Current.MainPage = new NavigationPage(chatpage);

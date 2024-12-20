@@ -10,17 +10,26 @@ namespace KamerConnect.View.MAUI.Views;
 public partial class ChatView : ContentView, INotifyPropertyChanged
 {
     private HubConnection _connection;
+    private readonly IServiceProvider _serviceProvider;
     private readonly ChatService _chatService;
     private readonly AuthenticationService _authenticationService;
     private readonly PersonService _personService;
-    private readonly MatchService _matchService;
     private readonly HouseService _houseService;
 
     public Person Sender { get; private set; }
     private Author incomingAuthor;
-    public Chat SelectedChat { get; private set; }
+    private Chat _selectedChat;
+    public Chat SelectedChat
+    {
+        get => _selectedChat;
+        set
+        {
+            _selectedChat = value;
+            RaisePropertyChanged(nameof(SelectedChat));
+        }
+    }
     private ObservableCollection<object> _messages = new();
-   
+
     public ObservableCollection<object> Messages
     {
         get
@@ -31,97 +40,67 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         {
             _messages = value;
         }
-    } 
+    }
     private Author _currentUser;
     public Author CurrentUser
-            {
-                get
-                {
-                    return _currentUser;
-                }
-                set
-                {
-                    _currentUser = value;
-                    RaisePropertyChanged("CurrentUser");
-                }
-            }
+    {
+        get
+        {
+            return _currentUser;
+        }
+        set
+        {
+            _currentUser = value;
+            RaisePropertyChanged("CurrentUser");
+        }
+    }
     public event PropertyChangedEventHandler? PropertyChanged;
-        
+
     public void RaisePropertyChanged(string propName)
     {
         if (PropertyChanged != null)
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propName));
         }
-    }  
+    }
 
-    public ChatView(HouseService houseService, MatchService matchService,
-                    ChatService chatService, AuthenticationService authenticationService,
-                    PersonService personService)
+    public ChatView(IServiceProvider serviceProvider, Chat chat, int index, Person sender)
     {
         InitializeComponent();
-
-        _houseService = houseService;
-        _matchService = matchService;
-        _authenticationService = authenticationService;
-        _chatService = chatService;
-        _personService = personService;
-
+        _serviceProvider = serviceProvider;
+        Sender = sender;
+        _houseService = _serviceProvider.GetRequiredService<HouseService>();
+        _chatService = _serviceProvider.GetRequiredService<ChatService>();
+        _authenticationService = _serviceProvider.GetRequiredService<AuthenticationService>();
+        _personService = _serviceProvider.GetRequiredService<PersonService>();
+        SelectedChat = _chatService.GetChatsFromPerson(Sender.Id)[index];
         BindingContext = this;
         InitializeChat();
     }
 
     private async void InitializeChat()
     {
-        await LoadSender();
-        List<Chat> chats = _chatService.GetChatsFromPerson(Sender.Id);
-        SelectedChat = chats.FirstOrDefault();
+
         CurrentUser = new Author { Name = Sender.FirstName };
         GetIncomingAuthor();
         LoadMessages();
         InitializeSignalR();
-       
+
     }
-    
+
 
     private void GetIncomingAuthor()
     {
-        incomingAuthor = new Author { Name = "hij" };
-        // incomingAuthor = _chatService.GetPersons(SelectedChat.ChatId)
-        //     .Where(person => person.Id != Sender.Id)
-        //     .Select(person => new Author { Name = person.FirstName })
-        //     .FirstOrDefault();
-    }
-    
-
-    private async Task LoadSender()
-    {
-        var session = await _authenticationService.GetSession();
-        if (session != null)
-        {
-            Sender = _personService.GetPersonById(session.personId);
-        }
-    }
-
-    private Guid GetCurrentMatch()
-    {
-        if (Sender.Role == Role.Offering)
-        {
-            var house = _houseService.GetByPersonId(Sender.Id);
-            var matches = _matchService.GetMatchesById(house.Id);
-            return matches.FirstOrDefault()?.matchId ?? Guid.Empty;
-        }
-        else
-        {
-            var matches = _matchService.GetMatchesById(Sender.Id);
-            return matches.FirstOrDefault()?.matchId ?? Guid.Empty;
-        }
+        incomingAuthor = _selectedChat.PersonsInChat
+            .Where(person => person.Id != Sender.Id)
+            .Select(person => new Author { Name = person.FirstName })
+            .FirstOrDefault();
     }
 
     private void LoadMessages()
     {
-        var messages = _chatService.GetChatMessages(SelectedChat.ChatId);
-        foreach (var message in messages)
+
+        foreach (var message in _selectedChat.Messages)
         {
             _messages.Add(ConvertToSyncfusionMessage(message));
         }
@@ -156,13 +135,11 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
                     Author = isCurrentUser ? _currentUser : incomingAuthor,
                     DateTime = DateTime.Now
                 };
-                if(isCurrentUser)
+                if (newMessage.Author == _currentUser)
                     return;
                 _messages.Add(newMessage);
             });
         });
-       
-
         try
         {
             await _connection.StartAsync();
@@ -173,11 +150,9 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         }
     }
 
-    
-
     private void ChatControl_SendMessage(object? sender, SendMessageEventArgs e)
     {
-        
+
         if (string.IsNullOrWhiteSpace(e.Message.Text))
             return;
 
@@ -185,7 +160,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
 
         var chatMessage = new ChatMessage(
             Guid.NewGuid(), Sender.Id, messageText, DateTime.Now);
-        
+
         var newChatMessage = new ChatMessage
         (
             Guid.NewGuid(),
@@ -193,14 +168,14 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
             messageText,
             DateTime.Now
         );
-        
+
 
         try
         {
-             _connection.InvokeAsync("SendMessage", 
-                Sender.Id.ToString(), 
-                SelectedChat.ChatId.ToString(), 
-                messageText);
+            _connection.InvokeAsync("SendMessage",
+               Sender.Id.ToString(),
+               SelectedChat.ChatId.ToString(),
+               messageText);
         }
         catch (Exception ex)
         {

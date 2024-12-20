@@ -11,7 +11,7 @@ public class ChatHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-    
+
         var chatId = Context.GetHttpContext()?.Request.Query["chatId"].ToString();
 
         if (!string.IsNullOrEmpty(chatId))

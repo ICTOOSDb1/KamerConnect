@@ -68,5 +68,5 @@ public partial class Navbar : ContentView
             App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<UpdateAccount>());
         }
     }
-    
+
 }

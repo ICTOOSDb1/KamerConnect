@@ -14,20 +14,19 @@ public partial class ChatPage : ContentPage
     private readonly ChatService _chatService;
     private readonly AuthenticationService _authenticationService;
     private readonly PersonService _personService;
+    private readonly IServiceProvider _serviceProvider;
     private Person _CurrentPerson;
     private List<Chat> chatsList;
-    
+    private ChatView chatView;
+
     public ChatPage(IServiceProvider serviceProvider, AuthenticationService authenticationService, ChatService chatService, PersonService personService)
     {
+        _serviceProvider = serviceProvider;
         _personService = personService;
         _chatService = chatService;
         _authenticationService = authenticationService;
-        
+
         GetCurrentPerson().GetAwaiter().GetResult();
-        // var chatView = serviceProvider.GetRequiredService<ChatView>();
-        // BindingContext = chatView; 
-        // chatMessages.Content = chatView;
-        
         InitializeComponent();
         FillFist();
     }
@@ -46,11 +45,34 @@ public partial class ChatPage : ContentPage
     {
         foreach (var chat in chatsList)
         {
-            Label chatIDText = new Label();
-            chatIDText.Text = chat.ChatId.ToString();
+            Label chatIDText = new Label
+            {
+                Text = chat.ChatId.ToString()
+            };
+
+            // Create a TapGestureRecognizer
+            TapGestureRecognizer tapGesture = new TapGestureRecognizer();
+
+            // Add a method to be executed when the label is tapped
+            tapGesture.Tapped += (s, e) =>
+            {
+                int index = chatsList.IndexOf(chat);
+                OnChatTapped(chat, index);
+            };
+
+            chatIDText.GestureRecognizers.Add(tapGesture);
             chats.Children.Add(chatIDText);
         }
-    } 
-    
+    }
+
+    private void OnChatTapped(Chat chat, int index)
+    {
+        chatView = new ChatView(_serviceProvider, chat, index, _CurrentPerson);
+        BindingContext = chatView;
+        chatMessages.Content = chatView;
+
+    }
+
+
 
 }
