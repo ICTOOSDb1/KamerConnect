@@ -27,27 +27,26 @@
             <Grid RowDefinitions="Auto,Auto,*"
                   Padding="50, 50">
                 <CollectionView Grid.Row="1"
+                                x:Name="ChatCollectionView"
                                 ItemsSource="{Binding Chats}"
                                 BackgroundColor="Transparent"
-                                HorizontalOptions="Fill">
+                                HorizontalOptions="Fill"
+                                SelectionMode="Single"
+                                SelectionChanged="OnCollectionViewSelectionChanged">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" 
                                          Span="1"
                                          />
                     </CollectionView.ItemsLayout>
-
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Views:ChatPerson BindingContext="{Binding}"/>
+                            <Views:ChatPerson x:Name="ChatPerson" BindingContext="{Binding}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </Grid>
         </ScrollView>
-        <ContentView x:Name="ChatMessages"
-                     Grid.Row="1"
-                     Grid.Column="1"
-                     Content="{Binding SelectedChat}"/>
+        <ContentView x:Name="ChatMessages" Grid.Row="1" Grid.Column="1"></ContentView>
     </Grid>
 
 </ContentPage>

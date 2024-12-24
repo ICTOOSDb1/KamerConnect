@@ -12,21 +12,11 @@ namespace KamerConnect.View.MAUI.Views;
 public partial class ChatPerson : ContentView
 {
     private const string _bucketName = "profilepictures";
+    public event EventHandler ChatIsClicked;
     public ChatPerson()
     {
         InitializeComponent();
         BindingContextChanged += OnBindingContextChanged;
-    }
-    
-    private void OnChatTapped(object sender, EventArgs e)
-    {
-        if (BindingContext is Chat chat)
-        {
-            var chatViewPlaceholder= new ChatViewPlaceholder();
-            chatViewPlaceholder.BackgroundColor = Colors.Red;
-            BindingContext = chatViewPlaceholder;
-            //implement event here that changes sends parameters and change to chatview in the chatpage
-        }
     }
     
     public string GetFilePath(string bucketName, string fileName)

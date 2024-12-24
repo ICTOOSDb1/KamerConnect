@@ -11,9 +11,6 @@
         BorderColor="Transparent"
         BackgroundColor="{StaticResource BackgroundColor}"
         Padding="20">
-        <Frame.GestureRecognizers>
-            <TapGestureRecognizer Tapped="OnChatTapped"/>
-        </Frame.GestureRecognizers>
         <HorizontalStackLayout Padding="5" Spacing="5">
             <Image x:Name="ProfileImage"
                    Aspect="AspectFill"

@@ -17,8 +17,8 @@ public partial class ChatPage : ContentPage
     private readonly IServiceProvider _serviceProvider;
     private readonly ChatService _chatService;
     private Person _person;
-    
-    private ObservableCollection<Chat> _chats = new ObservableCollection<Chat>();
+
+    private ObservableCollection<Chat> _chats;
     public ObservableCollection<Chat> Chats
     {
         get => _chats;
@@ -28,6 +28,20 @@ public partial class ChatPage : ContentPage
             {
                 _chats = value;
                 OnPropertyChanged(nameof(Chats));
+            }
+        }
+    }
+    private Chat _selectedChat;
+
+    public Chat SelectedChat
+    {
+        get => _selectedChat;
+        set
+        {
+            if (_selectedChat != value)
+            {
+                _selectedChat = value;
+                OnPropertyChanged(nameof(SelectedChat));
             }
         }
     }
@@ -68,6 +82,17 @@ public partial class ChatPage : ContentPage
         if (session != null)
         {
             _person = _personService.GetPersonById(session.personId);
+        }
+    }
+    
+    void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is Chat selectedChat)
+        {
+            SelectedChat = selectedChat;
+            Console.WriteLine(selectedChat.ChatId);
+            
+            ChatMessages.Content.BackgroundColor = Colors.Blue;
         }
     }
 }
