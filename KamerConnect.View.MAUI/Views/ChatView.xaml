@@ -4,14 +4,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Chat;assembly=Syncfusion.Maui.Chat"
              x:Class="KamerConnect.View.MAUI.Views.ChatView">
-        <syncfusion:SfChat x:Name="chatControl"
-                           Width="600"
-                           ShowTimeBreak="True"
-                           StickyTimeBreak="True"
-                           CanAutoScrollToBottom="True"
-                           Messages="{Binding Messages}"
-                           CurrentUser="{Binding CurrentUser}"
-                           SendMessage ="ChatControl_SendMessage"
-                           />
-    
+    <VerticalStackLayout x:Name="StackLayout">
+    <syncfusion:SfChat x:Name="chatControl"
+                       Width="600"
+                       ShowTimeBreak="True"
+                       StickyTimeBreak="True"
+                       CanAutoScrollToBottom="True"
+                       ShowAttachmentButton="True"
+                       Messages="{Binding Messages}"
+                       CurrentUser="{Binding CurrentUser}"
+                       CardTapped="sfChat_CardTapped"
+                       AttachmentButtonClicked="SendCard"
+                       SendMessage ="ChatControl_SendMessage">
+    </syncfusion:SfChat>
+   </VerticalStackLayout>
 </ContentView>

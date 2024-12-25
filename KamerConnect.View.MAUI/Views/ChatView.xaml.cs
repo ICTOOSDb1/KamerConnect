@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text.Json;
+using System.Windows.Input;
 using KamerConnect.Models;
 using KamerConnect.Services;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -15,7 +17,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
     private readonly AuthenticationService _authenticationService;
     private readonly PersonService _personService;
     private readonly HouseService _houseService;
-
+    public Command GenerateCardsCommand { get; }
     public Person Sender { get; private set; }
     private Author _incomingAuthor;
     private Chat _selectedChat;
@@ -54,6 +56,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
             RaisePropertyChanged("CurrentUser");
         }
     }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public void RaisePropertyChanged(string propName)
@@ -100,7 +103,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
     private void LoadMessages()
     {
 
-        foreach (var message in _selectedChat.Messages)
+        foreach (ChatMessage message in _selectedChat.Messages)
         {
             _messages.Add(ConvertToSyncfusionMessage(message));
         }
@@ -120,7 +123,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
     private async void InitializeSignalR()
     {
         _connection = new HubConnectionBuilder()
-            .WithUrl($"http://localhost:5105/chathub?chatId={SelectedChat.ChatId}")
+            .WithUrl($"{Environment.GetEnvironmentVariable("SIGNALR_URL")}{SelectedChat.ChatId}")
             .Build();
 
         _connection.On<Guid, string>("ReceiveMessage", (senderId, message) =>
@@ -129,15 +132,34 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
             {
                 var isCurrentUser = senderId == Sender.Id;
 
-                var newMessage = new TextMessage
+                TextMessage newMessage = new TextMessage
                 {
                     Text = message,
                     Author = isCurrentUser ? _currentUser : _incomingAuthor,
                     DateTime = DateTime.Now
                 };
-                if (newMessage.Author == _currentUser)
+                if (newMessage.Author == _currentUser) 
                     return;
                 _messages.Add(newMessage);
+            });
+        });
+        _connection.On<Guid>("ReceiveCard", (senderId) =>
+        {
+            Application.Current.Dispatcher.Dispatch(() =>
+            {
+                bool isCurrentUser = senderId == Sender.Id;
+                CardMessage cardWithButtons = new CardMessage
+                {
+                    Cards = ProposeCardWithButtons(),
+                    Author = isCurrentUser ? _currentUser : _incomingAuthor,
+                };
+                if (!isCurrentUser)
+                    _messages.Add(cardWithButtons);
+                else
+                    proposeMessage();
+                    
+                    
+                
             });
         });
         try
@@ -157,11 +179,8 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
             return;
 
         var messageText = e.Message.Text;
-
-        var chatMessage = new ChatMessage(
-            Guid.NewGuid(), Sender.Id, messageText, DateTime.Now);
-
-        var newChatMessage = new ChatMessage
+      
+        ChatMessage newChatMessage = new ChatMessage
         (
             Guid.NewGuid(),
             Sender.Id,
@@ -173,9 +192,9 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         try
         {
             _connection.InvokeAsync("SendMessage",
-               Sender.Id.ToString(),
-               SelectedChat.ChatId.ToString(),
-               messageText);
+                Sender.Id,
+                SelectedChat.ChatId,
+                messageText);
         }
         catch (Exception ex)
         {
@@ -184,4 +203,76 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
 
         _chatService.CreateMessage(newChatMessage, SelectedChat.ChatId);
     }
+
+    private ObservableCollection<Card> ProposeCardWithButtons()
+    {
+        
+        ObservableCollection<Card> cardsCollection = new ObservableCollection<Card>();
+        Card card1 = new Card()
+        {
+            Title = "Samen Wonen?",
+            Description =
+                "Ik zie het wel zitten om samen te gaan wonen jij ook?"
+        };
+        card1.Buttons.Add(new CardButton() { Title = "ja heel graag", Value = "Ja graag!" });
+        card1.Buttons.Add(new CardButton() { Title = "nee sorry", Value = "Sorry heb het er nog niet aan toe" });
+        cardsCollection.Add(card1);
+        return cardsCollection;
+    }
+    private void ProposeCardWithoutButtons()
+    {
+        
+        ObservableCollection<Card> cardsCollection = new ObservableCollection<Card>();
+        Card card1 = new Card()
+        {
+            Title = "Samen Wonen?",
+            Description =
+                "Ik zie het wel zitten om samen te gaan wonen jij ook?"
+        };
+        cardsCollection.Add(card1);
+        CardMessage cardMessage = new CardMessage()
+        {
+            Cards = cardsCollection,
+            Author = _incomingAuthor
+        };
+        _messages.Add(cardMessage);
+    }
+    private void proposeMessage()
+    {
+        
+        TextMessage textMessage = new TextMessage()
+        {
+            Text = "Ik zie het wel zitten om samen te gaan wonen jij ook?",
+            Author = _currentUser
+        };
+            _messages.Add(textMessage);
+    }
+
+    private void SendCard(object sender, EventArgs e)
+    {
+       
+        _connection.SendAsync("SendCard", Sender.Id, SelectedChat.ChatId);
+    }
+    private void sfChat_CardTapped(object sender, CardTappedEventArgs e)
+    {
+        var tappedCard = e.Card; 
+        if (tappedCard != null && e.Action != null)
+        {
+            var clickedButton = e.Action; 
+            if (clickedButton != null)
+            {
+                if (clickedButton.Value == "Ja graag!")
+                {
+                    ProposeCardWithoutButtons();
+                }
+                else if (clickedButton.Value == "Sorry heb het er nog niet aan toe")
+                {
+                    ProposeCardWithoutButtons();
+                }
+            }
+            
+        }  
+    }
+
+   
 }

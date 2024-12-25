@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace KamerConnect.Service.Chat;
 
@@ -7,6 +9,10 @@ public class ChatHub : Hub
     public async Task SendMessage(Guid senderId, Guid chat, string message)
     {
         await Clients.Group(chat.ToString()).SendAsync("ReceiveMessage", senderId, message);
+    }
+    public async Task SendCard(Guid senderId, Guid chat)
+    {
+        await Clients.Group(chat.ToString()).SendAsync("ReceiveCard", senderId);
     }
 
     public override async Task OnConnectedAsync()
