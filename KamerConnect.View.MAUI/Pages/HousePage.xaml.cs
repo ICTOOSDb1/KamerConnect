@@ -42,7 +42,7 @@ public partial class HousePage : ContentPage
 
             HouseTypeLabel.Text = house.Type.GetDisplayName();
 
-            FullnameLabel.Text = $" {owner.FirstName} {owner.MiddleName} {owner.Surname}";
+            FullnameLabel.Text = string.Join(" ", [owner.FirstName, owner.MiddleName, owner.Surname]);
 
             ImageSlideShow.Images = house.HouseImages?.Any() == true ? house.HouseImages : null;
         }
