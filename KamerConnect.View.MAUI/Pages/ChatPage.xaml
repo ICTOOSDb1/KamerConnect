@@ -6,21 +6,18 @@
              x:Class="KamerConnect.View.MAUI.Pages.ChatPage"
              BackgroundColor="{StaticResource BackgroundColor}">
 
-    <Grid RowDefinitions="Auto,*"
+    <Grid RowDefinitions="Auto, Auto, *"
           ColumnDefinitions="Auto, *">
         <ContentView x:Name="NavbarContainer"
                      Grid.Row="0"/>
-        <!--<Label
+        <Label
+            Text="{Binding SelectedChat.PersonsInChat[0].FullName, StringFormat='Chat with: {0}'}"
             FontSize="Large"
-            Grid.Row="1"
-                    IsVisible="{Binding AreHousesEmpty}">
-                    Geen woningen gevonden op basis van jouw voorkeuren.
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="NavigateToProfile"/>
-                    </Label.GestureRecognizers>
-        </Label>-->
+            Grid.Row="1" Grid.Column="1">
+        </Label>
 
-        <ScrollView Grid.Row="1" Grid.Column="0"
+
+        <ScrollView Grid.Row="2" Grid.Column="0"
                     BackgroundColor="Transparent"
                     VerticalScrollBarVisibility="Never"
                     HorizontalScrollBarVisibility="Never">
@@ -46,7 +43,7 @@
                 </CollectionView>
             </Grid>
         </ScrollView>
-        <ContentView x:Name="ChatMessages" Grid.Row="1" Grid.Column="1"></ContentView>
+        <ContentView x:Name="ChatMessages" Grid.Row="2" Grid.Column="1"></ContentView>
     </Grid>
 
 </ContentPage>

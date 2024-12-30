@@ -45,7 +45,7 @@ public class Person
         Gender = gender;
         Role = role;
         ProfilePicturePath = profilePicturePath;
-        FullName = $"{firstName} {middleName} {surname}";
+        FullName = null;
     }
 }
 

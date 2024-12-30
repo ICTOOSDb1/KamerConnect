@@ -18,8 +18,8 @@ public partial class ChatPage : ContentPage
     private readonly ChatService _chatService;
     private Person _person;
 
-    private ObservableCollection<Chat> _chats;
-    public ObservableCollection<Chat> Chats
+    private ObservableCollection<Chat>? _chats;
+    public ObservableCollection<Chat>? Chats
     {
         get => _chats;
         set
@@ -31,9 +31,9 @@ public partial class ChatPage : ContentPage
             }
         }
     }
-    private Chat _selectedChat;
+    private Chat? _selectedChat;
 
-    public Chat SelectedChat
+    public Chat? SelectedChat
     {
         get => _selectedChat;
         set
@@ -92,7 +92,7 @@ public partial class ChatPage : ContentPage
             SelectedChat = selectedChat;
             Console.WriteLine(selectedChat.ChatId);
             
-            ChatMessages.Content.BackgroundColor = Colors.Blue;
+            //TO DO: call the chat window here to be created
         }
     }
 }
