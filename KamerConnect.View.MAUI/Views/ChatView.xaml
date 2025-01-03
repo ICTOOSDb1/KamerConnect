@@ -6,7 +6,6 @@
              x:Class="KamerConnect.View.MAUI.Views.ChatView">
     <VerticalStackLayout x:Name="StackLayout">
     <syncfusion:SfChat x:Name="chatControl"
-                       Width="600"
                        ShowTimeBreak="True"
                        StickyTimeBreak="True"
                        CanAutoScrollToBottom="True"
