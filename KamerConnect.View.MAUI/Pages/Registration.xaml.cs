@@ -9,6 +9,7 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly AuthenticationService _authenticationService;
+    private readonly PersonService _personService;
 
     private Role _selectedTab;
     public Role SelectedTab
@@ -21,13 +22,14 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
         }
     }
 
-    public Registration(IServiceProvider serviceProvider, AuthenticationService authenticationService)
+    public Registration(IServiceProvider serviceProvider, AuthenticationService authenticationService, PersonService personService)
     {
         _serviceProvider = serviceProvider;
         _authenticationService = authenticationService;
+        _personService = personService;
         SelectTabAction = SelectTab;
         SelectedTab = Role.Seeking;
-
+        
         NavigationPage.SetHasNavigationBar(this, false);
 
         InitializeComponent();
@@ -138,6 +140,11 @@ public partial class Registration : ContentPage, INotifyPropertyChanged
     {
         if (personalInformationForm.ValidateAll())
         {
+            if (_personService.CheckIfEmailExists(personalInformationForm.Email))
+            {
+                await Application.Current?.MainPage?.DisplayAlert("Email", "Dit email adres is al ingenomen", "Ok");
+                return;
+            }
             var person = CreatePerson();
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {

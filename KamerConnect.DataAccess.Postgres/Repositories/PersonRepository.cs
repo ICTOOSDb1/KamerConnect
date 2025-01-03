@@ -353,4 +353,31 @@ public class PersonRepository : IPersonRepository
             }
         }
     }
+    public bool CheckIfEmailExists(string email)
+    {
+        using (var connection = new NpgsqlConnection(connectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand("""
+                                                   SELECT EXISTS (
+                                                       SELECT 1
+                                                       FROM person
+                                                       WHERE email = @email
+                                                   );
+                                                   """, connection))
+            {
+                command.Parameters.AddWithValue("@email", email);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        return reader.GetBoolean(0);
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 }
