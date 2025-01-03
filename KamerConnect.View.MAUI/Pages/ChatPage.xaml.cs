@@ -68,7 +68,6 @@ public partial class ChatPage : ContentPage
     private void OnChatTapped(Chat chat, int index)
     {
         chatView = new ChatView(_serviceProvider, chat, index, _CurrentPerson);
-        BindingContext = chatView;
         chatMessages.Content = chatView;
 
     }
