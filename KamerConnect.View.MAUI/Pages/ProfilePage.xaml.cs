@@ -62,7 +62,7 @@ public partial class ProfilePage : ContentPage
             SchoolLabel.Text = _selectedPerson.Personality?.School ?? "Geen school opgegeven";
             CourseLabel.Text = _selectedPerson.Personality?.Study ?? "Geen studie opgegeven";
             DescriptionLabel.Text = _selectedPerson.Personality?.Description ?? "Geen beschrijving beschikbaar";
-            MotivationLabel.Text = (_match.motivation != "") ? _match.motivation : "Geen motivatie opgestuurd"; ;
+            MotivationLabel.Text = (!string.IsNullOrEmpty(_match.motivation)) ? _match.motivation : "Geen motivatie opgestuurd"; ;
 
 
         }
