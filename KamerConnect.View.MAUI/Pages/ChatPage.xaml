@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:Views="clr-namespace:KamerConnect.View.MAUI.Views"
+             x:Class="KamerConnect.View.MAUI.Pages.ChatPage"
+             BackgroundColor="{StaticResource BackgroundColor}">
+
+    <Grid RowDefinitions="Auto, Auto, *"
+          ColumnDefinitions="Auto, *">
+        <ContentView x:Name="NavbarContainer"
+                     Grid.Row="0"/>
+        <Label
+            Text="{Binding SelectedChat.PersonsInChat[0].FullName, StringFormat='Chat with: {0}'}"
+            FontSize="Large"
+            Grid.Row="1" Grid.Column="1">
+        </Label>
+
+
+        <ScrollView Grid.Row="2" Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    VerticalScrollBarVisibility="Never"
+                    HorizontalScrollBarVisibility="Never">
+            <Grid RowDefinitions="Auto,Auto,*"
+                  Padding="50, 50">
+                <CollectionView Grid.Row="1"
+                                x:Name="ChatCollectionView"
+                                ItemsSource="{Binding Chats}"
+                                BackgroundColor="Transparent"
+                                HorizontalOptions="Fill"
+                                SelectionMode="Single"
+                                SelectionChanged="OnCollectionViewSelectionChanged">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" 
+                                         Span="1"
+                                         />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Views:ChatPerson x:Name="ChatPerson" BindingContext="{Binding}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+        <ContentView x:Name="ChatMessages" Grid.Row="2" Grid.Column="1"></ContentView>
+    </Grid>
+
+</ContentPage>
