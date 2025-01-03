@@ -8,42 +8,35 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="4*"></RowDefinition>
                 <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
-            
-            <Label Grid.Row="0" 
-                   Text="Motivatie" 
+
+            <Label Grid.Row="0"
+                   Text="Motivatie"
                    FontSize="Large"></Label>
-            <Label Grid.Row="1" 
-                   Text="Wat spreekt u aan in bij dit huis?"
-                   FontSize="Medium"></Label>
-            
-            <Components:TextEditor Grid.Row="2"
-                                   x:Name="MotivationInput">
-                <Components:TextEditor.Resources>
-                    <Style TargetType="Frame" BasedOn="{StaticResource EntryFrameStyle}">
-                        <Setter Property="HeightRequest" Value="150" />
-                    </Style>
-                </Components:TextEditor.Resources>
-            </Components:TextEditor>
-            
+            <StackLayout  Grid.Row="1">
+                <Label Text="Wat spreekt u aan in bij dit huis?"
+                       FontSize="Medium">
+                </Label>
+
+                <Components:TextEditor
+                    x:Name="MotivationInput"/>
+            </StackLayout>
+
             <Button Text="Matchverzoek versturen"
                     Style="{StaticResource PrimaryButton}"
                     Clicked="OnSendMotivationButtonClicked"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
-                    Margin="20"
-                    Grid.Row="3"/>
-            
+                    Grid.Row="2"/>
+
             <Button Text="Annuleren"
                     Style="{StaticResource SecondaryButton}"
                     Clicked="OnCancelButtonClicked"
                     HorizontalOptions="Start"
                     VerticalOptions="Center"
-                    Margin="20"
-                    Grid.Row="3"/>
+                    Grid.Row="2"/>
         </Grid>
     </Frame>
 </ContentView>

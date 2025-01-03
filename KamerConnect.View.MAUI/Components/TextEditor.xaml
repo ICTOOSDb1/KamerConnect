@@ -9,7 +9,7 @@
         <Frame Style="{StaticResource EntryFrameStyle}">
             <Editor Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
                     Text="{Binding Text, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
-                    AutoSize="TextChanges" />
+                    AutoSize="TextChanges"/>
         </Frame>
     </StackLayout>
 </ContentView>
