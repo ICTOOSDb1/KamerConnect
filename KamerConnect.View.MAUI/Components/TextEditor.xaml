@@ -9,7 +9,8 @@
         <Frame Style="{StaticResource EntryFrameStyle}">
             <Editor Placeholder="{Binding Placeholder, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
                     Text="{Binding Text, Source={RelativeSource AncestorType={x:Type local:TextEditor}}}"
-                    AutoSize="TextChanges" MaximumHeightRequest="300"/>
+                    AutoSize="TextChanges"
+                    MaximumHeightRequest="200"/>
         </Frame>
     </StackLayout>
 </ContentView>
