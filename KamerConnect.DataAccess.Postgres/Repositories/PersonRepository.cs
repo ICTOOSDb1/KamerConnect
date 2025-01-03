@@ -310,7 +310,7 @@ public class PersonRepository : IPersonRepository
 
     public List<Person> GetPersonsByChatId(Guid chatId)
     {
-        
+
         using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();

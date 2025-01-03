@@ -17,7 +17,7 @@ public class ChatService
         return _chatRepository.GetChatMessages(chatId);
     }
     public void CreateMessage(ChatMessage message, Guid chatId)
-    { 
+    {
         _chatRepository.CreateMessage(message, chatId);
     }
 
@@ -25,7 +25,7 @@ public class ChatService
     {
         _chatRepository.Create(chats);
     }
-    
+
     public List<Chat> GetChatsFromPerson(Guid personId)
     {
         return _chatRepository.GetChatsFromPerson(personId);

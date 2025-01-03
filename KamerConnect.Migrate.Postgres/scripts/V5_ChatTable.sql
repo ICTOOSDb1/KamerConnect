@@ -25,7 +25,7 @@ CREATE TABLE chat_messages
     id        UUID        DEFAULT gen_random_uuid() NOT NULL
         PRIMARY KEY,
     chat_id  UUID                                  NOT NULL
-        REFERENCES matchrequests (id),
+        REFERENCES chat (id),
     message   TEXT                                  NOT NULL,
     timestamp TIMESTAMPTZ DEFAULT NOW()             NOT NULL,
     sender_id UUID                                  NOT NULL

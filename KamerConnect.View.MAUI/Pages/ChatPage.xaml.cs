@@ -16,7 +16,8 @@ public partial class ChatPage : ContentPage
     private readonly PersonService _personService;
     private readonly IServiceProvider _serviceProvider;
     private readonly ChatService _chatService;
-    private Person _person;
+    private Person _CurrentPerson;
+    private ChatView chatView;
 
     private ObservableCollection<Chat>? _chats;
     public ObservableCollection<Chat>? Chats
@@ -67,7 +68,7 @@ public partial class ChatPage : ContentPage
         List<Chat> chats = _chatService.GetChatsFromPerson(_person.Id);
         foreach (Chat chat in chats)
         {
-            Guid targetPersonId = _person.Id; 
+            Guid targetPersonId = _CurrentPerson.Id; 
             chat.PersonsInChat = chat.PersonsInChat
                 .Where(person => person.Id != targetPersonId)
                 .Concat(chat.PersonsInChat.Where(person => person.Id == targetPersonId))
@@ -81,7 +82,7 @@ public partial class ChatPage : ContentPage
         var session = await _authenticationService.GetSession();
         if (session != null)
         {
-            _person = _personService.GetPersonById(session.personId);
+            _CurrentPerson = _personService.GetPersonById(session.personId);
         }
     }
     
@@ -95,4 +96,14 @@ public partial class ChatPage : ContentPage
             //TO DO: call the chat window here to be created
         }
     }
+
+    private void OnChatTapped(Chat chat, int index)
+    {
+        chatView = new ChatView(_serviceProvider, chat, index, _CurrentPerson);
+        chatMessages.Content = chatView;
+
+    }
+
+
+
 }

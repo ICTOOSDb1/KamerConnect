@@ -65,6 +65,7 @@ public static class MauiProgram
         builder.Services.AddTransient<HousePage>();
         builder.Services.AddTransient<ChatPerson>();
         builder.Services.AddTransient<ChatPage>();
+        builder.Services.AddTransient<ChatView>();
 
         builder.Services.AddFilePicker();
 

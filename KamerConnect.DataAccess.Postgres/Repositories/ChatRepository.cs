@@ -30,8 +30,8 @@ public class ChatRepository : IChatRepository
 
             using (var command = new NpgsqlCommand("""
                                                    SELECT *
-                                                   FROM chat_messages
-                                                   WHERE chat_id = @chatId
+                                                   FROM chatmessages
+                                                   WHERE chat = @chatId
                                                    """,
                        connection))
             {
@@ -68,7 +68,7 @@ public class ChatRepository : IChatRepository
 
                 string updateQuery = $"""
                                       INSERT INTO chat_messages (
-                                        sender, chat_id, message)
+                                        sender_id, chat_id, message)
                                         VALUES (@personId::uuid, @chatId::uuid, @message::text
                                       )
                                       """;
@@ -297,12 +297,12 @@ public class ChatRepository : IChatRepository
                         throw;
                     }
                 }
-            } 
+            }
         }
-        catch (Exception e) 
-        { 
+        catch (Exception e)
+        {
             Console.WriteLine($"Error while retrieving chats from person Id: {e.Message}");
-        throw; 
-        } 
+            throw;
+        }
     }
 }

@@ -13,6 +13,8 @@ public partial class App : Application
     public App(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(Environment.GetEnvironmentVariable("SYNCFUSION_LICENSING"));
+
         InitializeComponent();
         InitializeAppAsync().GetAwaiter().GetResult();
     }
