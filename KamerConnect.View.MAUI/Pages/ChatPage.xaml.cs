@@ -60,12 +60,11 @@ public partial class ChatPage : ContentPage
         var navbar = _serviceProvider.GetRequiredService<Navbar>();
         NavbarContainer.Content = navbar;
         BindingContext = this;
-        ChatMessages.Content = new ChatViewPlaceholder();
     }
     
     private void LoadChats()
     {
-        List<Chat> chats = _chatService.GetChatsFromPerson(_person.Id);
+        List<Chat> chats = _chatService.GetChatsFromPerson(_CurrentPerson.Id);
         foreach (Chat chat in chats)
         {
             Guid targetPersonId = _CurrentPerson.Id; 
@@ -91,19 +90,11 @@ public partial class ChatPage : ContentPage
         if (e.CurrentSelection.FirstOrDefault() is Chat selectedChat)
         {
             SelectedChat = selectedChat;
-            Console.WriteLine(selectedChat.ChatId);
-            
-            //TO DO: call the chat window here to be created
+            chatView = new ChatView(_serviceProvider, selectedChat, _CurrentPerson);
+            ChatMessages.Content = chatView;
         }
     }
-
-    private void OnChatTapped(Chat chat, int index)
-    {
-        chatView = new ChatView(_serviceProvider, chat, index, _CurrentPerson);
-        chatMessages.Content = chatView;
-
-    }
-
+    
 
 
 }

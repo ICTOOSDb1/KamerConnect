@@ -67,7 +67,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         }
     }
 
-    public ChatView(IServiceProvider serviceProvider, Chat chat, int index, Person sender)
+    public ChatView(IServiceProvider serviceProvider, Chat chat, Person sender)
     {
         InitializeComponent();
         _serviceProvider = serviceProvider;
@@ -76,7 +76,7 @@ public partial class ChatView : ContentView, INotifyPropertyChanged
         _chatService = _serviceProvider.GetRequiredService<ChatService>();
         _authenticationService = _serviceProvider.GetRequiredService<AuthenticationService>();
         _personService = _serviceProvider.GetRequiredService<PersonService>();
-        SelectedChat = _chatService.GetChatsFromPerson(Sender.Id)[index];
+        SelectedChat = chat;
         BindingContext = this;
         InitializeChat();
     }

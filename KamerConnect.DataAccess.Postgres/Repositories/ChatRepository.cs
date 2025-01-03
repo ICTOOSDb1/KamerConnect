@@ -30,8 +30,8 @@ public class ChatRepository : IChatRepository
 
             using (var command = new NpgsqlCommand("""
                                                    SELECT *
-                                                   FROM chatmessages
-                                                   WHERE chat = @chatId
+                                                   FROM chat_messages
+                                                   WHERE chat_id = @chatId
                                                    """,
                        connection))
             {
