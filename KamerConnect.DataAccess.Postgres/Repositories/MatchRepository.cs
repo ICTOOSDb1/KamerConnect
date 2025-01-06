@@ -151,7 +151,7 @@ public class MatchRepository : IMatchRepository
             reader.GetGuid(1),
             reader.GetGuid(2),
             EnumUtils.Validate<Status>(reader.GetString(3)),
-            "Placeholder motivation"
+            reader.GetString(4)
         );
         return match;
     }
