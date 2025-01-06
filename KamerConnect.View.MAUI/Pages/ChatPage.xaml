@@ -5,46 +5,41 @@
              xmlns:Views="clr-namespace:KamerConnect.View.MAUI.Views"
              x:Class="KamerConnect.View.MAUI.Pages.ChatPage"
              BackgroundColor="{StaticResource BackgroundColor}">
-
-    <Grid RowDefinitions="Auto, Auto, *"
-          ColumnDefinitions="Auto, *">
+    <Grid RowDefinitions="Auto, *">
         <ContentView x:Name="NavbarContainer"
-                     Grid.Row="0"
-                     Grid.ColumnSpan="2"/>
-        <Label
-            Text="{Binding SelectedChat.PersonsInChat[0].FullName, StringFormat='Chat with: {0}'}"
-            FontSize="Large"
-            Grid.Row="1" Grid.Column="1">
-        </Label>
-
-
-        <ScrollView Grid.Row="2" Grid.Column="0"
+                     Grid.Row="0" />
+        
+        <ScrollView Grid.Row="1">
+            <Grid RowDefinitions="Auto, *"
+                  ColumnDefinitions="Auto, *">
+                <Label
+                    Text="{Binding SelectedChat.PersonsInChat[0].FullName}"
+                    FontSize="Large"
+                    Grid.Row="0" Grid.Column="1" />
+                <CollectionView
+                    Grid.Row="1" Grid.Column="0"
+                    x:Name="ChatCollectionView"
+                    ItemsSource="{Binding Chats}"
                     BackgroundColor="Transparent"
-                    VerticalScrollBarVisibility="Never"
-                    HorizontalScrollBarVisibility="Never">
-            <Grid RowDefinitions="Auto,Auto,*"
-                  Padding="50, 50">
-                <CollectionView Grid.Row="1"
-                                x:Name="ChatCollectionView"
-                                ItemsSource="{Binding Chats}"
-                                BackgroundColor="Transparent"
-                                HorizontalOptions="Fill"
-                                SelectionMode="Single"
-                                SelectionChanged="OnCollectionViewSelectionChanged">
+                    SelectionMode="Single"
+                    SelectionChanged="OnCollectionViewSelectionChanged"
+                    VerticalOptions="FillAndExpand">
                     <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" 
-                                         Span="1"
-                                         />
+                        <GridItemsLayout Orientation="Vertical" Span="1" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Views:ChatPerson x:Name="ChatPerson" BindingContext="{Binding}"/>
+                            <Views:ChatPerson x:Name="ChatPerson" BindingContext="{Binding}" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
+                <ContentView x:Name="ChatMessages"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             HorizontalOptions="Fill"
+                             VerticalOptions="Fill" />
             </Grid>
         </ScrollView>
-        <ContentView x:Name="ChatMessages" Grid.Row="2" Grid.Column="1"></ContentView>
     </Grid>
-
 </ContentPage>
