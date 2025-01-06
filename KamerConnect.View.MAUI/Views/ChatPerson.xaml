@@ -15,11 +15,11 @@
             <Image x:Name="ProfileImage"
                    Aspect="AspectFill"
                    HeightRequest="50"
-                   HorizontalOptions="FillAndExpand"/>
+                   WidthRequest="50"/>
             
             <Label Text="{Binding PersonsInChat[0].FullName}"
                    FontFamily="Inter-Regular"
-                   FontSize="Medium"
+                   FontSize="Small"
                    VerticalOptions="Center"
                    TextColor="Black"></Label>
         </HorizontalStackLayout>

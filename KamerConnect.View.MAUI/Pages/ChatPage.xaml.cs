@@ -100,7 +100,4 @@ public partial class ChatPage : ContentPage
             ChatMessages.Content = chatView;
         }
     }
-    
-
-
 }
