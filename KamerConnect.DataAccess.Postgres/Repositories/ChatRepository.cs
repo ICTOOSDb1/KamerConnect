@@ -1,12 +1,9 @@
-﻿using System.Data;
-using System.Data.Common;
+﻿using System.Data.Common;
 using KamerConnect.Models;
 using KamerConnect.Repositories;
-using KamerConnect.Utils;
-using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.Services;
+using KamerConnect.Utils;
 using Npgsql;
-
 
 namespace KamerConnect.DataAccess.Postgres.Repositories;
 
@@ -14,7 +11,7 @@ public class ChatRepository : IChatRepository
 {
     private readonly string _connectionString;
 
-    private PersonService _personService;
+    private readonly PersonService _personService;
 
     public ChatRepository(PersonService personService)
     {
@@ -44,10 +41,7 @@ public class ChatRepository : IChatRepository
                     while (reader.Read())
                     {
                         var chatMessage = ReadToChatMessage(reader);
-                        if (chatMessage != null)
-                        {
-                            messages.Add(chatMessage);
-                        }
+                        if (chatMessage != null) messages.Add(chatMessage);
                     }
 
                     return messages;
@@ -55,7 +49,6 @@ public class ChatRepository : IChatRepository
             }
         }
     }
-
 
 
     public void CreateMessage(ChatMessage message, Guid chatId)
@@ -66,12 +59,12 @@ public class ChatRepository : IChatRepository
             {
                 connection.Open();
 
-                string updateQuery = $"""
-                                      INSERT INTO chat_messages (
-                                        sender_id, chat_id, message)
-                                        VALUES (@personId::uuid, @chatId::uuid, @message::text
-                                      )
-                                      """;
+                var updateQuery = """
+                                  INSERT INTO chat_messages (
+                                    sender_id, chat_id, message)
+                                    VALUES (@personId::uuid, @chatId::uuid, @message::text
+                                  )
+                                  """;
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
@@ -87,6 +80,37 @@ public class ChatRepository : IChatRepository
         catch (NpgsqlException e)
         {
             Console.WriteLine($"Error occurred while creating message in DB: {e.Message}");
+            throw;
+        }
+    }
+
+    public List<Chat> GetChatsFromPerson(Guid personId)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var chats = GetEmptyChatsFromPerson(personId);
+                        chats = GetPersonsAndMessagesFromChats(chats);
+                        return chats;
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error while retrieving chats from person Id: {e.Message}");
             throw;
         }
     }
@@ -108,12 +132,12 @@ public class ChatRepository : IChatRepository
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
-                string updateQuery = $"""
-                                      INSERT INTO chat (
-                                        id, match_id)
-                                        VALUES (@chatId::uuid, @match_id::uuid
-                                      )
-                                      """;
+                var updateQuery = """
+                                  INSERT INTO chat (
+                                    id, match_id)
+                                    VALUES (@chatId::uuid, @matchId::uuid
+                                  )
+                                  """;
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
@@ -137,12 +161,12 @@ public class ChatRepository : IChatRepository
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
-                string updateQuery = $"""
-                                      INSERT INTO person_chat (
-                                        person_id, chat_id)
-                                        VALUES (@person_id::uuid, @chat_id::uuid
-                                      )
-                                      """;
+                var updateQuery = """
+                                  INSERT INTO person_chat (
+                                    person_id, chat_id)
+                                    VALUES (@person_id::uuid, @chatId::uuid
+                                  )
+                                  """;
 
                 using (var command = new NpgsqlCommand(updateQuery, connection))
                 {
@@ -158,8 +182,8 @@ public class ChatRepository : IChatRepository
             throw;
         }
     }
-    
-    public void Create(List<Chat> chats)
+
+    public void Create(Chat chat)
     {
         try
         {
@@ -171,19 +195,12 @@ public class ChatRepository : IChatRepository
                 {
                     try
                     {
-                        foreach (Chat chat in chats)
-                        {
-                            Guid chatId = Guid.NewGuid();
-                            CreateChat(chatId, chat.MatchId);
+                        var chatId = chat.ChatId;
+                        CreateChat(chatId, chat.MatchId);
 
-                            List<Person> personInChat = chat.PersonsInChat;
+                        var personInChat = chat.PersonsInChat;
 
-                            foreach (Person person in personInChat)
-                            {
-                                AddPersonToChat(chatId, person.Id);
-                            }
-
-                        }
+                        foreach (var person in personInChat) AddPersonToChat(chatId, person.Id);
                     }
                     catch
                     {
@@ -191,7 +208,6 @@ public class ChatRepository : IChatRepository
                         throw;
                     }
                 }
-
             }
         }
         catch (Exception e)
@@ -219,11 +235,11 @@ public class ChatRepository : IChatRepository
 
                 using (var reader = command.ExecuteReader())
                 {
-                    List<Chat> chats = new List<Chat>();
-                    
+                    var chats = new List<Chat>();
+
                     while (reader.Read())
                     {
-                        Chat chat = new Chat(
+                        var chat = new Chat(
                             reader.GetGuid(0),
                             reader.IsDBNull(1) ? null : reader.GetGuid(1),
                             new List<Person>(),
@@ -237,7 +253,7 @@ public class ChatRepository : IChatRepository
             }
         }
     }
-    
+
     private List<Chat> GetPersonsAndMessagesFromChats(List<Chat> chats)
     {
         try
@@ -250,10 +266,11 @@ public class ChatRepository : IChatRepository
                 {
                     try
                     {
-                        foreach (var chat in chats){
-                            List<Person> personsInChat = _personService.GetPersonsByChatId(chat.ChatId);
-                            List<ChatMessage> chatMessages = GetChatMessages(chat.ChatId);
-                            
+                        foreach (var chat in chats)
+                        {
+                            var personsInChat = _personService.GetPersonsByChatId(chat.ChatId);
+                            var chatMessages = GetChatMessages(chat.ChatId);
+
                             chat.PersonsInChat = personsInChat;
                             chat.Messages = chatMessages;
                         }
@@ -271,37 +288,6 @@ public class ChatRepository : IChatRepository
         catch (Exception e)
         {
             Console.WriteLine($"Error while retrieving persons and messages for chat: {e.Message}");
-            throw;
-        }
-    }
-
-    public List<Chat> GetChatsFromPerson(Guid personId)
-    {
-        try
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                connection.Open();
-
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        List<Chat> chats = GetEmptyChatsFromPerson(personId);
-                        chats = GetPersonsAndMessagesFromChats(chats);
-                        return chats;
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error while retrieving chats from person Id: {e.Message}");
             throw;
         }
     }

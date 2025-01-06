@@ -12,6 +12,7 @@ namespace KamerConnect.View.MAUI.Views;
 public partial class MatchRequestsView : ContentView
 {
     private readonly Person _person;
+    private readonly IServiceProvider _serviceProvider;
     private readonly MatchService _matchService;
     private readonly PersonService _personService;
     private readonly HouseService _houseService;
@@ -25,6 +26,7 @@ public partial class MatchRequestsView : ContentView
 
     public MatchRequestsView(IServiceProvider serviceProvider)
     {
+        _serviceProvider = serviceProvider;
         _matchService = serviceProvider.GetRequiredService<MatchService>();
         _personService = serviceProvider.GetRequiredService<PersonService>();
         _houseService = serviceProvider.GetRequiredService<HouseService>();
@@ -101,7 +103,7 @@ public partial class MatchRequestsView : ContentView
 
             var profilePage = MauiProgram.Services.GetRequiredService<ProfilePage>();
             profilePage.BindingContext = match;
-            MatchRequests.Add(new MatchRequestItem(person, match, _fileService, profilePage, FilteredMatchRequests));
+            MatchRequests.Add(new MatchRequestItem(_serviceProvider,person, match, _fileService, profilePage, FilteredMatchRequests));
         }
     }
     
