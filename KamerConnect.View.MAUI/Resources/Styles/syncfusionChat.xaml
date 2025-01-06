@@ -4,7 +4,7 @@
     <x:String x:Key="SfChatTheme">CustomTheme</x:String>
     <Color x:Key="SfChatOutgoingMessageTextColor">White</Color>
     <Color x:Key="SfChatOutgoingMessageBackground">#EF626C</Color>
-    <Color x:Key="SfChatMessageInputViewBackground">#f9fbfd</Color>
+    <Color x:Key="SfChatMessageInputViewBackground">#f5f5f5</Color>
     <Color x:Key="SfChatSendButtonBackground">#EF626C</Color>
 
 

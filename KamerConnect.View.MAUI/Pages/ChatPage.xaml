@@ -38,6 +38,7 @@
                 <ContentView x:Name="ChatMessages"
                              Grid.Row="1"
                              Grid.Column="1"
+                             Padding="0,0,50,0"
                              HorizontalOptions="Fill"
                              VerticalOptions="Fill" />
             </Grid>
