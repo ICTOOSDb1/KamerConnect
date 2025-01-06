@@ -3,6 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Components="clr-namespace:KamerConnect.View.MAUI.Components"
+             xmlns:Views="clr-namespace:KamerConnect.View.MAUI.Views"
              xmlns:maui="using:KamerConnect.View.MAUI"
              x:Class="KamerConnect.View.MAUI.Pages.HousePage"
              BackgroundColor="White">
@@ -62,7 +63,7 @@
                                     VerticalTextAlignment="End" />
                         </HorizontalStackLayout>
                         <HorizontalStackLayout>
-                            <Label Text="van"
+                            <Label Text="van "
                                    FontFamily="InterSemiBold"
                                    FontSize="16" />
                             <Label  x:Name="FullnameLabel"
@@ -174,5 +175,12 @@
             <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="#999999" HorizontalOptions="FillAndExpand" />
         </Grid>
     </ScrollView>
+        <Views:MotivationPopup Grid.Row="1"
+                               x:Name="MotivationForm"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               WidthRequest="600"
+                               HeightRequest="500"></Views:MotivationPopup>
+
         </Grid>
 </ContentPage>

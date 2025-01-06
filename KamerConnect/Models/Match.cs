@@ -24,7 +24,7 @@ public enum Status
 {
     [Display(Name = "Geaccepteerd")]
     Accepted,
-    [Display(Name = "In afwachting")]
+    [Display(Name = "In Behandeling")]
     Pending,
     [Display(Name = "Afgewezen")]
     Rejected

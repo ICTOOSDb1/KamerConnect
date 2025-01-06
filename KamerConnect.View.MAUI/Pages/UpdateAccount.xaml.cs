@@ -40,6 +40,7 @@ namespace KamerConnect.View.MAUI.Pages
         private async Task GetCurrentPerson()
         {
             var session = await _authenticationService.GetSession();
+
             if (session != null)
             {
                 _person = _personService.GetPersonById(session.personId);

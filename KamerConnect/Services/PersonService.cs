@@ -45,4 +45,8 @@ public class PersonService
     {
         return _repository.GetPersonsByChatId(chatId);
     }
+    public bool CheckIfEmailExists(string email)
+    {
+        return _repository.CheckIfEmailExists(email);
+    }
 }
