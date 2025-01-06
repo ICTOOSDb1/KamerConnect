@@ -19,7 +19,7 @@ public partial class ChatPage : ContentPage
     private Person _CurrentPerson;
     private ChatView chatView;
 
-    private ObservableCollection<Chat>? _chats;
+    private ObservableCollection<Chat>? _chats = new();
     public ObservableCollection<Chat>? Chats
     {
         get => _chats;
@@ -64,16 +64,21 @@ public partial class ChatPage : ContentPage
     
     private void LoadChats()
     {
+        Chats.Clear();
         List<Chat> chats = _chatService.GetChatsFromPerson(_CurrentPerson.Id);
         foreach (Chat chat in chats)
         {
-            Guid targetPersonId = _CurrentPerson.Id; 
+            Guid targetPersonId = _CurrentPerson.Id;
             chat.PersonsInChat = chat.PersonsInChat
                 .Where(person => person.Id != targetPersonId)
                 .Concat(chat.PersonsInChat.Where(person => person.Id == targetPersonId))
                 .ToList();
         }
-        Chats = new ObservableCollection<Chat>(chats);
+
+        foreach (var chat in chats)
+        {
+         Chats.Add(chat);   
+        }
     }
     
     private async Task GetCurrentPerson()
@@ -89,6 +94,7 @@ public partial class ChatPage : ContentPage
     {
         if (e.CurrentSelection.FirstOrDefault() is Chat selectedChat)
         {
+            LoadChats();
             SelectedChat = selectedChat;
             chatView = new ChatView(_serviceProvider, selectedChat, _CurrentPerson);
             ChatMessages.Content = chatView;

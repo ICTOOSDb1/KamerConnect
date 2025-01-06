@@ -44,27 +44,29 @@
                                 <Label Text="Opleiding" FontSize="12" TextColor="Gray" />
                                 <Label x:Name="CourseLabel" FontSize="16" TextColor="Black" />
                             </VerticalStackLayout>
-                            <HorizontalStackLayout Grid.Row="3" Grid.Column="3" HorizontalOptions="End">
+                            <HorizontalStackLayout x:Name="MatchState" Grid.Row="3" Grid.Column="3" HorizontalOptions="End">
                                 <VerticalStackLayout>
                                     <Button x:Name="RejectButton"
                                             Text="Afwijzen"
-                                            BackgroundColor="Red"
+                                            BackgroundColor="#B32630"
                                             TextColor="White"
-                                            CornerRadius="20"
-                                            WidthRequest="120"
-                                            HeightRequest="40"
+                                            CornerRadius="8"
+                                            MinimumWidthRequest="44"
+                                            HeightRequest="44"
+                                            IsVisible="False"
                                             HorizontalOptions="End"
                                             Clicked="RejectButton_OnClicked" />
                                     <Label x:Name="RejectLabel" IsVisible="False" Text="Afgewezen" FontSize="16"></Label>
                                 </VerticalStackLayout>
-                                <VerticalStackLayout>
+                                <VerticalStackLayout Padding="5,0,0,0">
                                     <Button x:Name="AcceptButton"
                                             Text="Accepteren"
-                                            BackgroundColor="Green"
+                                            BackgroundColor= "#26B330"
                                             TextColor="White"
-                                            CornerRadius="20"
-                                            WidthRequest="120"
-                                            HeightRequest="40"
+                                            CornerRadius="8"
+                                            MinimumWidthRequest="44"
+                                            IsVisible="False"
+                                            HeightRequest="44"
                                             HorizontalOptions="End"
                                             Clicked="AcceptButton_OnClicked" />
                                     <Label x:Name="AcceptLabel" IsVisible="False" Text="Geaccepteerd" FontSize="16"></Label>

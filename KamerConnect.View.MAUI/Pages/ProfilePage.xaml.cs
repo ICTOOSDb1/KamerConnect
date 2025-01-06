@@ -64,7 +64,8 @@ public partial class ProfilePage : ContentPage
             SchoolLabel.Text = _selectedPerson.Personality?.School ?? "Geen school opgegeven";
             CourseLabel.Text = _selectedPerson.Personality?.Study ?? "Geen studie opgegeven";
             DescriptionLabel.Text = _selectedPerson.Personality?.Description ?? "Geen beschrijving beschikbaar";
-            MotivationLabel.Text = (!string.IsNullOrEmpty(_match.motivation)) ? _match.motivation : "Geen motivatie opgestuurd"; ;
+            MotivationLabel.Text = !string.IsNullOrEmpty(_match.motivation) ? _match.motivation : "Geen motivatie opgestuurd";
+            CheckMatchState();
 
 
         }
@@ -75,6 +76,23 @@ public partial class ProfilePage : ContentPage
         if (session != null)
         {
             _person = _personService.GetPersonById(session.personId);
+        }
+    }
+
+    private void CheckMatchState()
+    {
+        switch (_match.Status)
+        {
+            case Status.Pending:
+                AcceptButton.IsVisible = true;
+                RejectButton.IsVisible = true;
+                break;
+            case Status.Accepted:
+                AcceptLabel.IsVisible = true;
+                break;
+            case Status.Rejected:
+                RejectLabel.IsVisible = true;
+                break;
         }
     }
 

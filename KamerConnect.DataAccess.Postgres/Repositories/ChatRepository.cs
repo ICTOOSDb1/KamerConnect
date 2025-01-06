@@ -213,7 +213,6 @@ public class ChatRepository : IChatRepository
         catch (Exception e)
         {
             Console.WriteLine($"Error while creating chats: {e.Message}");
-            throw;
         }
     }
 
