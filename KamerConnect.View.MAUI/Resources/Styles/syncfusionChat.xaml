@@ -1,10 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                    xmlns:themes="clr-namespace:Syncfusion.Maui.Themes;assembly=Syncfusion.Maui.Core">
-  
-                <x:String x:Key="SfChatTheme">CustomTheme</x:String>
-                <Color x:Key="SfChatOutgoingMessageTextColor">White</Color>
-                <Color x:Key="SfChatOutgoingMessageBackground">#EF626C</Color>
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <x:String x:Key="SfChatTheme">CustomTheme</x:String>
+    <Color x:Key="SfChatOutgoingMessageTextColor">White</Color>
+    <Color x:Key="SfChatOutgoingMessageBackground">#EF626C</Color>
+    <Color x:Key="SfChatMessageInputViewBackground">#f9fbfd</Color>
+    <Color x:Key="SfChatSendButtonBackground">#EF626C</Color>
+
+
 </ResourceDictionary>
-        

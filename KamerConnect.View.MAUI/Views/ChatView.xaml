@@ -12,6 +12,7 @@
                                VerticalOptions="FillAndExpand"
                                ShowTimeBreak="True"
                                StickyTimeBreak="True"
+                               Background="{StaticResource BackgroundColor}"
                                CanAutoScrollToBottom="True"
                                ShowAttachmentButton="True"
                                Messages="{Binding Messages}"
