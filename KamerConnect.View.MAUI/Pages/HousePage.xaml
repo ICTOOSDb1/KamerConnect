@@ -62,7 +62,7 @@
                                     VerticalTextAlignment="End" />
                         </HorizontalStackLayout>
                         <HorizontalStackLayout>
-                            <Label Text="van"
+                            <Label Text="van "
                                    FontFamily="InterSemiBold"
                                    FontSize="16" />
                             <Label  x:Name="FullnameLabel"

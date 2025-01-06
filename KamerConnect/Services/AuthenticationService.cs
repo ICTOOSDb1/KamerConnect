@@ -87,7 +87,6 @@ public class AuthenticationService
         if (_repository.GetSession(personId) == null)
         {
             _repository.SaveSession(personId, currentDate, sessionToken);
-
             Preferences.Set("session_token", sessionToken);
 
         }
