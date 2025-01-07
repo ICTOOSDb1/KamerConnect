@@ -15,6 +15,7 @@ namespace KamerConnect.View.MAUI.Pages;
 public partial class ProfilePage : ContentPage
 {
     private readonly FileService _fileService;
+    private readonly ChatService _chatService;
     private readonly MatchService _matchService;
     private readonly PersonService _personService;
     private readonly AuthenticationService _authenticationService;
@@ -35,6 +36,7 @@ public partial class ProfilePage : ContentPage
         _fileService = fileService;
         _matchService = matchService;
         _authenticationService = authenticationService;
+        _chatService = _serviceProvider.GetService<ChatService>();
         _personService = personService;
         GetCurrentPerson().GetAwaiter().GetResult();
         var navbar = serviceProvider.GetRequiredService<Navbar>();
@@ -62,7 +64,8 @@ public partial class ProfilePage : ContentPage
             SchoolLabel.Text = _selectedPerson.Personality?.School ?? "Geen school opgegeven";
             CourseLabel.Text = _selectedPerson.Personality?.Study ?? "Geen studie opgegeven";
             DescriptionLabel.Text = _selectedPerson.Personality?.Description ?? "Geen beschrijving beschikbaar";
-            MotivationLabel.Text = (!string.IsNullOrEmpty(_match.motivation)) ? _match.motivation : "Geen motivatie opgestuurd"; ;
+            MotivationLabel.Text = !string.IsNullOrEmpty(_match.motivation) ? _match.motivation : "Geen motivatie opgestuurd";
+            CheckMatchState();
 
 
         }
@@ -76,6 +79,23 @@ public partial class ProfilePage : ContentPage
         }
     }
 
+    private void CheckMatchState()
+    {
+        switch (_match.Status)
+        {
+            case Status.Pending:
+                AcceptButton.IsVisible = true;
+                RejectButton.IsVisible = true;
+                break;
+            case Status.Accepted:
+                AcceptLabel.IsVisible = true;
+                break;
+            case Status.Rejected:
+                RejectLabel.IsVisible = true;
+                break;
+        }
+    }
+
     private void AcceptButton_OnClicked(object? sender, EventArgs e)
     {
 
@@ -83,6 +103,7 @@ public partial class ProfilePage : ContentPage
         AcceptButton.IsVisible = false;
         RejectButton.IsVisible = false;
         AcceptLabel.IsVisible = true;
+        _chatService.Create(new Chat(Guid.NewGuid(), _match.matchId, new List<Person>{_selectedPerson, _person}, new List<ChatMessage>()));
     }
 
     private void RejectButton_OnClicked(object? sender, EventArgs e)

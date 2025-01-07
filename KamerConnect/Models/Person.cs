@@ -22,6 +22,15 @@ public class Person
     public Role Role { get; set; }
     public string? ProfilePicturePath { get; set; }
     public Personality? Personality { get; set; }
+    public string? fullName;
+    public string? FullName
+    {
+        get => fullName;
+        set
+        {
+            fullName = string.Join(" ", new[] { FirstName, MiddleName, Surname });
+        }
+    }
 
     public Person(string email, string firstName, string? middleName, string surname, string? phoneNumber,
         DateTime birthDate, Gender gender, Role role, string? profilePicturePath, Guid id)
@@ -36,6 +45,7 @@ public class Person
         Gender = gender;
         Role = role;
         ProfilePicturePath = profilePicturePath;
+        FullName = null;
     }
 }
 

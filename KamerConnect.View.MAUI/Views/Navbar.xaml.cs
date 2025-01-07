@@ -42,6 +42,13 @@ public partial class Navbar : ContentView
     {
         if (Application.Current.MainPage is NavigationPage navigationPage)
         {
+            App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<ChatPage>());
+        }
+    }
+    private async void OnOverviewTapped(object sender, TappedEventArgs e)
+    {
+        if (Application.Current.MainPage is NavigationPage navigationPage)
+        {
             App.Current.MainPage = new NavigationPage(_serviceProvider.GetRequiredService<MatchRequestsPage>());
         }
     }

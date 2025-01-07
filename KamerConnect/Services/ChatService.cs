@@ -17,15 +17,15 @@ public class ChatService
         return _chatRepository.GetChatMessages(chatId);
     }
     public void CreateMessage(ChatMessage message, Guid chatId)
-    { 
+    {
         _chatRepository.CreateMessage(message, chatId);
     }
 
-    public void Create(List<Chat> chats)
+    public void Create(Chat chat)
     {
-        _chatRepository.Create(chats);
+        _chatRepository.Create(chat);
     }
-    
+
     public List<Chat> GetChatsFromPerson(Guid personId)
     {
         return _chatRepository.GetChatsFromPerson(personId);

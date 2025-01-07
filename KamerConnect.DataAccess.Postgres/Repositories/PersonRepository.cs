@@ -310,7 +310,7 @@ public class PersonRepository : IPersonRepository
 
     public List<Person> GetPersonsByChatId(Guid chatId)
     {
-        
+
         using (var connection = new NpgsqlConnection(connectionString))
         {
             connection.Open();
@@ -333,14 +333,14 @@ public class PersonRepository : IPersonRepository
                                          personality.study,                
                                          personality.description           
                                      FROM person
-                                     LEFT JOIN person_chat pc ON person.id = person_chat.person_id
+                                     LEFT JOIN person_chat pc ON person.id = pc.person_id
                                      LEFT JOIN personality ON person.id = personality.person_id
-                                     WHERE person_chat.chat_id = @chatId::uuid;
+                                     WHERE pc.chat_id = @chatId::uuid;
 
                                      """,
                        connection))
             {
-                command.Parameters.AddWithValue("@id", chatId);
+                command.Parameters.AddWithValue("@chatId", chatId);
                 List<Person> persons = new List<Person>();
                 using (var reader = command.ExecuteReader())
                 {

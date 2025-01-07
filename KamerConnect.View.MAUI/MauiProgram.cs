@@ -6,6 +6,7 @@ using KamerConnect.DataAccess.Postgres.Repositories;
 using KamerConnect.View.MAUI.Views;
 using KamerConnect.Services;
 using KamerConnect.View.MAUI.Pages;
+using Syncfusion.Maui.Core.Hosting;
 
 namespace KamerConnect.View.MAUI;
 
@@ -20,6 +21,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .ConfigureSyncfusionCore()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -63,6 +65,9 @@ public static class MauiProgram
         builder.Services.AddTransient<MatchRequestsPage>();
         builder.Services.AddTransient<MatchRequestsView>();
         builder.Services.AddTransient<HousePage>();
+        builder.Services.AddTransient<ChatPerson>();
+        builder.Services.AddTransient<ChatPage>();
+        builder.Services.AddTransient<ChatView>();
 
         builder.Services.AddFilePicker();
 

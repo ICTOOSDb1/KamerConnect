@@ -12,6 +12,10 @@ public class MatchRequestItem
     private readonly ObservableCollection<MatchRequestItem> _parentCollection;
 
     public string ProfilePicturePath { get; set; }
+    private readonly ChatService _chatService; 
+    private readonly IServiceProvider _serviceProvider;
+    private readonly PersonService _personService;
+    private readonly AuthenticationService _authenticationService;
     public string Field1 { get; set; }
     public string Field2 { get; set; }
     public string Field3 { get; set; }
@@ -29,11 +33,15 @@ public class MatchRequestItem
     public ICommand RevertStatusCommand { get; }
     public ICommand GoToPage { get; }
 
-    public MatchRequestItem(Person person, Match match, FileService fileService, ProfilePage profilePage,
+    public MatchRequestItem(IServiceProvider serviceProvider, Person person, Match match, FileService fileService, ProfilePage profilePage,
         ObservableCollection<MatchRequestItem> parentCollection)
     {
+        _serviceProvider = serviceProvider;
         _parentCollection = parentCollection;
-
+        _chatService = _serviceProvider.GetService<ChatService>();
+        _personService = _serviceProvider.GetService<PersonService>();
+        _authenticationService = _serviceProvider.GetService<AuthenticationService>();
+        
         Match = match;
 
         ProfilePicturePath = person.ProfilePicturePath != null
@@ -47,7 +55,14 @@ public class MatchRequestItem
         ShowStatusButtons = true;
         ShowRevertButton = false;
 
-        AcceptCommand = new Command(() => UpdateStatus(match, Status.Accepted));
+        AcceptCommand = new Command(() =>
+        {
+            UpdateStatus(match, Status.Accepted);
+            
+            Person CurrentPerson = _personService.GetPersonById(_authenticationService.GetSession().Result.personId);
+            List<Person> persons = new List<Person> {person, CurrentPerson};
+            _chatService.Create(new Chat(Guid.NewGuid(), match.matchId, persons, new List<ChatMessage>()));
+        });
         RejectCommand = new Command(() => UpdateStatus(match, Status.Rejected));
         
         RevertStatusCommand = new Command(() => UpdateStatus(match, match.Status == Status.Accepted ? Status.Rejected : Status.Accepted));

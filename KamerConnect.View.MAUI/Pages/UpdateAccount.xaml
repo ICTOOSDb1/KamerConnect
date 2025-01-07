@@ -54,7 +54,7 @@
                                                 Clicked="Interests"
                                                 Style="{StaticResource SecondaryButton}"
                                                 HorizontalOptions="FillAndExpand"/>
-                                        <Button Text="House"
+                                        <Button Text="Huis"
                                                 x:Name="HouseButton"
                                                 Clicked="House"
                                                 Style="{StaticResource SecondaryButton}"

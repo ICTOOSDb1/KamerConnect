@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KamerConnect.View.MAUI.Views.ChatPerson"
+             xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
+             BackgroundColor="{StaticResource BackgroundColor}">
+    <Frame 
+        CornerRadius="10"
+        HeightRequest="85"
+        HorizontalOptions="Start"
+        BorderColor="Transparent"
+        BackgroundColor="{StaticResource BackgroundColor}"
+        Padding="20">
+        <HorizontalStackLayout Padding="5" Spacing="5">
+            <Image x:Name="ProfileImage"
+                   Aspect="AspectFill"
+                   HeightRequest="50"
+                   WidthRequest="50"/>
+            
+            <Label Text="{Binding PersonsInChat[0].FullName}"
+                   FontFamily="Inter-Regular"
+                   FontSize="Small"
+                   VerticalOptions="Center"
+                   TextColor="Black"></Label>
+        </HorizontalStackLayout>
+    </Frame>
+</ContentView>
