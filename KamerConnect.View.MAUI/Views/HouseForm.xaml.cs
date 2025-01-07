@@ -140,7 +140,7 @@ public partial class HouseForm : ContentView
 
         if (House == null)
         {
-            _houseService.Create(new House(
+            House = new House(
                     Guid.NewGuid(),
                     Type,
                     price,
@@ -159,7 +159,9 @@ public partial class HouseForm : ContentView
                     PreferenceChoiceTypeChanged(PetTypePicker),
                     PreferenceChoiceTypeChanged(InteriorTypePicker),
                     PreferenceChoiceTypeChanged(ParkingTypePicker)
-                ),
+            );
+
+            _houseService.Create(House,
                 _person.Id
             );
         }
