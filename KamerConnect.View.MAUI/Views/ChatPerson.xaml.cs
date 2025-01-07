@@ -18,11 +18,7 @@ public partial class ChatPerson : ContentView
     {
         InitializeComponent();
         BindingContextChanged += OnBindingContextChanged;
-    }
-    
-    public ChatPerson(FileService fileService) : this()
-    {
-        _fileService = fileService;
+        _fileService = MauiProgram.Services.GetRequiredService<FileService>();
     }
     
     private void OnBindingContextChanged(object sender, EventArgs e)

@@ -5,7 +5,6 @@
              xmlns:Utils="clr-namespace:KamerConnect.View.MAUI.Utils"
              BackgroundColor="{StaticResource BackgroundColor}">
     <Frame 
-        CornerRadius="10"
         HeightRequest="85"
         HorizontalOptions="Start"
         BorderColor="Transparent"
@@ -16,7 +15,6 @@
                    Aspect="AspectFill"
                    HeightRequest="50"
                    WidthRequest="50"/>
-            
             <Label Text="{Binding PersonsInChat[0].FullName}"
                    FontFamily="Inter-Regular"
                    FontSize="Small"
