@@ -14,11 +14,8 @@
                                StickyTimeBreak="True"
                                Background="#f5f5f5"
                                CanAutoScrollToBottom="True"
-                               ShowAttachmentButton="True"
                                Messages="{Binding Messages}"
                                CurrentUser="{Binding CurrentUser}"
-                               CardTapped="sfChat_CardTapped"
-                               AttachmentButtonClicked="SendCard"
                                SendMessage="ChatControl_SendMessage">
             </syncfusion:SfChat>
         </Grid>

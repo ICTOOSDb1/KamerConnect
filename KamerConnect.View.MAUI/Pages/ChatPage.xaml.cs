@@ -60,6 +60,7 @@ public partial class ChatPage : ContentPage
         var navbar = _serviceProvider.GetRequiredService<Navbar>();
         NavbarContainer.Content = navbar;
         BindingContext = this;
+        ChatMessages.Content = new ChatViewEmpty();
     }
     
     private void LoadChats()
