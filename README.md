@@ -19,8 +19,9 @@
 
 4. **Exectute database migrations**
    To get your database up-to-date with the current database version we created a project KamerConnect.Migrate.Postgres. When executing this projects Program.cs it automatically runs all the database upscripts. If there is a change in the database later on you can just execute this project again, because it keeps track off your executed upscripts.
-
-5. **Starting application**  
+5. **Start SignalR**
+   To start the realtime communication we have created a project KamerConnect.DataAcces.SignalR when executing the projects Program.cs it starts the SignalR service.
+6. **Starting application**  
     Open the project in your preferred IDE and start the .NET application.
 
 ## Working on the project
